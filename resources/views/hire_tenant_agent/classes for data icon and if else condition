@@ -1,0 +1,4 @@
+fa-solid fa-qrcode
+fa-regular fa-check-circle
+data-icon='<i class="fa-regular fa-check-circle"></i>'>
+style="width:calc(33.3% - 10px)
