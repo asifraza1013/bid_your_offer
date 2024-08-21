@@ -13,6 +13,7 @@ use App\Models\City;
 use App\Models\County;
 use App\Models\Financing;
 use App\Models\PropertyType;
+use App\Models\User;
 use App\Models\State;
 use App\Models\WaterExtra;
 use App\Models\WaterViewType;
@@ -32,7 +33,6 @@ class BuyerCriteriaAuctionController extends Controller
 
     public function storeAuction(Request $request)
     {
-
         // dd($request->all());
         try {
 
@@ -57,6 +57,7 @@ class BuyerCriteriaAuctionController extends Controller
             $auction->saveMeta("representation",$request->representation);
             $auction->saveMeta("titleListing",$request->titleListing);
             $auction->saveMeta("property_type",$request->property_type);
+            $auction->saveMeta("propertyStyles",$request->propertyStyles);
             $auction->saveMeta("property_items",json_encode($request->property_items));
             $auction->saveMeta("businessOther",$request->businessOther);
             $auction->saveMeta("vacantOther",$request->vacantOther);
@@ -69,17 +70,19 @@ class BuyerCriteriaAuctionController extends Controller
             $auction->saveMeta("propConditionOther",$request->propConditionOther);
             $auction->saveMeta("max_price",$request->max_price);
             $auction->saveMeta("financings",json_encode($request->financings));
-            $auction->saveMeta("financingOther",json_encode($request->financingOther));
+            $auction->saveMeta("financingOther",$request->financingOther);
             $auction->saveMeta("trade",json_encode($request->trade));
             $auction->saveMeta("conventionalOptions",json_encode($request->conventionalOptions));
             $auction->saveMeta("financingOptionsConventional",json_encode($request->financingOptionsConventional));
             $auction->saveMeta("buyerBudget",$request->buyerBudget);
             $auction->saveMeta("customOptionsYesNo",$request->customOptionsYesNo);
             $auction->saveMeta("leaseOptions",json_encode($request->leaseOptions));
+            $auction->saveMeta("leasePurchase",json_encode($request->leasePurchase));
             $auction->saveMeta("prepayment",$request->prepayment);
             $auction->saveMeta("prepaymentOther",json_encode($request->prepaymentOther));
             $auction->saveMeta("balloon",$request->balloon);
             $auction->saveMeta("balloonpyment",json_encode($request->balloonpyment));
+            $auction->saveMeta("assumable",json_encode($request->assumable));
             $auction->saveMeta("sellerFinancing",json_encode($request->sellerFinancing));
             $auction->saveMeta("cryptocurrency",json_encode($request->cryptocurrency));
             $auction->saveMeta("nft",json_encode($request->nft));
@@ -109,6 +112,7 @@ class BuyerCriteriaAuctionController extends Controller
             $auction->saveMeta("garage_spaces",$request->garage_spaces);
             $auction->saveMeta("custom_garage",$request->custom_garage);
             $auction->saveMeta("pool",$request->pool);
+            $auction->saveMeta("poolOption",$request->poolOption);
             $auction->saveMeta("has_water_extra",$request->has_water_extra);
             $auction->saveMeta("water_extra",json_encode($request->water_extra));
             $auction->saveMeta("has_water_frontage",$request->has_water_frontage);
@@ -117,6 +121,9 @@ class BuyerCriteriaAuctionController extends Controller
             $auction->saveMeta("water_access",json_encode($request->water_access));
             $auction->saveMeta("has_water_view",$request->has_water_view);
             $auction->saveMeta("water_view",json_encode($request->water_view));
+            $auction->saveMeta("has_dock", $request->has_dock);
+            $auction->saveMeta("dock",json_encode($request->dock));
+            $auction->saveMeta("dockDescription", $request->dockDescription);
             $auction->saveMeta("viewOptions",$request->viewOptions);
             $auction->saveMeta("view",json_encode($request->view));
             $auction->saveMeta("viewOther",$request->viewOther);
@@ -137,6 +144,12 @@ class BuyerCriteriaAuctionController extends Controller
             $auction->saveMeta("nonNegotiableFactors",$request->nonNegotiableFactors);
             $auction->saveMeta("nonNegotiable",json_encode($request->nonNegotiable));
             $auction->saveMeta("negotiableOther",$request->negotiableOther);
+            $auction->saveMeta('buyerHaveAgentRepresentation', $request->buyerHaveAgentRepresentation);
+            $auction->saveMeta('buyersAgentCommissionRequested', $request->buyersAgentCommissionRequested);
+            $auction->saveMeta('buyersAgentCompensationRequested', $request->buyersAgentCompensationRequested);
+            $auction->saveMeta('buyersAgentCompensationRequestedAmount', $request->buyersAgentCompensationRequestedAmount);
+            $auction->saveMeta('BuyerSellingProperty', $request->isBuyerCurrentlySellingProperty);
+            $auction->saveMeta('linkToThePropertyListing', $request->linkToThePropertyListing);
             $auction->saveMeta("agent_first_name",$request->agent_first_name);
             $auction->saveMeta("agent_last_name",$request->agent_last_name);
             $auction->saveMeta("agent_phone",$request->agent_phone);
@@ -144,7 +157,7 @@ class BuyerCriteriaAuctionController extends Controller
             $auction->saveMeta("agent_brokerage",$request->agent_brokerage);
             $auction->saveMeta("license",$request->license);
             $auction->saveMeta("agent_mls_id",$request->agent_mls_id);
-            $auction->saveMeta("agent_commission_percent",$request->agent_commission_percent);
+            $auction->saveMeta("agent_commission_percent",$request->agent_commission_percent);//residential and income
             $auction->saveMeta("requestCredit",$request->requestCredit);
             $auction->saveMeta("real_estate_included",$request->real_estate_included);
             $auction->saveMeta("lincenses",json_encode($request->lincenses));
@@ -214,6 +227,7 @@ class BuyerCriteriaAuctionController extends Controller
     public function view($id)
     {
         $page_data['auction'] = BuyerCriteriaAuction::whereId($id)->first();
+        $page_data['created_by'] = User::whereId($page_data['auction']->user_id)->get()->first();
         $page_data['counties'] = County::all();
         $page_data['cities'] = City::where('state_id', '3930')->get();
         $page_data['property_types'] = PropertyType::orderBy('sort', 'ASC')->get();

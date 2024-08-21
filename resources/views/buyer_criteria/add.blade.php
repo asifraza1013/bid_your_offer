@@ -946,7 +946,7 @@
 
                                 <label class="fw-bold">What type of financing/funds will the buyer use to purchase the
                                     property?</label>
-                                <input type="text" name="financingOther[]" data-type="" id=""
+                                <input type="text" name="financingOther" data-type="" id=""
                                     class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
                             </div>
                             <div class="form-group custom_exchange_trade_res d-none ">
@@ -2405,7 +2405,6 @@
                                         ['name' => 'Heat Pump', 'target' => ''],
                                         ['name' => 'Heat Recovery Unit', 'target' => ''],
                                         ['name' => 'Natural Gas', 'target' => ''],
-                                        ['name' => 'None', 'target' => ''],
                                         ['name' => 'Oil', 'target' => ''],
                                         ['name' => 'Partial', 'target' => ''],
                                         ['name' => 'Propane', 'target' => ''],
@@ -2452,7 +2451,7 @@
                                 @foreach ($yes_or_nos as $item)
                                     @php
                                         if ($item['name'] == 'Yes') {
-                                            $target = '.eligiableRes';
+                                            $target = '';
                                         } else {
                                             $target = '';
                                         }
@@ -2465,14 +2464,14 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="row eligiableRes d-none">
+                        {{-- <div class="row eligiableRes d-none">
                             <div class="form-group has_intrested">
                                 <label class="fw-bold">What is the maximum monthly condo and/or HOA fee that the buyer can
                                     afford?</label>
                                 <input type="number" name="communities" id="" class="form-control has-icon"
                                     data-icon="fa-solid fa-dollar-sign" required>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="wizard-step" data-step="20">
                         <span class="resFields">
@@ -2639,12 +2638,33 @@
                                             if ($item['name'] == 'Yes') {
                                                 $target = '.buyers_agent_compensation';
                                             } else {
-                                                $target = '';
+                                                $target = '.buyer_agent_comp_not_offered';
                                             }
                                         @endphp
                                         <option value="{{ $item['name'] }}" data-target="{{ $target }}"
                                             class="card flex-row" style="width:calc(33.3% - 10px);"
                                             data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                                            {{ $item['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group d-none buyer_agent_comp_not_offered">
+                                <label class="fw-bold">Would the buyer be willing to pay an agent's commission for bringing a property the
+                                    buyer ends up purchasing if the seller does not agree to pay the commission?</label>
+                                @php
+                                    $buyersAgentCompensationNotOffered = [
+                                        ['name' => 'Yes', 'icon' => 'fa-regular fa-circle-check','target' => ''],
+                                        ['name' => 'No', 'icon' => 'fa-regular fa-circle-xmark', 'target' => ''],
+                                    ];
+                                @endphp
+                                <select class="grid-picker" name="buyersAgentCompensationNotOffered" id=""
+                                style="justify-content: flex-start;">
+                                    <option value="">Select</option>
+                                    @foreach ($buyersAgentCompensationNotOffered as $item)
+                                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                                            class="card flex-row" style="width:calc(33.3% - 10px);"
+                                            data-icon='<i class="fa-regular fa-circle-check"></i>'>
                                             {{ $item['name'] }}
                                         </option>
                                     @endforeach
@@ -2662,15 +2682,15 @@
                                 @endphp
                                 <select class="grid-picker" name="buyersAgentCompensationRequested" id=""
                                 style="justify-content: flex-start;">
-                                <option value="">Select</option>
-                                @foreach ($buyersAgentCompensation as $item)
-                                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                                        class="card flex-row" style="width:calc(33.3% - 10px);"
-                                        data-icon='<i class="fa-regular fa-circle-check"></i>'>
-                                        {{ $item['name'] }}
-                                    </option>
-                                @endforeach
-                            </select>
+                                    <option value="">Select</option>
+                                    @foreach ($buyersAgentCompensation as $item)
+                                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                                            class="card flex-row" style="width:calc(33.3% - 10px);"
+                                            data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                                            {{ $item['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group buyers_agent_comp d-none">
                                 <div class="d-flex justify-content-between aalign-items-center">
@@ -2734,7 +2754,7 @@
                             <div class="col-6">
                                 <label class="fw-bold">Phone Number:</label>
                                 <input type="text" name="agent_phone" id="agent_phone" placeholder=""
-                                    value="{{ optional(Auth::user())->phone }}" class="form-control has-icon"
+                                    value="{{old('agent_phone' , optional(Auth::user())->phone)}}" class="form-control has-icon"
                                     data-icon="fa-solid fa-phone">
                             </div>
                             <div class="col-6">
@@ -2939,7 +2959,7 @@
 
                                 <label class="fw-bold">What type of financing/funds will the buyer use to purchase the
                                     property?</label>
-                                <input type="text" name="financingOther[]" data-type="" id=""
+                                <input type="text" name="financingOther" data-type="" id=""
                                     class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
                             </div>
                             <div class="form-group tradeCommercial d-none ">
@@ -4279,7 +4299,7 @@
 
                                 <label class="fw-bold">What type of financing/funds will the buyer use to purchase the
                                     property?</label>
-                                <input type="text" name="financingOther[]" data-type="" id=""
+                                <input type="text" name="financingOther" data-type="" id=""
                                     class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
                             </div>
                             <div class="form-group tradeVacant d-none ">

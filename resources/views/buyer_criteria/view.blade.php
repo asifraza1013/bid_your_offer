@@ -48,9 +48,9 @@
   <div class="container listingDescription">
     <div class="row">
       <div class="col-sm-12 col-md-8 col-lg-8 leftCol">
-
         <!-- Description Box  -->
         <div class="card description">
+          {{-- {{dd(@$auction)}} --}}
           @if (@$auction->description)
             <div class="card-header">
               <h5>Description</h5>
@@ -163,7 +163,7 @@
                   {{ @$auction->get->real_estate_included }}
                 </div>
               @endif
-              @if(@$auction->get->lincenses != null)
+              @if(@$auction->get->lincenses != (null || 'null'))
                 <div class="col-md-12 col-12 removeBold"><i class="fa-regular fa-check-square"></i><span class="fw-bold">
                       Licenses Needed:</span>
                       @if (is_array($auction->get->lincenses))
@@ -353,6 +353,20 @@
                   @endif
                 </div>
               @endif
+                @if (@$auction->get->has_dock != null)
+                <div class="col-md-9 fw-bold">
+                  <i class="fa-regular fa-check-square"></i> Dock Needed:<span class="removeBold">({{@$auction->get->has_dock}})</span><br>
+                  @if (gettype(@$auction->get->dock) == 'array' && @$auction->get->dock !='No')
+                    @foreach (@$auction->get->dock as $item)
+                      @if($item !='Other')
+                        <span class="badge bg-secondary removeBold">{{ $item }}</span>
+                      @else
+                        <span class="badge bg-secondary removeBold">{{ @$auction->get->dockDescription }}</span>
+                      @endif
+                    @endforeach
+                  @endif
+                </div>
+              @endif
               @if (@$auction->get->nonNegotiableFactors != null && @$auction->get->nonNegotiableFactors != 'null')
                 <div class="col-md-9 fw-bold">
                   <i class="fa-regular fa-check-square"></i> Non-negotiable Amenities or Property Features:<span class="removeBold">({{@$auction->get->nonNegotiableFactors}})</span><br>
@@ -374,7 +388,6 @@
                     <i class="fa-regular fa-check-square"></i>
                     <span class="fw-bold">Air Conditioning Preferences and Heating and Fuel Preferences:</span>
                     @if (@$auction->get->have_air_conditioning == 'Yes')
-                      <br>
                       <span class="badge bg-secondary removeBold">{{ @$auction->get->air_conditioning }}</span>
                       <span class="badge bg-secondary removeBold">{{ @$auction->get->heating_and_fuel }}</span>
                     @else
@@ -393,19 +406,17 @@
                     <span class="fw-bold">Acceptable Financing/Currency:</span>
                     @if ($financingData != null)
                       @foreach (array_filter($financingData) as $key => $item)
-                        <ul>
-                          <li style="font-size: 16px; margin-top:5px;">&nbsp; {{ $item }}</li>
-                        </ul>
+                        <span style="font-size: 16px; margin-top:5px;">&nbsp; ({{ $item }})</span>
                         @if ($item == 'Seller Financing')
                           @foreach (@$auction->get->sellerFinancing as $key => $item)
                             <span class="d-inline-block bg-secondary removeBold text-white  px-2 rounded my-1">
                               {{ @$item }}</span>
                           @endforeach
-                        {{-- @elseif ($item == 'Assumable')
+                        @elseif ($item == 'Assumable')
                           @foreach (@$auction->get->assumable as $key => $item)
                             <span class="d-inline-block bg-secondary removeBold text-white  px-2 rounded my-1">
                               {{ @$item }}</span>
-                          @endforeach --}}
+                          @endforeach
                         @elseif ($item == 'Exchange/Trade')
                           @foreach (@$auction->get->trade as $key => $item)
                             <span class="d-inline-block bg-secondary removeBold text-white  px-2 rounded my-1">
@@ -448,12 +459,20 @@
                           @endif
                         @elseif($item == 'Other')
                           <span class="d-inline-block bg-secondary removeBold text-white  px-2 rounded my-1">
-                            {{ @$auction->get->type_of_financing }}</span>
+                            {{ @$auction->get->financingOther }}</span>
                         @endif
                       @endforeach
                     @endif
                   </div>
                 </div>
+              @endif
+              @if ($auction->get->escrow_amount != null && $auction->get->escrow_amount != "")
+              <div class="row">
+                <div class="col-md-12">
+                  <i class="fa-regular fa-check-square"></i>
+                  <span class="fw-bold">Offered Escrow Amount:</span><span class="removeBold">({{ $auction->get->escrow_amount }})</span>
+                </div>
+              </div>
               @endif
               @if (@$auction->get->communitiesOption != null)
                 @if (@$auction->get->communitiesOption == 'Yes')
@@ -577,7 +596,12 @@
                 </div>
               @endif
               <hr>
-              <h4>Buyer/Buyer’s Agent Info</h4>
+              @if ($created_by->user_type == "agent")
+                <h4>Buyer’s Agent Info</h4>
+              @elseif ($created_by->user_type == "buyer")
+                <h4>Buyer's Info</h4>
+              @endif
+              
               <div class="row" style="flex-wrap: wrap;">
                 @if (@$auction->get->agent_first_name != null)
                   <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> First Name:
