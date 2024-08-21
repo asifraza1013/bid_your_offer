@@ -474,6 +474,32 @@
                 </div>
               </div>
               @endif
+              @if($auction->get->buyerHaveAgentRepresentation !== null)
+                <div class="row">
+                  <div class="col-md-12">
+                    <i class="fa-regular fa-check-square"></i>
+                    <span class="fw-bold">Buyer Represented by a Real Estate Agent:</span><span class="removeBold">({{ $auction->get->buyerHaveAgentRepresentation }})</span>
+                  </div>
+                  @if($auction->get->buyersAgentCommissionRequested !== null)
+                  <div class="col-md-12">
+                    <i class="fa-regular fa-check-square"></i>
+                    <span class="fw-bold">Buyer Requests Seller to Pay Buyer’s Agent Commission:</span><span class="removeBold">({{ $auction->get->buyersAgentCommissionRequested }})</span>
+                  </div>
+                  @endif
+                  @if($auction->get->buyersAgentCompensationRequested !== null)
+                  <div class="col-md-12">
+                    <i class="fa-regular fa-check-square"></i>
+                    <span class="fw-bold">Requested Amount for Seller to Pay Buyer’s Agent Commission:</span><span class="removeBold">({{$auction->get->buyersAgentCompensationRequested == 'Other' ? $auction->get->buyersAgentCompensationRequested . "|" .  $auction->get->buyersAgentCompensationRequestedAmount : $auction->get->buyersAgentCompensationRequested}})</span>
+                  </div>
+                  @endif
+                  @if ($auction->get->buyersAgentCommissionRequested !== null && $auction->get->buyersAgentCommissionRequested == "No")
+                  <div class="col-md-12">
+                    <i class="fa-regular fa-check-square"></i>
+                    <span class="fw-bold">Agent Compensation if Not Offered by Seller:</span><span class="removeBold">({{$auction->get->buyersAgentCompensationNotOffered}})</span>
+                  </div>
+                  @endif
+                </div>
+              @endif
               @if (@$auction->get->communitiesOption != null)
                 @if (@$auction->get->communitiesOption == 'Yes')
                   <div class="row">
@@ -530,7 +556,7 @@
               @endif
 
               <hr>
-              <h4>Invstment Information</h4>
+              <h4>Investment Information</h4>
               <div class="row" style="flex-wrap: wrap;">
                 @if (@$auction->get->rental_requirements != null)
                   <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Rental
