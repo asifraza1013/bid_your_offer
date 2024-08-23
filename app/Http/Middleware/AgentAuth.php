@@ -18,7 +18,7 @@ class AgentAuth
     public function handle(Request $request, Closure $next)
     {
         if (Auth::user()) {
-            if (Auth::user()->user_type != ("seller_agent" || "buyer_agent")) {
+            if (in_array(Auth::user()->user_type, ["seller_agent", "buyer_agent"])) {
                 return redirect()->to(route('dashboard'));
             }
         }
