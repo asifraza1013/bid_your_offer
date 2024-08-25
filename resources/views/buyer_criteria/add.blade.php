@@ -4927,7 +4927,7 @@
                                 <div class="form-group conditionsVacantOther">
                                     <label class="fw-bold">Acceptable Property Condition:</label>
                                     <input type="text" name="propConditionOther" id=""
-                                        class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"
+                                        class="form-control has-icon" data-icon="fa-regular fa-check-circle"
                                         placeholder="">
                                 </div>
                             </div>
@@ -6728,7 +6728,7 @@
                             } else if (StepWizard.currentStep == 6 && property_type ==
                                 'Vacant Land'
                             ) {
-                                StepWizard.nextStep = 43;
+                                StepWizard.nextStep = 42;
                                 StepWizard.backStep = 6;
                             } else {
                                 StepWizard.backStep = StepWizard.currentStep;
@@ -6780,7 +6780,7 @@
                         }else if (StepWizard.currentStep == 25 && property_type ==
                             'Business Opportunity') {
                             StepWizard.backStep = 5;
-                        } else if (StepWizard.currentStep == 43 && property_type ==
+                        } else if (StepWizard.currentStep == 42 && property_type ==
                             'Vacant Land'
                         ) {
                             StepWizard.backStep = 6;
