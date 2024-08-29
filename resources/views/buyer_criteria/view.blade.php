@@ -1033,11 +1033,12 @@
             </div>
             <div class="col-sm-12 col-md-4 col-lg-4 rightCol">
                 @if (@$auction->get->titleListing != null)
-                    <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Title of the listing
-                        :
-                        <h1>{{ @$auction->get->property_type }}</h1>
+                    <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Title of the listing:
+                        <span class="fwBold">{{ @$auction->get->titleListing }}</span>
                     </div>
                 @endif
+
+                <h1>{{ @$auction->get->property_type }}</h1>
 
                 <hr>
                 @inject('carbon', 'Carbon\Carbon')
@@ -1509,11 +1510,11 @@
                                     </path>
                                 </svg>
                                 <!-- <div hidden class="w-50">
-                                                                                                                                                                                                                                                                                                                  <div id="qr-content" class="text-center w-75 m-auto">
-                                                                                                                                                                                                                                                                                                                      <img class="w-50" src="https://www.freepnglogos.com/uploads/qr-code-png/qr-code-file-bangla-mobile-code-0.png" alt="">
-                                                                                                                                                                                                                                                                                                                      <p>Scan QR code to view on mobile device.</p>
-                                                                                                                                                                                                                                                                                                                  </div>
-                                                                                                                                                                                                                                                                                                                  </div> -->
+                                                                                                                                                                                                                                                                                                                      <div id="qr-content" class="text-center w-75 m-auto">
+                                                                                                                                                                                                                                                                                                                          <img class="w-50" src="https://www.freepnglogos.com/uploads/qr-code-png/qr-code-file-bangla-mobile-code-0.png" alt="">
+                                                                                                                                                                                                                                                                                                                          <p>Scan QR code to view on mobile device.</p>
+                                                                                                                                                                                                                                                                                                                      </div>
+                                                                                                                                                                                                                                                                                                                      </div> -->
                                 <!-- Message  -->
                                 <svg data-bs-container="body" tabindex="0" data-bs-toggle="popover"
                                     data-bs-trigger="hover focus" data-bs-placement="top" data-bs-content="Send Message"
