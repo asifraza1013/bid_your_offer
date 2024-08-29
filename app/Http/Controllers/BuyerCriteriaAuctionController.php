@@ -148,6 +148,7 @@ class BuyerCriteriaAuctionController extends Controller
             $auction->saveMeta('buyersAgentCommissionRequested', $request->buyersAgentCommissionRequested);
             $auction->saveMeta('buyersAgentCompensationRequested', $request->buyersAgentCompensationRequested);
             $auction->saveMeta('buyersAgentCompensationRequestedAmount', $request->buyersAgentCompensationRequestedAmount);
+            $auction->saveMeta('buyersAgentCompensationNotOffered', $request->buyersAgentCompensationNotOffered);
             $auction->saveMeta('BuyerSellingProperty', $request->isBuyerCurrentlySellingProperty);
             $auction->saveMeta('linkToThePropertyListing', $request->linkToThePropertyListing);
             $auction->saveMeta("agent_first_name",$request->agent_first_name);
@@ -175,6 +176,11 @@ class BuyerCriteriaAuctionController extends Controller
             $auction->saveMeta("otherSewer",$request->otherSewer);
             $auction->saveMeta("buyer_intrest_in_purchasing",$request->buyer_intrest_in_purchasing);
             $auction->saveMeta("maximum_monthly_condo",$request->maximum_monthly_condo);
+            $auction->saveMeta("garageNeedOther",$request->garageNeedOther);
+            $auction->saveMeta("propConditionOther",$request->propConditionOther);
+            $auction->saveMeta("specialOptResNo",$request->specialOptResNo);
+            $auction->saveMeta("specialOptNoRes",$request->specialOptNoRes);
+            $auction->saveMeta("unit_size",json_encode($request->unit_size));
             $allowedPhotos = ['jpg', 'png', 'jpeg', 'gif', 'svg'];
             $allowedVideos = ['mp4', 'mov', 'avi', 'mkv', 'wmv', 'flv', 'webm', 'm4v'];
             $visible_upload_file = [];
