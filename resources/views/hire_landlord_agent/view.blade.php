@@ -190,7 +190,6 @@
                                     <br>
                                     <ul class="leasing">
                                         <li style="font-size:16px;">
-                                            What is the condition of the landlord’s property?
                                             <span class="removeBold"> {{ $auction->get->custom_property_condition }}</span>
                                         </li>
                                     </ul>
@@ -342,7 +341,6 @@
                                             <br>
                                             <ul class="leasing">
                                                 <li style="font-size:16px;">
-                                                    What appliances are included in the property?
                                                     <span class="removeBold"> {{ $auction->get->otherAppliances }}</span>
                                                 </li>
                                             </ul>
@@ -399,7 +397,6 @@
                                         <br>
                                         <ul class="leasing">
                                             <li style="font-size:16px;">
-                                                View:
                                                 <span class="removeBold"> {{ $auction->get->viewOther }}</span>
                                             </li>
                                         </ul>
@@ -418,8 +415,6 @@
                                     <br>
                                     <ul class="leasing">
                                         <li style="font-size:16px;">
-                                            What amenities or features does the property
-                                            offer?
                                             <span class="removeBold"> {{ $auction->get->parkingOther }}</span>
                                         </li>
                                     </ul>
@@ -437,7 +432,6 @@
                                         <br>
                                         <ul class="leasing">
                                             <li style="font-size:16px;">
-                                                Tenant Pays:
                                                 <span class="removeBold"> {{ $auction->get->otherTenantPays }}</span>
                                             </li>
                                         </ul>
@@ -456,7 +450,6 @@
                                         <br>
                                         <ul class="leasing">
                                             <li style="font-size:16px;">
-                                                Owner Pays:
                                                 <span class="removeBold"> {{ $auction->get->otherOwnerPays }}</span>
                                             </li>
                                         </ul>
@@ -477,7 +470,6 @@
                                             <br>
                                             <ul class="leasing">
                                                 <li style="font-size:16px;">
-                                                    What utilities are included in the rent?
                                                     <span class="removeBold">
                                                         {{ $auction->get->other_rent_include }}</span>
                                                 </li>
@@ -499,8 +491,6 @@
                                         <br>
                                         <ul class="leasing">
                                             <li style="font-size:16px;">
-                                                What amenities or features does the property
-                                                offer?
                                                 <span class="removeBold"> {{ $auction->get->otherAmenities }}</span>
                                             </li>
                                         </ul>
@@ -601,20 +591,10 @@
                                         <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Listing
                                             Agent
                                             Commission Offered:<span
-                                                class="removeBold">{{ $auction->get->offered_commission == 'Other' ? '(Other)' : '' }}</span>
-                                            @if (@$auction->get->offered_commission != 'Other')
-                                                <span class="removeBold">{{ @$auction->get->offered_commission }}</span>
-                                            @else
-                                                <br>
-                                                <ul class="leasing">
-                                                    <li style="font-size:16px;">
-                                                        <span class="fw-bold">What is the total commission being offered to
-                                                            the
-                                                            listing agent? </span>
-                                                        <span class="removeBold">
-                                                            {{ $auction->get->offeredCommissionOther }}</span>
-                                                    </li>
-                                                </ul>
+                                                class="removeBold">{{ $auction->get->offered_commission }}</span>
+                                            @if (@$auction->get->offered_commission == 'Other')
+                                                <span
+                                                    class="removeBold">{{ $auction->get->offeredCommissionOther }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -625,21 +605,9 @@
                                     <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Tenant
                                         Agent
                                         Commission
-                                        Split:<span
-                                            class="removeBold">{{ $auction->get->tenantCommission == 'Other' ? '(Other)' : '' }}</span>
-                                        @if (@$auction->get->tenantCommission != 'Other')
-                                            <span class="removeBold">{{ @$auction->get->tenantCommission }}</span>
-                                        @else
-                                            <br>
-                                            <ul class="leasing">
-                                                <li style="font-size:16px;">
-                                                    <span class="fw-bold"> Tenant's Agent Commission Split from Listing
-                                                        Agent's
-                                                        Commission Offered:</span>
-                                                    <span class="removeBold">
-                                                        {{ $auction->get->offeredCommissionOther }}</span>
-                                                </li>
-                                            </ul>
+                                        Split:<span class="removeBold">{{ $auction->get->tenantCommission }}</span>
+                                        @if (@$auction->get->tenantCommission == 'Other')
+                                            <span class="removeBold">{{ $auction->get->offeredCommissionOther }}</span>
                                         @endif
                                     </div>
                                 </div>
@@ -720,7 +688,7 @@
                                 </div>
                             @endif
                             @if ($auction->get->auction_type !== null && $auction->get->auction_type == 'Auction Listing')
-                                <div class="disclaimer">
+                                <div class="disclaimer mt-4">
                                     <h5>Legal Disclaimer:</h5>
                                     <p>For Timed Listings, the landlord must wait until the timer
                                         has ended before selecting an agent to accept, counter, or reject. The only way the
@@ -780,7 +748,9 @@
                                     </span>
                                 </p>
                                 <p class="mb-0">...</p>
-                                <p class="mb-0 opacity-50">{{ $auser->name }} • last online 5 days ago.</p>
+                                <p class="mb-0 opacity-50">{{ $auser->first_name }} • last online 5
+                                    days ago.</p>
+                                <p class="mb-0 opacity-50">({{ $auser->user_name }})</p>
                             </div>
                         </div>
                         <div class="right text-center">

@@ -2793,13 +2793,13 @@
                                         <label class="fw-bold">First Name:</label>
                                         <input type="text" class="form-control has-icon" name="first_name"
                                             id="first_name" value="{{ auth()->user()->first_name }}"
-                                            data-icon="fa-solid fa-user" />
+                                            data-icon="fa-solid fa-user" required />
                                     </div>
                                     <div class="col-md-6">
                                         <label class="fw-bold">Last Name:</label>
                                         <input type="text" class="form-control has-icon" name="last_name"
                                             id="last_name" value="{{ auth()->user()->last_name }}"
-                                            data-icon="fa-solid fa-user" />
+                                            data-icon="fa-solid fa-user" required />
                                     </div>
                                 </div>
                                 <div class="row form-group">
@@ -2807,13 +2807,13 @@
                                         <label class="fw-bold">Phone Number:</label>
                                         <input type="text" class="form-control has-icon" name="phone"
                                             id="phone" value="{{ auth()->user()->phone }}"
-                                            data-icon="fa-solid fa-phone" />
+                                            data-icon="fa-solid fa-phone" required />
                                     </div>
                                     <div class="col-md-6">
                                         <label class="fw-bold">Email:</label>
                                         <input type="email" class="form-control has-icon" name="email"
                                             id="email" value="{{ auth()->user()->email }}"
-                                            data-icon="fa-solid fa-envelope" />
+                                            data-icon="fa-solid fa-envelope" required />
                                     </div>
                                 </div>
                                 <div class="row">
