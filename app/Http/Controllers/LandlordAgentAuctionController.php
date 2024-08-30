@@ -116,6 +116,9 @@ class LandlordAgentAuctionController extends Controller
             $auction->saveMeta("offeredCommissionOther", $request->offeredCommissionOther);
             $auction->saveMeta("tenantCommission", $request->tenantCommission);
             $auction->saveMeta("tenantCommissionOther", $request->tenantCommissionOther);
+            $auction->saveMeta("termLease", json_encode($request->termLease));
+            $auction->saveMeta("termLeaseOther", $request->termLeaseOther);
+            $auction->saveMeta("leaseAmount", $request->leaseAmount);
             $auction->saveMeta("description", $request->description);
             $auction->saveMeta("important_info", $request->important_info);
             $auction->saveMeta("services", json_encode($request->services));

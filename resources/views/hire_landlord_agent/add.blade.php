@@ -1172,7 +1172,7 @@
                                         $leaseCommercial = [
                                             ['name' => 'Appraisal', 'target' => ''],
                                             ['name' => 'Building', 'target' => ''],
-                                            ['name' => 'Measure', 'target' => ''],
+                                            ['name' => 'Measured', 'target' => ''],
                                             ['name' => 'Owner Provided', 'target' => ''],
                                             ['name' => 'Public Records', 'target' => ''],
                                             ['name' => 'Other', 'target' => '.other_lease_commercial'],
@@ -1515,6 +1515,7 @@
                                                 'name' => 'Beach',
                                                 'icon' => 'fa-regular fa-circle-xmark',
                                             ],
+                                            ['target' => '', 'name' => 'Pool', 'icon' => 'fa-regular fa-check-circle'],
                                             [
                                                 'target' => '.viewOther',
                                                 'name' => ' Other',
@@ -2150,6 +2151,23 @@
                                             ['name' => 'Seasonally', 'target' => ''],
                                         ];
                                     @endphp
+                                    <div class="form-group">
+                                        <label class="fw-bold">Select the frequency in which the Lease Amount is paid:
+                                        </label>
+
+                                        <select class="grid-picker" name="leaseAmount" id="appliances"
+                                            style="justify-content: flex-start;" required>
+                                            <option value="">Select</option>
+                                            @foreach ($leaseAmount as $item)
+                                                <option value="{{ $item['name'] }}"
+                                                    data-target="{{ $item['target'] }}" class="card flex-row"
+                                                    style="width:calc(33.33% - 10px);"
+                                                    data-icon='<i class="fa-regular fa-check-circle"></i>'>
+                                                    {{ $item['name'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </span>
                                 <span class="commercialFields">
                                     @php
@@ -2158,22 +2176,24 @@
                                             ['name' => 'Monthly', 'target' => ''],
                                         ];
                                     @endphp
-                                </span>
-                                <div class="form-group">
-                                    <label class="fw-bold">Select the frequency in which the Lease Amount is paid: </label>
+                                    <div class="form-group">
+                                        <label class="fw-bold">Select the frequency in which the Lease Amount is paid:
+                                        </label>
 
-                                    <select class="grid-picker" name="leaseAmount" id="appliances"
-                                        style="justify-content: flex-start;" multiple required>
-                                        <option value="">Select</option>
-                                        @foreach ($leaseAmount as $item)
-                                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                                                class="card flex-row" style="width:calc(33.33% - 10px);"
-                                                data-icon='<i class="fa-regular fa-check-circle"></i>'>
-                                                {{ $item['name'] }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                        <select class="grid-picker" name="leaseAmount" id="appliances"
+                                            style="justify-content: flex-start;" multiple required>
+                                            <option value="">Select</option>
+                                            @foreach ($leaseAmount as $item)
+                                                <option value="{{ $item['name'] }}"
+                                                    data-target="{{ $item['target'] }}" class="card flex-row"
+                                                    style="width:calc(33.33% - 10px);"
+                                                    data-icon='<i class="fa-regular fa-check-circle"></i>'>
+                                                    {{ $item['name'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </span>
                             </div>
                             <div class="wizard-step" data-step="26">
                                 @php
@@ -2206,7 +2226,7 @@
                                     <div class="form-group otherLeaseDuration d-none">
                                         <label class="fw-bold">Acceptable Lease Duration: <span
                                                 class="text-danger"></span></label>
-                                        <input type="date" class="form-control has-icon" name="otherLeaseDuration"
+                                        <input type="text" class="form-control has-icon" name="otherLeaseDuration"
                                             data-icon="fa-solid fa-calendar-days" required />
                                     </div>
                                 </div>
@@ -2230,12 +2250,13 @@
                                         ['name' => 'Seasonal', 'target' => ''],
                                         ['name' => 'Special Available (CLO)', 'target' => ''],
                                         ['name' => 'Varied Terms', 'target' => ''],
+                                        ['name' => 'Other', 'target' => '.other_terms_lease'],
                                     ];
                                 @endphp
                                 <div class="form-group">
                                     <label class="fw-bold"> Terms of Lease: </label>
 
-                                    <select class="grid-picker" name="termLease" id="appliances"
+                                    <select class="grid-picker" name="termLease[]" id="appliances"
                                         style="justify-content: flex-start;" multiple required>
                                         <option value="">Select</option>
                                         @foreach ($termLease as $item)
@@ -2246,6 +2267,13 @@
                                             </option>
                                         @endforeach
                                     </select>
+
+                                    <div class="form-group other_terms_lease d-none">
+                                        <label class="fw-bold">Terms of Lease:<span class="text-danger"></span></label>
+                                        <input type="text" class="form-control has-icon" placeholder=" "
+                                            name="termLeaseOther" data-icon="fa-regular fa-check-circle"
+                                            id="occupant_type_input" required />
+                                    </div>
                                 </div>
                             </div>
                             <div class="wizard-step" data-step="28">
@@ -2330,7 +2358,7 @@
                                 <div class="form-group custom_lease_period d-none">
                                     <label class="fw-bold">Desired Lease Length: </label>
                                     <input type="text" class="form-control has-icon" name="custom_lease_period"
-                                        data-icon="fa-solid fa-ruler-combined" id="custom_lease_period" required />
+                                        data-icon="fa-solid fa-calendar-days" id="custom_lease_period" required />
                                 </div>
                             </div>
                             <div class="wizard-step" data-step="32">
@@ -2378,7 +2406,7 @@
                                     @php
                                         $offered_commissions = [
                                             ['name' => 'One Month’s Rent', 'target' => ''],
-                                            ['name' => '10% of the Value of the Lease', 'target' => ''],
+                                            ['name' => '10% of the Gross Value of the Lease', 'target' => ''],
                                             ['name' => 'Negotiable', 'target' => ''],
                                             ['name' => 'Other', 'target' => '.commissionOther'],
                                         ];
@@ -2403,8 +2431,43 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="wizard-step" data-step="34">
+                                <div class="form-group ">
+                                    <label class="fw-bold">
+                                        If a tenant is represented by an agent, what portion of the commission should be
+                                        shared with the tenant’s agent?
+                                    </label>
+                                    @php
+                                        $offered_commissions = [
+                                            ['name' => 'Half a Month’s Rent,', 'target' => ''],
+                                            ['name' => '5% of the Gross Value of the Lease,', 'target' => ''],
+                                            ['name' => 'Negotiable', 'target' => ''],
+                                            ['name' => 'None', 'target' => ''],
+                                            ['name' => 'Other', 'target' => '.commissionTenantOther'],
+                                        ];
+                                    @endphp
+                                    <select name="tenantCommission" id="offered_tenant_commission" class="grid-picker"
+                                        style="justify-content: flex-start;" required>
+                                        <option value=""></option>
+                                        @foreach ($offered_commissions as $item)
+                                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                                                class="card flex-column " style="width:calc(25% - 10px);"
+                                                data-icon='<i class="fa-regular fa-check-circle"></i>'>
+                                                {{ $item['name'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="form-group commissionTenantOther d-none ">
+                                        <label class="fw-bold">If a tenant is represented by an agent, what portion of the
+                                            commission should be
+                                            shared with the tenant’s agent?</label>
+                                        <input type="text" class="form-control has-icon"
+                                            name="tenantCommissionOther" data-icon="fa-solid fa-dollar-sign"
+                                            id="custom_offered_commission" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wizard-step" data-step="35">
                                 <div class="row">
                                     <div class="form-group mt-4 col-md-12">
                                         <label class='fw-bold'>
@@ -2424,7 +2487,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="wizard-step residential_remove" data-step="35">
+                            <div class="wizard-step residential_remove" data-step="36">
                                 <span class="resFields">
                                     <div class="form-group">
                                         <label class="fw-bold">
@@ -2562,11 +2625,12 @@
                                         </select>
                                     </div>
                                     <div class="form-group otherRes d-none">
-                                        <label class="fw-bold">What services would the landlord like to request from an
-                                            agent?
+                                        <label class="fw-bold">What additional services would the landlord like to request
+                                            from an agent?
                                         </label>
                                         <input type="text" class="form-control has-icon" name="servicesOther"
-                                            data-icon="fa-solid fa-ruler-combined" id="custom_services_data" required />
+                                            data-icon="fa-solid fa-hand-point-right" id="custom_services_data"
+                                            required />
                                     </div>
                                 </span>
                                 <span class="commercialFields">
@@ -2715,11 +2779,15 @@
                                             from an agent?
                                         </label>
                                         <input type="text" class="form-control has-icon" name="servicesOther"
-                                            data-icon="fa-solid fa-ruler-combined" id="custom_services_data" required />
+                                            data-icon="fa-solid fa-hand-point-right" id="custom_services_data"
+                                            required />
                                     </div>
                                 </span>
                             </div>
-                            <div class="wizard-step" data-step="36">
+                            <div class="wizard-step" data-step="37">
+                                <h4>For a more personalized listing, you can include a picture of
+                                    yourself and/or include a video of yourself providing additional information about your
+                                    background and criteria.</h4>
                                 <div class="row form-group">
                                     <div class="col-md-6">
                                         <label class="fw-bold">First Name:</label>
@@ -3393,6 +3461,10 @@
                                 'Residential Property') {
                                 StepWizard.nextStep = 23;
                                 StepWizard.backStep = 21;
+                            } else if (StepWizard.currentStep == 26 && property_type ==
+                                'Residential Property') {
+                                StepWizard.nextStep = 28;
+                                StepWizard.backStep = 26;
                             } else if (StepWizard.currentStep == 8 && property_type ==
                                 'Commercial Property') {
                                 StepWizard.nextStep = 10;
@@ -3454,6 +3526,9 @@
                         } else if (StepWizard.currentStep == 23 && property_type ==
                             'Residential Property') {
                             StepWizard.backStep = 21;
+                        } else if (StepWizard.currentStep == 28 && property_type ==
+                            'Residential Property') {
+                            StepWizard.backStep = 26;
                         } else if (StepWizard.currentStep == 10 && property_type ==
                             'Commercial Property') {
                             StepWizard.backStep = 8;
@@ -3547,12 +3622,12 @@
             stepChanged: function() {
                 var comp = 0;
 
-                if (StepWizard.currentStep >= 5 && StepWizard.currentStep <= 36) {
+                if (StepWizard.currentStep >= 5 && StepWizard.currentStep <= 37) {
                     // Calculate progress for Residential and Income property steps (5 to 19)
-                    comp = 20 + (((StepWizard.currentStep - 5) / (36 - 5)) * 80);
-                } else if (StepWizard.currentStep >= 5 && StepWizard.currentStep <= 36) {
+                    comp = 20 + (((StepWizard.currentStep - 5) / (37 - 5)) * 80);
+                } else if (StepWizard.currentStep >= 5 && StepWizard.currentStep <= 37) {
                     // Calculate progress for Commercial and Business opportunity steps (20 to 32)
-                    comp = 20 + (((StepWizard.currentStep - 5) / (36 - 5)) * 80);
+                    comp = 20 + (((StepWizard.currentStep - 5) / (37 - 5)) * 80);
                 } else if (StepWizard.currentStep >= 33 && StepWizard.currentStep <= 43) {
                     // Calculate progress for Vacant land steps (33 to 43)
                     comp = 20 + (((StepWizard.currentStep - 33) / (43 - 33)) * 80);
