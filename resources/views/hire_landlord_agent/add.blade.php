@@ -627,8 +627,8 @@
                                 <span class="resFields">
                                     @php
                                         $lease_prop_res = [
-                                            ['name' => 'Single Room', 'target' => '.singleRoomRes'],
                                             ['name' => 'Entire Property', 'target' => ''],
+                                            ['name' => 'Single Room', 'target' => '.singleRoomRes'],
                                         ];
                                     @endphp
                                     <div class="form-group">
@@ -649,143 +649,155 @@
                                         <div class="form-group singleRoomRes d-none">
                                             <div class="form-group input-cover">
                                                 <span class="commercialFields">
-                                                  <div class="form-group">
-                                                    <label class="fw-bold">What is the size of the room the landlord
-                                                        intends to lease?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                        data-icon="fa-regular fa-check-circle" name="sizeOfRoom"
-                                                        id="roomSize" required />
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold">Is there a designated reception area?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                        data-icon="fa-regular fa-check-circle"
-                                                        name="designatedReceptionArea" id="designatedReceptionArea"
-                                                        required />
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold">How is the layout of the commercial space
-                                                      configured?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                        data-icon="fa-regular fa-check-circle" name="layoutConfiguration"
-                                                        id="layoutConfiguration" required />  
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold">Are there specific zoning restrictions or
-                                                      permitted uses for the
-                                                      space?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                      data-icon="fa-regular fa-check-circle" name="zoningRestrictions"
-                                                      id="zoningRestrictions" required />
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold">How much storage space is available?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                        data-icon="fa-regular fa-check-circle" name="storageSpace"
-                                                        id="storageSpaceAvailable" required />
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold">Are there any shared amenities, such as
-                                                      conference rooms or parking
-                                                      facilities?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                      data-icon="fa-regular fa-check-circle" name="sharedAmenities"
-                                                      id="sharedAmenities" required />
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold">How is cleaning and maintenance of common areas
-                                                      managed?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                      data-icon="fa-regular fa-check-circle" name="areasManaged"
-                                                      required />
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold">Are there specific hours of operation for the
-                                                      building, and is 24/7
-                                                      access available?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                      data-icon="fa-regular fa-check-circle" name="hoursOfOperation"
-                                                      id="hoursOfOperation" required />
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold">How are maintenance issues and repairs handled
-                                                      for the commercial
-                                                      space?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                      data-icon="fa-regular fa-check-circle" name="maintenanceHandling"
-                                                      id="maintenanceHandling" required />
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold">How are the utilities split?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                        data-icon="fa-regular fa-check-circle" name="utilitiesSplit"
-                                                        id="utilitiesSplit" required />
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold">What types of businesses are neighboring tenants
-                                                      in the building or
-                                                      surrounding area?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                      data-icon="fa-regular fa-check-circle" name="neighboringTenants"
-                                                      id="neighboringTenants" required />
-                                                  </div>   
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">What is the size of the room the landlord
+                                                            intends to lease?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="sizeOfRoom"
+                                                            id="roomSize" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Is there a designated reception
+                                                            area?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle"
+                                                            name="designatedReceptionArea" id="designatedReceptionArea"
+                                                            required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">How is the layout of the commercial space
+                                                            configured?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle"
+                                                            name="layoutConfiguration" id="layoutConfiguration"
+                                                            required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Are there specific zoning restrictions or
+                                                            permitted uses for the
+                                                            space?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle"
+                                                            name="zoningRestrictions" id="zoningRestrictions" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">How much storage space is available?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="storageSpace"
+                                                            id="storageSpaceAvailable" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Are there any shared amenities, such as
+                                                            conference rooms or parking
+                                                            facilities?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="sharedAmenities"
+                                                            id="sharedAmenities" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">How is cleaning and maintenance of common
+                                                            areas
+                                                            managed?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="areasManaged"
+                                                            required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Are there specific hours of operation for
+                                                            the
+                                                            building, and is 24/7
+                                                            access available?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="hoursOfOperation"
+                                                            id="hoursOfOperation" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">How are maintenance issues and repairs
+                                                            handled
+                                                            for the commercial
+                                                            space?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle"
+                                                            name="maintenanceHandling" id="maintenanceHandling"
+                                                            required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">How are the utilities split?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="utilitiesSplit"
+                                                            id="utilitiesSplit" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">What types of businesses are neighboring
+                                                            tenants
+                                                            in the building or
+                                                            surrounding area?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle"
+                                                            name="neighboringTenants" id="neighboringTenants" required />
+                                                    </div>
                                                 </span>
                                                 <span class="resFields">
-                                                  <div class="form-group">
-                                                    <label class="fw-bold"> What is the size of the room the landlord
-                                                      intends to lease?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                      data-icon="fa-regular fa-check-circle" name="sizeOfRoom"
-                                                      id="custom_property_condition" required />  
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold"> Is there a private bathroom, or is it
-                                                      shared?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                      data-icon="fa-regular fa-check-circle" name="privateBathroom"
-                                                      id="custom_property_condition" required />
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold"> How much storage space is available?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                        data-icon="fa-regular fa-check-circle" name="storageSpace"
-                                                        id="custom_property_condition" required />
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold">Can tenants use common areas like the kitchen,
-                                                      living room, or
-                                                      backyard?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                      data-icon="fa-regular fa-check-circle" name="commonAreas"
-                                                      id="custom_property_condition" required />
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold">How is cleaning and maintenance of common areas
-                                                      managed?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                      data-icon="fa-regular fa-check-circle" name="areasManaged"
-                                                      id="custom_property_condition" required />
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold">Are tenants allowed to have guests, and if so,
-                                                      are there any
-                                                      restrictions?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                      data-icon="fa-regular fa-check-circle" name="tenantsGuests"
-                                                      id="custom_property_condition" required />
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold">How are maintenance issues handled?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                        data-icon="fa-regular fa-check-circle" name="maintenanceIssues"
-                                                        id="custom_property_condition" required />
-                                                  </div> 
-                                                  <div class="form-group">
-                                                    <label class="fw-bold">How are the utilities split?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                        data-icon="fa-regular fa-check-circle" name="utilitiesSplit"
-                                                        id="custom_property_condition" required />
-                                                  </div>  
+                                                    <div class="form-group">
+                                                        <label class="fw-bold"> What is the size of the room the landlord
+                                                            intends to lease?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="sizeOfRoom"
+                                                            id="custom_property_condition" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold"> Is there a private bathroom, or is it
+                                                            shared?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="privateBathroom"
+                                                            id="custom_property_condition" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold"> How much storage space is
+                                                            available?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="storageSpace"
+                                                            id="custom_property_condition" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Can tenants use common areas like the
+                                                            kitchen,
+                                                            living room, or
+                                                            backyard?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="commonAreas"
+                                                            id="custom_property_condition" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">How is cleaning and maintenance of common
+                                                            areas
+                                                            managed?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="areasManaged"
+                                                            id="custom_property_condition" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Are tenants allowed to have guests, and if
+                                                            so,
+                                                            are there any
+                                                            restrictions?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="tenantsGuests"
+                                                            id="custom_property_condition" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">How are maintenance issues handled?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle"
+                                                            name="maintenanceIssues" id="custom_property_condition"
+                                                            required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">How are the utilities split?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="utilitiesSplit"
+                                                            id="custom_property_condition" required />
+                                                    </div>
                                                 </span>
                                             </div>
                                         </div>
@@ -794,8 +806,8 @@
                                 <span class="commercialFields">
                                     @php
                                         $lease_prop_commercial = [
-                                            ['name' => 'Single Room', 'target' => '.singleRoomCommercial'],
                                             ['name' => 'Entire Property', 'target' => ''],
+                                            ['name' => 'Single Room', 'target' => '.singleRoomCommercial'],
                                         ];
                                     @endphp
                                     <div class="form-group">
@@ -815,7 +827,94 @@
                                             @endforeach
                                         </select>
                                         <div class="form-group singleRoomCommercial d-none">
-                                            <div class="form-group">
+                                            <span class="commercialFields">
+                                                <div class="form-group">
+                                                    <label class="fw-bold">What is the size of the room the landlord
+                                                        intends to lease?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle" name="sizeOfRoom"
+                                                        id="roomSize" required />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Is there a designated reception
+                                                        area?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle"
+                                                        name="designatedReceptionArea" id="designatedReceptionArea"
+                                                        required />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="fw-bold">How is the layout of the commercial space
+                                                        configured?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle" name="layoutConfiguration"
+                                                        id="layoutConfiguration" required />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Are there specific zoning restrictions or
+                                                        permitted uses for the
+                                                        space?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle" name="zoningRestrictions"
+                                                        id="zoningRestrictions" required />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="fw-bold">How much storage space is available?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle" name="storageSpace"
+                                                        id="storageSpaceAvailable" required />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Are there any shared amenities, such as
+                                                        conference rooms or parking
+                                                        facilities?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle" name="sharedAmenities"
+                                                        id="sharedAmenities" required />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="fw-bold">How is cleaning and maintenance of common
+                                                        areas
+                                                        managed?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle" name="areasManaged"
+                                                        required />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Are there specific hours of operation for
+                                                        the
+                                                        building, and is 24/7
+                                                        access available?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle" name="hoursOfOperation"
+                                                        id="hoursOfOperation" required />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="fw-bold">How are maintenance issues and repairs
+                                                        handled
+                                                        for the commercial
+                                                        space?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle" name="maintenanceHandling"
+                                                        id="maintenanceHandling" required />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="fw-bold">How are the utilities split?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle" name="utilitiesSplit"
+                                                        id="utilitiesSplit" required />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="fw-bold">What types of businesses are neighboring
+                                                        tenants
+                                                        in the building or
+                                                        surrounding area?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle" name="neighboringTenants"
+                                                        id="neighboringTenants" required />
+                                                </div>
+                                            </span>
+                                            {{-- <div class="form-group">
                                                 <label class="fw-bold" for="roomSize">What is the size of the room the
                                                     landlord intends to
                                                     lease?</label>
@@ -894,7 +993,7 @@
                                                 <input type="text" name="leaseSingleRoom[]" id="storageSpace"
                                                     class="form-control has-icon" data-icon ="fa-solid fa-ruler-combined"
                                                     required>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                 </span>
@@ -927,7 +1026,7 @@
                                 <div class="form-group custom_property_condition d-none">
                                     <label class="fw-bold">Property Condition: </label>
                                     <input type="text" class="form-control has-icon" name="custom_property_condition"
-                                        data-icon="fa-solid fa-ruler-combined" id="custom_property_condition" required />
+                                        data-icon="fa-regular fa-circle-check" id="custom_property_condition" required />
                                 </div>
                             </div>
                             <div class="wizard-step bedroom" data-step="9">
@@ -1005,25 +1104,28 @@
                                     </select>
                                     <div class="form-group custom_bathrooms d-none">
                                         <label class="fw-bold">Bathrooms:</label>
-                                        <input type="text" class="form-control has-icon" name="custom_bathrooms"
+                                        <input type="number" class="form-control has-icon" name="custom_bathrooms"
                                             data-icon="fa-solid fa-bath" id="custom_bathrooms" required />
                                     </div>
                                 </div>
                             </div>
                             <div class="wizard-step" data-step="11">
-                                <div class="form-group residential_hide">
-                                    <label class="fw-bold">Heated Sqft: </label>
-                                    <input type="text" name="heated_square_footage" data-type="heated_square_footage"
-                                        id="heated_square_footage" class="form-control has-icon"
-                                        data-icon="fa-solid fa-ruler-combined" data-msg-required="" required />
-                                </div>
-
-                                <div class="form-group commercial_hide">
+                                <div class="form-group">
                                     <div class="form-group">
-                                        <label class="fw-bold">Net Leaseable Sqft: </label>
-                                        <input type="text" name="net_leasable_square_footage"id="net_square_footage"
+                                        <label class="fw-bold">Heated Sqft: </label>
+                                        <input type="number" name="heated_square_footage"
+                                            data-type="heated_square_footage" id="heated_square_footage"
                                             class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"
                                             data-msg-required="" required />
+                                    </div>
+                                    <div class="form-group commercial_hide">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Net Leaseable Sqft: </label>
+                                            <input type="text"
+                                                name="net_leasable_square_footage"id="net_square_footage"
+                                                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"
+                                                data-msg-required="" required />
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="fw-bold">Total Sqft: </label>
@@ -1031,11 +1133,107 @@
                                             class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"
                                             data-msg-required="" required />
                                     </div>
-
+                                </div>
+                                <span class="resFields">
+                                    @php
+                                        $sqftRes = [
+                                            ['name' => 'Appraisal', 'target' => ''],
+                                            ['name' => 'Building', 'target' => ''],
+                                            ['name' => 'Measure', 'target' => ''],
+                                            ['name' => 'Owner Provided', 'target' => ''],
+                                            ['name' => 'Public Records', 'target' => ''],
+                                            ['name' => 'Other', 'target' => '.other_heated_res'],
+                                        ];
+                                    @endphp
+                                    <div class="form-group">
+                                        <label class="fw-bold">Sqft Heated Source:</label>
+                                        <select class="grid-picker" name="heated_sqft" id="prop_condition"
+                                            style="justify-content: flex-start;" required>
+                                            <option value="">Select</option>
+                                            @foreach ($sqftRes as $item)
+                                                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                                                    class="card flex-row"
+                                                    data-icon='<i class="fa-regular fa-circle-check"></i>'
+                                                    style="width:calc(50% - 10px);">
+                                                    {{ $item['name'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group other_heated_res d-none">
+                                        <label class="fw-bold"> Sqft Heated Source:</label>
+                                        <input type="text" class="form-control has-icon" name="other_heated_sqft"
+                                            data-icon="fa-regular fa-check-circle" id="custom_property_condition"
+                                            required />
+                                    </div>
+                                </span>
+                                <span class="commercialFields">
+                                    @php
+                                        $leaseCommercial = [
+                                            ['name' => 'Appraisal', 'target' => ''],
+                                            ['name' => 'Building', 'target' => ''],
+                                            ['name' => 'Measure', 'target' => ''],
+                                            ['name' => 'Owner Provided', 'target' => ''],
+                                            ['name' => 'Public Records', 'target' => ''],
+                                            ['name' => 'Other', 'target' => '.other_lease_commercial'],
+                                        ];
+                                    @endphp
+                                    <div class="form-group">
+                                        <label class="fw-bold">Sqft Total Source: </label>
+                                        <select class="grid-picker" name="lease_sqft" id="prop_condition"
+                                            style="justify-content: flex-start;" required>
+                                            <option value="">Select</option>
+                                            @foreach ($leaseCommercial as $item)
+                                                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                                                    class="card flex-row"
+                                                    data-icon='<i class="fa-regular fa-circle-check"></i>'
+                                                    style="width:calc(50% - 10px);">
+                                                    {{ $item['name'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group other_lease_commercial d-none">
+                                        <label class="fw-bold"> Sqft Total Source: </label>
+                                        <input type="text" class="form-control has-icon" name="other_lease_sqft"
+                                            data-icon="fa-regular fa-check-circle" id="custom_property_condition"
+                                            required />
+                                    </div>
+                                </span>
+                                @php
+                                    $acreageRes = [
+                                        ['name' => '0 to less than 1/4', 'target' => ''],
+                                        ['name' => '1/4 to less than 1/2', 'target' => ''],
+                                        ['name' => '1/2 to less than 1', 'target' => ''],
+                                        ['name' => '1 to less than 2', 'target' => ''],
+                                        ['name' => '2 to less than 5', 'target' => ''],
+                                        ['name' => '5 to less than 10', 'target' => ''],
+                                        ['name' => '10 to less than 20', 'target' => ''],
+                                        ['name' => '20 to less than 50', 'target' => ''],
+                                        ['name' => '50 to less than 100', 'target' => ''],
+                                        ['name' => '100 to less than 200', 'target' => ''],
+                                        ['name' => '200 to less than 500', 'target' => ''],
+                                        ['name' => '500+ acres', 'target' => ''],
+                                        ['name' => 'Non-Applicable', 'target' => ''],
+                                    ];
+                                @endphp
+                                <div class="form-group ">
+                                    <label class="fw-bold">Total Acreage:</label>
+                                    <select class="grid-picker" name="total_acreage" id="total_acreage"
+                                        style="justify-content: flex-start;" required>
+                                        <option value="">Select</option>
+                                        @foreach ($acreageRes as $item)
+                                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                                                class="card flex-column" style="width:calc(25% - 10px);"
+                                                data-icon='<i class="fa-solid fa-ruler-combined"></i>'>
+                                                {{ $item['name'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="wizard-step" data-step="12">
-                                <span class="resFields">
+                                {{-- <span class="resFields">
                                     @php
                                         $sqftRes = [
                                             ['name' => 'Appraisal', 'target' => ''],
@@ -1100,10 +1298,10 @@
                                             data-icon="fa-solid fa-ruler-combined" id="custom_property_condition"
                                             required />
                                     </div>
-                                </span>
+                                </span> --}}
                             </div>
                             <div class="wizard-step" data-step="13">
-                                @php
+                                {{-- @php
                                     $acreageRes = [
                                         ['name' => '0 to less than 1/4', 'target' => ''],
                                         ['name' => '1/4 to less than 1/2', 'target' => ''],
@@ -1134,7 +1332,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="wizard-step" data-step="14">
                                 <span class="resFields">
@@ -1143,17 +1341,12 @@
                                             [
                                                 'target' => '.garageYes',
                                                 'name' => 'Yes',
-                                                'icon' => 'fa-regular fa-check-circle',
+                                                'icon' => 'fa-solid fa-warehouse',
                                             ],
                                             [
                                                 'target' => '.garageNo',
                                                 'name' => 'No',
-                                                'icon' => 'fa-regular fa-circle-xmark',
-                                            ],
-                                            [
-                                                'target' => '.garageOptional',
-                                                'name' => 'Optional',
-                                                'icon' => 'fa-regular fa-check-circle',
+                                                'icon' => 'fa-solid fa-warehouse',
                                             ],
                                         ];
                                     @endphp
@@ -1188,17 +1381,12 @@
                                             [
                                                 'target' => '.carportOptionsYes',
                                                 'name' => 'Yes',
-                                                'icon' => 'fa-regular fa-check-circle',
+                                                'icon' => 'fa-solid fa-warehouse',
                                             ],
                                             [
                                                 'target' => '.carportOptionsNo',
                                                 'name' => 'No',
-                                                'icon' => 'fa-regular fa-circle-xmark',
-                                            ],
-                                            [
-                                                'target' => '.carportOptionsOptional',
-                                                'name' => 'Optional',
-                                                'icon' => 'fa-regular fa-check-circle',
+                                                'icon' => 'fa-solid fa-warehouse',
                                             ],
                                         ];
                                     @endphp
@@ -1276,18 +1464,86 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="form-group d-none ">
+                                    <div class="form-group  d-none ">
                                         <label class="fw-bold">How many pool spaces?</label>
                                         <input type="number" name="customPool" data-type="pool"
                                             placeholder="Enter Heated Square Footage" id="pool"
                                             class="form-control has-icon"
-                                            data-msg-required="Please Enter Heated Square Footage" required>
+                                            data-msg-required="Please Enter Heated Square Footage"
+                                            data-icon="fa-regular fa-check-circle" required>
                                     </div>
                                 </div>
                                 </span>
+                                <div class="row align-items-end mt-4">
+                                    @php
+                                        $views = [
+                                            ['target' => '', 'name' => 'City', 'icon' => 'fa-regular fa-check-circle'],
+                                            [
+                                                'target' => '',
+                                                'name' => 'Garden',
+                                                'icon' => 'fa-regular fa-check-circle',
+                                            ],
+                                            [
+                                                'target' => '',
+                                                'name' => 'Golf Course',
+                                                'icon' => 'fa-regular fa-check-circle',
+                                            ],
+                                            [
+                                                'target' => '',
+                                                'name' => 'Greenbelt',
+                                                'icon' => 'fa-regular fa-check-circle',
+                                            ],
+                                            [
+                                                'target' => '',
+                                                'name' => 'Mountain(s)',
+                                                'icon' => 'fa-regular fa-check-circle',
+                                            ],
+                                            ['target' => '', 'name' => 'Park', 'icon' => 'fa-regular fa-check-circle'],
+                                            [
+                                                'target' => '',
+                                                'name' => 'Tennis Court',
+                                                'icon' => 'fa-regular fa-check-circle',
+                                            ],
+                                            [
+                                                'target' => '',
+                                                'name' => 'Trees/Woods',
+                                                'icon' => 'fa-regular fa-check-circle',
+                                            ],
+                                            ['target' => '', 'name' => 'Water', 'icon' => 'fa-regular fa-check-circle'],
+                                            [
+                                                'target' => '.preferenceNo',
+                                                'name' => 'Beach',
+                                                'icon' => 'fa-regular fa-circle-xmark',
+                                            ],
+                                            [
+                                                'target' => '.viewOther',
+                                                'name' => ' Other',
+                                                'icon' => 'fa-regular fa-check-circle',
+                                            ],
+                                        ];
+                                    @endphp
+                                    <div class="select2-parent">
+                                        <label class="fw-bold" for="heated_sqft">View:</label>
+                                        <select name="view[]" class="grid-picker" multiple required>
+                                            @foreach ($views as $item)
+                                                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                                                    class="card flex-column " style="width:calc(33.3% - 10px);"
+                                                    data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                                                    {{ $item['name'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <div class="form-group viewOther d-none">
+                                            <label class="fw-bold" for="">View:</label>
+                                            <input type="text" name="viewOther" id="total_acreage"
+                                                class="form-control has-icon hide_arrow"
+                                                data-icon="fa-regular fa-check-circle" required>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="wizard-step" data-step="16">
-                                <div class="row align-items-end mt-4">
+                                {{-- <div class="row align-items-end mt-4">
                                     @php
                                         $views = [
                                             ['target' => '', 'name' => 'City', 'icon' => 'fa-regular fa-check-circle'],
@@ -1353,7 +1609,7 @@
                                                 data-icon="fa-solid fa-ruler-combined" required>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="wizard-step" data-step="17">
                                 <span class="commercialFields">
@@ -1415,7 +1671,7 @@
                                                     <option value="{{ $item['name'] }}"
                                                         data-target="{{ $item['target'] }}" class="card flex-column"
                                                         style="width:calc(25% - 10px);"
-                                                        data-icon='<i class="fa-regular fa-check-circle"></i>'>
+                                                        data-icon='<i class="fa-solid fa-warehouse"></i>'>
                                                         {{ $item['name'] }}
                                                     </option>
                                                 @endforeach
@@ -1425,7 +1681,7 @@
                                                     :</label>
                                                 <input type="text" name="parkingOther"
                                                     class="form-control has-icon hide_arrow"
-                                                    data-icon="fa-solid fa-ruler-combined" required>
+                                                    data-icon="fa-solid fa-warehouse" required>
                                             </div>
                                         </div>
                                     </div>
@@ -1457,6 +1713,7 @@
                                         ['name' => 'Solar Hot Water Owned', 'target' => ''],
                                         ['name' => 'Solar Hot Water Rented', 'target' => ''],
                                         ['name' => 'Tankless Water Heater', 'target' => ''],
+                                        ['name' => 'Touchless Faucet', 'target' => ''],
                                         ['name' => 'Trash Compactor', 'target' => ''],
                                         ['name' => 'Washer', 'target' => ''],
                                         ['name' => 'Water Filtration System', 'target' => ''],
@@ -1487,34 +1744,36 @@
                                 <div class="form-group cutom_appliances d-none">
                                     <label class="fw-bold">Appliances: </label>
                                     <input type="text" class="form-control has-icon" name="otherAppliances"
-                                        data-icon="fa-solid fa-ruler-combined" id="cutom_appliances" required />
+                                        data-icon="fa-regular fa-check-circle" id="cutom_appliances" required />
                                 </div>
                             </div>
                             <div class="wizard-step" data-step="19">
-                                @php
-                                    $Furnishings = [
-                                        ['name' => 'Furnished', 'target' => ''],
-                                        ['name' => 'Optional', 'target' => ''],
-                                        ['name' => 'Partial', 'target' => ''],
-                                        ['name' => 'Turnkey', 'target' => ''],
-                                        ['name' => 'Unfurnished', 'target' => ''],
-                                    ];
-                                @endphp
-                                <div class="form-group">
-                                    <label class="fw-bold">Furnishings: </label>
+                                <span class="resFields">
+                                    @php
+                                        $Furnishings = [
+                                            ['name' => 'Furnished', 'target' => ''],
+                                            ['name' => 'Optional', 'target' => ''],
+                                            ['name' => 'Partial', 'target' => ''],
+                                            ['name' => 'Turnkey', 'target' => ''],
+                                            ['name' => 'Unfurnished', 'target' => ''],
+                                        ];
+                                    @endphp
+                                    <div class="form-group">
+                                        <label class="fw-bold">Furnishings: </label>
 
-                                    <select class="grid-picker" name="Furnishings" id="appliances"
-                                        style="justify-content: flex-start;" multiple required>
-                                        <option value="">Select</option>
-                                        @foreach ($Furnishings as $item)
-                                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                                                class="card flex-row" style="width:calc(33.33% - 10px);"
-                                                data-icon='<i class="fa-regular fa-check-circle"></i>'>
-                                                {{ $item['name'] }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                        <select class="grid-picker" name="Furnishings" id="appliances"
+                                            style="justify-content: flex-start;" multiple required>
+                                            <option value="">Select</option>
+                                            @foreach ($Furnishings as $item)
+                                                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                                                    class="card flex-row" style="width:calc(33.33% - 10px);"
+                                                    data-icon='<i class="fa-regular fa-check-circle"></i>'>
+                                                    {{ $item['name'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </span>
                             </div>
                             <div class="wizard-step" data-step="20">
                                 <span class="commercialFields">
@@ -1576,12 +1835,11 @@
                                         </select>
                                     </div>
                                     <div class="form-group otherAmenitiesFeatureCommercial d-none">
-                                        <label class="fw-bold" for="custom_non_negotiable_terms"> What amenities or
-                                            features does the
-                                            property offer?
+                                        <label class="fw-bold" for="custom_non_negotiable_terms"> Amenities and Property
+                                            Features:
                                         </label>
                                         <input type="text" name="otherAmenities" id="custom_non_negotiable_terms"
-                                            placeholder="" class="form-control" data-icon="fa-solid fa-ruler-combined"
+                                            placeholder="" class="form-control" data-icon="fa-regular fa-check-circle"
                                             required>
                                     </div>
                                 </span>
@@ -1644,13 +1902,12 @@
                                         </select>
                                     </div>
                                     <div class="form-group otherAmenitiesFeatureRes d-none">
-                                        <label class="fw-bold" for="custom_negotiable_terms"> What amenities or features
-                                            does the property
-                                            offer?
+                                        <label class="fw-bold" for="custom_negotiable_terms"> Amenities and Property
+                                            Features:
                                         </label>
                                         <input type="text" name="otherAmenities" id="custom_negotiable_terms"
                                             placeholder="" class="form-control has-icon"
-                                            data-icon="fa-solid fa-ruler-combined" required>
+                                            data-icon="fa-regular fa-check-circle" required>
                                     </div>
                                 </span>
                             </div>
@@ -1696,7 +1953,7 @@
                                 <div class="form-group rent_include d-none">
                                     <label class="fw-bold">Rent Includes: </label>
                                     <input type="text" class="form-control has-icon" name="other_rent_include"
-                                        data-icon="fa-solid fa-ruler-combined" id="rent_include" required />
+                                        data-icon="fa-regular fa-check-circle" id="rent_include" required />
                                 </div>
                             </div>
                             <div class="wizard-step" data-step="22">
@@ -1741,7 +1998,7 @@
                                 <div class="form-group otherTenantPays d-none">
                                     <label class="fw-bold">Tenant Pays: </label>
                                     <input type="text" class="form-control has-icon" placeholder=""
-                                        name="otherTenantPays" data-icon="fa-solid fa-ruler-combined" id="rent_include"
+                                        name="otherTenantPays" data-icon="fa-regular fa-check-circle" id="rent_include"
                                         required />
                                 </div>
                                 @php
@@ -1785,7 +2042,7 @@
                                 <div class="form-group otherOwnerPays d-none">
                                     <label class="fw-bold">Landlord Pays:</label>
                                     <input type="text" class="form-control has-icon" placeholder=""
-                                        name="otherOwnerPays" data-icon="fa-solid fa-ruler-combined" id="rent_include"
+                                        name="otherOwnerPays" data-icon="fa-regular fa-check-circle" id="rent_include"
                                         required />
                                 </div>
 
@@ -1796,9 +2053,9 @@
                                         [
                                             'target' => '.petYes',
                                             'name' => 'Yes',
-                                            'icon' => 'fa-regular fa-check-circle',
+                                            'icon' => 'fa-solid fa-dog',
                                         ],
-                                        ['target' => '.petNo', 'name' => 'No', 'icon' => 'fa-regular fa-circle-xmark'],
+                                        ['target' => '.petNo', 'name' => 'No', 'icon' => 'fa-solid fa-dog'],
                                     ];
                                 @endphp
                                 <div class="row align-items-end mt-4">
@@ -2756,7 +3013,7 @@
     </script>
     <script>
         function changeAuctionType(v) {
-            if (v == "Auction (Timer)") {
+            if (v == "Auction Listing") {
                 $('.auction_length').val("");
                 $('.auction_length').parent().children('.option-container').removeClass('active');
                 $('.traditional-length').hide();
@@ -2773,7 +3030,7 @@
         }
         // document.getElementById('auction_type').change();
         $(function() {
-            changeAuctionType("Auction (Timer)");
+            changeAuctionType("Auction Listing");
         });
     </script>
     <script>
@@ -3144,6 +3401,10 @@
                                 'Commercial Property') {
                                 StepWizard.nextStep = 17;
                                 StepWizard.backStep = 13;
+                            } else if (StepWizard.currentStep == 18 && property_type ==
+                                'Commercial Property') {
+                                StepWizard.nextStep = 20;
+                                StepWizard.backStep = 18;
                             } else if (StepWizard.currentStep == 23 && property_type ==
                                 'Commercial Property') {
                                 StepWizard.nextStep = 25;
@@ -3199,6 +3460,9 @@
                         } else if (StepWizard.currentStep == 17 && property_type ==
                             'Commercial Property') {
                             StepWizard.backStep = 13;
+                        } else if (StepWizard.currentStep == 20 && property_type ==
+                            'Commercial Property') {
+                            StepWizard.backStep = 18;
                         } else if (StepWizard.currentStep == 24 && property_type ==
                             'Commercial Property') {
                             StepWizard.backStep = 21;
