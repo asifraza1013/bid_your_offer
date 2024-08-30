@@ -1665,7 +1665,7 @@
                             <div class="form-group">
                                 <label class="fw-bold">Please select the unit sizes that the buyer is interested in
                                     purchasing:</label>
-                                <select class="grid-picker" name="unit_size" id="condition_interested" multiple required>
+                                <select class="grid-picker" name="unit_size[]" id="condition_interested" multiple required>
                                     <option value="">Select</option>
                                     @foreach ($unit_types as $unity_type)
                                         <option value="{{ $unity_type['name'] }}" class="card flex-row"

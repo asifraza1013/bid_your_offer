@@ -308,39 +308,67 @@
                                 </div>
                             @endif
                         </div>
-                        @if (@$auction->get->titleListing == 'Income Property')
+                        @if (@$auction->get->titleListing == 'Income Property' || @$auction->get->titleListing == 'Commercial Property')
                             <div class="row align-items-center Listing Information mt-4">
-                                <h5>Income Property Criteria:</h5>
-                                @if (@$auction->get->total_number_of_units != null)
+                                @if (@$auction->get->titleListing == 'Income Property')
+                                    <h5>Income Property Criteria:</h5>
+                                @else
+                                    <h5>Preferred Commercial Property Criteria:</h5>
+                                @endif
+                                @if (@$auction->get->total_number_of_units != null && @$auction->get->titleListing == 'Income Property')
                                     <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i>
                                         Minimum Total Number of Units Needed:
                                         <span class="removeBold">{{ @$auction->get->total_number_of_units }}</span>
                                     </div>
                                 @endif
-                                @if (@$auction->get->unit_size && @$auction->get->unit_size != null)
+                                @if (@$auction->get->unit_size && @$auction->get->unit_size != null && @$auction->get->titleListing == 'Income Property')
                                     <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Unit
                                         sizes that the buyer is interested in purchasing:
                                         @foreach (@$auction->get->unit_size as $item)
                                             <span class="removeBold">{{ $item }}</span>
-                                        @endforeach
-                                        @foreach (@$auction->get->unit_size as $item)
                                             @if ($item == 'Other')
                                                 <div class="col-md-12 col-12 fw-bold"><i
-                                                        class="fa-regular fa-check-square"></i> Minimum Annual Net Income:
-                                                    <span
-                                                        class="removeBold">{{ @$auction->get->minimum_annual_net_income }}</span>
-                                                </div>
-                                                <div class="col-md-12 col-12 fw-bold"><i
-                                                        class="fa-regular fa-check-square"></i> Minimum Cap Rate:
-                                                    <span class="removeBold">{{ @$auction->get->minimum_cap_rate }}</span>
-                                                </div>
-                                                <div class="col-md-12 col-12 fw-bold"><i
-                                                        class="fa-regular fa-check-square"></i> Additional Details:
-                                                    <span
-                                                        class="removeBold">{{ @$auction->get->additional_details }}</span>
+                                                        class="fa-regular fa-check-square"></i> Buyer's Preferred Income
+                                                    Property Criteria:
+                                                    <span class="removeBold">{{ @$auction->get->otherBuyerIncome }}</span>
                                                 </div>
                                             @endif
                                         @endforeach
+                                    </div>
+                                @endif
+                                @if (@$auction->get->minimum_annual_net_income !== null)
+                                    <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i>
+                                        Minimum
+                                        Annual Net Income:
+                                        <span class="removeBold">{{ @$auction->get->minimum_annual_net_income }}</span>
+                                    </div>
+                                @endif
+                                @if (@$auction->get->minimum_cap_rate !== null)
+                                    <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i>
+                                        Minimum
+                                        Cap Rate:
+                                        <span class="removeBold">{{ @$auction->get->minimum_cap_rate }}</span>
+                                    </div>
+                                @endif
+                                @if (@$auction->get->titleListing == 'Commercial Property' && @$auction->get->included_in_sale !== null)
+                                    <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Does
+                                        the sale need to include any of the following: Building(s) and Land,
+                                        Furniture/Fixtures, Leases, or Other?
+                                        @foreach (@$auction->get->included_in_sale as $item)
+                                            <span class="removeBold">{{ $item }}</span>
+                                            @if ($item == 'Other')
+                                                <div class="col-md-12 col-12 fw-bold"><i
+                                                        class="fa-regular fa-check-square"></i> Sale Needs to Include:
+                                                    <span class="removeBold">{{ @$auction->get->licenseOther }}</span>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                @endif
+                                @if (@$auction->get->additional_details !== null)
+                                    <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i>
+                                        Additional Details:
+                                        <span class="removeBold">{{ @$auction->get->additional_details }}</span>
                                     </div>
                                 @endif
                             </div>
@@ -366,7 +394,10 @@
                                     @endif
                                 </div>
                             @endif
-                            @if (@$auction->get->prop_condition && @$auction->get->prop_condition != null)
+                            @if (
+                                @$auction->get->prop_condition &&
+                                    @$auction->get->prop_condition != null &&
+                                    $auction->get->property_type !== 'Vacant Land')
                                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i>
                                     Acceptable Property Conditions:
                                     @if (gettype(@$auction->get->prop_condition) == 'array')
@@ -381,21 +412,21 @@
                                     @endif
                                 </div>
                             @endif
-                            @if (@$auction->get->bedrooms && @$auction->get->bedrooms != null)
+                            @if (@$auction->get->bedrooms && @$auction->get->bedrooms != null && $auction->get->property_type !== 'Vacant Land')
                                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Minimum
                                     Bedrooms Needed:
                                     <span
                                         class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->bedrooms }}</span>
                                 </div>
                             @endif
-                            @if (@$auction->get->bathrooms && @$auction->get->bathrooms != null)
+                            @if (@$auction->get->bathrooms && @$auction->get->bathrooms != null && $auction->get->property_type !== 'Vacant Land')
                                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Minimum
                                     Bathrooms Needed:
                                     <span
                                         class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->bathrooms }}</span>
                                 </div>
                             @endif
-                            @if (@$auction->get->min_sqft && @$auction->get->min_sqft != null)
+                            @if (@$auction->get->min_sqft && @$auction->get->min_sqft != null && $auction->get->property_type !== 'Vacant Land')
                                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Minimum
                                     Heated SqFt Needed:
                                     <span
@@ -409,7 +440,10 @@
                                         class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->minimum_total_acreage_needed }}</span>
                                 </div>
                             @endif
-                            @if (@$auction->get->air_conditioning && @$auction->get->air_conditioning != null)
+                            @if (
+                                @$auction->get->air_conditioning &&
+                                    @$auction->get->air_conditioning != null &&
+                                    $auction->get->property_type !== 'Vacant Land')
                                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Air
                                     Conditioning Needed:
                                     <span
@@ -420,7 +454,10 @@
                                     @endif
                                 </div>
                             @endif
-                            @if (@$auction->get->heating_and_fuel && @$auction->get->heating_and_fuel != null)
+                            @if (
+                                @$auction->get->heating_and_fuel &&
+                                    @$auction->get->heating_and_fuel != null &&
+                                    $auction->get->property_type !== 'Vacant Land')
                                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Air
                                     Heating and Fuel Needed:
                                     <span
@@ -431,9 +468,9 @@
                                     @endif
                                 </div>
                             @endif
-                            @if (@$auction->get->garage && @$auction->get->garage != null)
-                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Garage
-                                    Needed:
+                            @if (@$auction->get->garage && @$auction->get->garage != null && $auction->get->property_type !== 'Vacant Land')
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i>
+                                    Garage/Parking Features Needed:
                                     <span
                                         class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->garage }}</span>
                                     @if (@$auction->get->garage == 'Yes')
@@ -446,7 +483,7 @@
                                     @endif
                                 </div>
                             @endif
-                            @if (@$auction->get->carport != null)
+                            @if (@$auction->get->carport != null && $auction->get->property_type !== 'Vacant Land')
                                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Carport
                                     Needed:
                                     <span class="removeBold">{{ @$auction->get->carport }}</span>
@@ -456,7 +493,7 @@
                                     @endif
                                 </div>
                             @endif
-                            @if (@$auction->get->pool != null)
+                            @if (@$auction->get->pool != null && $auction->get->property_type !== 'Vacant Land')
                                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Pool
                                     Needed:
                                     <span class="removeBold">{{ @$auction->get->pool }}</span>
@@ -468,6 +505,96 @@
                                             class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->poolOption }}</span>
                                     </div>
                                 @endif
+                            @endif
+                            @if (@$auction->get->lot_dimensions != null && $auction->get->property_type == 'Vacant Land')
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Lot
+                                    Dimensions Needed:
+                                    <span class="removeBold">{{ @$auction->get->lot_dimensions }}</span>
+                                </div>
+                            @endif
+                            @if (@$auction->get->lot_size_square_footage != null && $auction->get->property_type == 'Vacant Land')
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Lot Size
+                                    Square Footage Needed:
+                                    <span class="removeBold">{{ @$auction->get->lot_size_square_footage }}</span>
+                                </div>
+                            @endif
+                            @if (@$auction->get->front_footage != null && $auction->get->property_type == 'Vacant Land')
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Front
+                                    Footage Needed:
+                                    <span class="removeBold">{{ @$auction->get->front_footage }}</span>
+                                </div>
+                            @endif
+                            @if (@$auction->get->road_frontage != null && $auction->get->property_type == 'Vacant Land')
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Road
+                                    Frontage Needed:
+                                    @foreach (@$auction->get->road_frontage as $item)
+                                        <span class="d-inline-block removeBold">{{ $item }}</span>
+                                        @if ($item == 'Other')
+                                            <span
+                                                class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->otherFrontage }}</span>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            @endif
+                            @if (@$auction->get->road_surface_type != null && $auction->get->property_type == 'Vacant Land')
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Road
+                                    Surface Type Needed:
+                                    @foreach (@$auction->get->road_surface_type as $item)
+                                        <span class="d-inline-block removeBold">{{ $item }}</span>
+                                        @if ($item == 'Other')
+                                            <span
+                                                class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->othersurface }}</span>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            @endif
+                            @if (@$auction->get->utilities != null && $auction->get->property_type == 'Vacant Land')
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Utilities
+                                    Needed:
+                                    @foreach (@$auction->get->utilities as $item)
+                                        <span class="d-inline-block removeBold">{{ $item }}</span>
+                                        @if ($item == 'Other')
+                                            <span
+                                                class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->otherUtilities }}</span>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            @endif
+                            @if (@$auction->get->water != null && $auction->get->property_type == 'Vacant Land')
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Water
+                                    Needed:
+                                    @foreach (@$auction->get->water as $item)
+                                        <span class="d-inline-block removeBold">{{ $item }}</span>
+                                        @if ($item == 'Other')
+                                            <span
+                                                class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->otherWater }}</span>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            @endif
+                            @if (@$auction->get->sewer != null && $auction->get->property_type == 'Vacant Land')
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Sewer
+                                    Needed:
+                                    @foreach (@$auction->get->sewer as $item)
+                                        <span class="d-inline-block removeBold">{{ $item }}</span>
+                                        @if ($item == 'Other')
+                                            <span
+                                                class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->otherSewer }}</span>
+                                        @endif
+                                    @endforeach
+                                </div>
+                            @endif
+                            @if (@$auction->get->lot_features != null && $auction->get->property_type == 'Vacant Land')
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Lot
+                                    Features:
+                                    @foreach (@$auction->get->lot_features as $item)
+                                        <span class="d-inline-block removeBold">{{ $item }}</span>
+                                        @if ($item == 'Other')
+                                            <span
+                                                class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->otherFeature }}</span>
+                                        @endif
+                                    @endforeach
+                                </div>
                             @endif
                             @if (@$auction->get->viewOptions != null && @$auction->get->viewOptions != 'null')
                                 <div class="col-md-9 fw-bold">
@@ -529,7 +656,7 @@
                                     @endif
                                 </div>
                             @endif
-                            @if (@$auction->get->has_dock != null)
+                            @if (@$auction->get->has_dock != null && @$auction->get->has_water_frontage != 'null')
                                 <div class="col-md-9 fw-bold">
                                     <i class="fa-regular fa-check-square"></i> Dock Needed:<span
                                         class="removeBold">({{ @$auction->get->has_dock }})</span>
@@ -631,30 +758,50 @@
                                         <i class="fa-regular fa-check-square"></i>
                                         <span class="fw-bold">Buyer Represented by a Real Estate Agent:</span><span
                                             class="removeBold">({{ $auction->get->buyerHaveAgentRepresentation }})</span>
+                                        @if ($auction->get->buyerHaveAgentRepresentation == 'Yes' && $auction->get->buyersAgentCommissionRequested !== null)
+                                            <div class="col-md-12">
+                                                <i class="fa-regular fa-check-square"></i>
+                                                <span class="fw-bold">Buyer Requests Seller to Pay Buyer’s Agent
+                                                    Commission:</span><span
+                                                    class="removeBold">({{ $auction->get->buyersAgentCommissionRequested }})</span>
+                                            </div>
+                                            @if ($auction->get->buyersAgentCommissionRequested == 'Yes' && $auction->get->buyersAgentCompensationRequested !== null)
+                                                <div class="col-md-12">
+                                                    <i class="fa-regular fa-check-square"></i>
+                                                    <span class="fw-bold">What compensation is the buyer requesting the
+                                                        seller to pay to the
+                                                        buyer’s agent?</span><span
+                                                        class="removeBold">({{ $auction->get->buyersAgentCompensationRequested }})</span>
+                                                </div>
+                                                @if (
+                                                    $auction->get->buyersAgentCompensationRequested !== null &&
+                                                        $auction->get->buyersAgentCompensationRequested == 'Other')
+                                                    <div class="col-md-12">
+                                                        <i class="fa-regular fa-check-square"></i>
+                                                        <span class="fw-bold">Requested Amount for Seller to Pay Buyer’s
+                                                            Agent Commission:</span><span
+                                                            class="removeBold">({{ $auction->get->buyersAgentCompensationRequested }})</span>
+                                                    </div>
+                                                @endif
+                                            @endif
+                                            @if ($auction->get->buyersAgentCommissionRequested == 'No' && $auction->get->buyersAgentCompensationNotOffered !== null)
+                                                <div class="col-md-12">
+                                                    <i class="fa-regular fa-check-square"></i>
+                                                    <span class="fw-bold">Agent Compensation if Not Offered by
+                                                        Seller:</span><span
+                                                        class="removeBold">({{ $auction->get->buyersAgentCompensationNotOffered }})</span>
+                                                </div>
+                                                @if ($auction->get->buyersAgentCompensationNotOffered == 'Yes')
+                                                    <div class="col-md-12">
+                                                        <i class="fa-regular fa-check-square"></i>
+                                                        <span class="fw-bold">What compensation is the buyer willing to
+                                                            offer to an agent?</span><span
+                                                            class="removeBold">({{ $auction->get->buyersAgentCompensationRequested }})</span>
+                                                    </div>
+                                                @endif
+                                            @endif
+                                        @endif
                                     </div>
-                                    @if ($auction->get->buyersAgentCommissionRequested !== null)
-                                        <div class="col-md-12">
-                                            <i class="fa-regular fa-check-square"></i>
-                                            <span class="fw-bold">Buyer Requests Seller to Pay Buyer’s Agent
-                                                Commission:</span><span
-                                                class="removeBold">({{ $auction->get->buyersAgentCommissionRequested }})</span>
-                                        </div>
-                                    @endif
-                                    @if ($auction->get->buyersAgentCompensationRequested !== null)
-                                        <div class="col-md-12">
-                                            <i class="fa-regular fa-check-square"></i>
-                                            <span class="fw-bold">Requested Amount for Seller to Pay Buyer’s Agent
-                                                Commission:</span><span
-                                                class="removeBold">({{ $auction->get->buyersAgentCompensationRequested == 'Other' ? $auction->get->buyersAgentCompensationRequested . '|' . $auction->get->buyersAgentCompensationRequestedAmount : $auction->get->buyersAgentCompensationRequested }})</span>
-                                        </div>
-                                    @endif
-                                    @if ($auction->get->buyersAgentCommissionRequested !== null && $auction->get->buyersAgentCommissionRequested == 'No')
-                                        <div class="col-md-12">
-                                            <i class="fa-regular fa-check-square"></i>
-                                            <span class="fw-bold">Agent Compensation if Not Offered by Seller:</span><span
-                                                class="removeBold">({{ $auction->get->buyersAgentCompensationNotOffered }})</span>
-                                        </div>
-                                    @endif
                                 </div>
                             @endif
                         </div>
@@ -679,266 +826,266 @@
 
                         <div class="row" style="flex-wrap: wrap;">
                             {{-- @if (@$auction->get->max_price != null)
-                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Maximum Price:
-                  <span class="removeBold">{{ @$auction->get->max_price }}</span>
-                </div>
-              @endif --}}
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Maximum Price:
+                                  <span class="removeBold">{{ @$auction->get->max_price }}</span>
+                                </div>
+                              @endif --}}
                             {{-- @if (@$auction->get->custom_financings != null)
-                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Custom financing:
-                  {{ @$auction->get->custom_financings }}</div>
-              @endif --}}
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Custom financing:
+                                  {{ @$auction->get->custom_financings }}</div>
+                              @endif --}}
 
                             {{-- @if (@$auction->get->contingencies != null && @$auction->get->contingencies != 'null')
-                <div class="col-md-12 col-12 removeBold"><i class="fa-regular fa-check-square"></i>
-                  <span class="fw-bold">Acceptable Property Conditions:</span><br>
-                  @php
-                    $elementToIgnore = 'Other';
-                    $originalArray = $auction->get->contingencies;
-                    $index = array_search($elementToIgnore, $originalArray);
-                    if ($index !== false) {
-                        array_splice($originalArray, $index, 1);
-                    }
-                  @endphp
-                  @foreach (@$originalArray as $item)
-                    <span class="badge bg-secondary removeBold">{{ $item }}</span>
-                  @endforeach
-                  @php $exists = in_array('Other', $auction->get->contingencies); @endphp
-                  @if ($exists)
-                    <span class="badge bg-secondary removeBold"> {{ @$auction->get->contingenciesOffered }}</span>
-                  @endif
-                </div>
-              @endif --}}
+                                <div class="col-md-12 col-12 removeBold"><i class="fa-regular fa-check-square"></i>
+                                  <span class="fw-bold">Acceptable Property Conditions:</span><br>
+                                  @php
+                                    $elementToIgnore = 'Other';
+                                    $originalArray = $auction->get->contingencies;
+                                    $index = array_search($elementToIgnore, $originalArray);
+                                    if ($index !== false) {
+                                        array_splice($originalArray, $index, 1);
+                                    }
+                                  @endphp
+                                  @foreach (@$originalArray as $item)
+                                    <span class="badge bg-secondary removeBold">{{ $item }}</span>
+                                  @endforeach
+                                  @php $exists = in_array('Other', $auction->get->contingencies); @endphp
+                                  @if ($exists)
+                                    <span class="badge bg-secondary removeBold"> {{ @$auction->get->contingenciesOffered }}</span>
+                                  @endif
+                                </div>
+                              @endif --}}
                             {{-- @if (@$auction->get->real_estate_included != null)
-                <div class="col-md-12
-                      col-12 removeBold"><i
-                    class="fa-regular fa-check-square"></i><span class="fw-bold">
-                      Real Estate Included:</span>
-                  {{ @$auction->get->real_estate_included }}
-                </div>
-              @endif --}}
+                                <div class="col-md-12
+                                      col-12 removeBold"><i
+                                    class="fa-regular fa-check-square"></i><span class="fw-bold">
+                                      Real Estate Included:</span>
+                                  {{ @$auction->get->real_estate_included }}
+                                </div>
+                              @endif --}}
                             {{-- @if (@$auction->get->lincenses != (null || 'null'))
-                <div class="col-md-12 col-12 removeBold"><i class="fa-regular fa-check-square"></i><span class="fw-bold">
-                      Licenses Needed:</span>
-                      @if (is_array($auction->get->lincenses))
-                          @foreach ($auction->get->lincenses as $item)
-                              @if ($item == 'Other')
-                                  @continue
-                              @else
-                              <span class="badge bg-secondary">{{ $item }}</span>
-                              @endif
-                          @endforeach
-                      @endif
-                </div>
-              @endif --}}
+                                <div class="col-md-12 col-12 removeBold"><i class="fa-regular fa-check-square"></i><span class="fw-bold">
+                                      Licenses Needed:</span>
+                                      @if (is_array($auction->get->lincenses))
+                                          @foreach ($auction->get->lincenses as $item)
+                                              @if ($item == 'Other')
+                                                  @continue
+                                              @else
+                                              <span class="badge bg-secondary">{{ $item }}</span>
+                                              @endif
+                                          @endforeach
+                                      @endif
+                                </div>
+                              @endif --}}
 
                             {{-- @if (@$auction->get->prop_conditions != null)
-                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Acceptable Property
-                  Conditions:
-                  @if (gettype(@$auction->get->prop_conditions) == 'array')
-                    @foreach (@$auction->get->prop_conditions as $item)
-                      <span class="badge bg-secondary">{{ $item }}</span>
-                    @endforeach
-                  @endif
-                </div>
-              @endif --}}
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Acceptable Property
+                                  Conditions:
+                                  @if (gettype(@$auction->get->prop_conditions) == 'array')
+                                    @foreach (@$auction->get->prop_conditions as $item)
+                                      <span class="badge bg-secondary">{{ $item }}</span>
+                                    @endforeach
+                                  @endif
+                                </div>
+                              @endif --}}
 
                             {{-- @if (@$auction->get->custom_bedrooms != null)
-                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Minimum Bedrooms
-                  Needed:
-                  {{ @$auction->get->custom_bedrooms == '' ? @$auction->get->bedrooms : @$auction->get->custom_bedrooms }}
-                </div>
-              @endif --}}
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Minimum Bedrooms
+                                  Needed:
+                                  {{ @$auction->get->custom_bedrooms == '' ? @$auction->get->bedrooms : @$auction->get->custom_bedrooms }}
+                                </div>
+                              @endif --}}
                             {{-- @if (@$auction->get->bathrooms != null)
-                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Minimum Bathrooms
-                  Needed:
-                  <span class="removeBold">{{@$auction->get->bathrooms?@$auction->get->bathrooms :@$auction->get->custom_bathrooms}}</span>
-                </div>
-              @endif --}}
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Minimum Bathrooms
+                                  Needed:
+                                  <span class="removeBold">{{@$auction->get->bathrooms?@$auction->get->bathrooms :@$auction->get->custom_bathrooms}}</span>
+                                </div>
+                              @endif --}}
                             {{-- @if (@$auction->get->garage != null)
-                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Garage/Parking Features Needed:
-                  <span class="removeBold">
-                    @if (@$auction->get->garage != 'Yes')
-                    {{ @$auction->get->garage }}
-                    @elseif(gettype(@$auction->get->garage) == 'array')
-                    @foreach (@$auction->get->garage as $item)
-                      @if ($item != 'Other')
-                        <span class="badge bg-secondary removeBold">{{ $item }}</span>
-                      @else
-                          <span class="badge bg-secondary removeBold">{{ @$auction->get->garageNeedOther }}</span>
-                      @endif
-                      @endforeach
-                    @endif
-                  </span>
-                </div>
-              @endif --}}
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Garage/Parking Features Needed:
+                                  <span class="removeBold">
+                                    @if (@$auction->get->garage != 'Yes')
+                                    {{ @$auction->get->garage }}
+                                    @elseif(gettype(@$auction->get->garage) == 'array')
+                                    @foreach (@$auction->get->garage as $item)
+                                      @if ($item != 'Other')
+                                        <span class="badge bg-secondary removeBold">{{ $item }}</span>
+                                      @else
+                                          <span class="badge bg-secondary removeBold">{{ @$auction->get->garageNeedOther }}</span>
+                                      @endif
+                                      @endforeach
+                                    @endif
+                                  </span>
+                                </div>
+                              @endif --}}
                             {{-- @if (@$auction->get->escrow_amount_percent != null)
-                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Offered Escrow
-                  Amount(% or $): {{ @$auction->get->escrow_amount_percent }}</div>
-              @endif
-              @if (@$auction->get->inspection != null)
-                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Inspection Period
-                  Offered: {{ @$auction->get->inspection }}</div>
-              @endif
-              @if (@$auction->get->request_seller_premium != null)
-                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Requested seller
-                  credit at closing (seller's premium): {{ @$auction->get->request_seller_premium }}</div>
-              @endif
-              @if (@$auction->get->request_buyer_premium != null)
-                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Requested Buyer
-                  Credit Seller at closing (Buyer’s Premium): {{ @$auction->get->request_buyer_premium }}
-                </div>
-              @endif
-              
-              @if (@$auction->get->parking_spaces_needed != null)
-                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Parking spaces
-                  needed? {{ @$auction->get->parking_spaces_needed }}</div>
-              @endif --}}
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Offered Escrow
+                                  Amount(% or $): {{ @$auction->get->escrow_amount_percent }}</div>
+                              @endif
+                              @if (@$auction->get->inspection != null)
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Inspection Period
+                                  Offered: {{ @$auction->get->inspection }}</div>
+                              @endif
+                              @if (@$auction->get->request_seller_premium != null)
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Requested seller
+                                  credit at closing (seller's premium): {{ @$auction->get->request_seller_premium }}</div>
+                              @endif
+                              @if (@$auction->get->request_buyer_premium != null)
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Requested Buyer
+                                  Credit Seller at closing (Buyer’s Premium): {{ @$auction->get->request_buyer_premium }}
+                                </div>
+                              @endif
+                              
+                              @if (@$auction->get->parking_spaces_needed != null)
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Parking spaces
+                                  needed? {{ @$auction->get->parking_spaces_needed }}</div>
+                              @endif --}}
                             <div>
                                 {{-- @if (@$auction->get->nonNegotiableFactors != null && @$auction->get->nonNegotiableFactors != 'null')
-                <div class="col-md-9 fw-bold">
-                  <i class="fa-regular fa-check-square"></i> Non-negotiable Amenities or Property Features:<span class="removeBold">({{@$auction->get->nonNegotiableFactors}})</span><br>
-                  @if (gettype(@$auction->get->nonNegotiable) == 'array' && @$auction->get->nonNegotiableFactors != 'No')
-                    @foreach (@$auction->get->nonNegotiable as $item)
-                      @if ($item != 'Other')
-                        <span class="badge bg-secondary removeBold">{{ $item }}</span>
-                      @else
-                        <span class="badge bg-secondary removeBold">{{ @$auction->get->negotiableOther }}</span>
-                      @endif
-                    @endforeach
-                  @endif
-                </div>
-              @endif --}}
+                                <div class="col-md-9 fw-bold">
+                                  <i class="fa-regular fa-check-square"></i> Non-negotiable Amenities or Property Features:<span class="removeBold">({{@$auction->get->nonNegotiableFactors}})</span><br>
+                                  @if (gettype(@$auction->get->nonNegotiable) == 'array' && @$auction->get->nonNegotiableFactors != 'No')
+                                    @foreach (@$auction->get->nonNegotiable as $item)
+                                      @if ($item != 'Other')
+                                        <span class="badge bg-secondary removeBold">{{ $item }}</span>
+                                      @else
+                                        <span class="badge bg-secondary removeBold">{{ @$auction->get->negotiableOther }}</span>
+                                      @endif
+                                    @endforeach
+                                  @endif
+                                </div>
+                              @endif --}}
                             </div>
                             {{-- @if (@$auction->get->have_air_conditioning != null)
-                <div class="row">
-                  <div class="col-md-12">
-                    <i class="fa-regular fa-check-square"></i>
-                    <span class="fw-bold">Air Conditioning Preferences and Heating and Fuel Preferences:</span>
-                    @if (@$auction->get->have_air_conditioning == 'Yes')
-                      <span class="badge bg-secondary removeBold">{{ @$auction->get->air_conditioning }}</span>
-                      <span class="badge bg-secondary removeBold">{{ @$auction->get->heating_and_fuel }}</span>
-                    @else
-                      <span class="removeBold">{{ @$auction->get->have_air_conditioning }}</span>
-                    @endif
-                  </div>
-                </div>
-              @endif --}}
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <i class="fa-regular fa-check-square"></i>
+                                    <span class="fw-bold">Air Conditioning Preferences and Heating and Fuel Preferences:</span>
+                                    @if (@$auction->get->have_air_conditioning == 'Yes')
+                                      <span class="badge bg-secondary removeBold">{{ @$auction->get->air_conditioning }}</span>
+                                      <span class="badge bg-secondary removeBold">{{ @$auction->get->heating_and_fuel }}</span>
+                                    @else
+                                      <span class="removeBold">{{ @$auction->get->have_air_conditioning }}</span>
+                                    @endif
+                                  </div>
+                                </div>
+                              @endif --}}
 
                             {{-- @if ($auction->get->escrow_amount != null && $auction->get->escrow_amount != '')
-              <div class="row">
-                <div class="col-md-12">
-                  <i class="fa-regular fa-check-square"></i>
-                  <span class="fw-bold">Offered Escrow Amount:</span><span class="removeBold">({{ $auction->get->escrow_amount }})</span>
-                </div>
-              </div>
-              @endif --}}
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <i class="fa-regular fa-check-square"></i>
+                                  <span class="fw-bold">Offered Escrow Amount:</span><span class="removeBold">({{ $auction->get->escrow_amount }})</span>
+                                </div>
+                              </div>
+                              @endif --}}
 
 
 
                             {{-- @if (@$auction->get->hoa_community != null)
-                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> HOA/Community
-                  Association: {{ @$auction->get->hoa_community }} </div>
-              @endif
-              @if (@$auction->get->hoa_fee_requirement != null)
-                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> HOA Fee Requirement:
-                  {{ @$auction->get->hoa_fee_requirement }} </div>
-              @endif
-              @if (@$auction->get->hoa_fee != null)
-                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Maximum HOA fee
-                  (Monthly rate): ${{ number_format(@$auction->get->hoa_fee) }} </div>
-              @endif
-              @if (@$auction->get->condo_fee != null)
-                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Maximum Condo fee
-                  (Monthly rate): ${{ number_format(@$auction->get->condo_fee) }} </div>
-              @endif
-              @if (@$auction->get->old_persons_community != null)
-                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> 55+ over community:
-                  {{ @$auction->get->old_persons_community }} </div>
-              @endif
-              @if (@$auction->get->pets_allowed != null)
-                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Pets allowed:
-                  {{ @$auction->get->pets_allowed }} </div>
-              @endif
-              @if (@$auction->get->number_of_pets != null)
-                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> How many pets does
-                  the Buyer have? {{ @$auction->get->number_of_pets }} </div>
-              @endif
-              @if (@$auction->get->pet_bread != null)
-                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> What is the breed?
-                  {{ @$auction->get->pet_bread }} </div>
-              @endif
-              @if (@$auction->get->pet_weight != null)
-                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> What is the weight?
-                  {{ @$auction->get->pet_weight }} </div>
-              @endif --}}
+                                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> HOA/Community
+                                  Association: {{ @$auction->get->hoa_community }} </div>
+                              @endif
+                              @if (@$auction->get->hoa_fee_requirement != null)
+                                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> HOA Fee Requirement:
+                                  {{ @$auction->get->hoa_fee_requirement }} </div>
+                              @endif
+                              @if (@$auction->get->hoa_fee != null)
+                                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Maximum HOA fee
+                                  (Monthly rate): ${{ number_format(@$auction->get->hoa_fee) }} </div>
+                              @endif
+                              @if (@$auction->get->condo_fee != null)
+                                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Maximum Condo fee
+                                  (Monthly rate): ${{ number_format(@$auction->get->condo_fee) }} </div>
+                              @endif
+                              @if (@$auction->get->old_persons_community != null)
+                                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> 55+ over community:
+                                  {{ @$auction->get->old_persons_community }} </div>
+                              @endif
+                              @if (@$auction->get->pets_allowed != null)
+                                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Pets allowed:
+                                  {{ @$auction->get->pets_allowed }} </div>
+                              @endif
+                              @if (@$auction->get->number_of_pets != null)
+                                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> How many pets does
+                                  the Buyer have? {{ @$auction->get->number_of_pets }} </div>
+                              @endif
+                              @if (@$auction->get->pet_bread != null)
+                                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> What is the breed?
+                                  {{ @$auction->get->pet_bread }} </div>
+                              @endif
+                              @if (@$auction->get->pet_weight != null)
+                                <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> What is the weight?
+                                  {{ @$auction->get->pet_weight }} </div>
+                              @endif --}}
 
                             {{-- <hr>
-              <h4>Investment Information</h4>
-              <div class="row" style="flex-wrap: wrap;">
-                @if (@$auction->get->rental_requirements != null)
-                  <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Rental
-                    Requirements:<br>
-                    {{ @$auction->get->rental_requirements }}
-                  </div>
-                @endif
-                @if (@$auction->get->total_units_needed != null)
-                  <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Total Number of
-                    Units Needed: {{ @$auction->get->total_units_needed }} </div>
-                @endif
-                @if (@$auction->get->annual_income != null)
-                  <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Annual Net Income
-                    Minimum: ${{ @$auction->get->annual_income }} </div>
-                @endif
-                @if (@$auction->get->min_cap_rate != null)
-                  <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Minimum Cap Rate:
-                    ${{ @$auction->get->min_cap_rate }} </div>
-                @endif
-                @if (@$auction->get->additional_details != null)
-                  <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Any additional
-                    details:{{ @$auction->get->additional_details }}
-                  </div>
-                @endif
-                @if (@$auction->get->arv != null)
-                  <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> ARV:
-                    {{ @$auction->get->arv }} </div>
-                @endif --}}
+                              <h4>Investment Information</h4>
+                              <div class="row" style="flex-wrap: wrap;">
+                                @if (@$auction->get->rental_requirements != null)
+                                  <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Rental
+                                    Requirements:<br>
+                                    {{ @$auction->get->rental_requirements }}
+                                  </div>
+                                @endif
+                                @if (@$auction->get->total_units_needed != null)
+                                  <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Total Number of
+                                    Units Needed: {{ @$auction->get->total_units_needed }} </div>
+                                @endif
+                                @if (@$auction->get->annual_income != null)
+                                  <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Annual Net Income
+                                    Minimum: ${{ @$auction->get->annual_income }} </div>
+                                @endif
+                                @if (@$auction->get->min_cap_rate != null)
+                                  <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Minimum Cap Rate:
+                                    ${{ @$auction->get->min_cap_rate }} </div>
+                                @endif
+                                @if (@$auction->get->additional_details != null)
+                                  <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Any additional
+                                    details:{{ @$auction->get->additional_details }}
+                                  </div>
+                                @endif
+                                @if (@$auction->get->arv != null)
+                                  <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> ARV:
+                                    {{ @$auction->get->arv }} </div>
+                                @endif --}}
                             {{-- </div> --}}
                             {{-- <hr>
-              <h4>Offered Title Company:</h4>
-              <div class="row" style="flex-wrap: wrap;">
-                @if (@$auction->get->title_company != null)
-                  <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Title Company:
-                    {{ @$auction->get->title_company }} </div>
-                @endif
-                @if (@$auction->get->title_agent != null)
-                  <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Title Agent:
-                    {{ @$auction->get->title_agent }} </div>
-                @endif
-                @if (@$auction->get->title_company_phone != null)
-                  <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Title Company
-                    Phone #: {{ @$auction->get->title_company_phone }} </div>
-                @endif
-                @if (@$auction->get->title_company_email != null)
-                  <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Title Company
-                    Email: {{ @$auction->get->title_company_email }} </div>
-                @endif
+                              <h4>Offered Title Company:</h4>
+                              <div class="row" style="flex-wrap: wrap;">
+                                @if (@$auction->get->title_company != null)
+                                  <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Title Company:
+                                    {{ @$auction->get->title_company }} </div>
+                                @endif
+                                @if (@$auction->get->title_agent != null)
+                                  <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Title Agent:
+                                    {{ @$auction->get->title_agent }} </div>
+                                @endif
+                                @if (@$auction->get->title_company_phone != null)
+                                  <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Title Company
+                                    Phone #: {{ @$auction->get->title_company_phone }} </div>
+                                @endif
+                                @if (@$auction->get->title_company_email != null)
+                                  <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Title Company
+                                    Email: {{ @$auction->get->title_company_email }} </div>
+                                @endif
 
-              </div>
-              <div class="row" style="flex-wrap: wrap;">
-                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Days needed to
-                  Close: {{ @$auction->get->closing_days }} </div>
-              </div>
-            </div> --}}
+                              </div>
+                              <div class="row" style="flex-wrap: wrap;">
+                                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Days needed to
+                                  Close: {{ @$auction->get->closing_days }} </div>
+                              </div>
+                            </div> --}}
 
                             {{-- <hr>
-              <h4>Description</h4>
-              @if (@$auction->get->description_buyer_specific != null)
-                <div class="row">
-                  <div class="col-md-12"> {{ @$auction->get->description_buyer_specific }}
-                  </div>
-                </div>
-              @endif
-              <hr> --}}
+                                <h4>Description</h4>
+                                @if (@$auction->get->description_buyer_specific != null)
+                                  <div class="row">
+                                    <div class="col-md-12"> {{ @$auction->get->description_buyer_specific }}
+                                    </div>
+                                  </div>
+                                @endif
+                                <hr> --}}
 
 
                             @if ($created_by->user_type == 'agent')
@@ -1034,11 +1181,10 @@
             <div class="col-sm-12 col-md-4 col-lg-4 rightCol">
                 @if (@$auction->get->titleListing != null)
                     <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Title of the listing:
-                        <span class="fwBold">{{ @$auction->get->titleListing }}</span>
+                        <h1>{{ @$auction->get->titleListing }}</h1>
+                        {{-- <h1>{{ @$auction->get->property_type }}</h1> --}}
                     </div>
                 @endif
-
-                <h1>{{ @$auction->get->property_type }}</h1>
 
                 <hr>
                 @inject('carbon', 'Carbon\Carbon')
@@ -1510,11 +1656,11 @@
                                     </path>
                                 </svg>
                                 <!-- <div hidden class="w-50">
-                                                                                                                                                                                                                                                                                                                      <div id="qr-content" class="text-center w-75 m-auto">
-                                                                                                                                                                                                                                                                                                                          <img class="w-50" src="https://www.freepnglogos.com/uploads/qr-code-png/qr-code-file-bangla-mobile-code-0.png" alt="">
-                                                                                                                                                                                                                                                                                                                          <p>Scan QR code to view on mobile device.</p>
-                                                                                                                                                                                                                                                                                                                      </div>
-                                                                                                                                                                                                                                                                                                                      </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              <div id="qr-content" class="text-center w-75 m-auto">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <img class="w-50" src="https://www.freepnglogos.com/uploads/qr-code-png/qr-code-file-bangla-mobile-code-0.png" alt="">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <p>Scan QR code to view on mobile device.</p>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </div> -->
                                 <!-- Message  -->
                                 <svg data-bs-container="body" tabindex="0" data-bs-toggle="popover"
                                     data-bs-trigger="hover focus" data-bs-placement="top" data-bs-content="Send Message"
