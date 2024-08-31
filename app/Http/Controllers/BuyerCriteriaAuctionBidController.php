@@ -14,10 +14,11 @@ class BuyerCriteriaAuctionBidController extends Controller
 {
     public function add_bid($id)
     {
-
+        // dd($id);
         $page_data['auction'] = BuyerCriteriaAuction::find($id);
-        $page_data['title'] = "Add Bid for Buyer's Criteria Auction - " . $page_data['auction']->address;
+        $page_data['title'] = "Add Bid for Buyer's Criteria Auction - ". $page_data['auction']->address;
         $page_data['property_types'] = PropertyType::orderBy('sort', 'ASC')->get();
+        // dd($page_data);
         return view('buyer_criteria.add-bid', $page_data);
     }
     //

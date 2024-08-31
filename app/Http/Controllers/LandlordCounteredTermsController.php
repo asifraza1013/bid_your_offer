@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Models\BuyerAgentAuction;
 use App\Models\BuyerAgentAuctionBid;
 use App\Models\LandlordCounterTerm;
+use App\Models\LandlordAgentAuction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,7 +24,8 @@ class LandlordCounteredTermsController extends Controller
     public function add(Request $request, $id)
     {
         $landlordId = $id;
-        return view('landlord_counter_terms.add', compact('landlordId'));
+        $auction = LandlordAgentAuction::where('id', $landlordId)->first();
+        return view('landlord_counter_terms.add', compact('landlordId', 'auction'));
     }
     public function store(Request $request)
     {
@@ -31,6 +33,7 @@ class LandlordCounteredTermsController extends Controller
         $counter->landlord_auction_id = $request->landlordId;
         $counter->timeframe = $request->timeframe;
         $counter->commission = $request->commission;
+        $counter->agentCommission = $request->agentCommission;
         $counter->services = json_encode($request->services);
         $counter->other_services = $request->other_services;
         $counter->additional_details = $request->additionalDetails;

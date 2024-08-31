@@ -374,7 +374,7 @@
                         @endpush
                         <div class="container">
                             <h4 class="title">
-                                Hire Landlord's Agent auction
+                                Hire a Listing Agent
                             </h4>
                             <div class="wizard-steps-progress">
                                 <div class="steps-progress-percent"></div>

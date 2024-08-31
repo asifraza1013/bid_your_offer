@@ -170,7 +170,7 @@
               <label class="fw-bold" for="timeframe">What is the timeframe offered to the agent in the Landlord Agency
                 Agreement?</label>
               <input type="text" name="timeframe" class="form-control has-icon hide_arrow"
-                data-icon="fa-solid fa-qrcode" required>
+                data-icon="fa-solid fa-calendar-days" required>
             </div>
           </div>
           <div class="wizard-step">
@@ -180,68 +180,261 @@
               <input type="text" name="commission" class="form-control has-icon hide_arrow"
                 data-icon="fa-solid fa-qrcode" required>
             </div>
+            <div class="form-group">
+              <label class="fw-bold" for="commission_for_tenants_agent">If a tenant is represented by an agent, what portion of the commission should be
+                shared with the tenant’s agent?</label>
+              <input type="text" name="agentCommission" class="form-control has-icon hide_arrow"
+                data-icon="fa-solid fa-dollar" required>
+            </div>
           </div>
           <div class="wizard-step">
             @php
+            $services_data = [];
+            if ($auction->get->property_type == 'Residential Property') {
               $services_data = [
                   [
                       'name' =>
-                          'Assist the buyer in obtaining pre-approval or exploring financing options to determine their purchasing power.',
-                      'target' => '',
-                  ],
-                  ['name' => 'List the Buyer’s Criteria Listing on the platform BidYourOffer.com.', 'target' => ''],
-                  [
-                      'name' =>
-                          "Market the buyer's listing on numerous groups, pages, and affiliates through a listing link or QR code that links directly to the listing on BidYourOffer.com.",
+                          "Conduct a thorough rental market analysis (RMA) to determine the property's value and pricing strategy.",
                       'target' => '',
                   ],
                   [
-                      'name' =>
-                          "Promote the buyer's listing on social media platforms using a listing link or QR code that directs to the buyer's listing on the BidYourOffer.com platform.",
+                      'name' => 'List the property on the Bid Your Offer platform.',
                       'target' => '',
                   ],
                   [
                       'name' =>
-                          "Send prompt email notifications containing properties that meet the buyer's criteria as soon as they are listed, ensuring access to the most up-to-date listings.",
+                          'List the property on major real estate websites, such as Zillow, Trulia, Realtor.com, Homes.com, Homesnap, Hotpads, and others, to increase visibility and exposure.',
                       'target' => '',
                   ],
-                  ['name' => 'Schedule and accompany the buyer on property viewings and showings.', 'target' => ''],
-                  ['name' => 'Schedule video tours of the property as needed.', 'target' => ''],
                   [
-                      'name' =>
-                          'Provide detailed market analysis and comparative market information to help the buyer make informed decisions.',
+                      'name' => 'List the property on the Bid Your Offer platform.',
                       'target' => '',
                   ],
                   [
                       'name' =>
-                          'Assist the buyer in negotiations and in preparing offers to maximize their chances of securing the desired property.',
+                          "Market the property to various groups, pages, and affiliates to generate interest and leads with a QR code or listing link leading to the property's listing.",
                       'target' => '',
                   ],
                   [
                       'name' =>
-                          'Assist the buyer with the review and explanation of all contractual documents and disclosures.',
+                          "Promote the property on social media platforms with a QR code or listing link leading to the property's listing.",
                       'target' => '',
                   ],
                   [
                       'name' =>
-                          'Coordinate and oversee the home inspection process, including making recommendations for trusted inspectors.',
+                          'Conduct real estate email marketing campaigns that lead to the property listing.',
                       'target' => '',
                   ],
                   [
                       'name' =>
-                          'Facilitate communication and coordination with other professionals involved in the transaction, such as lenders, attorneys, and title companies.',
+                          "Provide professional photos showcasing the property's features.",
                       'target' => '',
                   ],
                   [
                       'name' =>
-                          'Provide guidance and support throughout the entire purchase transaction, from offer acceptance to closing.',
+                          "Provide a professional video to showcase the property's features.",
                       'target' => '',
                   ],
-                  ['name' => 'Other-Add additional services as offered.', 'target' => '.other_services'],
+                  [
+                      'name' => "Provide a 3D tour to showcase the property's features.",
+                      'target' => '',
+                  ],
+                  [
+                      'name' =>
+                          'Provide a floor plan of the property to highlight its layout and spatial configuration.',
+                      'target' => '',
+                  ],
+                  [
+                      'name' =>
+                          "Provide virtual staging to enhance the property's visual appeal and attract potential tenants.",
+                      'target' => '',
+                  ],
+                  ['name' => 'Host an Open House(s).', 'target' => ''],
+                  [
+                      'name' =>
+                          "Send email alerts to tenants searching for properties that match the property's criteria the moment the property is listed directly through the MLS.",
+                      'target' => '',
+                  ],
+                  [
+                      'name' =>
+                          'Conduct property showings and viewings for interested tenants.',
+                      'target' => '',
+                  ],
+                  [
+                      'name' =>
+                          'Provide regular updates on market activity, showings, and feedback from potential tenants.',
+                      'target' => '',
+                  ],
+                  [
+                      'name' =>
+                          'Conduct tenant screening with a thorough application process that includes credit, criminal, background, eviction, and income verification checks.',
+                      'target' => '',
+                  ],
+                  [
+                      'name' =>
+                          'Assist in negotiating residential lease terms, including rental price, lease duration, and any additional clauses or provisions.',
+                      'target' => '',
+                  ],
+                  [
+                      'name' =>
+                          'Assist in drafting residential lease agreements and required addendums/disclosures.',
+                      'target' => '',
+                  ],
+                  [
+                      'name' =>
+                          'Assist with lease renewal negotiations and adjustments to rental terms.',
+                      'target' => '',
+                  ],
+                  [
+                      'name' => 'Assist with tenant move-in and move-out inspections.',
+                      'target' => '',
+                  ],
+                  [
+                      'name' =>
+                          'Coordinate property maintenance and repairs through trusted contractors and vendors.',
+                      'target' => '',
+                  ],
+                  [
+                      'name' =>
+                          'Handle tenant inquiries, maintenance requests, and resolve any issues that may arise during the tenancy.',
+                      'target' => '',
+                  ],
+                  [
+                      'name' =>
+                          'Coordinate or assist in the move-in or move-out process for tenants.',
+                      'target' => '',
+                  ],
+                  [
+                      'name' => 'Other - Add additional services as needed.',
+                      'target' => '.other_services',
+                  ],
               ];
-            @endphp
+            } else {
+              $services_data = [
+                [
+                    'name' =>
+                        'Conduct a thorough rental market analysis (RMA) to determine the property\'s value and pricing strategy.',
+                    'target' => '',
+                ],
+                ['name' => 'List the property on the MLS.', 'target' => ''],
+                [
+                    'name' =>
+                        'List the property on Loopnet, a major commercial real estate website.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'List the property on Crexi, a major commercial real estate website.',
+                    'target' => '',
+                ],
+                [
+                    'name' => 'List the property on the Bid Your Offer platform.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'Market the property to various groups, pages, and affiliates to generate interest and leads with a QR code or listing link leading to the property\'s listing.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'Promote the property on social media platforms with a QR code or listing link leading to the property\'s listing.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'Conduct real estate email marketing campaigns that lead to the property listing.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'Provide professional photos showcasing the property\'s features.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'Provide a professional video to showcase the property\'s features.',
+                    'target' => '',
+                ],
+                [
+                    'name' => 'Provide a 3D tour to showcase the property\'s features.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'Provide a floor plan of the property to highlight its layout and spatial configuration.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'Provide virtual staging to enhance the property\'s visual appeal and attract potential tenants.',
+                    'target' => '',
+                ],
+                // ['name' => 'Host an Open House.', 'target' => ''],
+                [
+                    'name' =>
+                        'Send email alerts to tenants searching for properties that match the property\'s criteria the moment the property is listed directly through the MLS.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'Conduct property showings and viewings for interested tenants.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'Provide regular updates on market activity, showings, and feedback from potential tenants.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'Conduct tenant screening with a thorough application process that includes credit, criminal, background, eviction, and income verification checks.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'Assist in negotiating residential lease terms, including rental price, lease duration, and any additional clauses or provisions.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'Assist in drafting residential lease agreements and required addendums/disclosures.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'Assist with lease renewal negotiations and adjustments to rental terms.',
+                    'target' => '',
+                ],
+                [
+                    'name' => 'Assist with tenant move-in and move-out inspections.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'Coordinate property maintenance and repairs through trusted contractors and vendors.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'Handle tenant inquiries, maintenance requests, and resolve any issues that may arise during the tenancy.',
+                    'target' => '',
+                ],
+                [
+                    'name' =>
+                        'Coordinate or assist in the move-in or move-out process for tenants.',
+                    'target' => '',
+                ],
+
+                [
+                    'name' => 'Other - Add additional services as needed.',
+                    'target' => '.other_services',
+                ],
+            ];
+            }
+        @endphp
             <div class="form-group">
-              <label class="fw-bold">Select the included services that the agent will provide to the buyer:</label>
+              <label class="fw-bold">Select the services that the landlord requests from an agent:</label>
               <select class="grid-picker" name="services[]" id="services" multiple required>
                 <option value="">Select</option>
                 @foreach ($services_data as $service)
@@ -255,12 +448,12 @@
             <div class="form-group other_services d-none">
               <label class="fw-bold">What additional services will the agent provide to the buyer?</label>
               <input type="text" name="other_services" id="other_services" class="form-control has-icon"
-                data-icon="fa-solid fa-qrcode" required />
+                data-icon="fa-solid fa-hand-point-right" required />
             </div>
           </div>
           <div class="wizard-step">
             <div class="form-group">
-              <label class="fw-bold">Additional Details or Countered Terms: </label>
+              <label class="fw-bold">Additional Details or Countered Terms:</label>
               <textarea class="form-control" name="additionalDetails" rows="5" required></textarea>
             </div>
           </div>

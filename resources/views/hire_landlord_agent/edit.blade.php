@@ -151,7 +151,10 @@
 <h4>{{$errors->first()}}</h4>
 @endif --}}
     @php
-        $yes_or_nos = [['name' => 'Yes', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
+        $yes_or_nos = [
+            ['name' => 'Yes', 'target' => '', 'icon' => 'fa-regular fa-circle-check'],
+            ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark'],
+        ];
     @endphp
     <div class="container pt-5 pb-5">
         <div class="card">
@@ -254,7 +257,18 @@
                                     </label>
                                     <div>
                                         @php
-                                            $auction_types = [['name' => 'Auction (Timer)', 'icon' => '<i class="fa-regular fa-clock"></i>', 'target' => ''], ['name' => 'Traditional (No Timer)', 'icon' => '<i class="fa-regular fa-circle-xmark"></i>', 'target' => '']];
+                                            $auction_types = [
+                                                [
+                                                    'name' => 'Auction Listing',
+                                                    'icon' => '<i class="fa-regular fa-clock"></i>',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Traditional Listing',
+                                                    'icon' => '<i class="fa-regular fa-circle-xmark"></i>',
+                                                    'target' => '',
+                                                ],
+                                            ];
                                         @endphp
                                         <select name="auction_type" id="auction_type" class="grid-picker"
                                             style="justify-content: flex-start;" onchange="changeAuctionType(this.value);"
@@ -278,7 +292,21 @@
                                     </label>
                                     <div>
                                         @php
-                                            $auction_lengths = [['name' => '1 Day', 'class' => 'normal-length'], ['name' => '3 Days', 'class' => 'normal-length'], ['name' => '5 Days', 'class' => 'normal-length'], ['name' => '7 Days', 'class' => 'normal-length'], ['name' => '10 Days', 'class' => 'normal-length'], ['name' => '14 Days', 'class' => 'normal-length'], ['name' => '21 Days', 'class' => 'normal-length'], ['name' => '30 Days', 'class' => 'normal-length'], ['name' => '45 Days', 'class' => 'normal-length'], ['name' => '60 Days', 'class' => 'normal-length'], ['name' => '75 Days', 'class' => 'normal-length'], ['name' => '90 Days', 'class' => 'normal-length'], ['name' => 'No time limit', 'class' => 'traditional-length']];
+                                            $auction_lengths = [
+                                                ['name' => '1 Day', 'class' => 'normal-length'],
+                                                ['name' => '3 Days', 'class' => 'normal-length'],
+                                                ['name' => '5 Days', 'class' => 'normal-length'],
+                                                ['name' => '7 Days', 'class' => 'normal-length'],
+                                                ['name' => '10 Days', 'class' => 'normal-length'],
+                                                ['name' => '14 Days', 'class' => 'normal-length'],
+                                                ['name' => '21 Days', 'class' => 'normal-length'],
+                                                ['name' => '30 Days', 'class' => 'normal-length'],
+                                                ['name' => '45 Days', 'class' => 'normal-length'],
+                                                ['name' => '60 Days', 'class' => 'normal-length'],
+                                                ['name' => '75 Days', 'class' => 'normal-length'],
+                                                ['name' => '90 Days', 'class' => 'normal-length'],
+                                                ['name' => 'No time limit', 'class' => 'traditional-length'],
+                                            ];
                                         @endphp
                                         <select name="auction_length" id="auction_length" class="auction_length grid-picker"
                                             style="justify-content: flex-start;" required>
@@ -298,8 +326,37 @@
 
                             </div>
                             @php
-                                $bedrooms = [['name' => '1', 'target' => ''], ['name' => '2', 'target' => ''], ['name' => '3', 'target' => ''], ['name' => '4', 'target' => ''], ['name' => '5', 'target' => ''], ['name' => '6', 'target' => ''], ['name' => '7', 'target' => ''], ['name' => '8', 'target' => ''], ['name' => '9', 'target' => ''], ['name' => '10', 'target' => ''], ['name' => 'Commercial', 'target' => ''], ['name' => 'Other', 'target' => '.custom_bedrooms']];
-                                $bathrooms = [['name' => '1', 'target' => ''], ['name' => '1.5', 'target' => ''], ['name' => '2', 'target' => ''], ['name' => '2.5', 'target' => ''], ['name' => '3', 'target' => ''], ['name' => '3.5', 'target' => ''], ['name' => '4', 'target' => ''], ['name' => '4.5', 'target' => ''], ['name' => '5', 'target' => ''], ['name' => '6', 'target' => ''], ['name' => '7', 'target' => ''], ['name' => '8', 'target' => ''], ['name' => '9', 'target' => ''], ['name' => '10', 'target' => ''], ['name' => 'Other', 'target' => '.custom_bathrooms']];
+                                $bedrooms = [
+                                    ['name' => '1', 'target' => ''],
+                                    ['name' => '2', 'target' => ''],
+                                    ['name' => '3', 'target' => ''],
+                                    ['name' => '4', 'target' => ''],
+                                    ['name' => '5', 'target' => ''],
+                                    ['name' => '6', 'target' => ''],
+                                    ['name' => '7', 'target' => ''],
+                                    ['name' => '8', 'target' => ''],
+                                    ['name' => '9', 'target' => ''],
+                                    ['name' => '10', 'target' => ''],
+                                    ['name' => 'Commercial', 'target' => ''],
+                                    ['name' => 'Other', 'target' => '.custom_bedrooms'],
+                                ];
+                                $bathrooms = [
+                                    ['name' => '1', 'target' => ''],
+                                    ['name' => '1.5', 'target' => ''],
+                                    ['name' => '2', 'target' => ''],
+                                    ['name' => '2.5', 'target' => ''],
+                                    ['name' => '3', 'target' => ''],
+                                    ['name' => '3.5', 'target' => ''],
+                                    ['name' => '4', 'target' => ''],
+                                    ['name' => '4.5', 'target' => ''],
+                                    ['name' => '5', 'target' => ''],
+                                    ['name' => '6', 'target' => ''],
+                                    ['name' => '7', 'target' => ''],
+                                    ['name' => '8', 'target' => ''],
+                                    ['name' => '9', 'target' => ''],
+                                    ['name' => '10', 'target' => ''],
+                                    ['name' => 'Other', 'target' => '.custom_bathrooms'],
+                                ];
                             @endphp
                             <div class="wizard-step">
                                 <div class="form-group">
@@ -391,7 +448,11 @@
 
                             <div class="wizard-step">
                                 @php
-                                    $property_types = [['name' => 'Residential Property'], ['name' => 'Income Property'], ['name' => 'Commercial Property']];
+                                    $property_types = [
+                                        ['name' => 'Residential Property'],
+                                        ['name' => 'Income Property'],
+                                        ['name' => 'Commercial Property'],
+                                    ];
                                 @endphp
                                 <div class="form-group">
                                     <label class="fw-bold">Interested Property Types:</label>
@@ -427,12 +488,21 @@
                                                 ['name' => 'Duplex', 'class' => 'income-length'],
                                                 ['name' => 'Triplex', 'class' => 'income-length'],
                                                 ['name' => 'Quadplex', 'class' => 'income-length'],
-                                                ['name' => 'Five or More (Residential units)', 'class' => 'income-length'],
+                                                [
+                                                    'name' => 'Five or More (Residential units)',
+                                                    'class' => 'income-length',
+                                                ],
                                                 ['name' => 'Agriculture', 'class' => 'commercial-length'],
                                                 ['name' => 'Assembly Building', 'class' => 'commercial-length'],
                                                 ['name' => 'Business', 'class' => 'commercial-length'],
-                                                ['name' => 'Five or More (Residential units)', 'class' => 'commercial-length'],
-                                                ['name' => 'Five or More (Commercial units)', 'class' => 'commercial-length'],
+                                                [
+                                                    'name' => 'Five or More (Residential units)',
+                                                    'class' => 'commercial-length',
+                                                ],
+                                                [
+                                                    'name' => 'Five or More (Commercial units)',
+                                                    'class' => 'commercial-length',
+                                                ],
                                                 ['name' => 'Hotel/Motel', 'class' => 'commercial-length'],
                                                 ['name' => 'Industrial', 'class' => 'commercial-length'],
                                                 ['name' => 'Mixed Use', 'class' => 'commercial-length'],
@@ -467,7 +537,14 @@
                                         When will the property be ready for rent?
                                     </label>
                                     @php
-                                        $timeframes = [['name' => 'Now', 'target' => ''], ['name' => '15 days', 'target' => ''], ['name' => '30 days', 'target' => ''], ['name' => '60 days', 'target' => ''], ['name' => '90 days', 'target' => ''], ['name' => 'Other', 'target' => '.custom_ready_timeframe']];
+                                        $timeframes = [
+                                            ['name' => 'Now', 'target' => ''],
+                                            ['name' => '15 days', 'target' => ''],
+                                            ['name' => '30 days', 'target' => ''],
+                                            ['name' => '60 days', 'target' => ''],
+                                            ['name' => '90 days', 'target' => ''],
+                                            ['name' => 'Other', 'target' => '.custom_ready_timeframe'],
+                                        ];
                                     @endphp
                                     <select name="ready_timeframe" id="ready_timeframe" class="grid-picker"
                                         style="justify-content: flex-start;" required>
@@ -498,7 +575,16 @@
                                         How long would the landlord like to lease their property for?
                                     </label>
                                     @php
-                                        $lease_period = [['name' => '3 months', 'target' => ''], ['name' => '6 months', 'target' => ''], ['name' => '9 months', 'target' => ''], ['name' => '1 year', 'target' => ''], ['name' => '2 years', 'target' => ''], ['name' => '3-5 years', 'target' => ''], ['name' => '5+ years', 'target' => ''], ['name' => 'Other', 'target' => '.custom_lease_period']];
+                                        $lease_period = [
+                                            ['name' => '3 months', 'target' => ''],
+                                            ['name' => '6 months', 'target' => ''],
+                                            ['name' => '9 months', 'target' => ''],
+                                            ['name' => '1 year', 'target' => ''],
+                                            ['name' => '2 years', 'target' => ''],
+                                            ['name' => '3-5 years', 'target' => ''],
+                                            ['name' => '5+ years', 'target' => ''],
+                                            ['name' => 'Other', 'target' => '.custom_lease_period'],
+                                        ];
                                     @endphp
                                     <select name="lease_period" id="lease_period" class="grid-picker"
                                         style="justify-content: flex-start;" required>
@@ -516,7 +602,8 @@
                                 </div>
                                 <div
                                     class="form-group custom_lease_period {{ is_hidden(@$auction->get->custom_lease_period) }}">
-                                    <label class="fw-bold">How long would the landlord like to lease their property for?</label>
+                                    <label class="fw-bold">How long would the landlord like to lease their property
+                                        for?</label>
                                     <input type="text" class="form-control has-icon"
                                         value="{{ @$auction->get->custom_lease_period }}"
                                         placeholder="Write Custom Lease Period" name="custom_lease_period"
@@ -531,7 +618,13 @@
                                         Offered Listing Agreement Terms with an Agent:
                                     </label>
                                     @php
-                                        $listing_terms = [['name' => '3 months', 'target' => ''], ['name' => '6 months', 'target' => ''], ['name' => '9 months', 'target' => ''], ['name' => '12 months', 'target' => ''], ['name' => 'Other', 'target' => '.custom_listing_terms']];
+                                        $listing_terms = [
+                                            ['name' => '3 months', 'target' => ''],
+                                            ['name' => '6 months', 'target' => ''],
+                                            ['name' => '9 months', 'target' => ''],
+                                            ['name' => '12 months', 'target' => ''],
+                                            ['name' => 'Other', 'target' => '.custom_listing_terms'],
+                                        ];
                                     @endphp
                                     <select name="listing_term" id="listing_term" class="grid-picker"
                                         style="justify-content: flex-start;" required>
@@ -563,7 +656,20 @@
                                         Total offered commission to agent:
                                     </label>
                                     @php
-                                        $offered_commissions = [['name' => 'One month’s rent (for a one-year lease)', 'target' => ''], ['name' => '10% of the value of the lease (for a lease of one year or less)', 'target' => ''], ['name' => '6% of the value of the lease (for a lease of more than one year)', 'target' => ''], ['name' => 'Other', 'target' => '.custom_offered_commission']];
+                                        $offered_commissions = [
+                                            ['name' => 'One month’s rent (for a one-year lease)', 'target' => ''],
+                                            [
+                                                'name' =>
+                                                    '10% of the value of the lease (for a lease of one year or less)',
+                                                'target' => '',
+                                            ],
+                                            [
+                                                'name' =>
+                                                    '6% of the value of the lease (for a lease of more than one year)',
+                                                'target' => '',
+                                            ],
+                                            ['name' => 'Other', 'target' => '.custom_offered_commission'],
+                                        ];
                                     @endphp
                                     <select name="offered_commission" id="offered_commission" class="grid-picker"
                                         style="justify-content: flex-start;" required>
@@ -596,20 +702,56 @@
                                     </label>
                                     @php
                                         $services_data = [];
-                                        $services_data[] = ['target' => '', 'name' => 'List property on platform Bid Your Offer platform'];
+                                        $services_data[] = [
+                                            'target' => '',
+                                            'name' => 'List property on platform Bid Your Offer platform',
+                                        ];
                                         $services_data[] = ['target' => '', 'name' => 'List Property on the MLS'];
-                                        $services_data[] = ['target' => '', 'name' => 'List property on the major Real Estate websites including Zillow, Trulia, Realtor.com, Homes.com, Homesnap, Hotpads, and many more which will get thousands of views.'];
-                                        $services_data[] = ['target' => '', 'name' => 'Listing on Loopnet (Commercial)'];
-                                        $services_data[] = ['target' => '', 'name' => 'Tenant screening with a through application process that includes a credit, criminal, background, eviction, and income verification check.'];
-                                        $services_data[] = ['target' => '', 'name' => 'Provide a rental lease for esign for all parties'];
-                                        $services_data[] = ['target' => '', 'name' => 'Rental Comparative Market Analysis'];
-                                        $services_data[] = ['target' => '', 'name' => 'Marketing to many groups, pages, and affiliates.'];
-                                        $services_data[] = ['target' => '', 'name' => 'Marketing on social media platforms'];
+                                        $services_data[] = [
+                                            'target' => '',
+                                            'name' =>
+                                                'List property on the major Real Estate websites including Zillow, Trulia, Realtor.com, Homes.com, Homesnap, Hotpads, and many more which will get thousands of views.',
+                                        ];
+                                        $services_data[] = [
+                                            'target' => '',
+                                            'name' => 'Listing on Loopnet (Commercial)',
+                                        ];
+                                        $services_data[] = [
+                                            'target' => '',
+                                            'name' =>
+                                                'Tenant screening with a through application process that includes a credit, criminal, background, eviction, and income verification check.',
+                                        ];
+                                        $services_data[] = [
+                                            'target' => '',
+                                            'name' => 'Provide a rental lease for esign for all parties',
+                                        ];
+                                        $services_data[] = [
+                                            'target' => '',
+                                            'name' => 'Rental Comparative Market Analysis',
+                                        ];
+                                        $services_data[] = [
+                                            'target' => '',
+                                            'name' => 'Marketing to many groups, pages, and affiliates.',
+                                        ];
+                                        $services_data[] = [
+                                            'target' => '',
+                                            'name' => 'Marketing on social media platforms',
+                                        ];
                                         $services_data[] = ['target' => '', 'name' => 'Professional Photography'];
                                         $services_data[] = ['target' => '', 'name' => 'Aerial Photography'];
-                                        $services_data[] = ['target' => '', 'name' => 'Professional Videography or 3D virtual walk-through tour'];
-                                        $services_data[] = ['target' => '', 'name' => 'Property gets emailed to Tenant searching for homes that fit their criteria the moment the property gets listed directly through the MLS.'];
-                                        $services_data[] = ['target' => '', 'name' => 'Property management after the property is leased.'];
+                                        $services_data[] = [
+                                            'target' => '',
+                                            'name' => 'Professional Videography or 3D virtual walk-through tour',
+                                        ];
+                                        $services_data[] = [
+                                            'target' => '',
+                                            'name' =>
+                                                'Property gets emailed to Tenant searching for homes that fit their criteria the moment the property gets listed directly through the MLS.',
+                                        ];
+                                        $services_data[] = [
+                                            'target' => '',
+                                            'name' => 'Property management after the property is leased.',
+                                        ];
                                         $services_data[] = ['target' => '.custom_services', 'name' => 'Other'];
                                     @endphp
                                     <select name="services[]" id="services" multiple class="grid-picker"
@@ -773,7 +915,7 @@
     <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
     <script>
         function changeAuctionType(v) {
-            if (v == "Auction (Timer)") {
+            if (v == "Auction Listing") {
                 $('.auction_length').val("");
                 $('.auction_length').parent().children('.option-container').removeClass('active');
                 $('.traditional-length').hide();

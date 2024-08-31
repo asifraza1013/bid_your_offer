@@ -377,7 +377,8 @@
                         @endif
                         @if (@$auction->get->poolOptions != '' && @$auction->get->poolOptions != 'null')
                             <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i>
-                                Pool:<span
+                                Pool:
+                                <span
                                     class="removeBold">({{ @$auction->get->poolOptions == 'Yes' ? @$auction->get->poolOptions : 'No' }})</span>
                                 <span class= "removeBold">
                                     @if (@$auction->get->poolOptions == 'Yes')
@@ -718,13 +719,11 @@
                                         <img src="{{ asset(@$auction->get->photo) }}" class="mt-2"
                                             style="width:100%; height:224px;" />
                                     </div>
+                                @endif
                             </div>
-                            @endif
-
                         </div>
                     </div>
                 </div>
-
                 @inject('auctionUser', 'App\Models\User')
                 @php
                     $auser = $auctionUser::find(@$auction->user_id);
@@ -762,191 +761,195 @@
                 </div>
                 <!-- End  -->
             </div>
-        </div>
-        <div class="col-sm-12 col-md-4 col-lg-4 rightCol">
-            @if (@$auction->get->titleListing != null)
-                <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Title of the listing:
-                    <h1>{{ @$auction->get->titleListing }}</h1>
-                </div>
-            @endif
-            {{-- <h1>{{ @$auction->address }}</h1> --}}
-            <hr>
-            @inject('carbon', 'Carbon\Carbon')
-            @php
-                if (@$auction->auction_length > 0) {
-                    $start = $carbon::now();
-                    $end = $carbon::parse(@$auction->created_at)->addDays(@$auction->auction_length);
-                    $diff = $end->diffInDays($start);
-                }
-            @endphp
-            @if (@$auction->auction_length > 0)
-                @php
-                    $diff_d = $diff;
-                    $diff_H = $start->diff($end)->format('%H');
-                    $diff_I = $start->diff($end)->format('%I');
-                    $diff_S = $start->diff($end)->format('%S');
-                @endphp
-                <div class="time d-flex justify-content-between text-center flex-wrap pb-2">
-                    <div>
-                        <h5><b class="timer-d"> {{ $diff_d }} </b></h5>
-                        <h6 class="opacity-50">Days</h6>
+            <div class="col-sm-12 col-md-4 col-lg-4 rightCol">
+                @if (@$auction->get->titleListing != null)
+                    <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Title of the
+                        listing:
+                        <h1>{{ @$auction->get->titleListing }}</h1>
                     </div>
-                    <div>
-                        <h5><b class="timer-h"> {{ $diff_H }} </b></h5>
-                        <h6 class="opacity-50">Hrs</h6>
-                    </div>
-                    <div>
-                        <h5><b class="timer-m"> {{ $diff_I }} </b></h5>
-                        <h6 class="opacity-50">Mins</h6>
-                    </div>
-                    <div>
-                        <h5><b class="timer-s"> {{ $diff_S }} </b></h5>
-                        <h6 class="opacity-50">Secs</h6>
-                    </div>
-                </div>
-            @endif
-            @php
-                $highest_bid_price = @$auction->bids->max('price_percent') ?? @$auction->get->ideal_price;
-                $highest_bid_price =
-                    $highest_bid_price > @$auction->get->ideal_price ? $highest_bid_price : @$auction->get->ideal_price;
-                $highest_bidder = @$auction->bids->where('price_percent', $highest_bid_price)->first();
-                $my_bid = @$auction->bids->where('user_id', $auth_id)->first();
-            @endphp
-            @if (@$auction->user_id != $auth_id)
-                <a href="{{ route('auction-chat', ['landlord-agent', $auction->id]) }}"
-                    class="btn btn-success w-100 mb-2">
-                    <i class="fa-solid fa-paper-plane"></i> Send Message</a>
-            @endif
-            @if ($auth_id)
-                @if (in_array(auth()->user()->user_type, ['agent']))
-                    <button class="btn w-100"
-                        onclick="javascript:window.location='{{ route('landlord.agent.auction.bid.add', @$auction->id) }}';"
-                        {{-- {{ $my_bid || @$auction->user_id == $auth_id ? 'disabled' : '' }} --}}>
-                        <span class="bid">Bid Now </span>
-                        <span
-                            class="badge bg-light float-end text-dark">${{ @$auction->get->custom_expectation == '' ? @$auction->get->expectation : @$auction->get->custom_expectation }}</span>
-                        @if (@$auction->sold)
-                            <span class="badge bg-danger">Sold</span>
-                        @endif
-                    </button>
                 @endif
-            @else
-                <a href="{{ route('login') }}">
-                    <button class="btn w-100">
-                        <span class="bid">Login for Bid </span>
-                        <span class="badge bg-light float-end text-dark">${{ $highest_bid_price }}</span>
-                    </button>
-                </a>
-            @endif
-            <!-- Highest Bider   -->
-            <div class="card higestBider">
-                <div class="card-body">
-                    @if (@$auction->bids->count() > 0)
-                    @else
-                        <p>No one has bid on this auction.</p>
+                {{-- <h1>{{ @$auction->address }}</h1> --}}
+                <hr>
+                @inject('carbon', 'Carbon\Carbon')
+                @php
+                    if (@$auction->auction_length > 0) {
+                        $start = $carbon::now();
+                        $end = $carbon::parse(@$auction->created_at)->addDays(@$auction->auction_length);
+                        $diff = $end->diffInDays($start);
+                    }
+                @endphp
+                @if (@$auction->auction_length > 0)
+                    @php
+                        $diff_d = $diff;
+                        $diff_H = $start->diff($end)->format('%H');
+                        $diff_I = $start->diff($end)->format('%I');
+                        $diff_S = $start->diff($end)->format('%S');
+                    @endphp
+                    <div class="time d-flex justify-content-between text-center flex-wrap pb-2">
+                        <div>
+                            <h5><b class="timer-d"> {{ $diff_d }} </b></h5>
+                            <h6 class="opacity-50">Days</h6>
+                        </div>
+                        <div>
+                            <h5><b class="timer-h"> {{ $diff_H }} </b></h5>
+                            <h6 class="opacity-50">Hrs</h6>
+                        </div>
+                        <div>
+                            <h5><b class="timer-m"> {{ $diff_I }} </b></h5>
+                            <h6 class="opacity-50">Mins</h6>
+                        </div>
+                        <div>
+                            <h5><b class="timer-s"> {{ $diff_S }} </b></h5>
+                            <h6 class="opacity-50">Secs</h6>
+                        </div>
+                    </div>
+                @endif
+                @php
+                    $highest_bid_price = @$auction->bids->max('price_percent') ?? @$auction->get->ideal_price;
+                    $highest_bid_price =
+                        $highest_bid_price > @$auction->get->ideal_price
+                            ? $highest_bid_price
+                            : @$auction->get->ideal_price;
+                    $highest_bidder = @$auction->bids->where('price_percent', $highest_bid_price)->first();
+                    $my_bid = @$auction->bids->where('user_id', $auth_id)->first();
+                @endphp
+                @if (@$auction->user_id != $auth_id)
+                    <a href="{{ route('auction-chat', ['landlord-agent', $auction->id]) }}"
+                        class="btn btn-success w-100 mb-2">
+                        <i class="fa-solid fa-paper-plane"></i> Send Message</a>
+                @endif
+                @if ($auth_id)
+                    @if (in_array(auth()->user()->user_type, ['agent']))
+                        <button class="btn w-100"
+                            onclick="javascript:window.location='{{ route('landlord.agent.auction.bid.add', @$auction->id) }}';"
+                            {{-- {{ $my_bid || @$auction->user_id == $auth_id ? 'disabled' : '' }} --}}>
+                            <span class="bid">Bid Now </span>
+                            <span
+                                class="badge bg-light float-end text-dark">${{ @$auction->get->custom_expectation == '' ? @$auction->get->expectation : @$auction->get->custom_expectation }}</span>
+                            @if (@$auction->sold)
+                                <span class="badge bg-danger">Sold</span>
+                            @endif
+                        </button>
                     @endif
-                    <div class="accordion" id="accordionExample">
-                        <div class="accordion-item border-0">
-                            @foreach (@$auction->bids as $bid)
-                                <!-- Item loop -->
-                                <div class="accordion" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#item{{ @$bid->id }}" aria-expanded="true"
-                                    aria-controls="item{{ @$bid->id }}">
-                                    <div class="d-flex small accordion mr-0 text-center">
-                                        <div class="col-1">
-                                            <span class="badge">{{ $loop->iteration }}</span>
-                                        </div>
-                                        <div class="col-4">
-                                            {{ @$bid->user->name }} </div>
-                                        <div class="col-4 text-right">
-                                            ${{ @$bid->get->offering_price }}</div>
-                                        <div class="col-2">
-                                            Terms↓
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="item{{ @$bid->id }}" class="accordion-collapse collapse"
-                                    aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        <div id="bidding_history_data">
-                                            <div>
-                                                <p class="d-flex justify-content-between small">First Name:
-                                                    <span>{{ @$bid->get->first_name }}</span>
-                                                </p>
-                                                <p class="d-flex justify-content-between small">Landlord Agency
-                                                    Agreement Timeframe:
-                                                    <span>{{ @$bid->get->listing_terms }}</span>
-                                                </p>
-                                                <p class="d-flex justify-content-between small">Commission Offered:
-                                                    <span>{{ @$bid->get->offering_price }}</span>
-                                                </p>
-                                                @if (@$bid->get->services)
-                                                    <div>
-                                                        <label>Services Offered by the Agent:</label>
-                                                        <ul class="services">
-                                                            @foreach (@$bid->get->services as $service)
-                                                                @if ($service == 'Other')
-                                                                    @continue
-                                                                @endif
-                                                                <li style="font-size: 16px; margin-top:15px;">
-                                                                    {{ $service }}</li>
-                                                            @endforeach
-                                                            @if (@$bid->get->other_services != '' && @$bid->get->other_services != 'null')
-                                                                <li style="font-size: 16px; margin-top:15px;">
-                                                                    {{ @$bid->get->other_services }}</li>
-                                                            @endif
-                                                        </ul>
-                                                    </div>
-                                                @endif
+                @else
+                    <a href="{{ route('login') }}">
+                        <button class="btn w-100">
+                            <span class="bid">Login for Bid </span>
+                            <span class="badge bg-light float-end text-dark">${{ $highest_bid_price }}</span>
+                        </button>
+                    </a>
+                @endif
+                <!-- Highest Bider   -->
+                <div class="card higestBider">
+                    <div class="card-body">
+                        @if (@$auction->bids->count() > 0)
+                        @else
+                            <p>No one has bid on this auction.</p>
+                        @endif
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item border-0">
+                                @foreach (@$auction->bids as $bid)
+                                    <!-- Item loop -->
+                                    <div class="accordion" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#item{{ @$bid->id }}" aria-expanded="true"
+                                        aria-controls="item{{ @$bid->id }}">
+                                        <div class="d-flex small accordion mr-0 text-center">
+                                            <div class="col-1">
+                                                <span class="badge">{{ $loop->iteration }}</span>
+                                            </div>
+                                            <div class="col-4">
+                                                {{ @$bid->user->name }}
+                                            </div>
+                                            <div class="col-4 text-right">
+                                                ${{ @$bid->get->offering_price }}
+                                            </div>
+                                            <div class="col-2">
+                                                Terms↓
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                    <div id="item{{ @$bid->id }}" class="accordion-collapse collapse"
+                                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <div id="bidding_history_data">
+                                                <div>
+                                                    <p class="d-flex justify-content-between small">First Name:
+                                                        <span>{{ @$bid->get->first_name }}</span>
+                                                    </p>
+                                                    <p class="d-flex justify-content-between small">Landlord Agency
+                                                        Agreement Timeframe:
+                                                        <span>{{ @$bid->get->listing_terms }}</span>
+                                                    </p>
+                                                    <p class="d-flex justify-content-between small">Commission Offered:
+                                                        <span>{{ @$bid->get->offering_price }}</span>
+                                                    </p>
+                                                    @if (@$bid->get->services)
+                                                        <div>
+                                                            <label>Services Offered by the Agent:</label>
+                                                            <ul class="services">
+                                                                @foreach (@$bid->get->services as $service)
+                                                                    @if ($service == 'Other')
+                                                                        @continue
+                                                                    @endif
+                                                                    <li style="font-size: 16px; margin-top:15px;">
+                                                                        {{ $service }}</li>
+                                                                @endforeach
+                                                                @if (@$bid->get->other_services != '' && @$bid->get->other_services != 'null')
+                                                                    <li style="font-size: 16px; margin-top:15px;">
+                                                                        {{ @$bid->get->other_services }}</li>
+                                                                @endif
+                                                            </ul>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <button class="btn w-100 mt-0">
-                <span class="bid m-0"><i class="fa fa-user"></i> </span>
-            </button>
-            <!-- Social Details  -->
-            <div class="p-4 card">
-                <p class="text-600">Share this link via</p>
-                <div class="qr-code" style="width: 100%; height:200px;">
-                    {{ qr_code(route('landlord.agent.auction.view', @$auction->id), 200) }}
-                </div>
-                <div class="card-social">
-                    <ul class="icons">
-                        <a href="">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="">
-                            <i class="fab fa-pinterest"></i>
-                        </a>
-                        <a href="">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                    </ul>
-                    <p class="small opacity-8">Or copy link</p>
-                    <div class="field">
-                        <i class="fa fa-link"></i>
-                        <input type="text" readonly="" id="copylink"
-                            value="https://bidyouroffer.com/listing/534-pinellas-bayway-s-204-tierra-verde-fl-33715-4/">
-                        <button class="btn-primary btn-sm text-600 js-copy-link text-center border-0"
-                            style="min-width:60px;">Copy</button>
+                <button class="btn w-100 mt-0">
+                    <span class="bid m-0"><i class="fa fa-user"></i> </span>
+                </button>
+                <!-- Social Details  -->
+                <div class="p-4 card">
+                    <p class="text-600">Share this link via</p>
+                    <div class="qr-code" style="width: 100%; height:200px;">
+                        {{ qr_code(route('landlord.agent.auction.view', @$auction->id), 200) }}
+                    </div>
+                    <div class="card-social">
+                        <ul class="icons">
+                            <a href="">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="">
+                                <i class="fab fa-pinterest"></i>
+                            </a>
+                            <a href="">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                        </ul>
+                        <p class="small opacity-8">Or copy link</p>
+                        <div class="field">
+                            <i class="fa fa-link"></i>
+                            <input type="text" readonly="" id="copylink"
+                                value="https://bidyouroffer.com/listing/534-pinellas-bayway-s-204-tierra-verde-fl-33715-4/">
+                            <button class="btn-primary btn-sm text-600 js-copy-link text-center border-0"
+                                style="min-width:60px;">Copy</button>
+                        </div>
                     </div>
                 </div>
+                <!-- End  -->
             </div>
-            <!-- End  -->
         </div>
-    </div>
     </div>
     <hr>
     <!-- Recommmended Section  -->

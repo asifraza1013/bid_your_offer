@@ -15,7 +15,7 @@ class LandlordAgentAuctionBidController extends Controller
     public function add_bid($id, Request $request)
     {
         $auction = LandlordAgentAuction::find($id);
-        $title = "Add Bidd to Hiring Landlord's Agent - " . $auction->address;
+        $title = "Add Bid to Hire a Listing Agent Listing - " . $auction->address;
         return view('hire_landlord_agent.add-bid', compact('title', 'auction'));
     }
 
@@ -40,6 +40,7 @@ class LandlordAgentAuctionBidController extends Controller
         $bid->saveMeta("custom_listing_terms", $request->custom_listing_terms);
         $bid->saveMeta("offering_price", $request->offering_price);
         $bid->saveMeta("agentCommission", $request->agentCommission);
+        $bid->saveMeta("agentCommissionOther", $request->agentCommissionOther);
         $bid->saveMeta("commissionRetianOpt", $request->commissionRetianOpt);
         $bid->saveMeta("customRetainCommission", $request->customRetainCommission);
         $bid->saveMeta("agentCharges", $request->agentCharges);
@@ -62,6 +63,7 @@ class LandlordAgentAuctionBidController extends Controller
         $bid->saveMeta("agent_brokerage", $request->agent_brokerage);
         $bid->saveMeta("agent_license_no", $request->agent_license_no);
         $bid->saveMeta("mls_id", $request->mls_id);
+        $bid->saveMeta("bid_on_hirenow_terms", $request->bid_on_hirenow_terms);
 
         if ($request->hasFile('video_file')) {
             $file = $request->video_file;

@@ -1853,7 +1853,7 @@
               @endif
             </div>
             <div class="row">
-              @if ($auction->get->video != null)
+              @if (isset($auction->get) && isset($auction->get->video) && $auction->get->video != null)
               <div class="col-md-6 col-6 pt-2 fw-bold">Video:
                   <span class="removeBold">
                       <video src="{{ asset($auction->get->video) }}" style="width:100%;height:29vh;"
@@ -1862,7 +1862,7 @@
                       </span>
                   </div>
                   @endif
-                  @if ($auction->get->photo != null)
+                  @if (isset($auction->get) && isset($auction->get->photo) && $auction->get->photo != null)
                 <div class="col-md-6 col-6 pt-2 fw-bold">Photo:
                   <span class="removeBold">
                     <img src="{{ asset($auction->get->photo) }}" style="width:100%;height:29vh;" />

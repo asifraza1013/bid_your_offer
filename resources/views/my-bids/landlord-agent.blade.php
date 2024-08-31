@@ -81,7 +81,7 @@
                                             <ul class="p-0 left">
                                                 <li>
                                                     <div class="left">
-                                                        Seller:
+                                                        Landlord:
                                                     </div>
                                                     <div class="right"><span>
                                                             <a href="{{route('author', $bid->auction->user->id)}}"
