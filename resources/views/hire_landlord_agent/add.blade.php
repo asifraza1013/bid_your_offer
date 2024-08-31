@@ -1232,8 +1232,8 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="12">
-                                {{-- <span class="resFields">
+                            {{-- <div class="wizard-step" data-step="12">
+                                <span class="resFields">
                                     @php
                                         $sqftRes = [
                                             ['name' => 'Appraisal', 'target' => ''],
@@ -1298,10 +1298,10 @@
                                             data-icon="fa-solid fa-ruler-combined" id="custom_property_condition"
                                             required />
                                     </div>
-                                </span> --}}
-                            </div>
-                            <div class="wizard-step" data-step="13">
-                                {{-- @php
+                                </span>
+                            </div> --}}
+                            {{-- <div class="wizard-step" data-step="13">
+                                @php
                                     $acreageRes = [
                                         ['name' => '0 to less than 1/4', 'target' => ''],
                                         ['name' => '1/4 to less than 1/2', 'target' => ''],
@@ -1332,9 +1332,9 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                </div> --}}
-                            </div>
-                            <div class="wizard-step" data-step="14">
+                                </div>
+                            </div> --}}
+                            <div class="wizard-step" data-step="12" data-old="14">
                                 <span class="resFields">
                                     @php
                                         $garageOptions = [
@@ -1418,7 +1418,7 @@
                                         </div>
                                     </div>
                             </div>
-                            <div class="wizard-step" data-step="15">
+                            <div class="wizard-step" data-step="13" data-old="15">
                                 <div class="form-group">
                                     <label class="fw-bold">Pool:</label>
                                     </label>
@@ -1543,8 +1543,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="16">
-                                {{-- <div class="row align-items-end mt-4">
+                            {{-- <div class="wizard-step" data-step="16">
+                                <div class="row align-items-end mt-4">
                                     @php
                                         $views = [
                                             ['target' => '', 'name' => 'City', 'icon' => 'fa-regular fa-check-circle'],
@@ -1610,9 +1610,9 @@
                                                 data-icon="fa-solid fa-ruler-combined" required>
                                         </div>
                                     </div>
-                                </div> --}}
-                            </div>
-                            <div class="wizard-step" data-step="17">
+                                </div>
+                            </div> --}}
+                            <div class="wizard-step" data-step="14" data-old="17">
                                 <span class="commercialFields">
                                     <div class="form-group">
                                         @php
@@ -1688,7 +1688,7 @@
                                     </div>
                                 </span>
                             </div>
-                            <div class="wizard-step" data-step="18">
+                            <div class="wizard-step" data-step="15" data-old="18">
                                 @php
                                     $appliances = [
                                         ['name' => 'Bar Fridge', 'target' => ''],
@@ -1748,7 +1748,7 @@
                                         data-icon="fa-regular fa-check-circle" id="cutom_appliances" required />
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="19">
+                            <div class="wizard-step" data-step="16" data-old="19">
                                 <span class="resFields">
                                     @php
                                         $Furnishings = [
@@ -1776,7 +1776,7 @@
                                     </div>
                                 </span>
                             </div>
-                            <div class="wizard-step" data-step="20">
+                            <div class="wizard-step" data-step="17" data-old="20">
                                 <span class="commercialFields">
                                     <div class="form-group">
                                         <label class="fw-bold">
@@ -1912,7 +1912,7 @@
                                     </div>
                                 </span>
                             </div>
-                            <div class="wizard-step" data-step="21">
+                            <div class="wizard-step" data-step="18" data-old="21">
                                 @php
                                     $rent_includes = [
                                         ['name' => 'Cable TV', 'target' => ''],
@@ -1957,7 +1957,7 @@
                                         data-icon="fa-regular fa-check-circle" id="rent_include" required />
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="22">
+                            <div class="wizard-step" data-step="19" data-old="22">
                                 @php
                                     $tenantPays = [
                                         ['name' => 'Cable TV', 'target' => ''],
@@ -2048,7 +2048,7 @@
                                 </div>
 
                             </div>
-                            <div class="wizard-step" data-step="23">
+                            <div class="wizard-step" data-step="20" data-old="23">
                                 @php
                                     $petOptions = [
                                         [
@@ -2118,7 +2118,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="24">
+                            <div class="wizard-step" data-step="21" data-old="24">
                                 <div class="form-group">
                                     <label class="fw-bold">Is the property located in a 55-and-over community?</label>
                                     </label>
@@ -2141,7 +2141,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="25">
+                            <div class="wizard-step" data-step="22" data-old="25">
                                 <span class="resFields">
                                     @php
                                         $leaseAmount = [
@@ -2195,7 +2195,7 @@
                                     </div>
                                 </span>
                             </div>
-                            <div class="wizard-step" data-step="26">
+                            <div class="wizard-step" data-step="23" data-old="26">
                                 @php
                                     $leaseDuration = [
                                         ['name' => '3 Months', 'target' => ''],
@@ -2231,7 +2231,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="27">
+                            <div class="wizard-step" data-step="24" data-old="27">
                                 @php
                                     $termLease = [
                                         ['name' => 'Absolute (Triple) Net', 'target' => ''],
@@ -2276,7 +2276,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="28">
+                            <div class="wizard-step" data-step="25" data-old="28">
                                 @php
                                     $occupant_types = [
                                         ['name' => 'Vacant', 'target' => '', 'icon' => 'fa-regular fa-circle-check'],
@@ -2309,7 +2309,7 @@
                                         id="occupant_type_input" required />
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="29">
+                            <div class="wizard-step" data-step="26" data-old="29">
                                 <div class="form-group">
                                     <label class="fw-bold">
                                         Desired Rental Amount:
@@ -2318,7 +2318,7 @@
                                         data-icon="fa-solid fa-dollar-sign" id="expectation" required />
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="30">
+                            <div class="wizard-step" data-step="27" data-old="30">
                                 <div class="form-group">
 
                                     <label class="fw-bold">Listing Availability Date:</label>
@@ -2326,7 +2326,7 @@
                                         class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="31">
+                            <div class="wizard-step" data-step="28" data-old="31">
                                 <div class="form-group">
                                     <label class="fw-bold">
                                         Desired Lease Length:
@@ -2361,7 +2361,7 @@
                                         data-icon="fa-solid fa-calendar-days" id="custom_lease_period" required />
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="32">
+                            <div class="wizard-step" data-step="29" data-old="32">
                                 <div class="form-group ">
                                     <label class="fw-bold">
                                         What is the timeframe offered to the agent in the Landlord Agency Agreement?
@@ -2398,7 +2398,7 @@
                                 </div>
                                 {{-- </span> --}}
                             </div>
-                            <div class="wizard-step" data-step="33">
+                            <div class="wizard-step" data-step="30" data-old="33">
                                 <div class="form-group ">
                                     <label class="fw-bold">
                                         What is the total commission being offered to the listing agent?
@@ -2431,7 +2431,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="34">
+                            <div class="wizard-step" data-step="31" data-old="34">
                                 <div class="form-group ">
                                     <label class="fw-bold">
                                         If a tenant is represented by an agent, what portion of the commission should be
@@ -2467,7 +2467,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="35">
+                            <div class="wizard-step" data-step="32" data-old="35">
                                 <div class="row">
                                     <div class="form-group mt-4 col-md-12">
                                         <label class='fw-bold'>
@@ -2487,7 +2487,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="wizard-step residential_remove" data-step="36">
+                            <div class="wizard-step residential_remove" data-step="33" data-old="36">
                                 <span class="resFields">
                                     <div class="form-group">
                                         <label class="fw-bold">
@@ -2504,10 +2504,13 @@
                                                     'name' => 'List the property on the Bid Your Offer platform.',
                                                     'target' => '',
                                                 ],
-                                                ['name' => 'List the property on the MLS.', 'target' => ''],
                                                 [
                                                     'name' =>
                                                         'List the property on major real estate websites, such as Zillow, Trulia, Realtor.com, Homes.com, Homesnap, Hotpads, and others, to increase visibility and exposure.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'List the property on the Bid Your Offer platform.',
                                                     'target' => '',
                                                 ],
                                                 [
@@ -2549,7 +2552,7 @@
                                                         "Provide virtual staging to enhance the property's visual appeal and attract potential tenants.",
                                                     'target' => '',
                                                 ],
-                                                ['name' => 'Host an Open House.', 'target' => ''],
+                                                ['name' => 'Host an Open House(s).', 'target' => ''],
                                                 [
                                                     'name' =>
                                                         "Send email alerts to tenants searching for properties that match the property's criteria the moment the property is listed directly through the MLS.",
@@ -2645,10 +2648,6 @@
                                                         'Conduct a thorough rental market analysis (RMA) to determine the property\'s value and pricing strategy.',
                                                     'target' => '',
                                                 ],
-                                                [
-                                                    'name' => 'List the property on the Bid Your Offer platform.',
-                                                    'target' => '',
-                                                ],
                                                 ['name' => 'List the property on the MLS.', 'target' => ''],
                                                 [
                                                     'name' =>
@@ -2658,6 +2657,10 @@
                                                 [
                                                     'name' =>
                                                         'List the property on Crexi, a major commercial real estate website.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'List the property on the Bid Your Offer platform.',
                                                     'target' => '',
                                                 ],
                                                 [
@@ -2699,7 +2702,7 @@
                                                         'Provide virtual staging to enhance the property\'s visual appeal and attract potential tenants.',
                                                     'target' => '',
                                                 ],
-                                                ['name' => 'Host an Open House.', 'target' => ''],
+                                                // ['name' => 'Host an Open House.', 'target' => ''],
                                                 [
                                                     'name' =>
                                                         'Send email alerts to tenants searching for properties that match the property\'s criteria the moment the property is listed directly through the MLS.',
@@ -2784,7 +2787,7 @@
                                     </div>
                                 </span>
                             </div>
-                            <div class="wizard-step" data-step="37">
+                            <div class="wizard-step" data-step="34" data-old="37">
                                 <h4>For a more personalized listing, you can include a picture of
                                     yourself and/or include a video of yourself providing additional information about your
                                     background and criteria.</h4>
@@ -3453,34 +3456,34 @@
                                 'Income Property') {
                                 StepWizard.nextStep = 10;
                                 StepWizard.backStep = 7;
-                            } else if (StepWizard.currentStep == 16 && property_type ==
+                            } else if (StepWizard.currentStep == 13 && property_type ==
                                 'Residential Property') {
-                                StepWizard.nextStep = 18;
-                                StepWizard.backStep = 16;
-                            } else if (StepWizard.currentStep == 21 && property_type ==
+                                StepWizard.nextStep = 15;
+                                StepWizard.backStep = 13;
+                            } else if (StepWizard.currentStep == 18 && property_type ==
                                 'Residential Property') {
-                                StepWizard.nextStep = 23;
-                                StepWizard.backStep = 21;
-                            } else if (StepWizard.currentStep == 26 && property_type ==
+                                StepWizard.nextStep = 20;
+                                StepWizard.backStep = 18;
+                            } else if (StepWizard.currentStep == 23 && property_type ==
                                 'Residential Property') {
-                                StepWizard.nextStep = 28;
-                                StepWizard.backStep = 26;
+                                StepWizard.nextStep = 25;
+                                StepWizard.backStep = 23;
                             } else if (StepWizard.currentStep == 8 && property_type ==
                                 'Commercial Property') {
                                 StepWizard.nextStep = 10;
                                 StepWizard.backStep = 8;
-                            } else if (StepWizard.currentStep == 13 && property_type ==
+                            } else if (StepWizard.currentStep == 11 && property_type ==
+                                'Commercial Property') {
+                                StepWizard.nextStep = 14;
+                                StepWizard.backStep = 11;
+                            } else if (StepWizard.currentStep == 15 && property_type ==
                                 'Commercial Property') {
                                 StepWizard.nextStep = 17;
-                                StepWizard.backStep = 13;
-                            } else if (StepWizard.currentStep == 18 && property_type ==
+                                StepWizard.backStep = 15;
+                            } else if (StepWizard.currentStep == 17 && property_type ==
                                 'Commercial Property') {
-                                StepWizard.nextStep = 20;
-                                StepWizard.backStep = 18;
-                            } else if (StepWizard.currentStep == 23 && property_type ==
-                                'Commercial Property') {
-                                StepWizard.nextStep = 25;
-                                StepWizard.backStep = 23;
+                                StepWizard.nextStep = 19;
+                                StepWizard.backStep = 17;
                             } else {
                                 StepWizard.backStep = StepWizard.currentStep;
                             }
@@ -3495,7 +3498,7 @@
                                 $('.wizard-step-finish').show();
                             }
                             if (
-                                StepWizard.currentStep == 37 &&
+                                StepWizard.currentStep == 34 &&
                                 (property_type == 'Commercial Property' || property_type ==
                                     'Residential Property')
                             ) {
@@ -3520,27 +3523,27 @@
                         //   'Residential Property') {
                         //   StepWizard.backStep = 10;
                         // }
-                        else if (StepWizard.currentStep == 18 && property_type ==
+                        else if (StepWizard.currentStep == 15 && property_type ==
                             'Residential Property') {
-                            StepWizard.backStep = 16;
-                        } else if (StepWizard.currentStep == 23 && property_type ==
+                            StepWizard.backStep = 13;
+                        } else if (StepWizard.currentStep == 20 && property_type ==
                             'Residential Property') {
-                            StepWizard.backStep = 21;
-                        } else if (StepWizard.currentStep == 28 && property_type ==
+                            StepWizard.backStep = 18;
+                        } else if (StepWizard.currentStep == 25 && property_type ==
                             'Residential Property') {
-                            StepWizard.backStep = 26;
+                            StepWizard.backStep = 23;
                         } else if (StepWizard.currentStep == 10 && property_type ==
                             'Commercial Property') {
                             StepWizard.backStep = 8;
+                        } else if (StepWizard.currentStep == 14 && property_type ==
+                            'Commercial Property') {
+                            StepWizard.backStep = 11;
                         } else if (StepWizard.currentStep == 17 && property_type ==
                             'Commercial Property') {
-                            StepWizard.backStep = 13;
-                        } else if (StepWizard.currentStep == 20 && property_type ==
+                            StepWizard.backStep = 15;
+                        } else if (StepWizard.currentStep == 19 && property_type ==
                             'Commercial Property') {
-                            StepWizard.backStep = 18;
-                        } else if (StepWizard.currentStep == 24 && property_type ==
-                            'Commercial Property') {
-                            StepWizard.backStep = 21;
+                            StepWizard.backStep = 17;
                         } else {
                             StepWizard.backStep = StepWizard.currentStep - 1;
                         }
@@ -3622,12 +3625,12 @@
             stepChanged: function() {
                 var comp = 0;
 
-                if (StepWizard.currentStep >= 5 && StepWizard.currentStep <= 37) {
+                if (StepWizard.currentStep >= 5 && StepWizard.currentStep <= 34) {
                     // Calculate progress for Residential and Income property steps (5 to 19)
-                    comp = 20 + (((StepWizard.currentStep - 5) / (37 - 5)) * 80);
-                } else if (StepWizard.currentStep >= 5 && StepWizard.currentStep <= 37) {
+                    comp = 20 + (((StepWizard.currentStep - 5) / (34 - 5)) * 80);
+                } else if (StepWizard.currentStep >= 5 && StepWizard.currentStep <= 34) {
                     // Calculate progress for Commercial and Business opportunity steps (20 to 32)
-                    comp = 20 + (((StepWizard.currentStep - 5) / (37 - 5)) * 80);
+                    comp = 20 + (((StepWizard.currentStep - 5) / (34 - 5)) * 80);
                 } else if (StepWizard.currentStep >= 33 && StepWizard.currentStep <= 43) {
                     // Calculate progress for Vacant land steps (33 to 43)
                     comp = 20 + (((StepWizard.currentStep - 33) / (43 - 33)) * 80);
