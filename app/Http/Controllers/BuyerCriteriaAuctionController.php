@@ -498,11 +498,11 @@ class BuyerCriteriaAuctionController extends Controller
             $soldAuctions = BuyerCriteriaAuction::where(['user_id' => Auth::user()->id, 'is_approved' => true, 'is_sold' => true]); //, 'is_paid' => true
             $pendingPaymentAuctions = BuyerCriteriaAuction::where(['user_id' => Auth::user()->id, 'is_approved' => true, 'is_sold' => true, 'is_paid' => false]);
         } else {
-            $pendingAuctions = BuyerCriteriaAuction::where(['buyer_id' => Auth::user()->id, 'is_approved' => false, 'is_sold' => false]);
-            $pendingApprovalAuctions = BuyerCriteriaAuction::where(['buyer_id' => Auth::user()->id, 'is_approved' => false, 'is_sold' => false]);
-            $liveAuctions = BuyerCriteriaAuction::where(['buyer_id' => Auth::user()->id, 'is_approved' => true, 'is_sold' => false]);
-            $soldAuctions = BuyerCriteriaAuction::where(['buyer_id' => Auth::user()->id, 'is_approved' => true, 'is_sold' => true]); //, 'is_paid' => true
-            $pendingPaymentAuctions = BuyerCriteriaAuction::where(['buyer_id' => Auth::user()->id, 'is_approved' => true, 'is_sold' => true, 'is_paid' => false]);
+            $pendingAuctions = BuyerCriteriaAuction::where(['user_id' => Auth::user()->id, 'is_approved' => false, 'is_sold' => false]);
+            $pendingApprovalAuctions = BuyerCriteriaAuction::where(['user_id' => Auth::user()->id, 'is_approved' => false, 'is_sold' => false]);
+            $liveAuctions = BuyerCriteriaAuction::where(['user_id' => Auth::user()->id, 'is_approved' => true, 'is_sold' => false]);
+            $soldAuctions = BuyerCriteriaAuction::where(['user_id' => Auth::user()->id, 'is_approved' => true, 'is_sold' => true]); //, 'is_paid' => true
+            $pendingPaymentAuctions = BuyerCriteriaAuction::where(['user_id' => Auth::user()->id, 'is_approved' => true, 'is_sold' => true, 'is_paid' => false]);
         }
         if ($type == "0") {
             // $auctions = $pendingAuctions->get();

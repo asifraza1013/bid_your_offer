@@ -296,7 +296,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Only Buyer and Agent can access these routes
     Route::middleware('buyerBidderAuth')->group(function () {
-        Route::get('property/listing/add/bid/{id}', [PropertyAuctionBidController::class, 'add_bid'])->name('seller_property_add_bid');
+        Route::get('/property/listing/add/bid/{id}', [PropertyAuctionBidController::class, 'add_bid'])->name('seller_property_add_bid');
         Route::post('/property/listing/save-pa-bid', [PropertyAuctionBidController::class, 'savePABid'])->name('savePABid');
         Route::post('/property/listing/accept-pa-bid', [PropertyAuctionBidController::class, 'acceptPABid'])->name('acceptPABid');
         Route::post('/property/listing/reject-pa-bid', [PropertyAuctionBidController::class, 'rejectPABid'])->name('rejectPABid');

@@ -337,7 +337,6 @@
         <form class="p-4 pt-0 mainform" action="{{ route('add-listing') }}" method="POST" enctype="multipart/form-data">
           @csrf
           {{-- Slide 1 --}}
-      
           <div class="wizard-step" id="after_this" data-step="1">
             <h4>Please provide the property's complete address, along with the city, county, and state, pertaining to the real estate asset that the seller intends to place on the market.</h4>
             <div class="form-group">
@@ -362,7 +361,6 @@
               <input type="text" name="state" placeholder="" data-type="states" id="state"
                 class="form-control has-icon search_places" data-icon="fa-solid fa-flag-usa" required>
             </div>
-           
           </div>
           {{-- Slide 1 --}}
           {{-- Slide 2 --}}
@@ -935,26 +933,26 @@
                       data-icon="fa-solid fa-ruler-combined" required>
                   </div>
                 </div>
-              <div class="form-group row">
-                @php
-                  $sellerOffer = [['name' => 'Yes', 'target' => '.sellerOfferYesAuction','icon'=>'<i class="fa-regular fa-circle-check"></i>'], ['name' => 'No', 'target' => '','icon'=>'<i class="fa-regular fa-circle-xmark"></i>']];
-                @endphp
-              <label class="fw-bold">Is the seller offering a credit to the buyer at closing?  </label>
-              <select class="grid-picker" name="sellerOffer" style="justify-content: flex-start;">
-                <option value="">Select</option>
-                @foreach ($sellerOffer as $item)
-                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='{{$item['icon']}}'>
-                    {{ $item['name'] }}
-                  </option>
-                @endforeach
-              </select>  
-              <div class="form-group sellerOfferYesAuction d-none">
-                <label class="fw-bold">What credit amount is the seller offering to the buyer at closing?</label>
-                <input type="number" name="sellerOfferYes" placeholder=""
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                <div class="form-group row">
+                  @php
+                    $sellerOffer = [['name' => 'Yes', 'target' => '.sellerOfferYesAuction','icon'=>'<i class="fa-regular fa-circle-check"></i>'], ['name' => 'No', 'target' => '','icon'=>'<i class="fa-regular fa-circle-xmark"></i>']];
+                  @endphp
+                <label class="fw-bold">Is the seller offering a credit to the buyer at closing?  </label>
+                <select class="grid-picker" name="sellerOffer" style="justify-content: flex-start;">
+                  <option value="">Select</option>
+                  @foreach ($sellerOffer as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                      style="width:calc(33.3% - 10px);" data-icon='{{$item['icon']}}'>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>  
+                <div class="form-group sellerOfferYesAuction d-none">
+                  <label class="fw-bold">What credit amount is the seller offering to the buyer at closing?</label>
+                  <input type="number" name="sellerOfferYes" placeholder=""
+                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                </div>
               </div>
-            </div>
             </span>
             <span class="traditionalTime">
               <h4>Price and Terms:</h4>
@@ -2213,34 +2211,34 @@
           </div>
           <div class="wizard-step" data-step="18">
             @php
-            $floor_coverings = [
-              ['name' => 'Bamboo', 'target' => ''],
-              ['name' => 'Brick/Stone', 'target' => ''],
-              ['name' => 'Carpet', 'target' => ''],
-              ['name' => 'Ceramic Tile', 'target' => ''],
-              ['name' => 'Concrete', 'target' => ''],
-              ['name' => 'Cork', 'target' => ''],
-              ['name' => 'Engineered Hardwood', 'target' => ''],
-              ['name' => 'Epoxy', 'target' => ''],
-              ['name' => 'Forestry Stewardship Certified', 'target' => ''],
-              ['name' => 'Granite', 'target' => ''],
-              ['name' => 'Laminate', 'target' => ''],
-              ['name' => 'Linoleum', 'target' => ''],
-              ['name' => 'Luxury Vinyl', 'target' => ''], 
-              ['name' => 'Marble', 'target' => ''],
-              ['name' => 'Parquet', 'target' => ''],
-              ['name' => 'Porcelain Tile', 'target' => ''],
-              ['name' => 'Quarry Tile', 'target' => ''],
-              ['name' => 'Reclaimed wood', 'target' => ''],
-              ['name' => 'Recycled/Composite Flooring', 'target' => ''],
-              ['name' => 'Slate', 'target' => ''],
-              ['name' => 'Terrazzo', 'target' => ''],
-              ['name' => 'Tile', 'target' => ''],
-              ['name' => 'Travertine', 'target' => ''],
-              ['name' => 'Vinyl', 'target' => ''],
-              ['name' => 'Wood', 'target' => ''],
-              ['name' => 'Other', 'target' => '.otherFloorCoveringRes']
-          ];
+              $floor_coverings = [
+                ['name' => 'Bamboo', 'target' => ''],
+                ['name' => 'Brick/Stone', 'target' => ''],
+                ['name' => 'Carpet', 'target' => ''],
+                ['name' => 'Ceramic Tile', 'target' => ''],
+                ['name' => 'Concrete', 'target' => ''],
+                ['name' => 'Cork', 'target' => ''],
+                ['name' => 'Engineered Hardwood', 'target' => ''],
+                ['name' => 'Epoxy', 'target' => ''],
+                ['name' => 'Forestry Stewardship Certified', 'target' => ''],
+                ['name' => 'Granite', 'target' => ''],
+                ['name' => 'Laminate', 'target' => ''],
+                ['name' => 'Linoleum', 'target' => ''],
+                ['name' => 'Luxury Vinyl', 'target' => ''], 
+                ['name' => 'Marble', 'target' => ''],
+                ['name' => 'Parquet', 'target' => ''],
+                ['name' => 'Porcelain Tile', 'target' => ''],
+                ['name' => 'Quarry Tile', 'target' => ''],
+                ['name' => 'Reclaimed wood', 'target' => ''],
+                ['name' => 'Recycled/Composite Flooring', 'target' => ''],
+                ['name' => 'Slate', 'target' => ''],
+                ['name' => 'Terrazzo', 'target' => ''],
+                ['name' => 'Tile', 'target' => ''],
+                ['name' => 'Travertine', 'target' => ''],
+                ['name' => 'Vinyl', 'target' => ''],
+                ['name' => 'Wood', 'target' => ''],
+                ['name' => 'Other', 'target' => '.otherFloorCoveringRes']
+              ];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Floor Covering:</label>
@@ -7601,737 +7599,735 @@
     show_garage_opt("");
   });
 </script>
-  <script>
-    $('#auction_type').change(function(){
-        let v=$(this).val();
-      if (v == "Auction (Timer)") {
-        $('.auction_length').val("");
-        $('.auction_length').parent().children('.option-container').removeClass('active');
-        $('.traditional-length').hide();
-        $('.normal-length').show();
-        $('.auction_length_cover').show();
-        $('.timeAuction').show();
-        $('.traditionalTime').hide();
-      } else {
-        $('.auction_length').val("");
-        $('.auction_length').parent().children('.option-container').removeClass('active');
-        $('.traditional-length').show();
-        $('.normal-length').hide();
-        $('.auction_length_cover').hide();
-        $('.timeAuction').hide();
-        $('.traditionalTime').show();
-      }
+<script>
+  $('#auction_type').change(function(){
+      let v=$(this).val();
+    if (v == "Auction (Timer)") {
+      $('.auction_length').val("");
+      $('.auction_length').parent().children('.option-container').removeClass('active');
+      $('.traditional-length').hide();
+      $('.normal-length').show();
+      $('.auction_length_cover').show();
+      $('.timeAuction').show();
+      $('.traditionalTime').hide();
+    } else {
+      $('.auction_length').val("");
+      $('.auction_length').parent().children('.option-container').removeClass('active');
+      $('.traditional-length').show();
+      $('.normal-length').hide();
+      $('.auction_length_cover').hide();
+      $('.timeAuction').hide();
+      $('.traditionalTime').show();
+    }
   })
-  </script>
-  <script>
-    function changePropertyStyle(p) {
-      if (p == "Vacant Land") {
-        $('.property_style_next_hide').addClass('d-none');
-        $('.road_frontage_next_hide').addClass('d-none');
-        $('.hide_vacant').removeClass('d-none');
-        $('.hide_vacant').removeClass('d-none');
-        $('.').remove();
-
-      } else if (p == "Busniess Opportunity") {
-        $('.business_oportunity_remove').remove();
-      }
-    }
-    // document.getElementById('auction_type').change();
-    $(function() {
-      changePropertyStyle("");
-    });
-  </script>
-
-  <script>
-    function changeCurrentUse(p) {
-
-
-      $('.current_use_next_hide').addClass('d-none');
-    }
-    // document.getElementById('auction_type').change();
-    $(function() {
-      changePropertyStyle("");
-    });
-  </script>
-  <script>
-    function changeFrontExposure(p) {
-
-
-      $('.front_exposure_next_hide').addClass('d-none');
-
-    }
-    // document.getElementById('auction_type').change();
-    $(function() {
-      changePropertyStyle("");
-    });
-  </script>
-  <script>
-    function changeLotFeature(p) {
-
-
-      $('.lot_feature_next_hide').addClass('d-none');
-
-    }
-    // document.getElementById('auction_type').change();
-    $(function() {
-      changeLotFeature("");
-    });
-  </script>
-  <script>
-    function change_adjacent_use(p) {
-
-
-      $('.adjacent_use_next_hide').addClass('d-none');
-
-    }
-    // document.getElementById('auction_type').change();
-    $(function() {
-      change_adjacent_use("");
-    });
-  </script>
-  <script>
-    function changeRoadFrontage(p) {
+</script>
+<script>
+  function changePropertyStyle(p) {
+    if (p == "Vacant Land") {
+      $('.property_style_next_hide').addClass('d-none');
       $('.road_frontage_next_hide').addClass('d-none');
+      $('.hide_vacant').removeClass('d-none');
+      $('.hide_vacant').removeClass('d-none');
+      $('.').remove();
+
+    } else if (p == "Busniess Opportunity") {
+      $('.business_oportunity_remove').remove();
     }
-    // document.getElementById('auction_type').change();
-    $(function() {
-      changeRoadFrontage("");
-    });
-  </script>
-  <script>
-    function changeRoadSurfaceType(p) {
-      $('.road_surface_type_next_hide').addClass('d-none');
+  }
+  // document.getElementById('auction_type').change();
+  $(function() {
+    changePropertyStyle("");
+  });
+</script>
+<script>
+  function changeCurrentUse(p) {
+
+
+    $('.current_use_next_hide').addClass('d-none');
+  }
+  // document.getElementById('auction_type').change();
+  $(function() {
+    changePropertyStyle("");
+  });
+</script>
+<script>
+  function changeFrontExposure(p) {
+
+
+    $('.front_exposure_next_hide').addClass('d-none');
+
+  }
+  // document.getElementById('auction_type').change();
+  $(function() {
+    changePropertyStyle("");
+  });
+</script>
+<script>
+  function changeLotFeature(p) {
+
+
+    $('.lot_feature_next_hide').addClass('d-none');
+
+  }
+  // document.getElementById('auction_type').change();
+  $(function() {
+    changeLotFeature("");
+  });
+</script>
+<script>
+  function change_adjacent_use(p) {
+
+
+    $('.adjacent_use_next_hide').addClass('d-none');
+
+  }
+  // document.getElementById('auction_type').change();
+  $(function() {
+    change_adjacent_use("");
+  });
+</script>
+<script>
+  function changeRoadFrontage(p) {
+    $('.road_frontage_next_hide').addClass('d-none');
+  }
+  // document.getElementById('auction_type').change();
+  $(function() {
+    changeRoadFrontage("");
+  });
+</script>
+<script>
+  function changeRoadSurfaceType(p) {
+    $('.road_surface_type_next_hide').addClass('d-none');
+
+  }
+  // document.getElementById('auction_type').change();
+  $(function() {
+    changeRoadSurfaceType("");
+  });
+</script>
+<script>
+  function Utilities_Water_Sewer(p) {
+
+
+    $('.utilities_water_sewer_next_hide').addClass('d-none');
+
+  }
+  // document.getElementById('auction_type').change();
+  $(function() {
+    Utilities_Water_Sewer("");
+  });
+</script>
+<script>
+  function changePropertyType(p) {
+    if (p == "Residential Property") {
+      $('.property_items').val("");
+      $('.property_items').parent().children('.option-container').removeClass('active');
+      $('.residential-length').show();
+      $('.income-length').hide();
+      $('.commercial-length').hide();
+      $('.business_type_next').addClass('d-none');
+      $('.business_type_next_hide').removeClass('d-none');
+      $('.hide_vacant').addClass('d-none');
+      $('.road_frontage_next_hide').removeClass('d-none');
+      $('.residential_and_income_hide').addClass('d-none');
+      $('.residential_and_income').removeClass('d-none');
+      $('.for_income_only').addClass('d-none');
+      $('.for_residential_only').removeClass('d-none');
+      $('.residential_hide').removeClass('d-none');
+      $('.vacant_land-length').hide();
+      $('.business-length').hide();
+      $('.currentUse').hide();
+      $('.businessType').hide();
+      $('.resFields').each(function() {
+        $(this).find('select, input ,textarea').prop('disabled', false);
+      });
+      $('.commercialFields,.incomeFields,.vacantFields').each(function() {
+        $(this).find('select, input ,textarea').prop('disabled', true);
+      });
+
+    } else if (p == "Income Property") {
+      $('.property_items').val("");
+      $('.property_items').parent().children('.option-container').removeClass('active');
+      $('.residential-length').hide();
+      $('.income-length').show();
+      $('.commercial-length').hide();
+      $('.residential_hide').removeClass('d-none');
+      $('.residential_remove').remove();
+      $('.vacant_land-length').hide();
+      $('.business-length').hide();
+      $('.currentUse').hide();
+      $('.businessType').hide();
+      $('.resFields').each(function() {
+        $(this).find('select, input ,textarea').prop('disabled', false);
+      });
+      $('.commercialFields,.incomeFields,.vacantFields').each(function() {
+        $(this).find('select, input ,textarea').prop('disabled', true);
+      });
+
+    } else if (p == "Commercial Property") {
+      $('.property_items').val("");
+      $('.property_items').parent().children('.option-container').removeClass('active');
+      $('.residential-length').hide();
+      $('.income-length').hide();
+      $('.commercial-length').show();
+      $('.business_type_next').removeClass('d-none');
+      $('.business_type_next_hide').addClass('d-none');
+      $('.residential_and_income').addClass('d-none');
+      $('.residential_hide').addClass('d-none');
+      $('.vacant_land-length').hide();
+      $('.business-length').hide();
+      $('.currentUse').hide();
+      $('.businessType').hide();
+      $('.commercialFields').each(function() {
+        $(this).find('select, input ,textarea').prop('disabled', false);
+      });
+      $('.resFields,.incomeFields,.vacantFields').each(function() {
+        $(this).find('select, input ,textarea').prop('disabled', true);
+      });
+
+    } else if (p == "Vacant Land") {
+      $('.property_items').val("");
+      $('.property_items').parent().children('.option-container').removeClass('active');
+      $('.residential-length').hide();
+      $('.income-length').hide();
+      $('.commercial-length').hide();
+      $('.business_type_next').removeClass('d-none');
+      $('.business_type_next_hide').addClass('d-none');
+      $('.residential_and_income').addClass('d-none');
+      $('.residential_hide').addClass('d-none');
+      $('.vacant_land-length').show();
+      $('.business-length').hide();
+      $('.currentUse').show();
+      $('.businessType').hide();
+      $('.vacantFields').each(function() {
+        $(this).find('select, input ,textarea').prop('disabled', false);
+      });
+      $('.commercialFields,.incomeFields,.resFields').each(function() {
+        $(this).find('select,img, input ,textarea').prop('disabled', true);
+      });
+
+    } else if (p == "Business Opportunity") {
+      $('.property_items').val("");
+      $('.property_items').parent().children('.option-container').removeClass('active');
+      $('.residential-length').hide();
+      $('.income-length').hide();
+      $('.commercial-length').hide();
+      $('.business_type_next').removeClass('d-none');
+      $('.business_type_next_hide').addClass('d-none');
+      $('.residential_and_income').addClass('d-none');
+      $('.residential_hide').addClass('d-none');
+      $('.vacant_land-length').hide();
+      $('.business-length').show();
+      $('.currentUse').hide();
+      $('.businessType').show();
+      $('.commercialFields').each(function() {
+        $(this).find('select, input ,textarea').prop('disabled', false);
+      });
+      $('.resFields,.incomeFields,.vacantFields').each(function() {
+        $(this).find('select, input ,textarea').prop('disabled', true);
+      });
+    } else {
+      $('.property_items').val("");
+      $('.property_items').parent().children('.option-container').removeClass('active');
+      $('.residential-length').hide();
+      $('.income-length').hide();
+      $('.commercial-length').hide();
+      $('.business_type_next').addClass('d-none');
+      $('.business_type_next_hide').removeClass('d-none');
+      $('.hide_vacant').addClass('d-none');
+      $('.road_frontage_next_hide').removeClass('d-none');
+      $('.vacant_land-length').hide();
+      $('.business-length').hide();
+      $('.currentUse').hide();
+      $('.businessType').hide();
+      $('.resFields').each(function() {
+        $(this).find('select, input ,textarea').prop('disabled', true);
+      });
+      $('.commercialFields').each(function() {
+        $(this).find('select, input ,textarea').prop('disabled', true);
+      });
 
     }
-    // document.getElementById('auction_type').change();
-    $(function() {
-      changeRoadSurfaceType("");
+  }
+  // document.getElementById('auction_type').change();
+  $(function() {
+    changePropertyType("");
+  });
+</script>
+<script>
+  $(function() {
+    $('.has-icon').each(function(i) {
+      var cover = `<div class="input-cover input-cover-${i}"></div>`;
+      $(this).before(cover);
+      $(this).appendTo(`.input-cover-${i}`);
+      var iconClass = $(this).data('icon');
+      var id = $(this).attr('id');
+      var htm = `<label for="${id}" class="input-icon"><i class="${iconClass} " ></i></label>`;
+      $(this).before(htm);
     });
-  </script>
-  <script>
-    function Utilities_Water_Sewer(p) {
 
+    $('.grid-picker').each(function(index, elm) {
+      var st = $(elm).attr('style');
+      var html =
+        `<div class="options-container options-container-${index}" style="${st}"></div>`;
+      $(elm).after(html);
+      $(elm).appendTo(`.options-container-${index}`);
+      $(elm).children('option').each(function(i) {
+        var val = $(this).val();
+        if (val != "") {
+          var text = $(this).text();
+          var classes = $(this).attr('class');
+          var styles = $(this).attr('style') || "";
+          var icon = $(this).data('icon') || "";
+          var selected = $(this).attr('selected') || "";
+          var target = $(this).data('target') || "";
+          selected = selected && "active";
+          icon = icon && icon + " ";
+          var htm = `<div onclick="checkselect(this);" style="${styles}" class="${classes} ${selected} option-container" data-index="${i}" data-target="${target}">
+                      <div class="option-icon">${icon}</div>
+                      <div class="option-text">${text}</div>
+                      </div>`;
+          $(`.options-container-${index}`).append(htm);
+        }
+      });
 
-      $('.utilities_water_sewer_next_hide').addClass('d-none');
-
-    }
-    // document.getElementById('auction_type').change();
-    $(function() {
-      Utilities_Water_Sewer("");
     });
-  </script>
-  <script>
-    function changePropertyType(p) {
-      if (p == "Residential Property") {
-        $('.property_items').val("");
-        $('.property_items').parent().children('.option-container').removeClass('active');
-        $('.residential-length').show();
-        $('.income-length').hide();
-        $('.commercial-length').hide();
-        $('.business_type_next').addClass('d-none');
-        $('.business_type_next_hide').removeClass('d-none');
-        $('.hide_vacant').addClass('d-none');
-        $('.road_frontage_next_hide').removeClass('d-none');
-        $('.residential_and_income_hide').addClass('d-none');
-        $('.residential_and_income').removeClass('d-none');
-        $('.for_income_only').addClass('d-none');
-        $('.for_residential_only').removeClass('d-none');
-        $('.residential_hide').removeClass('d-none');
-        $('.vacant_land-length').hide();
-        $('.business-length').hide();
-        $('.currentUse').hide();
-        $('.businessType').hide();
-        $('.resFields').each(function() {
-          $(this).find('select, input ,textarea').prop('disabled', false);
-        });
-        $('.commercialFields,.incomeFields,.vacantFields').each(function() {
-          $(this).find('select, input ,textarea').prop('disabled', true);
-        });
 
-      } else if (p == "Income Property") {
-        $('.property_items').val("");
-        $('.property_items').parent().children('.option-container').removeClass('active');
-        $('.residential-length').hide();
-        $('.income-length').show();
-        $('.commercial-length').hide();
-        $('.residential_hide').removeClass('d-none');
-        $('.residential_remove').remove();
-        $('.vacant_land-length').hide();
-        $('.business-length').hide();
-        $('.currentUse').hide();
-        $('.businessType').hide();
-        $('.resFields').each(function() {
-          $(this).find('select, input ,textarea').prop('disabled', false);
-        });
-        $('.commercialFields,.incomeFields,.vacantFields').each(function() {
-          $(this).find('select, input ,textarea').prop('disabled', true);
-        });
 
-      } else if (p == "Commercial Property") {
-        $('.property_items').val("");
-        $('.property_items').parent().children('.option-container').removeClass('active');
-        $('.residential-length').hide();
-        $('.income-length').hide();
-        $('.commercial-length').show();
-        $('.business_type_next').removeClass('d-none');
-        $('.business_type_next_hide').addClass('d-none');
-        $('.residential_and_income').addClass('d-none');
-        $('.residential_hide').addClass('d-none');
-        $('.vacant_land-length').hide();
-        $('.business-length').hide();
-        $('.currentUse').hide();
-        $('.businessType').hide();
-        $('.commercialFields').each(function() {
-          $(this).find('select, input ,textarea').prop('disabled', false);
-        });
-        $('.resFields,.incomeFields,.vacantFields').each(function() {
-          $(this).find('select, input ,textarea').prop('disabled', true);
-        });
 
-      } else if (p == "Vacant Land") {
-        $('.property_items').val("");
-        $('.property_items').parent().children('.option-container').removeClass('active');
-        $('.residential-length').hide();
-        $('.income-length').hide();
-        $('.commercial-length').hide();
-        $('.business_type_next').removeClass('d-none');
-        $('.business_type_next_hide').addClass('d-none');
-        $('.residential_and_income').addClass('d-none');
-        $('.residential_hide').addClass('d-none');
-        $('.vacant_land-length').show();
-        $('.business-length').hide();
-        $('.currentUse').show();
-        $('.businessType').hide();
-        $('.vacantFields').each(function() {
-          $(this).find('select, input ,textarea').prop('disabled', false);
-        });
-        $('.commercialFields,.incomeFields,.resFields').each(function() {
-          $(this).find('select,img, input ,textarea').prop('disabled', true);
-        });
+  });
 
-      } else if (p == "Business Opportunity") {
-        $('.property_items').val("");
-        $('.property_items').parent().children('.option-container').removeClass('active');
-        $('.residential-length').hide();
-        $('.income-length').hide();
-        $('.commercial-length').hide();
-        $('.business_type_next').removeClass('d-none');
-        $('.business_type_next_hide').addClass('d-none');
-        $('.residential_and_income').addClass('d-none');
-        $('.residential_hide').addClass('d-none');
-        $('.vacant_land-length').hide();
-        $('.business-length').show();
-        $('.currentUse').hide();
-        $('.businessType').show();
-        $('.commercialFields').each(function() {
-          $(this).find('select, input ,textarea').prop('disabled', false);
-        });
-        $('.resFields,.incomeFields,.vacantFields').each(function() {
-          $(this).find('select, input ,textarea').prop('disabled', true);
-        });
+  function checkselect(elm) {
+    var i = $(elm).data('index');
+    var mult = $(elm).parent().children('select').attr('multiple') || false;
+    // console.log(mult);
+    if (mult == false) {
+      var option = $(elm).parent().children('select').children(`option:eq(${i})`);
+      var ov = option.val();
+      $(elm).parent().children('.option-container').removeClass('active');
+      $(elm).addClass('active');
+      $(elm).parent().children('select').val(ov);
+    } else {
+      $(elm).toggleClass('active');
+      var option = $(elm).parent().children('select').children(`option:eq(${i})`);
+      var ov = option.val();
+      var vals = $(elm).parent().children('select').val();
+      if (vals.includes(ov)) {
+        option.removeAttr('selected');
       } else {
-        $('.property_items').val("");
-        $('.property_items').parent().children('.option-container').removeClass('active');
-        $('.residential-length').hide();
-        $('.income-length').hide();
-        $('.commercial-length').hide();
-        $('.business_type_next').addClass('d-none');
-        $('.business_type_next_hide').removeClass('d-none');
-        $('.hide_vacant').addClass('d-none');
-        $('.road_frontage_next_hide').removeClass('d-none');
-        $('.vacant_land-length').hide();
-        $('.business-length').hide();
-        $('.currentUse').hide();
-        $('.businessType').hide();
-        $('.resFields').each(function() {
-          $(this).find('select, input ,textarea').prop('disabled', true);
-        });
-        $('.commercialFields').each(function() {
-          $(this).find('select, input ,textarea').prop('disabled', true);
-        });
-
+        option.attr('selected', 'selected');
       }
     }
-    // document.getElementById('auction_type').change();
-    $(function() {
-      changePropertyType("");
-    });
-  </script>
-  <script>
-    $(function() {
-      $('.has-icon').each(function(i) {
-        var cover = `<div class="input-cover input-cover-${i}"></div>`;
-        $(this).before(cover);
-        $(this).appendTo(`.input-cover-${i}`);
-        var iconClass = $(this).data('icon');
-        var id = $(this).attr('id');
-        var htm = `<label for="${id}" class="input-icon"><i class="${iconClass} " ></i></label>`;
-        $(this).before(htm);
-      });
 
-      $('.grid-picker').each(function(index, elm) {
-        var st = $(elm).attr('style');
-        var html =
-          `<div class="options-container options-container-${index}" style="${st}"></div>`;
-        $(elm).after(html);
-        $(elm).appendTo(`.options-container-${index}`);
-        $(elm).children('option').each(function(i) {
-          var val = $(this).val();
-          if (val != "") {
-            var text = $(this).text();
-            var classes = $(this).attr('class');
-            var styles = $(this).attr('style') || "";
-            var icon = $(this).data('icon') || "";
-            var selected = $(this).attr('selected') || "";
-            var target = $(this).data('target') || "";
-            selected = selected && "active";
-            icon = icon && icon + " ";
-            var htm = `<div onclick="checkselect(this);" style="${styles}" class="${classes} ${selected} option-container" data-index="${i}" data-target="${target}">
-                        <div class="option-icon">${icon}</div>
-                        <div class="option-text">${text}</div>
-                        </div>`;
-            $(`.options-container-${index}`).append(htm);
-          }
-        });
+    // console.log(op);
+    var v = $(elm).parent().children('select').val();
+    $(elm).parent().children('select').trigger('change');
+    check_custom();
+  }
 
-      });
-
-
-
-    });
-
-    function checkselect(elm) {
-      var i = $(elm).data('index');
-      var mult = $(elm).parent().children('select').attr('multiple') || false;
-      // console.log(mult);
-      if (mult == false) {
-        var option = $(elm).parent().children('select').children(`option:eq(${i})`);
-        var ov = option.val();
-        $(elm).parent().children('.option-container').removeClass('active');
-        $(elm).addClass('active');
-        $(elm).parent().children('select').val(ov);
-      } else {
-        $(elm).toggleClass('active');
-        var option = $(elm).parent().children('select').children(`option:eq(${i})`);
-        var ov = option.val();
-        var vals = $(elm).parent().children('select').val();
-        if (vals.includes(ov)) {
-          option.removeAttr('selected');
+  function check_custom() {
+    $('.option-container').each(function(i, elm) {
+      var target = $(elm).data('target') || "";
+      var is_active = $(elm).hasClass('active');
+      if (target != "") {
+        if (is_active) {
+          $(target).removeClass("d-none");
         } else {
-          option.attr('selected', 'selected');
+          $(target).addClass("d-none");
         }
       }
-
-      // console.log(op);
-      var v = $(elm).parent().children('select').val();
-      $(elm).parent().children('select').trigger('change');
-      check_custom();
-    }
-
-    function check_custom() {
-      $('.option-container').each(function(i, elm) {
-        var target = $(elm).data('target') || "";
-        var is_active = $(elm).hasClass('active');
-        if (target != "") {
-          if (is_active) {
-            $(target).removeClass("d-none");
-          } else {
-            $(target).addClass("d-none");
-          }
-        }
-      });
-      // setTimeout(check_custom, 500);
-    }
-  </script>
-  <script>
-    $(function() {
-      StepWizard.init();
     });
+    // setTimeout(check_custom, 500);
+  }
+</script>
+<script>
+  $(function() {
+    StepWizard.init();
+  });
 
-    var StepWizard = {
-      init: function() {
-        StepWizard.total_steps = $('.wizard-step').length;
+  var StepWizard = {
+    init: function() {
+      StepWizard.total_steps = $('.wizard-step').length;
 
-        var v = $(".mainform").validate({
-          errorClass: "text-error text-danger w-100",
-          onkeyup: false,
-          onfocusout: false,
-          /* submitHandler: function() {
-              // alert("Submitted, thanks!");
-              $(".mainform").submit();
-          } */
-        });
+      var v = $(".mainform").validate({
+        errorClass: "text-error text-danger w-100",
+        onkeyup: false,
+        onfocusout: false,
+        /* submitHandler: function() {
+            // alert("Submitted, thanks!");
+            $(".mainform").submit();
+        } */
+      });
 
-        StepWizard.setStep();
-        property_type;
-        $('#property_type').on('change', function() {
-          property_type = $(this).val();
-          // Count the remaining steps without removing them
-
-
-
-        });
-
-
-        $('.wizard-step-next').click(function(e) {
-          //   console.log(StepWizard.currentStep)
-
-          if (v.form()) {
-            if ($('.wizard-step.active').next().is('.wizard-step')) {
-
-              // $('.wizard-step.active').removeClass('active').next().addClass('active');
-              $('.wizard-step.active').removeClass('active');
-              console.log(StepWizard.currentStep)
-              if (StepWizard.currentStep == 7 && property_type ==
-                'Vacant Land'
-              ) {
-                StepWizard.nextStep = 79;
-                StepWizard.backStep = 7;
-              } 
-              // else if (StepWizard.currentStep == 34 && property_type ==
-              //   'Residential Property') {
-              //   StepWizard.nextStep = 36;
-              // } 
-              else if (StepWizard.currentStep == 7 && (property_type == 'Residential Property' ||
-                  property_type ==
-                  'Income Property')) {
-                StepWizard.nextStep = 8;
-                StepWizard.backStep = 7;
-              }
-              else if (StepWizard.currentStep == 8 && property_type == 'Income Property') {
-                StepWizard.nextStep = 11;
-                StepWizard.backStep = 8
-              }
-              else if (StepWizard.currentStep == 10 && property_type == 'Residential Property') {
-                StepWizard.nextStep = 12;
-                StepWizard.backStep = 10
-              } else if (StepWizard.currentStep == 8 && (property_type ==
-                  'Commercial Property' || property_type == 'Business Opportunity')
-
-              ) {
-                StepWizard.nextStep = 10;
-                StepWizard.backStep = 8;
-              } else if (StepWizard.currentStep == 22 && (property_type ==
-                  'Commercial Property' || property_type == 'Business Opportunity')
-
-              ) {
-                StepWizard.nextStep = 55;
-                StepWizard.backStep = 22;
-              } else if (StepWizard.currentStep == 10 && (property_type ==
-                  'Commercial Property' || property_type == 'Business Opportunity')
-
-              ) {
-                StepWizard.nextStep = 12;
-                StepWizard.backStep = 10;
-              } else if (StepWizard.currentStep == 14 && (property_type ==
-                  'Commercial Property' || property_type == 'Business Opportunity')
-
-              ) {
-                StepWizard.nextStep = 16;
-                StepWizard.backStep = 14;
-              } else if (StepWizard.currentStep == 20 && (property_type ==
-                  'Commercial Property' || property_type == 'Business Opportunity')
-
-              ) {
-                StepWizard.nextStep = 22;
-                StepWizard.backStep = 20;
-              } else {
-                StepWizard.backStep = StepWizard.currentStep;
-              }
-              $('[ data-step="' + StepWizard.nextStep + '"]').addClass("active");
-              StepWizard.setStep();
-              if (StepWizard.currentStep == 44 &&
-                (property_type == 'Residential Property' || property_type ==
-                  'Income Property')
-              ) {
-                $('.wizard-step-next').hide();
-                $('.wizard-step-finish').show();
-              }
-              if (StepWizard.currentStep == 78 &&
-                (property_type == 'Commercial Property' || property_type ==
-                  'Business Opportunity')
-              ) {
-                $('.wizard-step-next').hide();
-                $('.wizard-step-finish').show();
-              }
-            }
-          }
-        });
+      StepWizard.setStep();
+      property_type;
+      $('#property_type').on('change', function() {
+        property_type = $(this).val();
+        // Count the remaining steps without removing them
 
 
-        $('.wizard-step-back').click(function(e) {
-          if ($('.wizard-step.active').prev().is('.wizard-step')) {
 
+      });
+
+
+      $('.wizard-step-next').click(function(e) {
+        //   console.log(StepWizard.currentStep)
+
+        if (v.form()) {
+          if ($('.wizard-step.active').next().is('.wizard-step')) {
+
+            // $('.wizard-step.active').removeClass('active').next().addClass('active');
             $('.wizard-step.active').removeClass('active');
-            $('[ data-step="' + StepWizard.backStep + '"]').addClass("active");
-            StepWizard.setStep();
             console.log(StepWizard.currentStep)
-            // if (StepWizard.currentStep == 48 && property_type ==
-            //   'Commercial Property') {
-            //   StepWizard.backStep = 46;
-            // }
-            if (StepWizard.currentStep == 55 && (property_type == 'Business Opportunity' || property_type ==
-                'Commercial Property'))
-
-            {
-              StepWizard.backStep = 22;
-            }
-            else if (StepWizard.currentStep == 11 && property_type == 'Income Property') {
-                StepWizard.backStep = 8
-                StepWizard.nextStep = 11;
-              } 
-              else if (StepWizard.currentStep == 12 && property_type == 'Residential Property') {
-                StepWizard.backStep = 10
-                StepWizard.nextStep = 12;
-              }
-              else if (StepWizard.currentStep == 13 && (property_type == 'Commercial Property' ||
+            if (StepWizard.currentStep == 7 && property_type ==
+              'Vacant Land'
+            ) {
+              StepWizard.nextStep = 79;
+              StepWizard.backStep = 7;
+            } 
+            // else if (StepWizard.currentStep == 34 && property_type ==
+            //   'Residential Property') {
+            //   StepWizard.nextStep = 36;
+            // } 
+            else if (StepWizard.currentStep == 7 && (property_type == 'Residential Property' ||
                 property_type ==
-                'Business Opportunity')) {
-              StepWizard.backStep = 11;
-              StepWizard.nextStep = 13;
+                'Income Property')) {
+              StepWizard.nextStep = 8;
+              StepWizard.backStep = 7;
+            }
+            else if (StepWizard.currentStep == 8 && property_type == 'Income Property') {
+              StepWizard.nextStep = 11;
+              StepWizard.backStep = 8
+            }
+            else if (StepWizard.currentStep == 10 && property_type == 'Residential Property') {
+              StepWizard.nextStep = 12;
+              StepWizard.backStep = 10
+            } else if (StepWizard.currentStep == 8 && (property_type ==
+                'Commercial Property' || property_type == 'Business Opportunity')
+
+            ) {
+              StepWizard.nextStep = 10;
+              StepWizard.backStep = 8;
+            } else if (StepWizard.currentStep == 22 && (property_type ==
+                'Commercial Property' || property_type == 'Business Opportunity')
+
+            ) {
+              StepWizard.nextStep = 55;
+              StepWizard.backStep = 22;
             } else if (StepWizard.currentStep == 10 && (property_type ==
                 'Commercial Property' || property_type == 'Business Opportunity')
 
             ) {
-              StepWizard.backStep = 8;
-              StepWizard.nextStep = 10;
-            } else if (StepWizard.currentStep == 16 && (property_type ==
+              StepWizard.nextStep = 12;
+              StepWizard.backStep = 10;
+            } else if (StepWizard.currentStep == 14 && (property_type ==
                 'Commercial Property' || property_type == 'Business Opportunity')
 
             ) {
-              StepWizard.backStep = 14;
               StepWizard.nextStep = 16;
-            } else if (StepWizard.currentStep == 22 && (property_type ==
+              StepWizard.backStep = 14;
+            } else if (StepWizard.currentStep == 20 && (property_type ==
                 'Commercial Property' || property_type == 'Business Opportunity')
 
             ) {
               StepWizard.nextStep = 22;
               StepWizard.backStep = 20;
-            } 
-            // else if (StepWizard.currentStep == 36 && property_type ==
-            //   'Residential Property') {
-            //   StepWizard.backStep = 34;
-            // } 
-            else if (StepWizard.currentStep == 8 &&
-              (property_type == 'Residential Property' || property_type == 'Income Property')
+            } else {
+              StepWizard.backStep = StepWizard.currentStep;
+            }
+            $('[ data-step="' + StepWizard.nextStep + '"]').addClass("active");
+            StepWizard.setStep();
+            if (StepWizard.currentStep == 44 &&
+              (property_type == 'Residential Property' || property_type ==
+                'Income Property')
             ) {
-              StepWizard.backStep = 7;
-            } else if (StepWizard.currentStep == 79 && property_type ==
-              'Vacant Land') {
-              StepWizard.backStep = 7;
-            } else {
-              StepWizard.backStep = StepWizard.currentStep - 1;
+              $('.wizard-step-next').hide();
+              $('.wizard-step-finish').show();
+            }
+            if (StepWizard.currentStep == 78 &&
+              (property_type == 'Commercial Property' || property_type ==
+                'Business Opportunity')
+            ) {
+              $('.wizard-step-next').hide();
+              $('.wizard-step-finish').show();
             }
           }
-        });
-
-        // Assuming the code provided is within a function or a document.ready block
-
-        $('.wizard-step-finish').click(function(e) {
-
-          //Remove All the SLides Except THe Vacant Land
-          //   if (property_type === 'Vacant Land') {
-          //     var $stepsToRemove = $('.wizard-step[data-step]').filter(function() {
-          //       return parseInt($(this).attr('data-step')) >= 8 && parseInt($(this)
-          //         .attr('data-step')) <= 76;
-          //     });
-          //     $stepsToRemove.each(function() {
-          //       $(this).closest('div[data-step]').remove();
-          //     });
-          //   }
-          //Remove All the SLides Except THe Residential and Commercial Property
-       
-          //Remove All the SLides Except THe Commercial and Business Opportunity
-          // if (property_type === 'Commercial Property' || property_type ===
-          //   'Business Opportunity') {
-          //   var $stepsToRemove = $('.wizard-step[data-step]').filter(function() {
-          //     var stepValue = parseInt($(this).attr('data-step'));
-          //     return (stepValue >= 8 && stepValue <= 41) || (stepValue >= 77 &&
-          //       stepValue <= 91);
-          //   });
-
-          //   $stepsToRemove.each(function() {
-          //     $(this).closest('div[data-step]').remove();
-          //   });
-          // }
-          //Remove All the SLides Except THe Commercial and Business Opportunity
-          // Submitting The Form After Removing the Extra slide to get rid of null Data
-          $('.mainform').submit();
-        });
-
-      },
-      setStep: function() {
-        if ($('.wizard-step.active').length == 0) {
-          $('.wizard-step').first().addClass('active');
         }
+      });
+
+
+      $('.wizard-step-back').click(function(e) {
         if ($('.wizard-step.active').prev().is('.wizard-step')) {
-          $('.wizard-step-back').show();
-        } else {
-          $('.wizard-step-back').hide();
-        }
 
-        if ($('.wizard-step.active').next().is('.wizard-step')) {
-          $('.wizard-step-next').show();
-          $('.wizard-step-finish').hide();
-        } else {
+          $('.wizard-step.active').removeClass('active');
+          $('[ data-step="' + StepWizard.backStep + '"]').addClass("active");
+          StepWizard.setStep();
+          console.log(StepWizard.currentStep)
+          // if (StepWizard.currentStep == 48 && property_type ==
+          //   'Commercial Property') {
+          //   StepWizard.backStep = 46;
+          // }
+          if (StepWizard.currentStep == 55 && (property_type == 'Business Opportunity' || property_type ==
+              'Commercial Property'))
 
-          $('.wizard-step-next').hide();
-          $('.wizard-step-finish').show();
-        }
-        $('.wizard-step').each(function(i, element) {
-          var k = i + 1;
-          if ($(element).hasClass('active')) {
-            StepWizard.currentStep = k;
-            StepWizard.data_step = k;
-            StepWizard.nextStep = k + 1;
+          {
+            StepWizard.backStep = 22;
           }
-        });
-        StepWizard.stepChanged();
-      },
-      stepChanged: function() {
-        var comp = 0;
+          else if (StepWizard.currentStep == 11 && property_type == 'Income Property') {
+              StepWizard.backStep = 8
+              StepWizard.nextStep = 11;
+            } 
+            else if (StepWizard.currentStep == 12 && property_type == 'Residential Property') {
+              StepWizard.backStep = 10
+              StepWizard.nextStep = 12;
+            }
+            else if (StepWizard.currentStep == 13 && (property_type == 'Commercial Property' ||
+              property_type ==
+              'Business Opportunity')) {
+            StepWizard.backStep = 11;
+            StepWizard.nextStep = 13;
+          } else if (StepWizard.currentStep == 10 && (property_type ==
+              'Commercial Property' || property_type == 'Business Opportunity')
 
-        if (property_type === 'Residential Property' || property_type === 'Income Property') {
-          if (StepWizard.currentStep >= 7 && StepWizard.currentStep <= 44) {
-            comp = 20 + (((StepWizard.currentStep - 7) / (44 - 7)) * 80);
+          ) {
+            StepWizard.backStep = 8;
+            StepWizard.nextStep = 10;
+          } else if (StepWizard.currentStep == 16 && (property_type ==
+              'Commercial Property' || property_type == 'Business Opportunity')
+
+          ) {
+            StepWizard.backStep = 14;
+            StepWizard.nextStep = 16;
+          } else if (StepWizard.currentStep == 22 && (property_type ==
+              'Commercial Property' || property_type == 'Business Opportunity')
+
+          ) {
+            StepWizard.nextStep = 22;
+            StepWizard.backStep = 20;
+          } 
+          // else if (StepWizard.currentStep == 36 && property_type ==
+          //   'Residential Property') {
+          //   StepWizard.backStep = 34;
+          // } 
+          else if (StepWizard.currentStep == 8 &&
+            (property_type == 'Residential Property' || property_type == 'Income Property')
+          ) {
+            StepWizard.backStep = 7;
+          } else if (StepWizard.currentStep == 79 && property_type ==
+            'Vacant Land') {
+            StepWizard.backStep = 7;
+          } else {
+            StepWizard.backStep = StepWizard.currentStep - 1;
           }
         }
-        // else if (property_type === 'Commercial Property' || property_type === 'Business Opportunity') {
-        //   // Calculate progress for commercial and business opportunity steps (42 to 76)
-        //   comp = 20 + (((StepWizard.currentStep - 7) / (75 - 7)) * 80);
-        //   if (StepWizard.currentStep == 21) {
-        //     comp = 20 + (((StepWizard.currentStep - 21) / (55 - 21)) * 80);
+      });
+
+      // Assuming the code provided is within a function or a document.ready block
+
+      $('.wizard-step-finish').click(function(e) {
+
+        //Remove All the SLides Except THe Vacant Land
+        //   if (property_type === 'Vacant Land') {
+        //     var $stepsToRemove = $('.wizard-step[data-step]').filter(function() {
+        //       return parseInt($(this).attr('data-step')) >= 8 && parseInt($(this)
+        //         .attr('data-step')) <= 76;
+        //     });
+        //     $stepsToRemove.each(function() {
+        //       $(this).closest('div[data-step]').remove();
+        //     });
         //   }
+        //Remove All the SLides Except THe Residential and Commercial Property
+      
+        //Remove All the SLides Except THe Commercial and Business Opportunity
+        // if (property_type === 'Commercial Property' || property_type ===
+        //   'Business Opportunity') {
+        //   var $stepsToRemove = $('.wizard-step[data-step]').filter(function() {
+        //     var stepValue = parseInt($(this).attr('data-step'));
+        //     return (stepValue >= 8 && stepValue <= 41) || (stepValue >= 77 &&
+        //       stepValue <= 91);
+        //   });
+
+        //   $stepsToRemove.each(function() {
+        //     $(this).closest('div[data-step]').remove();
+        //   });
         // }
-       else if (property_type === 'Commercial Property' || property_type === 'Business Opportunity') {
-          //   console.log(StepWizard.currentStep)
-          if (StepWizard.currentStep >= 7 && StepWizard.currentStep <= 20) {
-            comp = 20 + (((StepWizard.currentStep - 7) / (78 - 7)) * 80);
-          }
-          if (StepWizard.currentStep >= 20 && StepWizard.currentStep <= 23) {
-            comp = 20 + (((StepWizard.currentStep - 7) / (78 - 7)) * 80);
+        //Remove All the SLides Except THe Commercial and Business Opportunity
+        // Submitting The Form After Removing the Extra slide to get rid of null Data
+        $('.mainform').submit();
+      });
 
-          }
-          if (StepWizard.currentStep >= 55 && StepWizard.currentStep <= 78) {
-            comp = 20 + (((StepWizard.currentStep - 45) / (78 - 45)) * 80);
-          }
-        } else if (property_type === 'Vacant Land') {
-          // Calculate progress for vacant land steps (77 to 91)
-          comp = 20 + (((StepWizard.currentStep - 79) / (95 - 79)) * 80);
-        } else {
-
-          // Default progress calculation for other property types (steps 1 to 8)
-          comp = ((StepWizard.currentStep - 1) / 8) * 20;
-        }
-
-        $('.steps-progress-percent').animate({
-          width: comp.toFixed(0) + '%',
-        });
-      },
-
-      currentStep: 1,
-      nextStep: 2,
-      bsckStep: 1,
-      total_steps: 0,
-      data_step: 1,
-
-    };
-
-    $('#property_picture').click(function() {
-      $('.wizard-step-next').hide();
-      $('.wizard-step-finish').show();
-    });
-    $('#property_picture1').click(function() {
-      $('.wizard-step-next').hide();
-      $('.wizard-step-finish').show();
-    });
-  </script>
-
-  <script>
-    // google.maps.event.addDomListener(window, 'load', initialize);
-    function initialize() {
-      var inputField = document.getElementsByClassName('search_places');
-
-      for (var i = 0; i < inputField.length; i++) {
-        var t = inputField[i].dataset.type;
-        if (t === "cities") {
-          var options = {
-            types: ['(cities)'],
-            componentRestrictions: {
-              country: "us"
-            },
-          };
-        } else if (t === "states") {
-          var options = {
-            types: ['administrative_area_level_1'],
-            componentRestrictions: {
-              country: "us"
-            },
-          };
-        } else if (t === "address") {
-          var options = {
-            types: [],
-            componentRestrictions: {
-              country: "us"
-            },
-          };
-        } else {
-          var options = {
-            types: ['administrative_area_level_2'],
-            componentRestrictions: {
-              country: "us"
-            },
-          };
-        }
-
-        google.maps.event.addDomListener(inputField[i], 'keydown', function(e) {
-          if (e.keyCode == 13) {
-            if (e.preventDefault) {
-              e.preventDefault();
-            } else {
-              // Since the google event handler framework does not handle early IE versions, we have to do it by our self.: -(
-              e.cancelBubble = true;
-              e.returnValue = false;
-            }
-          }
-        });
-
-
-
-        var autocomplete = new google.maps.places.Autocomplete(inputField[i], options);
-
-        autocomplete.addListener('place_changed', function(e) {
-          var place = autocomplete.getPlace();
-          if (place) {
-            // place variable will have all the information you are looking for.
-            var lat = place.geometry['location'].lat();
-            var lng = place.geometry['location'].lng();
-            if (t == "counties") {
-              $('#lat').val(lat);
-              $('#long').val(lng);
-            }
-          }
-        });
+    },
+    setStep: function() {
+      if ($('.wizard-step.active').length == 0) {
+        $('.wizard-step').first().addClass('active');
       }
+      if ($('.wizard-step.active').prev().is('.wizard-step')) {
+        $('.wizard-step-back').show();
+      } else {
+        $('.wizard-step-back').hide();
+      }
+
+      if ($('.wizard-step.active').next().is('.wizard-step')) {
+        $('.wizard-step-next').show();
+        $('.wizard-step-finish').hide();
+      } else {
+
+        $('.wizard-step-next').hide();
+        $('.wizard-step-finish').show();
+      }
+      $('.wizard-step').each(function(i, element) {
+        var k = i + 1;
+        if ($(element).hasClass('active')) {
+          StepWizard.currentStep = k;
+          StepWizard.data_step = k;
+          StepWizard.nextStep = k + 1;
+        }
+      });
+      StepWizard.stepChanged();
+    },
+    stepChanged: function() {
+      var comp = 0;
+
+      if (property_type === 'Residential Property' || property_type === 'Income Property') {
+        if (StepWizard.currentStep >= 7 && StepWizard.currentStep <= 44) {
+          comp = 20 + (((StepWizard.currentStep - 7) / (44 - 7)) * 80);
+        }
+      }
+      // else if (property_type === 'Commercial Property' || property_type === 'Business Opportunity') {
+      //   // Calculate progress for commercial and business opportunity steps (42 to 76)
+      //   comp = 20 + (((StepWizard.currentStep - 7) / (75 - 7)) * 80);
+      //   if (StepWizard.currentStep == 21) {
+      //     comp = 20 + (((StepWizard.currentStep - 21) / (55 - 21)) * 80);
+      //   }
+      // }
+      else if (property_type === 'Commercial Property' || property_type === 'Business Opportunity') {
+        //   console.log(StepWizard.currentStep)
+        if (StepWizard.currentStep >= 7 && StepWizard.currentStep <= 20) {
+          comp = 20 + (((StepWizard.currentStep - 7) / (78 - 7)) * 80);
+        }
+        if (StepWizard.currentStep >= 20 && StepWizard.currentStep <= 23) {
+          comp = 20 + (((StepWizard.currentStep - 7) / (78 - 7)) * 80);
+
+        }
+        if (StepWizard.currentStep >= 55 && StepWizard.currentStep <= 78) {
+          comp = 20 + (((StepWizard.currentStep - 45) / (78 - 45)) * 80);
+        }
+      } else if (property_type === 'Vacant Land') {
+        // Calculate progress for vacant land steps (77 to 91)
+        comp = 20 + (((StepWizard.currentStep - 79) / (95 - 79)) * 80);
+      } else {
+
+        // Default progress calculation for other property types (steps 1 to 8)
+        comp = ((StepWizard.currentStep - 1) / 8) * 20;
+      }
+
+      $('.steps-progress-percent').animate({
+        width: comp.toFixed(0) + '%',
+      });
+    },
+
+    currentStep: 1,
+    nextStep: 2,
+    bsckStep: 1,
+    total_steps: 0,
+    data_step: 1,
+
+  };
+
+  $('#property_picture').click(function() {
+    $('.wizard-step-next').hide();
+    $('.wizard-step-finish').show();
+  });
+  $('#property_picture1').click(function() {
+    $('.wizard-step-next').hide();
+    $('.wizard-step-finish').show();
+  });
+</script>
+<script>
+  // google.maps.event.addDomListener(window, 'load', initialize);
+  function initialize() {
+    var inputField = document.getElementsByClassName('search_places');
+
+    for (var i = 0; i < inputField.length; i++) {
+      var t = inputField[i].dataset.type;
+      if (t === "cities") {
+        var options = {
+          types: ['(cities)'],
+          componentRestrictions: {
+            country: "us"
+          },
+        };
+      } else if (t === "states") {
+        var options = {
+          types: ['administrative_area_level_1'],
+          componentRestrictions: {
+            country: "us"
+          },
+        };
+      } else if (t === "address") {
+        var options = {
+          types: [],
+          componentRestrictions: {
+            country: "us"
+          },
+        };
+      } else {
+        var options = {
+          types: ['administrative_area_level_2'],
+          componentRestrictions: {
+            country: "us"
+          },
+        };
+      }
+
+      google.maps.event.addDomListener(inputField[i], 'keydown', function(e) {
+        if (e.keyCode == 13) {
+          if (e.preventDefault) {
+            e.preventDefault();
+          } else {
+            // Since the google event handler framework does not handle early IE versions, we have to do it by our self.: -(
+            e.cancelBubble = true;
+            e.returnValue = false;
+          }
+        }
+      });
+
+
+
+      var autocomplete = new google.maps.places.Autocomplete(inputField[i], options);
+
+      autocomplete.addListener('place_changed', function(e) {
+        var place = autocomplete.getPlace();
+        if (place) {
+          // place variable will have all the information you are looking for.
+          var lat = place.geometry['location'].lat();
+          var lng = place.geometry['location'].lng();
+          if (t == "counties") {
+            $('#lat').val(lat);
+            $('#long').val(lng);
+          }
+        }
+      });
     }
-    $('#has_furnishing').change(function(){
-      let w=$(this).val();
-      if (w == "Yes" || w == "Optional") {
-        $('#has_furnishing_residential_and_income').show();
-      } else {
-        $('#has_furnishing_residential_and_income').hide();
-      }
-    })
-    $('#otherStucture').change(function(){
-      let w=$(this).val();
-      if (w == "Additional Single Family Home" || w == "In-Law- Suite") {
-        $('#otherSturctureUnit').show();
-      } else {
-        $('#otherSturctureUnit').hide();
-      }
-    })
-  </script>
-  <script
-    src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_PLACES_API_KEY') }}&libraries=places&callback=initialize">
-  </script>
+  }
+  $('#has_furnishing').change(function(){
+    let w=$(this).val();
+    if (w == "Yes" || w == "Optional") {
+      $('#has_furnishing_residential_and_income').show();
+    } else {
+      $('#has_furnishing_residential_and_income').hide();
+    }
+  })
+  $('#otherStucture').change(function(){
+    let w=$(this).val();
+    if (w == "Additional Single Family Home" || w == "In-Law- Suite") {
+      $('#otherSturctureUnit').show();
+    } else {
+      $('#otherSturctureUnit').hide();
+    }
+  })
+</script>
+<script
+  src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_PLACES_API_KEY') }}&libraries=places&callback=initialize">
+</script>
 @endpush
