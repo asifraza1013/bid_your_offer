@@ -207,7 +207,13 @@
                                                 @if ($auction->get->contingenciesOpt !== null)
                                                     <span
                                                         class="d-inline-block bg-secondary removeBold text-white  px-2 rounded my-1">
-                                                        {{ $auction->get->contingenciesOpt }}</span>
+                                                        {{ $auction->get->contingenciesOpt }}
+                                                    </span>                                                
+                                                @elseif ($auction->get->contingenciesOptRes !== null)
+                                                    <span
+                                                        class="d-inline-block bg-secondary removeBold text-white  px-2 rounded my-1">
+                                                        {{ $auction->get->contingenciesOptRes }}
+                                                    </span>  
                                                 @else
                                                     @if ($auction->get->contingenciesOffered !== null)
                                                         <span
@@ -419,18 +425,25 @@
                                         class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->bedrooms }}</span>
                                 </div>
                             @endif
-                            @if (@$auction->get->bathrooms && @$auction->get->bathrooms != null && $auction->get->property_type !== 'Vacant Land')
+                            @if (@$auction->get->bathrooms && ($auction->get->bathrooms ?? $auction->get->bathroomsRes) != null && $auction->get->property_type !== 'Vacant Land')
                                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Minimum
                                     Bathrooms Needed:
-                                    <span
-                                        class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->bathrooms }}</span>
+                                    @if (@$auction->get->bathrooms != null)
+                                        <span class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->bathrooms }}</span>
+                                    @elseif (@$auction->get->bathroomsRes != null)    
+                                        <span class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->bathroomsRes }}</span>
+                                    @endif
+                                    
                                 </div>
                             @endif
-                            @if (@$auction->get->min_sqft && @$auction->get->min_sqft != null && $auction->get->property_type !== 'Vacant Land')
+                            @if (@$auction->get->min_sqft && ($auction->get->min_sqft ?? $auction->get->min_sqftRes) != null && $auction->get->property_type !== 'Vacant Land')
                                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Minimum
                                     Heated SqFt Needed:
-                                    <span
-                                        class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->min_sqft }}</span>
+                                    @if ($auction->get->min_sqft != null)
+                                        <span class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->min_sqft }}</span>
+                                    @elseif ($auction->get->min_sqftRes != null)
+                                        <span class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->min_sqftRes }}</span>
+                                    @endif
                                 </div>
                             @endif
                             @if (@$auction->get->minimum_total_acreage_needed && @$auction->get->minimum_total_acreage_needed != null)
@@ -468,14 +481,21 @@
                                     @endif
                                 </div>
                             @endif
-                            @if (@$auction->get->garage && @$auction->get->garage != null && $auction->get->property_type !== 'Vacant Land')
+                            @if (@$auction->get->garage && ($auction->get->garage ?? $auction->get->garage_Res) != null && $auction->get->property_type !== 'Vacant Land')
                                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i>
                                     Garage/Parking Features Needed:
-                                    <span
-                                        class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->garage }}</span>
-                                    @if (@$auction->get->garage == 'Yes')
-                                        <span
-                                            class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->garage_spaces }}</span>
+                                    @if ($auction->get->garage != null)
+                                        <span class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->garage }}</span>
+                                    @elseif ($auction->get->garage_Res != null)
+                                        <span class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->garage_Res }}</span>
+                                    @endif
+
+                                    @if (($auction->get->garage || $auction->get->garage_Res) == 'Yes')
+                                        @if (@$auction->get->garage_spaces != null)
+                                            <span class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->garage_spaces }}</span>
+                                        @elseif (@$auction->get->garage_spaces_Com != null)
+                                            <span class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->garage_spaces_Com }}</span>
+                                        @endif
                                         @if (@$auction->get->garage_spaces == 'Other')
                                             <span
                                                 class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->custom_garage }}</span>
@@ -596,10 +616,17 @@
                                     @endforeach
                                 </div>
                             @endif
-                            @if (@$auction->get->viewOptions != null && @$auction->get->viewOptions != 'null')
+                            @if (($auction->get->viewOptions || $auction->get->viewOptionsRes || $auction->get->viewOptionsCom) != null && @$auction->get->viewOptions != 'null')
                                 <div class="col-md-9 fw-bold">
-                                    <i class="fa-regular fa-check-square"></i> View Preference Needed:<span
-                                        class="removeBold">({{ @$auction->get->viewOptions }})</span>
+                                    <i class="fa-regular fa-check-square"></i> View Preference Needed:
+                                    @if ($auction->get->viewOptions != null)
+                                        <span class="removeBold">({{ @$auction->get->viewOptions }})</span>
+                                    @elseif ($auction->get->viewOptionsRes != null)
+                                        <span class="removeBold">({{ @$auction->get->viewOptionsRes }})</span>
+                                    @elseif ($auction->get->viewOptionsCom != null)
+                                        <span class="removeBold">({{ @$auction->get->viewOptionsCom }})</span>
+                                    @endif
+                                        
                                     @if (gettype(@$auction->get->view) == 'array' && @$auction->get->view != 'No')
                                         @foreach (@$auction->get->view as $item)
                                             @if ($item != 'Other')
@@ -733,70 +760,105 @@
                             @endif
                         </div>
                         <div class="row align-items-center Non-Negotiable mt-4">
-                            @if (@$auction->get->nonNegotiableFactors != null)
+                            @if (($auction->get->nonNegotiableFactors ?? $auction->get->nonNegotiableFactorsRes) != null)
                                 <h5>Non-Negotiable Amenities or Property Features:</h5>
                                 <div class="col-md-12 col-12  fw-bold"><i class="fa-regular fa-check-square"></i>
                                     Non-Negotiable Amenities or Property Features:
-                                    <span
-                                        class="badge bg-secondary removeBold">{{ @$auction->get->nonNegotiableFactors }}</span>
-                                </div>
-                                @if (@$auction->get->nonNegotiableFactors == 'Yes')
+                                    @if ($auction->get->nonNegotiableFactors != null)
+                                        <span class="badge bg-secondary removeBold">{{ @$auction->get->nonNegotiableFactors }}</span>
+                                    @elseif ($auction->get->nonNegotiableFactorsRes != null)
+                                        <span class="badge bg-secondary removeBold">{{ @$auction->get->nonNegotiableFactorsRes }}</span>
+                                    @endif
+                                    @if (($auction->get->nonNegotiableFactors || $auction->get->nonNegotiableFactorsRes) == 'Yes')
                                     @if (is_array(@$auction->get->nonNegotiable) && @$auction->get->nonNegotiable && @$auction->get->nonNegotiable !== null)
                                         @foreach ( @$auction->get->nonNegotiable as $item)
-                                            <span
-                                                class="d-inline-block badge bg-secondary removeBold">{{ $item }}</span>
+                                            <span class="d-inline-block badge bg-secondary removeBold">{{ $item }}</span>
                                         @endforeach
                                     @endif
                                 @endif
+                                </div>
                             @endif
                         </div>
                         <div class="row align-items-center Buyer’s Agent Representation mt-4">
                             <h5>Buyer’s Agent Representation:</h5>
-                            @if ($auction->get->buyerHaveAgentRepresentation !== null)
+                            @if (($auction->get->buyerHaveAgentRepresentation || $auction->get->buyerHaveAgentRepresentationRes || $auction->get->buyerHaveAgentRepresentationCom) !== null)
                                 <div class="row">
                                     <div class="col-md-12">
                                         <i class="fa-regular fa-check-square"></i>
-                                        <span class="fw-bold">Buyer Represented by a Real Estate Agent:</span><span
-                                            class="removeBold">({{ $auction->get->buyerHaveAgentRepresentation }})</span>
-                                        @if ($auction->get->buyerHaveAgentRepresentation == 'Yes' && $auction->get->buyersAgentCommissionRequested !== null)
+                                        <span class="fw-bold">Buyer Represented by a Real Estate Agent:</span>
+                                        @if ($auction->get->buyerHaveAgentRepresentation != null)
+                                            <span class="removeBold">({{ $auction->get->buyerHaveAgentRepresentation }})</span>
+                                        @elseif ($auction->get->buyerHaveAgentRepresentationRes != null)
+                                            <span class="removeBold">({{ $auction->get->buyerHaveAgentRepresentationRes }})</span>
+                                        @elseif ($auction->get->buyerHaveAgentRepresentationCom != null)
+                                            <span class="removeBold">({{ $auction->get->buyerHaveAgentRepresentationCom }})</span>
+                                        @endif
+                                            
+                                        @if (($auction->get->buyerHaveAgentRepresentation || $auction->get->buyerHaveAgentRepresentationRes || $auction->get->buyerHaveAgentRepresentationCom) == 'Yes' && 
+                                                ($auction->get->buyersAgentCommissionRequested || $auction->get->buyersAgentCommissionRequestedRes || $auction->get->buyersAgentCommissionRequestedCom) !== null)
                                             <div class="col-md-12">
                                                 <i class="fa-regular fa-check-square"></i>
-                                                <span class="fw-bold">Buyer Requests Seller to Pay Buyer’s Agent
-                                                    Commission:</span><span
-                                                    class="removeBold">({{ $auction->get->buyersAgentCommissionRequested }})</span>
+                                                <span class="fw-bold">Buyer Requests Seller to Pay Buyer’s Agent Commission:</span>
+                                                @if ($auction->get->buyersAgentCommissionRequested != null)
+                                                    <span class="removeBold">({{ $auction->get->buyersAgentCommissionRequested }})</span>
+                                                @elseif ($auction->get->buyersAgentCommissionRequestedRes != null)
+                                                    <span class="removeBold">({{ $auction->get->buyersAgentCommissionRequestedRes }})</span>
+                                                @elseif ($auction->get->buyersAgentCommissionRequestedCom != null)
+                                                    <span class="removeBold">({{ $auction->get->buyersAgentCommissionRequestedCom }})</span>   
+                                                @endif
                                             </div>
-                                            @if ($auction->get->buyersAgentCommissionRequested == 'Yes' && $auction->get->buyersAgentCompensationRequested !== null)
+                                            @if (($auction->get->buyersAgentCommissionRequested || $auction->get->buyersAgentCommissionRequestedRes || $auction->get->buyersAgentCommissionRequestedCom) == 'Yes' && 
+                                                    ($auction->get->buyersAgentCompensationRequested || $auction->get->buyersAgentCompensationRequestedRes || $auction->get->buyersAgentCompensationRequestedCom) !== null)
                                                 <div class="col-md-12">
                                                     <i class="fa-regular fa-check-square"></i>
-                                                    <span class="fw-bold">What compensation is the buyer requesting the
-                                                        seller to pay to the
-                                                        buyer’s agent?</span><span
-                                                        class="removeBold">({{ $auction->get->buyersAgentCompensationRequested }})</span>
+                                                    <span class="fw-bold">What compensation is the buyer requesting the seller to pay to the buyer’s agent?</span>
+                                                    @if ($auction->get->buyersAgentCompensationRequested != null)
+                                                        <span class="removeBold">({{ $auction->get->buyersAgentCompensationRequested }})</span>
+                                                    @elseif ($auction->get->buyersAgentCompensationRequestedRes != null)
+                                                        <span class="removeBold">({{ $auction->get->buyersAgentCompensationRequestedRes }})</span>
+                                                    @elseif ($auction->get->buyersAgentCompensationRequestedCom != null)
+                                                        <span class="removeBold">({{ $auction->get->buyersAgentCompensationRequestedCom }})</span>
+                                                    @endif
                                                 </div>
-                                                @if (
-                                                    $auction->get->buyersAgentCompensationRequested !== null &&
-                                                        $auction->get->buyersAgentCompensationRequested == 'Other')
+                                                @if (($auction->get->buyersAgentCompensationRequested || $auction->get->buyersAgentCompensationRequestedRes || $auction->get->buyersAgentCompensationRequestedCom) !== null &&
+                                                        ($auction->get->buyersAgentCompensationRequested || $auction->get->buyersAgentCompensationRequestedRes || $auction->get->buyersAgentCompensationRequestedCom) == 'Other')
                                                     <div class="col-md-12">
                                                         <i class="fa-regular fa-check-square"></i>
-                                                        <span class="fw-bold">Requested Amount for Seller to Pay Buyer’s
-                                                            Agent Commission:</span><span
-                                                            class="removeBold">({{ $auction->get->buyersAgentCompensationRequested }})</span>
+                                                        <span class="fw-bold">Requested Amount for Seller to Pay Buyer’s Agent Commission:</span>
+                                                        @if ($auction->get->buyersAgentCompensationRequested != null)
+                                                            <span class="removeBold">({{ $auction->get->buyersAgentCompensationRequested }})</span>
+                                                        @elseif ($auction->get->buyersAgentCompensationRequestedRes != null)
+                                                            <span class="removeBold">({{ $auction->get->buyersAgentCompensationRequestedRes }})</span>
+                                                        @elseif ($auction->get->buyersAgentCompensationRequestedCom != null)
+                                                            <span class="removeBold">({{ $auction->get->buyersAgentCompensationRequestedCom }})</span>   
+                                                        @endif
                                                     </div>
                                                 @endif
                                             @endif
-                                            @if ($auction->get->buyersAgentCommissionRequested == 'No' && $auction->get->buyersAgentCompensationNotOffered !== null)
+                                            @if (($auction->get->buyersAgentCommissionRequested == 'No' || $auction->get->buyersAgentCommissionRequestedRes == 'No' || $auction->get->buyersAgentCommissionRequestedCom == 'No') && 
+                                                    ($auction->get->buyersAgentCompensationNotOffered || $auction->get->buyersAgentCompensationNotOfferedRes || $auction->get->buyersAgentCompensationNotOfferedCom) != null)
                                                 <div class="col-md-12">
                                                     <i class="fa-regular fa-check-square"></i>
-                                                    <span class="fw-bold">Agent Compensation if Not Offered by
-                                                        Seller:</span><span
-                                                        class="removeBold">({{ $auction->get->buyersAgentCompensationNotOffered }})</span>
+                                                    <span class="fw-bold">Agent Compensation if Not Offered by Seller:</span>
+                                                    @if ($auction->get->buyersAgentCompensationNotOffered)
+                                                        <span class="removeBold">({{ $auction->get->buyersAgentCompensationNotOffered }})</span>
+                                                    @elseif ($auction->get->buyersAgentCompensationNotOfferedRes)
+                                                        <span class="removeBold res">({{ $auction->get->buyersAgentCompensationNotOfferedRes }})</span>
+                                                    @elseif ($auction->get->buyersAgentCompensationNotOfferedCom)
+                                                        <span class="removeBold com">({{ $auction->get->buyersAgentCompensationNotOfferedCom }})</span> 
+                                                    @endif
                                                 </div>
-                                                @if ($auction->get->buyersAgentCompensationNotOffered == 'Yes')
+                                                @if (($auction->get->buyersAgentCompensationNotOffered || $auction->get->buyersAgentCompensationNotOfferedRes || $auction->get->buyersAgentCompensationNotOfferedCom) == 'Yes')
                                                     <div class="col-md-12">
                                                         <i class="fa-regular fa-check-square"></i>
-                                                        <span class="fw-bold">What compensation is the buyer willing to
-                                                            offer to an agent?</span><span
-                                                            class="removeBold">({{ $auction->get->buyersAgentCompensationRequested }})</span>
+                                                        <span class="fw-bold">What compensation is the buyer willing to offer to an agent?</span>
+                                                        @if ($auction->get->buyersAgentCompensationNotOffered != null)
+                                                            <span class="removeBold">({{ $auction->get->buyersAgentCompensationRequested }})</span>
+                                                        @elseif ($auction->get->buyersAgentCompensationNotOfferedRes != null)
+                                                            <span class="removeBold">({{ $auction->get->buyersAgentCompensationRequestedRes }})</span>
+                                                        @elseif ($auction->get->buyersAgentCompensationNotOfferedCom != null)
+                                                            <span class="removeBold">({{ $auction->get->buyersAgentCompensationRequestedCom }})</span>
+                                                        @endif
                                                     </div>
                                                 @endif
                                             @endif
@@ -806,17 +868,28 @@
                             @endif
                         </div>
                         <div class="row align-items-center buyer_currently_selling mt-4">
-                            @if (@$auction->get->isBuyerCurrentlySellingProperty != null)
+                            @if (($auction->get->BuyerSellingProperty || $auction->get->BuyerSellingPropertyRes || $auction->get->BuyerSellingPropertyCom) != null)
                                 <h5>Is the buyer currently selling a property?</h5>
                                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Is the
                                     buyer currently selling a property?
-                                    <span class="removeBold">{{ @$auction->get->isBuyerCurrentlySellingProperty }}</span>
+                                    @if ($auction->get->BuyerSellingProperty != null)
+                                        <span class="removeBold">{{ @$auction->get->BuyerSellingProperty }}</span>
+                                    @elseif ($auction->get->BuyerSellingPropertyRes != null)
+                                        <span class="removeBold">{{ @$auction->get->BuyerSellingPropertyRes }}</span>
+                                    @elseif ($auction->get->BuyerSellingPropertyCom != null)
+                                        <span class="removeBold">{{ @$auction->get->BuyerSellingPropertyCom }}</span> 
+                                    @endif
                                 </div>
-                                @if (@$auction->get->isBuyerCurrentlySellingProperty == 'Yes')
+                                @if (($auction->get->BuyerSellingProperty || $auction->get->BuyerSellingPropertyRes || $auction->get->BuyerSellingPropertyCom) == 'Yes')
                                     <div class="col-md-12 col-12 fw-bold"><i class="fa-solid fa-link"></i> Link to the
                                         Property listing on Bid Your Offer:
-                                        <span
-                                            class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->linkToThePropertyListing }}</span>
+                                        @if ($auction->get->linkToThePropertyListing != null)
+                                            <span class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->linkToThePropertyListing }}</span>
+                                        @elseif ($auction->get->linkToThePropertyListingRes != null)
+                                            <span class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->linkToThePropertyListingRes }}</span>
+                                        @elseif ($auction->get->linkToThePropertyListingCom != null)
+                                            <span class="d-inline-block badge bg-secondary removeBold">{{ @$auction->get->linkToThePropertyListingCom }}</span> 
+                                        @endif
                                     </div>
                                 @endif
                             @endif
@@ -1107,10 +1180,16 @@
                                         <span class="removeBold"> {{ @$auction->get->agent_last_name }}</span>
                                     </div>
                                 @endif
-                                @if (@$auction->get->agent_phone != null)
+                                @if (($auction->get->agent_phone || $auction->get->agent_phoneRes || $auction->get->agent_phoneCom) != null)
                                     <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i>
                                         Phone:
-                                        <span class="removeBold"> {{ @$auction->get->agent_phone }}</span>
+                                        @if ($auction->get->agent_phone != null)
+                                            <span class="removeBold"> {{ @$auction->get->agent_phone }}</span>
+                                        @elseif ($auction->get->agent_phoneRes != null)
+                                            <span class="removeBold"> {{ @$auction->get->agent_phoneRes }}</span>
+                                        @elseif ($auction->get->agent_phoneCom != null)
+                                            <span class="removeBold"> {{ @$auction->get->agent_phoneCom }}</span>
+                                        @endif
                                     </div>
                                 @endif
                                 @if (@$auction->get->agent_email != null)
@@ -1119,10 +1198,16 @@
                                         <span class="removeBold"> {{ @$auction->get->agent_email }}</span>
                                     </div>
                                 @endif
-                                @if (@$auction->get->agent_brokerage != null)
+                                @if (($auction->get->agent_brokerage || $auction->get->agent_brokerageRes || $auction->get->agent_brokerageCom) != null)
                                     <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i>
                                         Brokerage:
-                                        <span class="removeBold">{{ @$auction->get->agent_brokerage }}</span>
+                                        @if ($auction->get->agent_brokerage != null)
+                                            <span class="removeBold">{{ @$auction->get->agent_brokerage }}</span>
+                                        @elseif ($auction->get->agent_brokerageRes != null)
+                                            <span class="removeBold">{{ @$auction->get->agent_brokerageRes }}</span>
+                                        @elseif ($auction->get->agent_brokerageCom != null)
+                                            <span class="removeBold">{{ @$auction->get->agent_brokerageCom }}</span>
+                                        @endif
                                     </div>
                                 @endif
                                 @if (@$auction->get->agent_license_no != null)

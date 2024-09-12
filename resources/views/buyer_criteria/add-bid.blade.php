@@ -162,7 +162,7 @@
           @csrf
           <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
           @php
-            $yes_or_nos = [['name' => 'Yes', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
+            $yes_or_nos = [['name' => 'Yes', 'target' => '.property_link', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
           @endphp
           <div id="wizard-step-container">
             <div class="wizard-step" data-step="1">
@@ -178,6 +178,11 @@
                       </option>
                     @endforeach
                 </select>
+                <div class="form-group property_link d-none">
+                  <label class="fw-bold" for="address">Please provide the link to the property listing:</label>
+                  <input type="text" name="property_link" data-type="property_link" placeholder="" id="property_link"
+                    class="form-control has-icon search_places" data-icon="fa-solid fa-link" required>
+                </div>
               </div>           
             </div>
             <div class="wizard-step" data-step="2">

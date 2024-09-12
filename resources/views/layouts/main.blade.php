@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{{ asset('assets/bootstrap-5.2.2/css/bootstrap.min.css') }}" />
     <!-- //Global css  -->
     <link rel="stylesheet" href="{{ asset('assets/css/global.css') }}" />
+    <!-- loader css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/loader.css') }}" />
     <!-- //Author css  -->
     <link rel="stylesheet" href="{{ asset('assets/css/myAccountGlobal.css') }}" />
     <!-- Buyer Make Offer add file for card  -->
@@ -80,7 +82,11 @@
     <!-- Header  -->
     @include('layouts.partials.header')
     <!-- End  -->
-
+    <!-- BEGIN LOADER -->
+    <div id="load_screen"> <div class="loader"> <div class="loader-content">
+        <div class="spinner-grow align-self-center"></div>
+    </div></div></div>
+    <!--  END LOADER -->
 
 
     @yield('content')
@@ -129,6 +135,7 @@
     </div>
     {{-- <script src="https://kit.fontawesome.com/d7dd5c0801.js" crossorigin="anonymous"></script> --}}
     <script src="{{ asset('assets/js/jquery-3.6.1.min.js') }}"></script>
+    <script src="{{ asset('assets/js/loader.js') }}"></script>
     {{-- <script src="{{ asset('assets/bootstrap-5.2.2/js/bootstrap.bundle.min.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- PopOver Script  -->

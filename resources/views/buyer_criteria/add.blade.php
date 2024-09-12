@@ -1467,17 +1467,17 @@
                                 </select>
                                 <div class="form-group inspectionRes d-none">
                                     <label class="fw-bold">Inspection (days):</label>
-                                    <input type="number" name="contingenciesOpt" class="form-control has-icon"
+                                    <input type="number" name="contingenciesOptRes" class="form-control has-icon"
                                         data-icon="fa-regular fa-calendar-days" required>
                                 </div>
                                 <div class="form-group appraisalRes d-none">
                                     <label class="fw-bold">Appraisal (days): </label>
-                                    <input type="number" name="contingenciesOpt" class="form-control has-icon"
+                                    <input type="number" name="contingenciesOptRes" class="form-control has-icon"
                                         data-icon="fa-regular fa-calendar-days" required>
                                 </div>
                                 <div class="form-group financingRes d-none">
                                     <label class="fw-bold">Financing (days):</label>
-                                    <input type="number" name="contingenciesOpt" class="form-control has-icon"
+                                    <input type="number" name="contingenciesOptRes" class="form-control has-icon"
                                         data-icon="fa-regular fa-calendar-days" required>
                                 </div>
                                 <div class="form-group saleRes d-none">
@@ -1614,7 +1614,7 @@
                         @endphp
                         <div class="form-group">
                             <label class="fw-bold">Minimum Bathrooms Needed:</label>
-                            <select class="grid-picker" name="bathrooms" id="" style="" required>
+                            <select class="grid-picker" name="bathroomsRes" id="" style="" required>
                                 <option value="">Select</option>
                                 @foreach ($bathroomsRes as $item)
                                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
@@ -1626,7 +1626,7 @@
                             </select>
                             <div class="form-group bathOtherRes d-none">
                                 <label class="fw-bold">Minimum Bathrooms Needed:</label>
-                                <input type="number" name="custom_bathrooms" id="custom_bathrooms"
+                                <input type="number" name="custom_bathroomsRes" id="custom_bathrooms"
                                     class="form-control has-icon" data-icon="fa-solid fa-bath" required>
                             </div>
                         </div>
@@ -1702,7 +1702,7 @@
                     <div class="wizard-step" data-step="12">
                         <div class="form-group">
                             <label class="fw-bold">Minimum Heated Sqft Needed: </label>
-                            <input type="number" name="min_sqft" id="min_sqft" class="form-control has-icon"
+                            <input type="number" name="min_sqftRes" id="min_sqft" class="form-control has-icon"
                                 data-icon="fa-solid fa-ruler-combined">
                         </div>
                     </div>
@@ -1776,7 +1776,7 @@
                                 ];
                             @endphp
                             <label class="fw-bold">Garage Needed: </label>
-                            <select class="grid-picker" name="garage" id="pool"
+                            <select class="grid-picker" name="garage_Res" id="pool"
                                 style="justify-content: flex-start;" required>
                                 <option value="">Select</option>
                                 @foreach ($garageOptRes as $item)
@@ -1885,7 +1885,7 @@
                                 ];
                             @endphp
                             <label class="fw-bold">View Preference Needed:</label>
-                            <select class="grid-picker" name="viewOptions" id="waterPreferenceRes"
+                            <select class="grid-picker" name="viewOptionsRes" id="waterPreferenceRes"
                                 style="justify-content: flex-start;">
                                 <option value="">Select</option>
                                 @foreach ($waterPreferenceRes as $item)
@@ -2590,7 +2590,7 @@
                         <div class="form-group">
                             <label class="fw-bold">Are there any non-negotiable amenities or property features that the
                                 buyer is seeking?</label>
-                            <select class="grid-picker" name="nonNegotiableFactors" id="any_non_negotiable_factors"
+                            <select class="grid-picker" name="nonNegotiableFactorsRes" id="any_non_negotiable_factors"
                                 style="justify-content: flex-start;" required>
                                 <option value="">Select</option>
                                 @foreach ($yes_or_nos as $item)
@@ -2676,7 +2676,7 @@
                         <label class="fw-bold">Buyer’s Agent Representation:</label>
                         <div class="form-group">
                             <label class="fw-bold">Does the buyer have a real estate agent representing them?</label>
-                            <select class="grid-picker" name="buyerHaveAgentRepresentation" id=""
+                            <select class="grid-picker" name="buyerHaveAgentRepresentationRes" id=""
                                 style="justify-content: flex-start;" required>
                                 <option value="">Select</option>
                                 @foreach ($yes_or_nos as $item)
@@ -2697,7 +2697,7 @@
                             <div class="form-group d-none buyers_agent_commission">
                                 <label class="fw-bold">Does the buyer request that the seller pay the buyer’s agent
                                     commission?</label>
-                                <select class="grid-picker" name="buyersAgentCommissionRequested" id=""
+                                <select class="grid-picker" name="buyersAgentCommissionRequestedRes" id=""
                                     style="justify-content: flex-start;" required>
                                     <option value="">Select</option>
                                     @foreach ($yes_or_nos as $item)
@@ -2726,7 +2726,7 @@
                                         ['name' => 'No', 'icon' => 'fa-regular fa-circle-xmark', 'target' => ''],
                                     ];
                                 @endphp
-                                <select class="grid-picker" name="buyersAgentCompensationNotOffered" id=""
+                                <select class="grid-picker" name="buyersAgentCompensationNotOfferedRes" id=""
                                     style="justify-content: flex-start;">
                                     <option value="">Select</option>
                                     @foreach ($buyersAgentCompensationNotOffered as $item)
@@ -2749,7 +2749,7 @@
                                         ['name' => 'Other', 'target' => '.buyers_agent_comp'],
                                     ];
                                 @endphp
-                                <select class="grid-picker" name="buyersAgentCompensationRequested" id=""
+                                <select class="grid-picker" name="buyersAgentCompensationRequestedRes" id=""
                                     style="justify-content: flex-start;">
                                     <option value="">Select</option>
                                     @foreach ($buyersAgentCompensation as $item)
@@ -2771,7 +2771,7 @@
                                         <button type="button" class="select-btn" data-type="amount">$</button>
                                     </div>
                                 </div>
-                                <input type="text" name="buyersAgentCompensationRequestedAmount" id=""
+                                <input type="text" name="buyersAgentCompensationRequestedAmountRes" id=""
                                     class="form-control has-icon" data-icon="fa-solid fa-percent" required>
                             </div>
                         </div>
@@ -2779,7 +2779,7 @@
                     <div class="wizard-step" data-step="24">
                         <div class="form-group">
                             <label class="fw-bold">Is the buyer currently selling a property?</label>
-                            <select class="grid-picker" name="isBuyerCurrentlySellingProperty" id=""
+                            <select class="grid-picker" name="isBuyerCurrentlySellingPropertyRes" id=""
                                 style="justify-content: flex-start;" required>
                                 <option value="">Select</option>
                                 @foreach ($yes_or_nos as $item)
@@ -2799,7 +2799,7 @@
                             </select>
                             <div class="form-group link_to_the_property_listing d-none">
                                 <label class="fw-bold">Link to the Property listing on Bid Your Offer:</label>
-                                <input type="text" name="linkToThePropertyListing" id=""
+                                <input type="text" name="linkToThePropertyListingRes" id=""
                                     class="form-control has-icon" data-icon="fa-solid fa-link" required>
                             </div>
                         </div>
@@ -2824,7 +2824,7 @@
                         <div class="row form-group">
                             <div class="col-6">
                                 <label class="fw-bold">Phone Number:</label>
-                                <input type="text" name="agent_phone" id="agent_phone" placeholder=""
+                                <input type="text" name="agent_phoneRes" id="agent_phone" placeholder=""
                                     value="{{ old('agent_phone', optional(Auth::user())->phone) }}"
                                     class="form-control has-icon" data-icon="fa-solid fa-phone">
                             </div>
@@ -2839,7 +2839,7 @@
                         <div class="row form-group">
                             <div class="col-6">
                                 <label class="fw-bold">Brokerage:</label>
-                                <input type="text" name="agent_brokerage" id="agent_brokerage" placeholder=""
+                                <input type="text" name="agent_brokerageRes" id="agent_brokerage" placeholder=""
                                     value="{{ optional(Auth::user())->brokerage }}" class="form-control has-icon"
                                     data-icon="fa-solid fa-handshake">
                             </div>
@@ -4032,7 +4032,7 @@
                                     ];
                                 @endphp
 
-                                <select class="grid-picker" name="garage" id="pool"
+                                <select class="grid-picker" name="garage_spaces_Com" id="pool"
                                     style="justify-content: flex-start;" required multiple>
                                     <option value="">Select</option>
                                     @foreach ($garageCommercial as $item)
@@ -4183,7 +4183,7 @@
                                 ];
                             @endphp
                             <label class="fw-bold">View Preference Needed:</label>
-                            <select class="grid-picker" name="viewOptions" id="waterPreferenceCommercial"
+                            <select class="grid-picker" name="viewOptionsCom" id="waterPreferenceCommercial"
                                 style="justify-content: flex-start;">
                                 <option value="">Select</option>
                                 @foreach ($waterPreferenceCommercial as $item)
@@ -4581,7 +4581,7 @@
                         <label class="fw-bold">Buyer’s Agent Representation:</label>
                         <div class="form-group">
                             <label class="fw-bold">Does the buyer have a real estate agent representing them?</label>
-                            <select class="grid-picker" name="buyerHaveAgentRepresentation" id=""
+                            <select class="grid-picker" name="buyerHaveAgentRepresentationCom" id=""
                                 style="justify-content: flex-start;" required>
                                 <option value="">Select</option>
                                 @foreach ($yes_or_nos as $item)
@@ -4602,7 +4602,7 @@
                             <div class="form-group d-none buyers_agent_commission2">
                                 <label class="fw-bold">Does the buyer request that the seller pay the buyer’s agent
                                     commission?</label>
-                                <select class="grid-picker" name="buyersAgentCommissionRequested" id=""
+                                <select class="grid-picker" name="buyersAgentCommissionRequestedCom" id=""
                                     style="justify-content: flex-start;" required>
                                     <option value="">Select</option>
                                     @foreach ($yes_or_nos as $item)
@@ -4631,7 +4631,7 @@
                                         ['name' => 'No', 'icon' => 'fa-regular fa-circle-xmark', 'target' => ''],
                                     ];
                                 @endphp
-                                <select class="grid-picker" name="buyersAgentCompensationNotOffered" id=""
+                                <select class="grid-picker" name="buyersAgentCompensationNotOfferedCom" id=""
                                     style="justify-content: flex-start;">
                                     <option value="">Select</option>
                                     @foreach ($buyersAgentCompensationNotOffered as $item)
@@ -4654,7 +4654,7 @@
                                         ['name' => 'Other', 'target' => '.buyers_agent_comp2'],
                                     ];
                                 @endphp
-                                <select class="grid-picker" name="buyersAgentCompensationRequested" id=""
+                                <select class="grid-picker" name="buyersAgentCompensationRequestedCom" id=""
                                     style="justify-content: flex-start;">
                                     <option value="">Select</option>
                                     @foreach ($buyersAgentCompensation as $item)
@@ -4676,7 +4676,7 @@
                                         <button type="button" class="select-btn" data-type="amount">$</button>
                                     </div>
                                 </div>
-                                <input type="text" name="buyersAgentCompensationRequestedAmount" id=""
+                                <input type="text" name="buyersAgentCompensationRequestedAmountCom" id=""
                                     class="form-control has-icon" data-icon="fa-solid fa-percent" required>
                             </div>
                         </div>
@@ -4684,7 +4684,7 @@
                     <div class="wizard-step" data-step="39">
                         <div class="form-group">
                             <label class="fw-bold">Is the buyer currently selling a property?</label>
-                            <select class="grid-picker" name="isBuyerCurrentlySellingProperty" id=""
+                            <select class="grid-picker" name="isBuyerCurrentlySellingPropertyCom" id=""
                                 style="justify-content: flex-start;" required>
                                 <option value="">Select</option>
                                 @foreach ($yes_or_nos as $item)
@@ -4704,7 +4704,7 @@
                             </select>
                             <div class="form-group link_to_the_property_listing2 d-none">
                                 <label class="fw-bold">Link to the Property listing on Bid Your Offer:</label>
-                                <input type="text" name="linkToThePropertyListing" id=""
+                                <input type="text" name="linkToThePropertyListingCom" id=""
                                     class="form-control has-icon" data-icon="fa-solid fa-link" required>
                             </div>
                         </div>
@@ -4825,7 +4825,7 @@
                         <div class="form-group row">
                             <div class="form-group col-md-6">
                                 <label class="fw-bold">Phone Number:</label>
-                                <input type="text" name="agent_phone" id="agent_phone" placeholder=""
+                                <input type="text" name="agent_phoneCom" id="agent_phone" placeholder=""
                                     value="{{ optional(Auth::user())->phone }}" class="form-control has-icon"
                                     data-icon="fa-solid fa-phone">
                             </div>
@@ -4840,7 +4840,7 @@
                         <div class="form-group row">
                             <div class="form-group col-md-6">
                                 <label class="fw-bold">Brokerage:</label>
-                                <input type="text" name="agent_brokerage" id="agent_brokerage" placeholder=""
+                                <input type="text" name="agent_brokerageCom" id="agent_brokerage" placeholder=""
                                     value="{{ optional(Auth::user())->brokerage }}" class="form-control has-icon"
                                     data-icon="fa-solid fa-handshake">
                             </div>

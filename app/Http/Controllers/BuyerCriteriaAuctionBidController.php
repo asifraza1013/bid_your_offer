@@ -40,6 +40,7 @@ class BuyerCriteriaAuctionBidController extends Controller
             // changes
             $bid->saveMeta("acceptable", $request->acceptable);
             $bid->saveMeta("property_listed", $request->property_listed);
+            $bid->saveMeta("property_link", $request->property_link);
             $bid->saveMeta("address", $request->address);
             $bid->saveMeta("city", $request->city);
             $bid->saveMeta("county", $request->county);
