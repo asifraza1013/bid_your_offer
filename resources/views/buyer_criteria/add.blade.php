@@ -320,7 +320,7 @@
             border: 1px solid #e2e2e2;
         }
 
-        .select-btn {
+        /* .select-btn {
             padding: 1px 10px;
             border: 1px solid rgba(0, 0, 0, 0.175);
             border-radius: 5px;
@@ -331,7 +331,7 @@
 
         .select-btn.active {
             border-color: #11b7cf;
-        }
+        } */
     </style>
 @endpush
 @php
@@ -7919,21 +7919,21 @@
             }
         });
 
-        $('.select-btn').click(function() {
-            $(this).closest('.icon-select-btn-div').find('.select-btn').removeClass('active');
-            $(this).addClass('active');
-            let type = $(this).data('type');
-            let elem = $(this).closest('.form-group').find('.input-icon').children();
-            if (type == 'percent') {
-                elem.removeClass("fa-solid fa-dollar-sign");
-                elem.addClass("fa-solid fa-percent");
-                elem.attr('data-symbol', 'percent');
-            } else {
-                elem.removeClass("fa-solid fa-percent");
-                elem.addClass("fa-solid fa-dollar-sign");
-                elem.attr('data-symbol', 'amount');
-            }
-        })
+        // $('.select-btn').click(function() {
+        //     $(this).closest('.icon-select-btn-div').find('.select-btn').removeClass('active');
+        //     $(this).addClass('active');
+        //     let type = $(this).data('type');
+        //     let elem = $(this).closest('.form-group').find('.input-icon').children();
+        //     if (type == 'percent') {
+        //         elem.removeClass("fa-solid fa-dollar-sign");
+        //         elem.addClass("fa-solid fa-percent");
+        //         elem.attr('data-symbol', 'percent');
+        //     } else {
+        //         elem.removeClass("fa-solid fa-percent");
+        //         elem.addClass("fa-solid fa-dollar-sign");
+        //         elem.attr('data-symbol', 'amount');
+        //     }
+        // })
 
         // $('.input-changable-icon').change(function(){
         //     let symbol = $(this).closest('.form-group').find('.input-icon').find('i').data('symbol');

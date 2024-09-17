@@ -65,6 +65,19 @@
             width:100% !important;
             height: 100% !important;
         }
+
+        .select-btn {
+            padding: 1px 10px;
+            border: 1px solid rgba(0, 0, 0, 0.175);
+            border-radius: 5px;
+            color: #11b7cf;
+            background-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .select-btn.active {
+            border-color: #11b7cf;
+        }
     </style>
     @stack('styles')
     <style>
@@ -191,6 +204,22 @@
                 //
             });
         });
+
+        $('.select-btn').click(function() {
+            $(this).closest('.icon-select-btn-div').find('.select-btn').removeClass('active');
+            $(this).addClass('active');
+            let type = $(this).data('type');
+            let elem = $(this).closest('.form-group').find('.input-icon').children();
+            if (type == 'percent') {
+                elem.removeClass("fa-solid fa-dollar-sign");
+                elem.addClass("fa-solid fa-percent");
+                elem.attr('data-symbol', 'percent');
+            } else {
+                elem.removeClass("fa-solid fa-percent");
+                elem.addClass("fa-solid fa-dollar-sign");
+                elem.attr('data-symbol', 'amount');
+            }
+        })
     </script>
     @stack('scripts')
 </body>

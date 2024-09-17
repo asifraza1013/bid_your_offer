@@ -95,8 +95,10 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("auction_type",$request->auction_type);
             $auction->saveMeta("auction_length",$request->auction_length);
             $auction->saveMeta("buy_now_price",$request->buy_now_price);
+            $auction->saveMeta("buy_now_price_per_sqfeet",$request->buy_now_price_per_sqfeet);
             $auction->saveMeta("starting_price",$request->starting_price);
             $auction->saveMeta("reserve_price",$request->reserve_price);
+            $auction->saveMeta("price_per_sqfeet",$request->price_per_sqfeet);
             $auction->saveMeta("escrow_amount",$request->escrow_amount);
             $auction->saveMeta("closing_days",$request->closing_days);
             $auction->saveMeta("contigencies_accepted_by_seller",$request->contigencies_accepted_by_seller);
@@ -105,6 +107,7 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("finance",$request->finance);
             $auction->saveMeta("saleContingency",$request->saleContingency);
             $auction->saveMeta("acceptable",$request->acceptable);
+            $auction->saveMeta("acceptable_days",$request->acceptable_days);
             $auction->saveMeta("term_financings",$request->term_financings);
             $auction->saveMeta("otherFinancing",$request->otherFinancing);
             $auction->saveMeta("type_of_NFT_accepted",$request->type_of_NFT_accepted);
@@ -112,6 +115,7 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("percentage_in_cash",$request->percentage_in_cash);
             $auction->saveMeta("cryptocurrency_type",$request->cryptocurrency_type);
             $auction->saveMeta("percentage_in_crypto",$request->percentage_in_crypto);
+            $auction->saveMeta("purchase_price_seller_financing",$request->purchase_price_seller_financing);
             $auction->saveMeta("down_payment_seller_financing",$request->down_payment_seller_financing);
             $auction->saveMeta("seller_financing_amount",$request->seller_financing_amount);
             $auction->saveMeta("interest_rate_seller_financing",$request->interest_rate_seller_financing);
@@ -140,7 +144,10 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("sellerFeePurchaseYes",$request->sellerFeePurchaseYes);
             $auction->saveMeta("assumable_terms_offered",$request->assumable_terms_offered);
             $auction->saveMeta("restrictions_or_qualifications",$request->restrictions_or_qualifications);
+            $auction->saveMeta("assumable_interest",$request->assumable_interest);
+            $auction->saveMeta("assumable_monthly_payment",$request->assumable_monthly_payment);
             $auction->saveMeta("outstandingBalanceYes",$request->outstandingBalanceYes);
+            $auction->saveMeta("loan_balance_down_payment",$request->loan_balance_down_payment);
             $auction->saveMeta("otherTrade",$request->otherTrade);
             $auction->saveMeta("estimatedTrade",$request->estimatedTrade);
             $auction->saveMeta("specificTrade",$request->specificTrade);
@@ -153,6 +160,7 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("timeFrame",$request->timeFrame);
             $auction->saveMeta("multiTimeFrame",$request->multiTimeFrame);
             $auction->saveMeta("property_type",$request->property_type);
+            $auction->saveMeta("propertyStyles",$request->propertyStyles);
             $auction->saveMeta("property_items",$request->property_items);
             $auction->saveMeta("otherProperty",$request->otherProperty);
             $auction->saveMeta("prop_condition",$request->prop_condition);
@@ -202,7 +210,7 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("listed_furniture_price",$request->listed_furniture_price);
             $auction->saveMeta("interior_features",json_encode($request->interior_features));
             $auction->saveMeta("otherInterior",$request->otherInterior);
-            $auction->saveMeta("additionalRooms",$request->additionalRooms);
+            $auction->saveMeta("additionalRooms",json_encode($request->additionalRooms));
             $auction->saveMeta("number_of_buildings",$request->number_of_buildings);
             $auction->saveMeta("floors_in_unit",$request->floors_in_unit);
             $auction->saveMeta("total_floors",$request->total_floors);

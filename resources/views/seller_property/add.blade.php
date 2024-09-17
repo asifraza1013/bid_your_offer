@@ -426,12 +426,54 @@
           <div class="wizard-step" data-step="4">
             <div class="form-group">
               <label class="fw-bold">
+                Listing Type:
+              </label>
+              <div>
+                @php
+                  $auction_types = [['target' => '.auctionTimer', 'name' => 'Auction Listing', 'icon' => '<i class="fa-regular fa-clock"></i>'], ['target' => '.traditionalTime', 'name' => 'Traditional Listing', 'icon' => '<i class="fa-regular fa-circle-xmark"></i>']];
+                @endphp
+                <select name="auction_type" id="auction_type" class="grid-picker" required>
+                  <option value=""></option>
+                  @foreach ($auction_types as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                      style="width:calc(33.3% - 10px);" data-icon='{{ $item['icon'] }}'>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+            <div class="form-group  d-none auctionTimer">
+              <label class="fw-bold">
+                Timer Length:
+              </label>
+              <div>
+                @php
+                  $timer_lengths = [['name' => '1 Day', 'class' => 'normal-length'], ['name' => '3 Days', 'class' => 'normal-length'], ['name' => '5 Days', 'class' => 'normal-length'], ['name' => '7 Days', 'class' => 'normal-length'], ['name' => '10 Days', 'class' => 'normal-length'], ['name' => '14 Days', 'class' => 'normal-length'], ['name' => '21 Days', 'class' => 'normal-length'], ['name' => '30 Days', 'class' => 'normal-length'], ['name' => '45 Days', 'class' => 'normal-length'], ['name' => '60 Days', 'class' => 'normal-length'], ['name' => '75 Days', 'class' => 'normal-length'], ['name' => '90 Days', 'class' => 'normal-length'], ['name' => 'No time limit', 'class' => 'traditional-length']];
+                @endphp
+                <select name="auction_length" id="auction_length" class="auction_length grid-picker"
+                  style="justify-content: flex-start;" required>
+                  <option value=""></option>
+                  @foreach ($timer_lengths as $item)
+                    <option value="{{ $item['name'] }}" data-target="" class="card flex-row {{ $item['class'] }}"
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-check-circle"></i>'>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+          </div>
+          {{-- Slide 5 --}}
+          <div class="wizard-step" data-step="5">
+            <div class="form-group">
+              <label class="fw-bold">
                 Special Sale Provision:
               </label>
               <div>
                 @php
                   $special_sale_provision = [  
-                    ['target' => '.assignment_contract_res','name' => 'Assignment Contract'],['name' => 'Auction', 'target' => ''], ['name' => 'Bank Owned/Reo', 'target' => ''], ['name' => 'Government Owned', 'target' => ''], ['name' => 'Probate Listing', 'target' => ''], ['name' => 'Short Sale', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.special_sale_provision']];
+                    ['target' => '.assignment_contract_res','name' => 'Assignment Contract (Wholesale Property)'],['name' => 'Auction', 'target' => ''], ['name' => 'Bank Owned/Reo', 'target' => ''], ['name' => 'Government Owned', 'target' => ''], ['name' => 'Probate Listing', 'target' => ''], ['name' => 'Short Sale', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.special_sale_provision']];
                 @endphp
                 <select name="special_sale" id="special_sale" class="grid-picker" style="justify-content: flex-start;"
                   required>
@@ -473,7 +515,14 @@
               </select>
 
               <div class="form-group commercialseller_contract_yes d-none">
-                <label class="fw-bold">What fee would the seller pay the agent to assign the contract? </label>
+                <div class="d-flex justify-content-between aalign-items-center">
+                  <label class="fw-bold">What fee would the seller pay the agent to assign the contract?</label>
+                  <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                      <button type="button" class="select-btn me-1 active"
+                          data-type="amount">$</button>
+                      <button type="button" class="select-btn" data-type="percent">%</button>
+                  </div>
+                </div>
                 <input type="text" class="form-control has-icon" placeholder=""
                   name="commercialseller_contract_yes" data-icon="fa-solid fa-dollar-sign"
                   id="commercialseller_contract_yes" required />
@@ -497,73 +546,36 @@
               </div>
             </div>
           </div>
-          {{-- Slide 5 --}}
-          <div class="wizard-step" data-step="5">
-            <div class="form-group">
-              <label class="fw-bold">
-                Listing Type:
-              </label>
-              <div>
-                @php
-                  $auction_types = [['target' => '.auctionTimer', 'name' => 'Auction (Timer)', 'icon' => '<i class="fa-regular fa-clock"></i>'], ['target' => '.traditionalTime', 'name' => 'Traditional (No Timer)', 'icon' => '<i class="fa-regular fa-circle-xmark"></i>']];
-                @endphp
-                <select name="auction_type" id="auction_type" class="grid-picker" required>
-                  <option value=""></option>
-                  @foreach ($auction_types as $item)
-                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon='{{ $item['icon'] }}'>
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-            </div>
-            <div class="form-group  d-none auctionTimer">
-              <label class="fw-bold">
-                Auction Length:
-              </label>
-              <div>
-                @php
-                  $auction_lengths = [['name' => '1 Day', 'class' => 'normal-length'], ['name' => '3 Days', 'class' => 'normal-length'], ['name' => '5 Days', 'class' => 'normal-length'], ['name' => '7 Days', 'class' => 'normal-length'], ['name' => '10 Days', 'class' => 'normal-length'], ['name' => '14 Days', 'class' => 'normal-length'], ['name' => '21 Days', 'class' => 'normal-length'], ['name' => '30 Days', 'class' => 'normal-length'], ['name' => '45 Days', 'class' => 'normal-length'], ['name' => '60 Days', 'class' => 'normal-length'], ['name' => '75 Days', 'class' => 'normal-length'], ['name' => '90 Days', 'class' => 'normal-length'], ['name' => 'No time limit', 'class' => 'traditional-length']];
-                @endphp
-                <select name="auction_length" id="auction_length" class="auction_length grid-picker"
-                  style="justify-content: flex-start;" required>
-                  <option value=""></option>
-                  @foreach ($auction_lengths as $item)
-                    <option value="{{ $item['name'] }}" data-target="" class="card flex-row {{ $item['class'] }}"
-                      style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-check-circle"></i>'>
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-            </div>
-          </div>
           <div class="wizard-step" data-step="6">
             <span class="timeAuction">
               <h4>Price and Terms:</h4>
               <div class="form-group ">
                 <label class="fw-bold" for="buy_now_price" required>Buy Now Price:</label>
                 <input type="number"  name="buy_now_price"  id="buy_now_price"
-                  class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dollar"
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar"
                   data-msg-required="Please enter Buy Now Price">
+              </div>
+              <div class="form-group ">
+                <label class="fw-bold" for="reserve_price" required>Buy Now Price Per Sqft:</label>
+                <input type="number" name="buy_now_price_per_sqfeet"  id="reserve_price"
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar">
               </div>
               <div class="form-group ">
                 <label class="fw-bold" for="starting_price" required>Starting Price:</label>
                 <input type="number"  name="starting_price"  id="starting_price"
-                  class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dollar"
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar"
                   data-msg-required="Please enter Starting Price">
               </div>
               <div class="form-group ">
                 <label class="fw-bold" for="reserve_price" required>Reserve Price:</label>
                 <input type="number"  name="reserve_price"  id="reserve_price"
-                  class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dollar">
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar">
               </div>
               <div class="form-group row ">
                 <div class="form-group">
                   <label class="fw-bold">Acceptable Escrow Deposit:</label>
                   <input type="number" name="escrow_amount" id="term_escrow_amount" placeholder=""
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                 </div>
               </div>
               <div class="form-group row ">
@@ -597,7 +609,7 @@
                   <input type="number" name="appraisal" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
                 </div>
                 <div class="form-group financingAuction d-none">
-                  <label class="fw-bold">Finance contingency (days):</label>
+                  <label class="fw-bold">Financing contingency (days):</label>
                   <input type="number" name="finance" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
                 </div>
                 <div class="form-group saleAuction d-none">
@@ -605,8 +617,11 @@
                   <input type="number" name="saleContingency" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
                 </div>
                 <div class="form-group otherContingencyAuction d-none">
-                  <label class="fw-bold">Acceptable contingency: </label>
-                  <input type="number" name="acceptable" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                  <label class="fw-bold">Acceptable contingency:</label>
+                  <input type="text" name="acceptable" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+
+                  <label class="fw-bold">Acceptable contingency (days):</label>
+                  <input type="text" name="acceptable_days" id="" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
                 </div>
               </div>
               <div class="form-group">
@@ -616,12 +631,6 @@
                       ['name' => 'Conventional', 'target' => ''],
                       ['name' => 'FHA', 'target' => ''],
                       ['name' => 'VA', 'target' => ''],
-                      ['name' => 'Litecoin (LTC)', 'target' => ''],
-                      ['name' => 'Bitcoin Cash (BCH)', 'target' => ''],
-                      ['name' => 'Dash (DASH)', 'target' => ''],
-                      ['name' => 'Ripple (XRP)', 'target' => ''],
-                      ['name' => 'Tether (USDT)', 'target' => ''],
-                      ['name' => 'USD Coin (USDC)', 'target' => ''],
                       ['name' => 'Non-Fungible Token (NFT)', 'target' => '.nftAuction'],
                       ['name' => 'Cryptocurrency', 'target' => '.cryptoAuction'],
                       ['name' => 'USDA', 'target' => ''],
@@ -629,9 +638,7 @@
                       ['name' => 'Exchange/Trade', 'target' => '.tradeAuction'],
                       ['name' => 'Lease Option', 'target' => '.leaseOptionAuction'],
                       ['name' => 'Lease Purchase', 'target' => '.leasePurchaseAuction'],
-                      ['name' => 'Private Financing Available', 'target' => ''],
-                      ['name' => 'Special Funding', 'target' => ''],
-                      ['name' => 'Seller Financing', 'target' => '.sellerFinancingAuction d-none'],
+                      ['name' => 'Seller Financing', 'target' => '.sellerFinancingAuction'],
                       ['name' => 'Jumbo', 'target' => ''],
                       ['name' => 'Non-QM', 'target' => ''],
                       ['name' => 'No-Doc', 'target' => ''],
@@ -653,15 +660,15 @@
                 </div>
                   {{-- Other --}}
                   <div class="form-group otherFinancingAuction d-none">
-                      <label class="fw-bold">Acceptable Currency/Financing: </label>
-                      <input type="text" name="otherFinancing"  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <label class="fw-bold">Acceptable Currency/Financing:</label>
+                      <input type="text" name="otherFinancing"  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                   </div>
                   {{-- Other --}}
                   {{-- NFTAuction  --}}
                   <div class="form-group nftAuction d-none">
                     <div class="form-group col-md-12">
-                        <label class="fw-bold">What type of Non-Fungible Token (NFT) will the seller accept?</label>
-                        <input type="text" name="type_of_NFT_accepted" id="type_of_NFT_accepted" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <label class="fw-bold">What type of Non-Fungible Token (NFT) will the seller accept?</label>
+                      <input type="text" name="type_of_NFT_accepted" id="type_of_NFT_accepted" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="fw-bold">What percentage of the sales price will the seller accept in the form of a Non-Fungible Token (NFT)?</label>
@@ -676,122 +683,129 @@
                 {{-- CryptoAuction  --}}
                 <div class="form-group cryptoAuction d-none">
                   <div class="form-group col-md-12">
-                      <label class="fw-bold">What type of cryptocurrency will the seller accept?</label>
-                      <input type="text" name="cryptocurrency_type" id="cryptocurrency_type" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                    <label class="fw-bold">What type of cryptocurrency will the seller accept?</label>
+                    <input type="text" name="cryptocurrency_type" id="cryptocurrency_type" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                   </div>
                   <div class="form-group col-md-12">
                       <label class="fw-bold">What percentage of the sales price will the seller accept in cryptocurrency?</label>
-                      <input type="number" name="percentage_in_crypto" id="percentage_in_crypto" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <input type="number" name="percentage_in_crypto" id="percentage_in_crypto" class="form-control has-icon" data-icon="fa-solid fa-percent" required>
                   </div>
                   <div class="form-group col-md-12">
                       <label class="fw-bold">What percentage of the sales price will the seller accept in cash?</label>
-                      <input type="number" name="percentage_in_cash" id="percentage_in_cash" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <input type="number" name="percentage_in_cash" id="percentage_in_cash" class="form-control has-icon" data-icon="fa-solid fa-percent" required>
                   </div> 
-                  <small>Note: Cryptocurrency can be converted to cash at closing.</small>             
+                  <small>Note: Cryptocurrency can be converted to cash at closing.</small>              
                 </div>
+                {{-- CryptoAuction  --}}
+                {{-- seller financing --}}
                 <div class="form-group row sellerFinancingAuction d-none">
-                  <div class="form-group col-md-3">
+                  <label class="fw-bold">Please enter the seller’s desired seller financing terms:</label>
+                <div class="form-group col-md-3">
+                  <label class="fw-bold">Purchase Price:</label>
+                  <input type="number" name="purchase_price_seller_financing" id="purchase_price_seller_financing"
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <div class="d-flex justify-content-between aalign-items-center">
                     <label class="fw-bold">Down Payment:</label>
-                    <input type="number" name="down_payment_seller_financing" id="down_payment_seller_financing"
-                      class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
-                  </div>
-                  <div class="form-group col-md-3">
-                    <label class="fw-bold">Seller Financing Amount:</label>
-                    <input type="number" name="seller_financing_amount" id="seller_financing_amount"
-                      class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
-                  </div>
-                  <div class="form-group col-md-3">
-                    <label class="fw-bold">Interest Rate:</label>
-                    <input type="number" name="interest_rate_seller_financing" id="interest_rate_seller_financing"
-                      class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
-                  </div>
-                  <div class="form-group col-md-3">
-                    <label class="fw-bold">Term:</label>
-                    <input type="text" name="term_seller_financing" id="term_seller_financing"
-                      class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
-                  </div>
-                  <div class="form-group col-md-3">
-                    <label class="fw-bold">Monthly Payments:</label>
-                    <input type="number" name="monthly_payment_seller_financing" id="monthly_payment_seller_financing"
-                      class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
-                  </div>
-                  <div class="form-group col-md-3">
-                    <label class="fw-bold">Closing Costs:</label>
-                    <input type="text" name="closing_costs" id="closing_costs" class="form-control has-icon"
-                      data-icon="fa-solid fa-ruler-combined" required>
-                  </div>
-                  <div class="form-group">
-                    @php
-                      $ballonPenalty = [['name' => 'Yes', 'target' => '.ballonPenaltyYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
-                    @endphp
-                    <label class="fw-bold">Prepayment Penalty:</label>
-                    <select name="ballonPenalty" id="auto_bid" class="grid-picker" style="justify-content: flex-start;"
-                      required>
-                      @foreach ($ballonPenalty as $item)
-                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row" style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>{{ $item['name'] }}
-                      </option>
-                      @endforeach
-                    </select>
-                    <div class="form-group  ballonPenaltyYesAuction d-none">
-                      <label class="fw-bold">What is the prepayment penalty amount? </label>
-                      <input type="text" name="ballonPenaltyYes" id="closing_costs" class="form-control has-icon"
-                        data-icon="fa-solid fa-dollar-sign" required>
+                    <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                        <button type="button" class="select-btn me-1 active"
+                            data-type="amount">$</button>
+                        <button type="button" class="select-btn" data-type="percent">%</button>
                     </div>
                   </div>
-                  <div class="form-group">
-                    @php
-                      $balloonPay = [['name' => 'Yes', 'target' => '.balloonPayYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
-                    @endphp
-                    <label class="fw-bold">Balloon Payment:</label>
-                    <select name="balloonPay" id="auto_bid" class="grid-picker" style="justify-content: flex-start;"
-                      required>
-                      @foreach ($balloonPay as $item)
-                        <option value="{{ $item['name'] }}"
-                          data-target="{{ $item['target'] }}" class="card flex-row" style="width:calc(33.3% - 10px);"
-                          data-icon='<i class="{{ $item['icon'] }}"></i>'>{{ $item['name'] }}
-                      </option>
-                      @endforeach
-                    </select>
-                      <div class="form-group balloonPayYesAuction d-none">
-                        <div class="form-group">
-                          <label class="fw-bold">How much is the balloon payment? </label>
-                          <input type="text" name="balloonPayment" id="closing_costs" class="form-control has-icon"
-                            data-icon="fa-solid fa-dollar-sign" required>
-                        </div>
-                        <div class="form-group">
-                          <label class="fw-bold">When is the balloon payment due? </label>
-                          <input type="text" name="balloonDue" id="closing_costs" class="form-control has-icon"
-                            data-icon="fa-solid fa-dollar-sign" required>
-                        </div>
-                      </div>
+                  <input type="number" name="down_payment_seller_financing" id="down_payment_seller_financing"
+                    class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="fw-bold">Seller Financing Amount:</label>
+                  <input type="number" name="seller_financing_amount" id="seller_financing_amount"
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="fw-bold">Interest Rate:</label>
+                  <input type="number" name="interest_rate_seller_financing" id="interest_rate_seller_financing"
+                    class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="fw-bold">Loan Duration:</label>
+                  <input type="text" name="term_seller_financing" id="term_seller_financing"
+                    class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="fw-bold">Monthly Payment with Principal and Interest:</label>
+                  <input type="number" name="monthly_payment_seller_financing" id="monthly_payment_seller_financing"
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                </div>
+                <div class="form-group">
+                  @php
+                    $ballonPenalty = [['name' => 'Yes', 'target' => '.ballonPenaltyYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
+                  @endphp
+                  <label class="fw-bold">Prepayment Penalty:</label>
+                  <select name="ballonPenalty" id="auto_bid" class="grid-picker" style="justify-content: flex-start;"
+                    required>
+                    @foreach ($ballonPenalty as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row" style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>{{ $item['name'] }}
+                    </option>
+                    @endforeach
+                  </select>
+                  <div class="form-group  ballonPenaltyYesAuction d-none">
+                    <label class="fw-bold">What is the prepayment penalty amount? </label>
+                    <input type="number" name="ballonPenaltyYes" id="closing_costs" class="form-control has-icon"
+                      data-icon="fa-solid fa-dollar-sign" required>
                   </div>
                 </div>
+                <div class="form-group">
+                  @php
+                    $balloonPay = [['name' => 'Yes', 'target' => '.balloonPayYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
+                  @endphp
+                  <label class="fw-bold">Balloon Payment:</label>
+                  <select name="balloonPay" id="auto_bid" class="grid-picker" style="justify-content: flex-start;"
+                    required>
+                    @foreach ($balloonPay as $item)
+                      <option value="{{ $item['name'] }}"
+                        data-target="{{ $item['target'] }}" class="card flex-row" style="width:calc(33.3% - 10px);"
+                        data-icon='<i class="{{ $item['icon'] }}"></i>'>{{ $item['name'] }}
+                    </option>
+                    @endforeach
+                  </select>
+                    <div class="form-group balloonPayYesAuction d-none">
+                      <div class="form-group">
+                        <label class="fw-bold">How much is the balloon payment? </label>
+                        <input type="number" name="balloonPayment" id="closing_costs" class="form-control has-icon"
+                          data-icon="fa-solid fa-dollar-sign" required>
+                      </div>
+                      <div class="form-group">
+                        <label class="fw-bold">When is the balloon payment due? </label>
+                        <input type="text" name="balloonDue" id="closing_costs" class="form-control has-icon"
+                          data-icon="fa-regular fa-calendar-days" required>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {{-- seller financing --}}
                 {{-- Lease Option  --}}
                   <div class="form-group leaseOptionAuction d-none">
                     <div class="form-group col-md-12">
-                        <label class="fw-bold">What is the seller's desired offering price for a lease option? </label>
-                        <input type="number" name="desired_offering_price" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
+                      <label class="fw-bold">What is the seller's desired offering price for a lease option? </label>
+                      <input type="number" name="desired_offering_price" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="fw-bold">What specific terms does the seller propose for the lease option?</label>
-                        <input name="lease_option_terms" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                        <input name="lease_option_terms" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="fw-bold">What is the proposed duration of the lease?</label>
-                        <input type="text" name="proposed_lease_duration" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                        <input type="text" name="proposed_lease_duration" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="fw-bold">What is the monthly payment amount the seller is seeking? </label>
-                        <input type="number" name="monthly_payment_amount" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
+                        <input type="number" name="monthly_payment_amount" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                     </div>
                     <div class="form-group col-md-12">
-                        <label class="fw-bold">Are there any specific conditions or requirements outlined by the seller for the lease option?</label>
-                        <input name="lease_option_conditions" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                        <label class="fw-bold">What are the specific conditions or requirements outlined by the seller for the lease option?</label>
+                        <input name="lease_option_conditions" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                     </div>
-                    <div class="form-group col-md-12">
-                          <label class="fw-bold">Is there a possibility of changes in the offering price during the lease period? </label>
-                          <input type="text" name="price_changes_possibility" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
-                      </div> 
                     <div class="form-group">
                       @php
                         $sellerFeeOption = [['name' => 'Yes', 'target' => '.sellerFeeOptionYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
@@ -808,7 +822,7 @@
                       </select>
                       <div class="form-group col-md-12 sellerFeeOptionYesAuction d-none">
                         <label class="fw-bold">How much is the option fee? </label>
-                        <input type="text" name="sellerFeeOptionYes"  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                        <input type="number" name="sellerFeeOptionYes"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                     </div>               
                   </div>
                 </div>
@@ -816,34 +830,30 @@
                 {{-- Lease Purchase  --}}
                   <div class="form-group leasePurchaseAuction d-none">
                     <div class="form-group col-md-12">
-                        <label class="fw-bold">What is the seller's desired offering price for a lease purchase?</label>
-                        <input type="number" name="desired_offering_price_lease_purchase" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
+                      <label class="fw-bold">What is the seller's desired offering price for a lease purchase?</label>
+                      <input type="number" name="desired_offering_price_lease_purchase" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="fw-bold">What specific terms does the seller propose for the lease purchase?</label>
-                        <input name="lease_purchase_terms" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                        <input name="lease_purchase_terms" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="fw-bold">What is the proposed duration of the lease?</label>
-                        <input type="text" name="proposed_lease_duration_lease_purchase" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                        <input type="text" name="proposed_lease_duration_lease_purchase" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="fw-bold">What is the monthly payment amount the seller is seeking?</label>
-                        <input type="number" name="monthly_payment_amount_lease_purchase" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
+                        <input type="number" name="monthly_payment_amount_lease_purchase" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                     </div>
                     <div class="form-group col-md-12">
-                        <label class="fw-bold">Are there any specific conditions or requirements outlined by the seller for the lease purchase?</label>
-                        <input name="lease_purchase_conditions" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label class="fw-bold">Is there a possibility of changes in the offering price during the lease period?</label>
-                        <input type="text" name="price_changes_possibility_lease_purchase" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                        <label class="fw-bold">What are the specific conditions or requirements outlined by the seller for the lease purchase?</label>
+                        <input name="lease_purchase_conditions" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                     </div>    
                     <div class="form-group">
                       @php
                         $sellerFeePurchase = [['name' => 'Yes', 'target' => '.sellerFeePurchaseYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
                       @endphp
-                      <label class="fw-bold">Does the seller require an option fee?  </label>
+                      <label class="fw-bold">Does the seller require an option fee?</label>
                       <select class="grid-picker" name="exchange_trade" style="justify-content: flex-start;" required>
                         <option value="">Select</option>
                         @foreach ($sellerFeePurchase as $item)
@@ -855,7 +865,7 @@
                       </select>
                       <div class="form-group col-md-12 sellerFeePurchaseYesAuction d-none">
                         <label class="fw-bold">How much is the option fee?  </label>
-                        <input type="text" name="sellerFeePurchaseYes"  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                        <input type="number" name="sellerFeePurchaseYes"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                     </div>               
                   </div>
                 </div>
@@ -863,19 +873,27 @@
                 {{-- AssumableAuction  --}}
                   <div class="form-group assumableAuction d-none">
                     <div class="form-group col-md-12">
-                        <label class="fw-bold">What assumable terms are being offered?</label>
-                        <input type="text" name="assumable_terms_offered"  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <label class="fw-bold">What assumable terms are being offered?</label>
+                      <input type="text" name="assumable_terms_offered"  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="fw-bold">Are there any restrictions or qualifications for a buyer assuming the existing financing?</label>
-                        <input type="text" name="restrictions_or_qualifications"  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                        <input type="text" name="restrictions_or_qualifications"  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                    </div>
+                    <div class="form-group col-md-12">
+                      <label class="fw-bold">What is the interest rate of the assumable loan?</label>
+                      <input type="text" name="assumable_interest"  class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                    </div>
+                    <div class="form-group col-md-12">
+                      <label class="fw-bold">What is the monthly payment, including principal and interest, for the assumable loan?</label>
+                      <input type="number" name="assumable_monthly_payment"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                     </div>
                     <div class="form-group col-md-12">
                         @php
                         $outstandingBalance = [['name' => 'Yes', 'target' => '.outstandingBalanceYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
                       @endphp
                       <div class="form-group">
-                        <label class="fw-bold">Is there any outstanding balance on the existing financing that the buyer would need to cover?</label>
+                        <label class="fw-bold">What is the outstanding balance on the existing loan?</label>
                         <select class="grid-picker" name="exchange_trade" id="contigencies_accepted_by_seller"
                           style="justify-content: flex-start;" required>
                           <option value="">Select</option>
@@ -887,19 +905,24 @@
                           @endforeach
                         </select>
                         <div class="form-group col-md-12 outstandingBalanceYesAuction d-none">
-                          <label class="fw-bold">What is the outstanding balance on the existing financing that the buyer would need to cover? </label>
-                          <input type="text" name="outstandingBalanceYes"  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                          <label class="fw-bold">What is the outstanding balance on the existing loan?</label>
+                          <input type="number" name="outstandingBalanceYes"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+
+                          <label class="fw-bold">What is the down payment that the buyer would need to pay the seller to bridge the gap
+                            between the asking price and the assumable loan balance?</label>
+                          <input type="number" name="loan_balance_down_payment"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                       </div>
                     </div>
                   </div>            
                 </div>            
                 {{-- Assumable  --}}
+                {{-- Exchange/trade --}}
                 <div class="form-group row tradeAuction d-none">
                   @php
-                    $exchange_trades = [['name' => 'Another home', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Vehicles', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Boats', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Motorhomes', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Artwork', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Jewelry', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Other', 'target' => '.otherTradeAuction', 'icon' => 'fa-regular fa-circle-check']];
+                  $exchange_trades = [['name' => 'Another home', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Vehicle', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Boat', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Motorhome', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Artwork', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Jewelry', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Other', 'target' => '.otherTradeAuction', 'icon' => 'fa-regular fa-circle-check']];
                   @endphp
                   <div class="form-group">
-                    <label class="fw-bold">Offered Exchange Item: </label>
+                    <label class="fw-bold">Acceptable Exchange Item:</label>
                     <select class="grid-picker" name="exchange_trade" id="contigencies_accepted_by_seller"
                       style="justify-content: flex-start;" required>
                       <option value="">Select</option>
@@ -912,27 +935,28 @@
                     </select>
                     <div class="form-group col-md-12 otherTradeAuction d-none">
                       <label class="fw-bold">Acceptable Exchange Item:</label>
-                      <input type="text" name="otherTrade" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <input type="text" name="otherTrade" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                     </div>
                   </div>
                   <div class="form-group col-md-12">
                     <label class="fw-bold">What is the estimated value of the acceptable exchange/trade item? </label>
-                    <input type="number" name="estimatedTrade" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
+                    <input type="text" name="estimatedTrade" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
                   </div>
                   <div class="form-group col-md-12">
                     <label class="fw-bold">Are there specific criteria or conditions for the type of item the seller is willing to exchange/trade?</label>
-                    <input type="number" name="specificTrade" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
+                    <input type="text" name="specificTrade" class="form-control has-icon" data-icon="" required>
                   </div>
                   <div class="form-group">
-                    <label class="fw-bold">How much cash does the seller require on top of the exchange/trade item? </label>
-                    <input type="number" name="cashTrade" class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                    <label class="fw-bold">How much cash does the seller require on top of the exchange/trade item?</label>
+                    <input type="number" name="cashTrade" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                   </div>
                   <div class="form-group col-md-12">
-                    <label class="fw-bold">How is the value of the exchange/trade item determined?  </label>
+                    <label class="fw-bold">How is the value of the exchange/trade item determined?</label>
                     <input type="text" name="valueTrade" class="form-control has-icon"
-                      data-icon="fa-solid fa-ruler-combined" required>
+                      data-icon="fa-regular fa-check-circle" required>
                   </div>
                 </div>
+                {{-- Exchangetrade --}}
                 <div class="form-group row">
                   @php
                     $sellerOffer = [['name' => 'Yes', 'target' => '.sellerOfferYesAuction','icon'=>'<i class="fa-regular fa-circle-check"></i>'], ['name' => 'No', 'target' => '','icon'=>'<i class="fa-regular fa-circle-xmark"></i>']];
@@ -962,10 +986,15 @@
                     class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dollar"
                     data-msg-required="Please enter Buy Now Price">
                 </div>
+                <div class="form-group ">
+                  <label class="fw-bold" for="reserve_price" required>List Price Per Sqft:</label>
+                  <input type="number" name="price_per_sqfeet"  id="reserve_price"
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
+                </div>
                 <div class="form-group">
-                  <label class="fw-bold">Acceptable Escrow Deposit: :</label>
+                  <label class="fw-bold">Acceptable Escrow Deposit:</label>
                   <input type="number" name="escrow_amount2" id="term_escrow_amount" placeholder=""
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                 </div>
                 <div class="form-group">
                   <label class="fw-bold">Number of Days the Seller Will Accept for Closing: </label>
@@ -996,7 +1025,7 @@
                   <input type="number" name="appraisal" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
                 </div>
                 <div class="form-group financing d-none">
-                  <label class="fw-bold">Finance contingency (days):</label>
+                  <label class="fw-bold">Financing contingency (days):</label>
                   <input type="number" name="finance" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
                 </div>
                 <div class="form-group sale d-none">
@@ -1005,60 +1034,11 @@
                 </div>
                 <div class="form-group otherContingency d-none">
                   <label class="fw-bold">Acceptable contingency: </label>
-                  <input type="number" name="acceptable" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                  <input type="text" name="acceptable" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+
+                  <label class="fw-bold">Acceptable contingency (days):</label>
+                  <input type="text" name="acceptable_days" id="" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
                 </div>
-              </div>
-              @php
-                $timeFrame = [
-                  ["name"=> "12 hours", "target"=> ''],
-                  ["name"=> "24 hours (1 day)", "target"=> ''],
-                  ["name"=> "36 hours", "target"=> ''],
-                  ["name"=> "48 hours (2 days)", "target"=> ''],
-                  ["name"=> "60 hours", "target"=> ''],
-                  ["name"=> "72 hours (3 days)", "target"=> ''],
-                  ["name"=> "96 hours (4 days)", "target"=> ''],
-                  ["name"=> "120 hours (5 days)", "target"=> ''],
-                  ["name"=> "144 hours (6 days)", "target"=> ''],
-                  ["name"=> "168 hours (7 days)", "target"=> '']
-              ];
-              @endphp
-              <div class="form-group">
-                <label class="fw-bold">Time Frame Allocated to Respond Offers: </label>
-                <select class="grid-picker" name="timeFrame" style="justify-content: flex-start;">
-                  <option value="">Select</option>
-                  @foreach ($timeFrame as $item)
-                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'>
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-              @php
-                $multiTimeFrame = [
-                  ["name"=> "12 hours", "target"=> ''],
-                  ["name"=> "24 hours (1 day)", "target"=> ''],
-                  ["name"=> "36 hours", "target"=> ''],
-                  ["name"=> "48 hours (2 days)", "target"=> ''],
-                  ["name"=> "60 hours", "target"=> ''],
-                  ["name"=> "72 hours (3 days)", "target"=> ''],
-                  ["name"=> "96 hours (4 days)", "target"=> ''],
-                  ["name"=> "120 hours (5 days)", "target"=> ''],
-                  ["name"=> "144 hours (6 days)", "target"=> ''],
-                  ["name"=> "168 hours (7 days)", "target"=> '']
-              ];
-              @endphp
-              <div class="form-group">
-                <label class="fw-bold">Time Frame Allocated to Respond to Multiple Offers:  </label>
-                <select class="grid-picker" name="multiTimeFrame" style="justify-content: flex-start;">
-                  <option value="">Select</option>
-                  @foreach ($multiTimeFrame as $item)
-                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'>
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
               </div>
               <div class="form-group">
                   @php
@@ -1067,12 +1047,6 @@
                         ['name' => 'Conventional', 'target' => ''],
                         ['name' => 'FHA', 'target' => ''],
                         ['name' => 'VA', 'target' => ''],
-                        ['name' => 'Litecoin (LTC)', 'target' => ''],
-                        ['name' => 'Bitcoin Cash (BCH)', 'target' => ''],
-                        ['name' => 'Dash (DASH)', 'target' => ''],
-                        ['name' => 'Ripple (XRP)', 'target' => ''],
-                        ['name' => 'Tether (USDT)', 'target' => ''],
-                        ['name' => 'USD Coin (USDC)', 'target' => ''],
                         ['name' => 'Non-Fungible Token (NFT)', 'target' => '.nft'],
                         ['name' => 'Cryptocurrency', 'target' => '.crypto'],
                         ['name' => 'USDA', 'target' => ''],
@@ -1080,8 +1054,6 @@
                         ['name' => 'Exchange/Trade', 'target' => '.custom_exchange_trade'],
                         ['name' => 'Lease Option', 'target' => '.leaseOption'],
                         ['name' => 'Lease Purchase', 'target' => '.leasePurchase'],
-                        ['name' => 'Private Financing Available', 'target' => ''],
-                        ['name' => 'Special Funding', 'target' => ''],
                         ['name' => 'Seller Financing', 'target' => '.custom_seller_financing'],
                         ['name' => 'Jumbo', 'target' => ''],
                         ['name' => 'Non-QM', 'target' => ''],
@@ -1104,15 +1076,15 @@
               </div>
                 {{-- Other --}}
                 <div class="form-group otherFinancing d-none">
-                    <label class="fw-bold">Acceptable Currency/Financing: </label>
-                    <input type="text" name="otherFinancing"  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                    <label class="fw-bold">Acceptable Currency/Financing:</label>
+                    <input type="text" name="otherFinancing"  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                 </div>
                 {{-- Other --}}
                 {{-- NFT  --}}
                 <div class="form-group nft d-none">
                   <div class="form-group col-md-12">
                       <label class="fw-bold">What type of Non-Fungible Token (NFT) will the seller accept?</label>
-                      <input type="text" name="type_of_NFT_accepted" id="type_of_NFT_accepted" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <input type="text" name="type_of_NFT_accepted" id="type_of_NFT_accepted" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                   </div>
                   <div class="form-group col-md-12">
                       <label class="fw-bold">What percentage of the sales price will the seller accept in the form of a Non-Fungible Token (NFT)?</label>
@@ -1128,48 +1100,58 @@
               <div class="form-group crypto d-none">
                 <div class="form-group col-md-12">
                     <label class="fw-bold">What type of cryptocurrency will the seller accept?</label>
-                    <input type="text" name="cryptocurrency_type" id="cryptocurrency_type" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                    <input type="text" name="cryptocurrency_type" id="cryptocurrency_type" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                 </div>
                 <div class="form-group col-md-12">
                     <label class="fw-bold">What percentage of the sales price will the seller accept in cryptocurrency?</label>
-                    <input type="number" name="percentage_in_crypto" id="percentage_in_crypto" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                    <input type="number" name="percentage_in_crypto" id="percentage_in_crypto" class="form-control has-icon" data-icon="fa-solid fa-percent" required>
                 </div>
                 <div class="form-group col-md-12">
                     <label class="fw-bold">What percentage of the sales price will the seller accept in cash?</label>
-                    <input type="number" name="percentage_in_cash" id="percentage_in_cash" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                    <input type="number" name="percentage_in_cash" id="percentage_in_cash" class="form-control has-icon" data-icon="fa-solid fa-percent" required>
                 </div> 
                 <small>Note: Cryptocurrency can be converted to cash at closing.</small>             
               </div>
-              <div class="form-group row custom_seller_financing">
+              {{-- Crypto  --}}
+              {{-- seller financing --}}
+              <div class="form-group row custom_seller_financing d-none">
+                <label class="fw-bold">Please enter the seller’s desired seller financing terms:</label>
                 <div class="form-group col-md-3">
-                  <label class="fw-bold">Down Payment:</label>
+                  <label class="fw-bold">Purchase Price:</label>
+                  <input type="number" name="purchase_price_seller_financing" id="purchase_price_seller_financing"
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <div class="d-flex justify-content-between aalign-items-center">
+                    <label class="fw-bold">Down Payment:</label>
+                    <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                        <button type="button" class="select-btn me-1 active"
+                            data-type="amount">$</button>
+                        <button type="button" class="select-btn" data-type="percent">%</button>
+                    </div>
+                  </div>
                   <input type="number" name="down_payment_seller_financing" id="down_payment_seller_financing"
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                    class="form-control has-icon" data-icon="fa-solid fa-percent" required>
                 </div>
                 <div class="form-group col-md-3">
                   <label class="fw-bold">Seller Financing Amount:</label>
                   <input type="number" name="seller_financing_amount" id="seller_financing_amount"
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                 </div>
                 <div class="form-group col-md-3">
                   <label class="fw-bold">Interest Rate:</label>
                   <input type="number" name="interest_rate_seller_financing" id="interest_rate_seller_financing"
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                    class="form-control has-icon" data-icon="fa-solid fa-percent" required>
                 </div>
                 <div class="form-group col-md-3">
-                  <label class="fw-bold">Term:</label>
+                  <label class="fw-bold">Loan Duration:</label>
                   <input type="text" name="term_seller_financing" id="term_seller_financing"
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                    class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
                 </div>
                 <div class="form-group col-md-3">
-                  <label class="fw-bold">Monthly Payments:</label>
+                  <label class="fw-bold">Monthly Payment with Principal and Interest:</label>
                   <input type="number" name="monthly_payment_seller_financing" id="monthly_payment_seller_financing"
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
-                </div>
-                <div class="form-group col-md-3">
-                  <label class="fw-bold">Closing Costs:</label>
-                  <input type="text" name="closing_costs" id="closing_costs" class="form-control has-icon"
-                    data-icon="fa-solid fa-ruler-combined" required>
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                 </div>
                 <div class="form-group">
                   @php
@@ -1185,7 +1167,7 @@
                   </select>
                   <div class="form-group  ballonPenaltyYes d-none">
                     <label class="fw-bold">What is the prepayment penalty amount? </label>
-                    <input type="text" name="ballonPenaltyYes" id="closing_costs" class="form-control has-icon"
+                    <input type="number" name="ballonPenaltyYes" id="closing_costs" class="form-control has-icon"
                       data-icon="fa-solid fa-dollar-sign" required>
                   </div>
                 </div>
@@ -1206,43 +1188,40 @@
                     <div class="form-group balloonPayYes d-none">
                       <div class="form-group">
                         <label class="fw-bold">How much is the balloon payment? </label>
-                        <input type="text" name="balloonPayment" id="closing_costs" class="form-control has-icon"
+                        <input type="number" name="balloonPayment" id="closing_costs" class="form-control has-icon"
                           data-icon="fa-solid fa-dollar-sign" required>
                       </div>
                       <div class="form-group">
                         <label class="fw-bold">When is the balloon payment due? </label>
                         <input type="text" name="balloonDue" id="closing_costs" class="form-control has-icon"
-                          data-icon="fa-solid fa-dollar-sign" required>
+                          data-icon="fa-regular fa-calendar-days" required>
                       </div>
                     </div>
                 </div>
               </div>
+              {{-- seller financing --}}
               {{-- Lease Option  --}}
                 <div class="form-group leaseOption d-none">
                   <div class="form-group col-md-12">
                       <label class="fw-bold">What is the seller's desired offering price for a lease option? </label>
-                      <input type="number" name="desired_offering_price" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
+                      <input type="number" name="desired_offering_price" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                   </div>
                   <div class="form-group col-md-12">
                       <label class="fw-bold">What specific terms does the seller propose for the lease option?</label>
-                      <input name="lease_option_terms" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <input name="lease_option_terms" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                   </div>
                   <div class="form-group col-md-12">
                       <label class="fw-bold">What is the proposed duration of the lease?</label>
-                      <input type="text" name="proposed_lease_duration" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <input type="text" name="proposed_lease_duration" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
                   </div>
                   <div class="form-group col-md-12">
                       <label class="fw-bold">What is the monthly payment amount the seller is seeking? </label>
-                      <input type="number" name="monthly_payment_amount" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
+                      <input type="number" name="monthly_payment_amount" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                   </div>
                   <div class="form-group col-md-12">
-                      <label class="fw-bold">Are there any specific conditions or requirements outlined by the seller for the lease option?</label>
-                      <input name="lease_option_conditions" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <label class="fw-bold">What are the specific conditions or requirements outlined by the seller for the lease option?</label>
+                      <input name="lease_option_conditions" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                   </div>
-                  <div class="form-group col-md-12">
-                        <label class="fw-bold">Is there a possibility of changes in the offering price during the lease period? </label>
-                        <input type="text" name="price_changes_possibility" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
-                    </div> 
                   <div class="form-group">
                     @php
                       $sellerFeeOption = [['name' => 'Yes', 'target' => '.sellerFeeOptionYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
@@ -1259,7 +1238,7 @@
                     </select>
                     <div class="form-group col-md-12 sellerFeeOptionYes d-none">
                       <label class="fw-bold">How much is the option fee? </label>
-                      <input type="text" name="sellerFeeOptionYes"  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <input type="number" name="sellerFeeOptionYes"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                   </div>               
                 </div>
               </div>
@@ -1272,29 +1251,25 @@
                   </div>
                   <div class="form-group col-md-12">
                       <label class="fw-bold">What specific terms does the seller propose for the lease purchase?</label>
-                      <input name="lease_purchase_terms" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <input name="lease_purchase_terms" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                   </div>
                   <div class="form-group col-md-12">
                       <label class="fw-bold">What is the proposed duration of the lease?</label>
-                      <input type="text" name="proposed_lease_duration_lease_purchase" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <input type="text" name="proposed_lease_duration_lease_purchase" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
                   </div>
                   <div class="form-group col-md-12">
                       <label class="fw-bold">What is the monthly payment amount the seller is seeking?</label>
-                      <input type="number" name="monthly_payment_amount_lease_purchase" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
+                      <input type="number" name="monthly_payment_amount_lease_purchase" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                   </div>
                   <div class="form-group col-md-12">
-                      <label class="fw-bold">Are there any specific conditions or requirements outlined by the seller for the lease purchase?</label>
-                      <input name="lease_purchase_conditions" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
-                  </div>
-                  <div class="form-group col-md-12">
-                      <label class="fw-bold">Is there a possibility of changes in the offering price during the lease period?</label>
-                      <input type="text" name="price_changes_possibility_lease_purchase" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <label class="fw-bold">What are the specific conditions or requirements outlined by the seller for the lease purchase?</label>
+                      <input name="lease_purchase_conditions" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                   </div>    
                   <div class="form-group">
                     @php
                       $sellerFeePurchase = [['name' => 'Yes', 'target' => '.sellerFeePurchaseYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
                     @endphp
-                    <label class="fw-bold">Does the seller require an option fee?  </label>
+                    <label class="fw-bold">Does the seller require an option fee?</label>
                     <select class="grid-picker" name="exchange_trade" style="justify-content: flex-start;" required>
                       <option value="">Select</option>
                       @foreach ($sellerFeePurchase as $item)
@@ -1306,7 +1281,7 @@
                     </select>
                     <div class="form-group col-md-12 sellerFeePurchaseYes d-none">
                       <label class="fw-bold">How much is the option fee?  </label>
-                      <input type="text" name="sellerFeePurchaseYes"  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <input type="number" name="sellerFeePurchaseYes"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                   </div>               
                 </div>
               </div>
@@ -1315,18 +1290,26 @@
                 <div class="form-group assumable d-none">
                   <div class="form-group col-md-12">
                       <label class="fw-bold">What assumable terms are being offered?</label>
-                      <input type="text" name="assumable_terms_offered"  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <input type="text" name="assumable_terms_offered"  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                   </div>
                   <div class="form-group col-md-12">
                       <label class="fw-bold">Are there any restrictions or qualifications for a buyer assuming the existing financing?</label>
-                      <input type="text" name="restrictions_or_qualifications"  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                      <input type="text" name="restrictions_or_qualifications"  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label class="fw-bold">What is the interest rate of the assumable loan?</label>
+                    <input type="text" name="assumable_interest"  class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label class="fw-bold">What is the monthly payment, including principal and interest, for the assumable loan?</label>
+                    <input type="number" name="assumable_monthly_payment"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                   </div>
                   <div class="form-group col-md-12">
                       @php
                       $outstandingBalance = [['name' => 'Yes', 'target' => '.outstandingBalanceYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
                     @endphp
                     <div class="form-group">
-                      <label class="fw-bold">Is there any outstanding balance on the existing financing that the buyer would need to cover?</label>
+                      <label class="fw-bold">What is the outstanding balance on the existing loan?</label>
                       <select class="grid-picker" name="exchange_trade" id="contigencies_accepted_by_seller"
                         style="justify-content: flex-start;" required>
                         <option value="">Select</option>
@@ -1338,19 +1321,24 @@
                         @endforeach
                       </select>
                       <div class="form-group col-md-12 outstandingBalanceYes d-none">
-                        <label class="fw-bold">What is the outstanding balance on the existing financing that the buyer would need to cover? </label>
-                        <input type="text" name="outstandingBalanceYes"  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                        <label class="fw-bold">What is the outstanding balance on the existing loan?</label>
+                        <input type="number" name="outstandingBalanceYes"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+
+                        <label class="fw-bold">What is the down payment that the buyer would need to pay the seller to bridge the gap
+                          between the asking price and the assumable loan balance?</label>
+                        <input type="number" name="loan_balance_down_payment"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                     </div>
                   </div>
                 </div>            
-              </div>            
-              {{-- Assumable  --}}
+              </div> 
+              {{-- Assumable --}}
+              {{-- Exchange/trade  --}}
               <div class="form-group row custom_exchange_trade">
                 @php
-                  $exchange_trades = [['name' => 'Another home', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Vehicles', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Boats', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Motorhomes', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Artwork', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Jewelry', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Other', 'target' => '.otherTrade', 'icon' => 'fa-regular fa-circle-check']];
+                  $exchange_trades = [['name' => 'Another home', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Vehicle', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Boat', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Motorhome', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Artwork', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Jewelry', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Other', 'target' => '.otherTrade', 'icon' => 'fa-regular fa-circle-check']];
                 @endphp
                 <div class="form-group">
-                  <label class="fw-bold">Offered Exchange Item: </label>
+                  <label class="fw-bold">Acceptable Exchange Item:</label>
                   <select class="grid-picker" name="exchange_trade" id="contigencies_accepted_by_seller"
                     style="justify-content: flex-start;" required>
                     <option value="">Select</option>
@@ -1363,30 +1351,33 @@
                   </select>
                   <div class="form-group col-md-12 otherTrade d-none">
                     <label class="fw-bold">Acceptable Exchange Item:</label>
-                    <input type="text" name="otherTrade" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                    <input type="text" name="otherTrade" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                   </div>
                 </div>
                 <div class="form-group col-md-12">
                   <label class="fw-bold">What is the estimated value of the acceptable exchange/trade item? </label>
-                  <input type="number" name="estimatedTrade" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
+                  <input type="text" name="estimatedTrade" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
                 </div>
                 <div class="form-group col-md-12">
                   <label class="fw-bold">Are there specific criteria or conditions for the type of item the seller is willing to exchange/trade?</label>
-                  <input type="number" name="specificTrade" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
+                  <input type="text" name="specificTrade" class="form-control has-icon" data-icon="" required>
                 </div>
                 <div class="form-group">
-                  <label class="fw-bold">How much cash does the seller require on top of the exchange/trade item? </label>
-                  <input type="number" name="cashTrade" class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                  <label class="fw-bold">How much cash does the seller require on top of the exchange/trade item?</label>
+                  <input type="number" name="cashTrade" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                 </div>
                 <div class="form-group col-md-12">
-                  <label class="fw-bold">How is the value of the exchange/trade item determined?  </label>
+                  <label class="fw-bold">How is the value of the exchange/trade item determined?</label>
                   <input type="text" name="valueTrade" class="form-control has-icon"
-                    data-icon="fa-solid fa-ruler-combined" required>
+                    data-icon="fa-regular fa-check-circle" required>
                 </div>
               </div>
+              {{-- Exchange/trade --}}
               <div class="form-group row">
                   @php
-                    $sellerOffer = [['name' => 'Yes', 'target' => '.sellerOfferYes','icon'=>'<i class="fa-regular fa-circle-check"></i>'], ['name' => 'No', 'target' => '','icon'=>'<i class="fa-regular fa-circle-xmark"></i>']];
+                    $sellerOffer = [['name' => 'Yes', 'target' => '.sellerOfferYes','icon'=>'<i class="fa-regular fa-circle-check"></i>'], ['name' => 'No', 'target' => '','icon'=>'<i class="fa-regular fa-circle-xmark"></i>'], ['name' => 'Only if the buyer meets the Seller’s Sell Terms, which include the List Price, acceptable Escrow
+                                                                                                                                                                                                                                    Deposit, number of days the Seller will accept for closing, and acceptable Contingencies, will the
+                                                                                                                                                                                                                                    seller offer a buyer at closing', 'target' => '.sellerOfferYes','icon'=>'<i class="fa-regular fa-circle-check"></i>']];
                   @endphp
                 <label class="fw-bold">Is the seller offering a credit to the buyer at closing?  </label>
                 <select class="grid-picker" name="sellerOffer" style="justify-content: flex-start;">
@@ -1399,9 +1390,16 @@
                   @endforeach
                 </select>  
                 <div class="form-group sellerOfferYes d-none">
-                  <label class="fw-bold">What credit amount is the seller offering to the buyer at closing?</label>
+                  <div class="d-flex justify-content-between aalign-items-center">
+                    <label class="fw-bold">What credit amount is the seller offering to the buyer at closing?</label>
+                    <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                        <button type="button" class="select-btn me-1 active"
+                            data-type="amount">$</button>
+                        <button type="button" class="select-btn" data-type="percent">%</button>
+                    </div>
+                  </div>
                   <input type="number" name="sellerOfferYes" placeholder=""
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                 </div>
               </div>
             </span>
@@ -1424,6 +1422,37 @@
                   </option>
                 @endforeach
               </select>
+            </div>
+            <div class="form-group property_style">
+              @php
+                  $propertyStyles = [
+                      ['name' => 'Agriculture', 'target' => ''],
+                      ['name' => 'Assembly Building', 'target' => ''],
+                      ['name' => 'Business', 'target' => ''],
+                      ['name' => 'Five or More', 'target' => ''],
+                      ['name' => 'Hotel/Motel', 'target' => ''],
+                      ['name' => 'Industrial', 'target' => ''],
+                      ['name' => 'Mixed Use', 'target' => ''],
+                      ['name' => 'Office', 'target' => ''],
+                      ['name' => 'Restaurant', 'target' => ''],
+                      ['name' => 'Retail', 'target' => ''],
+                      ['name' => 'Warehouse', 'target' => ''],
+                  ];
+              @endphp
+              <div class="form-group">
+                  <label class="fw-bold">Property Style:</label>
+                  <select class="grid-picker" name="propertyStyles" id=""
+                      style="justify-content: flex-start;" required>
+                      <option value="">Select</option>
+                      @foreach ($propertyStyles as $item)
+                          <option value="{{ $item['name'] }}" class="card flex-row"
+                              style="width:calc(33.3% - 10px);"
+                              data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                              {{ $item['name'] }}
+                          </option>
+                      @endforeach
+                  </select>
+              </div>
             </div>
             <div class="form-group">
               <div>
@@ -1579,11 +1608,11 @@
                 </select>
                 <div class="form-group otherVacant d-none">
                   <label class="fw-bold">Current Use: </label>
-                  <input type="text" name="otherProperty" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                  <input type="text" name="otherProperty" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                 </div>
                 <div class="form-group otherBusiness d-none">
                   <label class="fw-bold">Business Type: </label>
-                  <input type="text" name="otherProperty" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                  <input type="text" name="otherProperty" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                 </div>
               </div>
             </div>
@@ -1616,7 +1645,7 @@
               </select>
               <div class="form-group otherConditionRes d-none">
                 <label class="fw-bold">Property Condition: </label>
-                <input type="number" name="otherCondition" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                <input type="text" name="otherCondition" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
               </div>
             </div>
           </div>
@@ -1691,98 +1720,100 @@
                   @endforeach
                 </select>
               </div>
-              <div class="form-group col-md-4">
-                <label class="fw-bold">Beds/Unit:</label>
-                <input type="number" name="beds_unit" id="beds_unit"
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-              </div>
-              <div class="form-group col-md-4">
-                <label class="fw-bold">Baths/Unit:</label>
-                <input type="number" name="baths_unit" id="baths_unit"
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-              </div>
-              <div class="form-group col-md-4">
-                <label class="fw-bold">Sqft Heated:</label>
-                <input type="number" name="sqt_ft_heated" id="sqt_ft_heated"
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-              </div>
-              <div class="form-group col-md-4">
-                <label class="fw-bold">Number of Units:</label>
-                <input type="number" name="number_of_units" id="number_of_units" 
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-              </div>
+              <div class="row form-group d-none unit-info">
+                <div class="form-group col-md-4">
+                  <label class="fw-bold">Beds/Unit:</label>
+                  <input type="number" name="beds_unit" id="beds_unit"
+                    class="form-control has-icon" data-icon="fa-solid fa-hotel">
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="fw-bold">Baths/Unit:</label>
+                  <input type="number" name="baths_unit" id="baths_unit"
+                    class="form-control has-icon" data-icon="fa-solid fa-hotel">
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="fw-bold">Sqft Heated:</label>
+                  <input type="number" name="sqt_ft_heated" id="sqt_ft_heated"
+                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                </div>
+                <div class="form-group col-md-4">
+                  <label class="fw-bold">Number of Units:</label>
+                  <input type="number" name="number_of_units" id="number_of_units" 
+                    class="form-control has-icon" data-icon="fa-solid fa-hotel">
+                </div>
 
-              @php
-                $requires_or_no3 = [['name' => 'Yes', 'target' => '.custom_occupied', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '.custom_occupied_rent', 'icon' => 'fa-regular fa-circle-xmark']];
-              @endphp
-              <div class="form-group">
-                <label class="fw-bold">Are any units occupied? </label>
-                <select class="grid-picker" name="occupied" id="occupied" style="justify-content: flex-start;">
-                  <option value="">Select</option>
-                  @foreach ($requires_or_no3 as $item)
-                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="form-group col-md-4 d-none custom_occupied">
-                <label class="fw-bold">Number of Occupied Units:  </label>
-                <input type="number" name="custom_occupied" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-              </div>
+                @php
+                  $requires_or_no3 = [['name' => 'Yes', 'target' => '.custom_occupied', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '.custom_occupied_rent', 'icon' => 'fa-regular fa-circle-xmark']];
+                @endphp
+                <div class="form-group">
+                  <label class="fw-bold">Are any units occupied? </label>
+                  <select class="grid-picker" name="occupied" id="occupied" style="justify-content: flex-start;">
+                    <option value="">Select</option>
+                    @foreach ($requires_or_no3 as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                        style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                        {{ $item['name'] }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="form-group col-md-4 d-none custom_occupied">
+                  <label class="fw-bold">Number of Occupied Units:  </label>
+                  <input type="number" name="custom_occupied" class="form-control has-icon" data-icon="fa-solid fa-hotel">
+                </div>
 
-              <div class="form-group col-md-4 d-none custom_occupied">
-                <label class="fw-bold">Current Rent</label>
-                <input type="number" name="current_rent" id="current_rent"
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-              </div>
-              <div class="form-group col-md-4 custom_occupied_rent  d-none">
-                <label class="fw-bold">Expected Rent</label>
-                <input type="number" name="expected_rent" id="expected_rent"
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-              </div>
-              <div class="form-group">
-                <label class="fw-bold">Garage Spaces</label>
-                <input type="text" name="garage_spaces_unit" id="garage_spaces_unit"
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-              </div>
-              <div class="form-group col-md-12">
-                <label class="fw-bold">Unit Type Description:</label>
-                <textarea name="unit_type_of_description" id="unit_type_of_description" class="form-control" cols="30"
-                  rows="10"></textarea>
+                <div class="form-group col-md-4 d-none custom_occupied">
+                  <label class="fw-bold">Current Rent</label>
+                  <input type="number" name="current_rent" id="current_rent"
+                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                </div>
+                <div class="form-group col-md-4 custom_occupied_rent  d-none">
+                  <label class="fw-bold">Expected Rent</label>
+                  <input type="number" name="expected_rent" id="expected_rent"
+                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                </div>
+                <div class="form-group">
+                  <label class="fw-bold">Garage Spaces</label>
+                  <input type="number" name="garage_spaces_unit" id="garage_spaces_unit"
+                    class="form-control has-icon" data-icon="fa-solid fa-warehouse">
+                </div>
+                <div class="form-group col-md-12">
+                  <label class="fw-bold">Unit Type Description:</label>
+                  <textarea name="unit_type_of_description" id="unit_type_of_description" class="form-control" cols="30"
+                    rows="10"></textarea>
+                </div>
               </div>
 
               <div class="form-group col-md-4">
                 <label class="fw-bold">Annual Gross Income</label>
                 <input type="number" name="annual_gross_income" id="garage_attribute"
-                   class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                   class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
               </div>
               <div class="form-group col-md-4">
                 <label class="fw-bold">Total Monthly Rent</label>
                 <input type="number" name="total_monthly_rent" id="garage_attribute" 
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
               </div>
               <div class="form-group col-md-4">
                 <label class="fw-bold">Total Monthly Expenses</label>
-                <input type="text" name="total_monthly_expenses" id="garage_attribute"
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="number" name="total_monthly_expenses" id="garage_attribute"
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
               </div>
 
               <div class="form-group col-md-4">
                 <label class="fw-bold">Annual Net Income</label>
-                <input type="text" name="annual_net_income" id="garage_attribute" 
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="number" name="annual_net_income" id="garage_attribute" 
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
               </div>
               <div class="form-group col-md-4">
                 <label class="fw-bold">Est Annual Market Income</label>
-                <input type="text" name="est_annual_market_income" id="garage_attribute"
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="number" name="est_annual_market_income" id="garage_attribute"
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
               </div>
               <div class="form-group col-md-4">
                 <label class="fw-bold">Annual Expenses</label>
-                <input type="text" name="annual_expenses" id="garage_attribute"
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="number" name="annual_expenses" id="garage_attribute"
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
               </div>
               @php
                 $terms_of_leases = [['name' => 'Gross Lease', 'target' => ''], ['name' => 'Net Lease', 'target' => ''], ['name' => 'Pass Throughs', 'target' => ''], ['name' => 'Purchase Options', 'target' => ''], ['name' => 'Renewal Option', 'target' => ''], ['name' => 'Other', 'target' => '.otherTermLease']];
@@ -1806,7 +1837,7 @@
               </div>
               <div class="form-group custom_leases_terms d-none">
                 <label class="fw-bold">Length of Lease:</label>
-                <input type="text" name="custom_leases_terms" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="custom_leases_terms" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
 
               <div class="form-group">
@@ -1824,7 +1855,7 @@
                 </select>
                 <div class="form-group otherTermLease d-none">
                   <label class="fw-bold">Terms of Lease:</label>
-                  <input type="text" name="otherTermLease" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                  <input type="text" name="otherTermLease" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                 </div>
               </div>
               @php
@@ -1868,7 +1899,7 @@
 
               <div class="form-group">
                 <label class="fw-bold">Total Number of Units:</label>
-                <input type="number" name="total_number_of_units" id="total_number_of_units" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="number" name="total_number_of_units" id="total_number_of_units" class="form-control has-icon" data-icon="fa-solid fa-hotel">
               </div>
 
             </div>
@@ -1878,12 +1909,12 @@
               <div class="form-group">
                 <label class="fw-bold" for="heated_sqft">Heated Sqft:</label>
                 <input type="number" name="heated_sqft" id="heated_sqft" class="form-control has-icon hide_arrow"
-                  data-icon="fa-solid fa-ruler-combined">
+                  data-icon="fa-solid fa-ruler-combined" required>
               </div>
               <div class="form-group">
                 <label class="fw-bold" for="sqft"> Total Sqft:</label>
                 <input type="number" name="total_sqft" id="total_sqft" class="form-control has-icon hide_arrow"
-                  data-icon="fa-solid fa-ruler-combined">
+                  data-icon="fa-solid fa-ruler-combined" required>
               </div>
               @php
                 $heated_sources = [['name' => 'Appraisal', 'target' => ''], ['name' => 'Building', 'target' => ''], ['name' => 'Measured', 'target' => ''], ['name' => 'Owner Provided', 'target' => ''], ['name' => 'Public Records', 'target' => '']];
@@ -1891,7 +1922,7 @@
               <div class="form-group">
                 <label class="fw-bold"> Sqft Heated Source:</label>
                 <select class="grid-picker" name="heated_source" id="heated_sources"
-                  style="justify-content: flex-start;">
+                  style="justify-content: flex-start;" required>
                   <option value="">Select</option>
                   @foreach ($heated_sources as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
@@ -1901,43 +1932,6 @@
                     </option>
                   @endforeach
                 </select>
-              </div>
-              @php
-                $lot_sizes = [['name' => '0 to less than 1/4', 'target' => ''], ['name' => '1/4 to less than 1/2', 'target' => ''], ['name' => '1/2 to less than 1', 'target' => ''], ['name' => '1 to less than 2', 'target' => ''], ['name' => '2 to less than 5', 'target' => ''], ['name' => '5 to less than 10', 'target' => ''], ['name' => '10 to less than 20', 'target' => ''], ['name' => '20 to less than 50', 'target' => ''], ['name' => '50 to less than 100', 'target' => ''], ['name' => '100 to less than 200', 'target' => ''], ['name' => '200 to less than 500', 'target' => ''], ['name' => '500+ Acers', 'target' => ''], ['name' => 'Non-Applicable', 'target' => '']];
-              @endphp
-              <div class="form-group">
-                <label class="fw-bold">Total Acreage:</label>
-                <select class="grid-picker" name="total_aceage" id="lot_size" style="justify-content: flex-start;">
-                  <option value="">Select</option>
-                  @foreach ($lot_sizes as $item)
-                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                      data-icon='<i class="fa-solid fa-ruler-combined"></i>' class="card flex-column"
-                      style="width:calc(33.3% - 10px);">
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="fw-bold" for="lot_size">Lot Size Square Footage:</label>
-                <input type="number" name="lot_size" id="lot_size" class="form-control has-icon "
-                  data-icon="fa-solid fa-ruler-combined" data-msg-required="Please enter Lot Size">
-              </div>
-              <div class="form-group">
-                <label class="fw-bold" for="year_built">Year Built:</label>
-                <input type="text" name="year_built" id="year_built" class="form-control has-icon "
-                  data-icon="fa-solid fa-calendar-day">
-              </div>
-              <div class="form-group">
-                <label class="fw-bold" for="year_built">Legal Description:</label>
-                <input type="text" name="legal_description" id="legal_description" class="form-control has-icon "
-                  data-icon="fa-solid fa-ruler-combined">
-              </div>
-              <div class="form-group">
-                <label class="fw-bold" for="year_built">Legal Subdivison Name:</label>
-                <input type="text" name="legal_subdivison_name" id="legal_subdivison_name"
-                  class="form-control has-icon " data-icon="fa-solid fa-ruler-combined"
-                 >
               </div>
             </div>
           </div>
@@ -1967,6 +1961,7 @@
                   ['name' => 'Solar Hot Water Owned', 'target' => ''],
                   ['name' => 'Solar Hot Water Rented', 'target' => ''],
                   ['name' => 'Tankless Water Heater', 'target' => ''],
+                  ['name' => 'Touchless Faucet', 'target' => ''],
                   ['name' => 'Trash Compactor', 'target' => ''],
                   ['name' => 'Washer', 'target' => ''],
                   ['name' => 'Water Filtration System', 'target' => ''],
@@ -1974,7 +1969,6 @@
                   ['name' => 'Water Softener', 'target' => ''],
                   ['name' => 'Whole House R.O. System', 'target' => ''],
                   ['name' => 'Wine Refrigerator', 'target' => ''],
-                  ['name' => 'Touchless Faucet', 'target' => ''],
                   ['name' => 'None', 'target' => ''],
                   ['name' => 'Other', 'target' => '.otherAppliancesRes'],
               ];
@@ -1995,7 +1989,7 @@
               <div class="form-group otherAppliancesRes d-none">
                 <label class="fw-bold">Appliances:</label>
                 <input type="text" name="otherAppliances" id="flood_zone_code" placeholder=""
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
             <div class="form-group">
@@ -2036,7 +2030,7 @@
                 <div class="form-group">
                   <label class="fw-bold">What furnishings are included in the purchase?</label>
                   <input type="text" name="furnishings_include" id="flood_zone_code" placeholder=""
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                    class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                 </div>
               </div>
               @php
@@ -2068,8 +2062,8 @@
               <div class="form-group has_additional_fees1">
                 <div class="form-group">
                   <label class="fw-bold">How much is the listed furniture?</label>
-                  <input type="number" name="listed_furniture_price" id="listed_furniture_price" placeholder=""
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                  <input type="text" name="listed_furniture_price" id="listed_furniture_price" placeholder=""
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
                 </div>
               </div>
             </div>
@@ -2134,7 +2128,7 @@
               </select>
               <div class="form-group otherInterior d-none">
                 <label class="fw-bold">Interior Features:</label>
-                <input type="text" name="otherInterior" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherInterior" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
@@ -2161,7 +2155,7 @@
             @endphp
             <div class="form-group">
               <label class="fw-bold">Additional Rooms:</label>
-              <select class="grid-picker" name="additionalRooms" style="justify-content: flex-start;">
+              <select class="grid-picker" name="additionalRooms[]" style="justify-content: flex-start;" multiple>
                 <option value="">Select</option>
                 @foreach ($additionalRoom as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
@@ -2182,12 +2176,12 @@
             <div class="form-group">
               <label class="fw-bold">What floor number is the property on?</label>
               <input type="text" name=" " id="floors_in_unit" placeholder=""
-                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                class="form-control has-icon" data-icon="fa-solid fa-hotel">
             </div>
             <div class="form-group">
               <label class="fw-bold">How many floors are in the entire building?</label>
               <input type="text" name="total_floors" id="total_floors" placeholder=""
-                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                class="form-control has-icon" data-icon="fa-solid fa-hotel">
             </div>
             <div class="form-group">
               @php
@@ -2255,7 +2249,7 @@
               </select>
               <div class="form-group otherFloorCoveringRes d-none">
                 <label class="fw-bold">Floor Covering:</label>
-                <input type="text" name="otherFloorCovering" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherFloorCovering" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
@@ -2284,7 +2278,7 @@
             <div class="form-group ">
               <label class="fw-bold">Foundation:</label>
               <select class="grid-picker" name="foundation[]" id="foundation" style="justify-content: flex-start;"
-                multiple>
+                multiple required>
                 <option value="">Select</option>
                 @foreach ($foundations as $foundation)
                   <option value="{{ $foundation['name'] }}" data-target="{{ $foundation['target'] }}"
@@ -2296,7 +2290,7 @@
               </select>
               <div class="form-group otherFoundationRes d-none">
                 <label class="fw-bold">Foundation:</label>
-                <input type="text" name="otherFoundation" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherFoundation" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
@@ -2307,7 +2301,7 @@
             <div class="form-group ">
               <label class="fw-bold">Exterior Construction:</label>
               <select class="grid-picker" name="exterior_construction[]" id="exterior_construction"
-                style="justify-content: flex-start;" multiple>
+                style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($exterior_constructions as $item)
                   <option value="{{ $item['name'] }}"
@@ -2319,7 +2313,7 @@
               </select>
               <div class="form-group otherConstructionRes d-none">
                 <label class="fw-bold">Exterior Construction:</label>
-                <input type="text" name="otherConstruction" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherConstruction" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
@@ -2355,7 +2349,7 @@
             <div class="form-group ">
               <label class="fw-bold">Exterior Features:</label>
               <select class="grid-picker" name="exterior_feature[]" id="exterior_feature"
-                style="justify-content: flex-start;" multiple>
+                style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($exterior_features as $exterior_feature)
                   <option value="{{ $exterior_feature['name'] }}" data-target="{{ $exterior_feature['target'] }}"
@@ -2367,7 +2361,7 @@
               </select>
               <div class="form-group otherExteriorRes d-none">
                 <label class="fw-bold">Exterior Features:</label>
-                <input type="text" name="otherExterior" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherExterior" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
@@ -2432,7 +2426,7 @@
               </select>
               <div class="form-group otherLotFeaturesRes d-none">
                 <label class="fw-bold">Lot Features:</label>
-                <input type="text" name="otherLotFeature" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherLotFeature" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
@@ -2503,6 +2497,24 @@
                     ['name' => 'Kitchenette', 'target' => ''],
                     ['name' => 'No Private Entrance', 'target' => ''],
                     ['name' => 'Private Entrance', 'target' => ''],
+                    ['name' => '1 Bed/1 Bath', 'target' => ''],
+                    ['name' => '1 Bedroom', 'target' => ''],
+                    ['name' => '2 Bed/1 Bath', 'target' => ''],
+                    ['name' => '2 Bed/2 Bath', 'target' => ''],
+                    ['name' => '2 Bedroom', 'target' => ''],
+                    ['name' => '3 Bed/1 Bath', 'target' => ''],
+                    ['name' => '3 Bed/2 Bath', 'target' => ''],
+                    ['name' => '3 Bedroom', 'target' => ''],
+                    ['name' => '4 Bedroom Or More', 'target' => ''],
+                    ['name' => '4 Bed/1 Bath', 'target' => ''],
+                    ['name' => '4 Bed/2 Bath', 'target' => ''],
+                    ['name' => 'Appartments', 'target' => ''],
+                    ['name' => 'Efficiency', 'target' => ''],
+                    ['name' => 'Loft', 'target' => ''],
+                    ['name' => "Manager's unit", 'target' => ''],
+                    ['name' => 'Multi-Level', 'target' => ''],
+                    ['name' => 'Penthouse', 'target' => ''],
+                    ['name' => 'Studio', 'target' => ''],
                     ['name' => 'Other', 'target' => '.otherUnitRes']
                 ];
               @endphp
@@ -2520,18 +2532,29 @@
               <div class="form-group otherUnitRes d-none">
                 <div class="form-group">
                   <label class="fw-bold">Heated Sqft of Additional Structure:</label>
-                  <input type="number" name="sqftStructure" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                  <input type="text" name="sqftStructure" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
                 </div>
                 <div class="form-group">
                   <label class="fw-bold">Total Sqft of Additional Structure: </label>
-                  <input type="number" name="totalSqft" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                  <input type="text" name="totalSqft" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
                 </div>
               </div>
             </div>
           </div>
           <div class="wizard-step" data-step="25">
             @php
-              $roofs = [['name' => 'Built-Up', 'target' => ''], ['name' => 'Concrete', 'target' => ''], ['name' => 'Membrane', 'target' => ''], ['name' => 'Metal', 'target' => ''], ['name' => 'Roof Over', 'target' => ''], ['name' => 'Shake', 'target' => ''], ['name' => 'Shingle', 'target' => ''], ['name' => 'Slate', 'target' => ''], ['name' => 'Tile', 'target' => ''], ['name' => 'Cement', 'target' => ''], ['name' => 'Other', 'target' => '.otherRoofRes']];
+              $roofs = [
+                ['name' => 'Built-Up', 'target' => ''], 
+                ['name' => 'Cement', 'target' => ''],
+                ['name' => 'Concrete', 'target' => ''], 
+                ['name' => 'Membrane', 'target' => ''], 
+                ['name' => 'Metal', 'target' => ''], 
+                ['name' => 'Roof Over', 'target' => ''], 
+                ['name' => 'Shake', 'target' => ''], 
+                ['name' => 'Shingle', 'target' => ''], 
+                ['name' => 'Slate', 'target' => ''], 
+                ['name' => 'Tile', 'target' => ''], 
+                ['name' => 'Other', 'target' => '.otherRoofRes']];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Roof:</label>
@@ -2547,7 +2570,7 @@
               </select>
               <div class="form-group otherRoofRes d-none" >
                 <label class="fw-bold">Roof:</label>
-                <input type="text" name="otherRoof" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherRoof" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
@@ -2570,7 +2593,7 @@
               </select>
               <div class="form-group otherSurfaceRes d-none" >
                 <label class="fw-bold">Road Surface Type:</label>
-                <input type="number" name="otherSurface" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherSurface" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
@@ -2663,6 +2686,45 @@
                 @endforeach
               </select>
             </div>
+
+            <div class="form-group">
+              @php
+                $viewOpt = [['name' => 'Yes', 'target' => '.viewYesRes','icon'=>'<i class="fa-regular fa-circle-check"></i>'], ['name' => 'No', 'target' => '','icon'=>'<i class="fa-regular fa-circle-xmark"></i>']];
+              @endphp
+                <label class="fw-bold">View:</label>
+                <select class="grid-picker" name="viewOpt" id="view" style="justify-content: flex-start;">
+                  <option value="">Select</option>
+                  @foreach ($viewOpt as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                      data-icon="{{$item['icon']}}" class="card flex-row"
+                      style="width:calc(33.3% - 10px);">
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+            </div>
+            <div class="form-group viewYesRes d-none">
+                @php
+                  $view = [['name' => 'City', 'target' => ''], ['name' => 'Garden', 'target' => ''], ['name' => 'Golf Course', 'target' => ''], ['name' => 'Greenbelt', 'target' => ''], ['name' => 'Mountain(s)', 'target' => ''], ['name' => 'Park', 'target' => ''], ['name' => 'Pool', 'target' => ''], ['name' => 'Tennis Court', 'target' => ''], ['name' => 'Trees/Woods', 'target' => ''], ['name' => 'Water', 'target' => ''], ['name' => 'Beach', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherViewRes']];
+                @endphp
+              <label class="fw-bold">View:</label>
+              <select class="grid-picker" name="view[]" id="view" style="justify-content: flex-start;"
+                multiple>
+                <option value="">Select</option>
+                @foreach ($view as $item)
+                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                    data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
+                    style="width:calc(33.3% - 10px);">
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+              <div class="form-group otherViewRes d-none">
+                <label class="fw-bold">View:</label>
+                <input type="text" name="otherView" class="form-control has-icon"
+                  data-icon="fa-regular fa-check-circle">
+              </div>
+            </div>
           </div>
           <div class="wizard-step" data-step="29">
             <div class="row ">
@@ -2670,7 +2732,7 @@
                 <label class="fw-bold">Acceptable Pet Types:</label>
                 <input type="text" name="acceptablePet" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
               </div>
-              <div class="form-group">
+              {{-- <div class="form-group">
                 <label class="fw-bold">Pets Allowed:</label>
                 <select class="grid-picker" name="ptesAllowed" id="has_rental_restrictions"
                   style="justify-content: flex-start;">
@@ -2689,7 +2751,7 @@
                     </option>
                   @endforeach
                 </select>
-              </div>
+              </div> --}}
               @php
                 $total_pets_allowed = [['target' => '', 'name' => '1'], ['target' => '', 'name' => '2'], ['target' => '', 'name' => '3'], ['target' => '', 'name' => '4'], ['target' => '', 'name' => '5'], ['target' => '', 'name' => '6'], ['target' => '', 'name' => '7'], ['target' => '', 'name' => '8'], ['target' => '', 'name' => '9'], ['target' => '', 'name' => '10'], ['target' => '.custom_pets_allowed', 'name' => 'Other']];
               @endphp
@@ -2726,26 +2788,34 @@
             </div>
           </div>
           <div class="wizard-step" data-step="30">
-            <h4>Tax Info</h4>
+            <label class="fw-bold">Land and Tax Information: (To find this information check out your
+              local property appraiser website and enter the address of the property you are selling)</label>
+            
+            <div class="form-group">
+              <label class="fw-bold" for="year_built">Legal Description:</label>
+              <input type="text" name="legal_description" id="legal_description" class="form-control has-icon "
+                data-icon="fa-solid fa-ruler-combined">
+            </div>
+            
             <div class="form-group">
               <label class="fw-bold">Tax ID (Parcel Number):</label>
               <input type="text" name="tax_id" id="tax_id" class="form-control has-icon"
-                data-icon="fa-regular fa-id-card">
+                data-icon="fa-solid fa-ruler-combined">
             </div>
             <div class="form-group">
               <label class="fw-bold">Tax Year:</label>
               <input type="text" name="tax_year" id="tax_year" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined" >
+                data-icon="fa-regular fa-calendar-days" >
             </div>
             <div class="form-group">
               <label class="fw-bold">Taxes (Annual Amount):</label>
               <input type="text" name="taxes_annual_amount" id="taxes_annual_ammount"
-                class="form-control has-icon" data-icon="fa-solid fa-dollar">
+                class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
             </div>
             <div class="form-group ">
               @php
               $additialParcelRes = [
-                ['name'=>'Yes','target'=>'.additialParcelResYes','icon'=>'<i class="fa-regular fa-circle-check"></i>'],
+                ['name'=>'Yes','target'=>'.additialParcelResYes1','icon'=>'<i class="fa-regular fa-circle-check"></i>'],
                 ['name'=>'No','target'=>'','icon'=>'<i class="fa-regular fa-circle-xmark"></i>']
               ];
             @endphp
@@ -2761,7 +2831,7 @@
                   </option>
                 @endforeach
               </select>
-              <div class="form-group additialParcelResYes d-none">
+              <div class="form-group additialParcelResYes1 d-none">
                 <div class="form-group">
                   <label class="fw-bold">Total Number of Parcels:</label>
                   <input type="number" name="total_number_of_parcels" id="total_number_of_parcels"
@@ -2769,8 +2839,13 @@
                 </div>
                 <div class="form-group">
                   <label class="fw-bold">Additional Tax ID's:</label>
-                  <input type="number" name="additional_tax_id" id="additional_tax_id" class="form-control has-icon"
+                  <input type="text" name="additional_tax_id" id="additional_tax_id" class="form-control has-icon"
                     data-icon="fa-solid fa-ruler-combined">
+                </div>
+                <div class="form-group">
+                  <label class="fw-bold" for="year_built">Year Built:</label>
+                  <input type="text" name="year_built" id="year_built" class="form-control has-icon "
+                    data-icon="fa-solid fa-calendar-day" required>
                 </div>
                 <div class="form-group">
                   <label class="fw-bold">Zoning:</label>
@@ -2782,10 +2857,46 @@
                   <input type="text" name="legal_description" id="legal_description" class="form-control has-icon"
                     data-icon="fa-solid fa-tag">
                 </div>
+                <div class="form-group">
+                  <label class="fw-bold" for="year_built">Legal Subdivison Name:</label>
+                  <input type="text" name="legal_subdivison_name" id="legal_subdivison_name"
+                    class="form-control has-icon " data-icon="fa-solid fa-ruler-combined"
+                    >
+                </div>
+                <div class="form-group has_flood_zoon d-none">
+                  <label class="fw-bold">Flood Zone Code:</label>
+                  <input type="text" name="flood_zone_code" id="flood_zone_code" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                </div>
+                @php
+                  $lot_sizes = [['name' => '0 to less than 1/4', 'target' => ''], ['name' => '1/4 to less than 1/2', 'target' => ''], ['name' => '1/2 to less than 1', 'target' => ''], ['name' => '1 to less than 2', 'target' => ''], ['name' => '2 to less than 5', 'target' => ''], ['name' => '5 to less than 10', 'target' => ''], ['name' => '10 to less than 20', 'target' => ''], ['name' => '20 to less than 50', 'target' => ''], ['name' => '50 to less than 100', 'target' => ''], ['name' => '100 to less than 200', 'target' => ''], ['name' => '200 to less than 500', 'target' => ''], ['name' => '500+ Acers', 'target' => ''], ['name' => 'Non-Applicable', 'target' => '']];
+                @endphp
+                <div class="form-group">
+                  <label class="fw-bold">Total Acreage:</label>
+                  <select class="grid-picker" name="total_aceage" id="lot_size" style="justify-content: flex-start;">
+                    <option value="">Select</option>
+                    @foreach ($lot_sizes as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                        data-icon='<i class="fa-solid fa-ruler-combined"></i>' class="card flex-column"
+                        style="width:calc(33.3% - 10px);">
+                        {{ $item['name'] }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="fw-bold" for="lot_size">Lot Size Square Footage:</label>
+                  <input type="text" name="lot_size" id="lot_size" class="form-control has-icon "
+                    data-icon="fa-solid fa-ruler-combined" data-msg-required="Please enter Lot Size">
+                </div>
+                <div class="form-group">
+                  <label class="fw-bold">Lot Size Acres:</label>
+                  <input type="text" name="lot_size_acres" id="lot_size_acres" class="form-control has-icon"
+                    data-icon="fa-solid fa-ruler-combined">
+                </div>
                 <div class="form-group ">
                   <label class="fw-bold">Homestead:</label>
                   <select class="grid-picker" name="has_homestead" id="sewer"
-                    style="justify-content: flex-start;">
+                    style="justify-content: flex-start;" required>
                     <option value="">Select</option>
                     @foreach ($yes_or_nos as $item)
                       <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
@@ -2796,11 +2907,58 @@
                     @endforeach
                   </select>
                 </div>
+                <div class="form-group">
+                  @php
+                    $ccdOpt = [
+                      ['name'=>'Yes','icon'=>'<i class="fa-regular fa-circle-check"></i>','target'=>'.anual_cdd_fee_residential_and_income'],
+                      ['name'=>'No','icon'=>'<i class="fa-regular fa-circle-xmark"></i>','target'=>'']
+                    ];
+                  @endphp
+                  <label class="fw-bold">CDD:</label>
+                  <select class="grid-picker" name="has_cdd" id="has_cdd" style="justify-content: flex-start;">
+                    <option value="">Select</option>
+                    @foreach ($ccdOpt as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                        style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}">
+                        {{ $item['name'] }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="form-group anual_cdd_fee_residential_and_income d-none">
+                  <label class="fw-bold">Annual CDD Fee:</label>
+                  <input type="number" name="annual_cdd_fee" id="annual_cdd_fee" class="form-control has-icon"
+                    data-icon="fa-solid fa-dollar ">
+                </div>
+                <div class="form-group">
+                  @php
+                  $landLeaseOpt = [
+                      ['name'=>'Yes','icon'=>'<i class="fa-regular fa-circle-check"></i>','target'=>'.land_lease_fee_residential_and_income'],
+                      ['name'=>'No','icon'=>'<i class="fa-regular fa-circle-xmark"></i>','target'=>'']
+                    ];
+                  @endphp
+                  <label class="fw-bold">Annual Land Lease Fee:</label>
+                  <select class="grid-picker" name="has_land_lease" id="has_hoa"
+                    style="justify-content: flex-start;">
+                    <option value="">Select</option>
+                    @foreach ($landLeaseOpt as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                        style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}">
+                        {{ $item['name'] }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="form-group land_lease_fee_residential_and_income d-none">
+                  <label class="fw-bold">Annual Land Lease Fee:</label>
+                  <input type="text" name="land_lease_fee" id="land_lease_fee" class="form-control has-icon"
+                    data-icon="fa-solid fa-dollar ">
+                </div>
               </div>
             </div>
           </div>
           <div class="wizard-step" data-step="31">
-            <div class="form-group">
+            {{-- <div class="form-group">
               <label class="fw-bold">Is the property in a flood zone?</label>
               <select class="grid-picker" name="is_in_flood_zone" id="is_in_flood_zone"
                 style="justify-content: flex-start;">
@@ -2823,7 +2981,7 @@
             <div class="form-group has_flood_zoon d-none">
               <label class="fw-bold">Flood Zone Code:</label>
               <input type="text" name="flood_zone_code" id="flood_zone_code" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-            </div>
+            </div> --}}
           </div>
           <div class="wizard-step" data-step="32">
             @php
@@ -3362,44 +3520,6 @@
                 @endforeach
               </select>
             </div>
-            <div class="form-group">
-            @php
-              $viewOpt = [['name' => 'Yes', 'target' => '.viewYesRes','icon'=>'<i class="fa-regular fa-circle-check"></i>'], ['name' => 'No', 'target' => '','icon'=>'<i class="fa-regular fa-circle-xmark"></i>']];
-            @endphp
-              <label class="fw-bold">View:</label>
-              <select class="grid-picker" name="viewOpt" id="view" style="justify-content: flex-start;">
-                <option value="">Select</option>
-                @foreach ($viewOpt as $item)
-                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                    data-icon="{{$item['icon']}}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
-                    {{ $item['name'] }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-            <div class="form-group viewYesRes d-none">
-                @php
-                  $view = [['name' => 'City', 'target' => ''], ['name' => 'Garden', 'target' => ''], ['name' => 'Golf Course', 'target' => ''], ['name' => 'Greenbelt', 'target' => ''], ['name' => 'Mountain(s)', 'target' => ''], ['name' => 'Park', 'target' => ''], ['name' => 'Pool', 'target' => ''], ['name' => 'Tennis Court', 'target' => ''], ['name' => 'Trees/Woods', 'target' => ''], ['name' => 'Water', 'target' => ''], ['name' => 'Beach', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherViewRes']];
-                @endphp
-              <label class="fw-bold">View:</label>
-              <select class="grid-picker" name="view[]" id="view" style="justify-content: flex-start;"
-                multiple>
-                <option value="">Select</option>
-                @foreach ($view as $item)
-                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
-                    {{ $item['name'] }}
-                  </option>
-                @endforeach
-              </select>
-              <div class="form-group otherViewRes d-none">
-                <label class="fw-bold">View:</label>
-                <input type="text" name="otherView" class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
-              </div>
-            </div>
           </div>
           <div class="wizard-step" data-step="36">
             @php
@@ -3789,53 +3909,6 @@
                 <label class="fw-bold">Amenities with Additional Fees:</label>
                 <input type="number" name="amenities_with_additional_fees"
                   class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-              </div>
-              <div class="form-group">
-                @php
-                  $ccdOpt = [
-                    ['name'=>'Yes','icon'=>'<i class="fa-regular fa-circle-check"></i>','target'=>'.anual_cdd_fee_residential_and_income'],
-                    ['name'=>'No','icon'=>'<i class="fa-regular fa-circle-xmark"></i>','target'=>'']
-                  ];
-                @endphp
-                <label class="fw-bold">CDD:</label>
-                <select class="grid-picker" name="has_cdd" id="has_cdd" style="justify-content: flex-start;">
-                  <option value="">Select</option>
-                  @foreach ($ccdOpt as $item)
-                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}">
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="form-group anual_cdd_fee_residential_and_income d-none">
-                <label class="fw-bold">Annual CDD Fee:</label>
-                <input type="number" name="annual_cdd_fee" id="annual_cdd_fee" class="form-control has-icon"
-                  data-icon="fa-solid fa-dollar ">
-              </div>
-              <div class="form-group">
-                  @php
-                  $landLeaseOpt = [
-                      ['name'=>'Yes','icon'=>'<i class="fa-regular fa-circle-check"></i>','target'=>'.land_lease_fee_residential_and_income'],
-                      ['name'=>'No','icon'=>'<i class="fa-regular fa-circle-xmark"></i>','target'=>'']
-                    ];
-                  @endphp
-                <label class="fw-bold">Annual Land Lease Fee:</label>
-                <select class="grid-picker" name="has_land_lease" id="has_hoa"
-                  style="justify-content: flex-start;">
-                  <option value="">Select</option>
-                  @foreach ($landLeaseOpt as $item)
-                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}">
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="form-group land_lease_fee_residential_and_income d-none">
-                <label class="fw-bold">Annual Land Lease Fee:</label>
-                <input type="text" name="land_lease_fee" id="land_lease_fee" class="form-control has-icon"
-                  data-icon="fa-solid fa-dollar ">
               </div>
             </div>
                 <div class="form-group">
@@ -7602,7 +7675,7 @@
 <script>
   $('#auction_type').change(function(){
       let v=$(this).val();
-    if (v == "Auction (Timer)") {
+    if (v == "Auction Listing") {
       $('.auction_length').val("");
       $('.auction_length').parent().children('.option-container').removeClass('active');
       $('.traditional-length').hide();
@@ -7736,6 +7809,7 @@
       $('.residential_hide').removeClass('d-none');
       $('.vacant_land-length').hide();
       $('.business-length').hide();
+      $('.property_style').hide();
       $('.currentUse').hide();
       $('.businessType').hide();
       $('.resFields').each(function() {
@@ -7756,6 +7830,7 @@
       $('.vacant_land-length').hide();
       $('.business-length').hide();
       $('.currentUse').hide();
+      $('.property_style').hide();
       $('.businessType').hide();
       $('.resFields').each(function() {
         $(this).find('select, input ,textarea').prop('disabled', false);
@@ -7777,6 +7852,7 @@
       $('.vacant_land-length').hide();
       $('.business-length').hide();
       $('.currentUse').hide();
+      $('.property_style').hide();
       $('.businessType').hide();
       $('.commercialFields').each(function() {
         $(this).find('select, input ,textarea').prop('disabled', false);
@@ -7797,6 +7873,7 @@
       $('.residential_hide').addClass('d-none');
       $('.vacant_land-length').show();
       $('.business-length').hide();
+      $('.property_style').hide();
       $('.currentUse').show();
       $('.businessType').hide();
       $('.vacantFields').each(function() {
@@ -7820,6 +7897,7 @@
       $('.business-length').show();
       $('.currentUse').hide();
       $('.businessType').show();
+      $('.property_style').show();
       $('.commercialFields').each(function() {
         $(this).find('select, input ,textarea').prop('disabled', false);
       });
@@ -7840,6 +7918,7 @@
       $('.business-length').hide();
       $('.currentUse').hide();
       $('.businessType').hide();
+      $('.property_style').hide();
       $('.resFields').each(function() {
         $(this).find('select, input ,textarea').prop('disabled', true);
       });
@@ -8242,6 +8321,10 @@
     $('.wizard-step-next').hide();
     $('.wizard-step-finish').show();
   });
+
+  $('#unit_type').change(function(){
+    $('.unit-info').removeClass('d-none');
+  })
 </script>
 <script>
   // google.maps.event.addDomListener(window, 'load', initialize);
