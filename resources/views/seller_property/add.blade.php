@@ -2727,67 +2727,6 @@
             </div>
           </div>
           <div class="wizard-step" data-step="29">
-            <div class="row ">
-              <div class="form-group">
-                <label class="fw-bold">Acceptable Pet Types:</label>
-                <input type="text" name="acceptablePet" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-              </div>
-              {{-- <div class="form-group">
-                <label class="fw-bold">Pets Allowed:</label>
-                <select class="grid-picker" name="ptesAllowed" id="has_rental_restrictions"
-                  style="justify-content: flex-start;">
-                  <option value="">Select</option>
-                  @foreach ($yes_or_nos as $item)
-                    @php
-                      if ($item['name'] == 'Yes') {
-                          $target = '.pets_allowed_question12';
-                      } else {
-                          $target = '';
-                      }
-                    @endphp
-                    <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-              </div> --}}
-              @php
-                $total_pets_allowed = [['target' => '', 'name' => '1'], ['target' => '', 'name' => '2'], ['target' => '', 'name' => '3'], ['target' => '', 'name' => '4'], ['target' => '', 'name' => '5'], ['target' => '', 'name' => '6'], ['target' => '', 'name' => '7'], ['target' => '', 'name' => '8'], ['target' => '', 'name' => '9'], ['target' => '', 'name' => '10'], ['target' => '.custom_pets_allowed', 'name' => 'Other']];
-              @endphp
-              <div class="form-group pets_allowed_question12 d-none">
-                <div class="form-group">
-                  <label class="fw-bold">Number of Pets Allowed:</label>
-                  <select class="grid-picker" name="total_pets_allowed" id="total_pets_allowed"
-                    style="justify-content: flex-start;">
-                    <option value="">Select</option>
-                    @foreach ($total_pets_allowed as $item)
-                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                        class="card flex-column" style="width:calc(10% - 10px);"
-                        data-icon='<i class="fa-solid fa-dog"></i>'>
-                        {{ $item['name'] }}
-                      </option>
-                    @endforeach
-                  </select>
-                </div>
-                <div class="form-group custom_pets_allowed d-none">
-                  <label class="fw-bold">Number of Pets Allowed:</label>
-                  <input type="text" name="custom_pets_allowed" id="custom_pets_allowed"
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-                </div>
-                <div class="form-group">
-                  <label class="fw-bold">Max Pet Weight:</label>
-                  <input type="text" name="max_pet_weight" id="max_pet_weight" class="form-control has-icon"
-                    data-icon="fa-solid fa-ruler-combined">
-                </div>
-                <div class="form-group">
-                  <label class="fw-bold">Pet Restrictions:</label>
-                  <textarea name="pet_restrictions" id="pet_restrictions" class="form-control" cols="30" rows="5"></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="wizard-step" data-step="30">
             <label class="fw-bold">Land and Tax Information: (To find this information check out your
               local property appraiser website and enter the address of the property you are selling)</label>
             
@@ -2957,42 +2896,14 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="31">
-            {{-- <div class="form-group">
-              <label class="fw-bold">Is the property in a flood zone?</label>
-              <select class="grid-picker" name="is_in_flood_zone" id="is_in_flood_zone"
-                style="justify-content: flex-start;">
-                <option value="">Select</option>
-                @foreach ($yes_or_nos as $item)
-                  @php
-                    if ($item['name'] == 'Yes') {
-                        $target = '.has_flood_zoon';
-                    } else {
-                        $target = '';
-                    }
-                  @endphp
-                  <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
-                    {{ $item['name'] }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-            <div class="form-group has_flood_zoon d-none">
-              <label class="fw-bold">Flood Zone Code:</label>
-              <input type="text" name="flood_zone_code" id="flood_zone_code" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-            </div> --}}
-          </div>
-          <div class="wizard-step" data-step="32">
+          <div class="wizard-step" data-step="30">
             @php
               $utilitiseRes = [
                 ['name' => 'BB/HS Internet Available', 'target' => ''],
                 ['name' => 'Cable Available', 'target' => ''],
                 ['name' => 'Cable Connected', 'target' => ''],
-                ['name' => 'Electric - Multiple Meters', 'target' => ''],
                 ['name' => 'Electricity Available', 'target' => ''],
                 ['name' => 'Electricity Connected', 'target' => ''],
-                ['name' => 'Emergency Power', 'target' => ''],
                 ['name' => 'Fiber Optics', 'target' => ''],
                 ['name' => 'Fire Hydrant', 'target' => ''],
                 ['name' => 'Mini Sewer', 'target' => ''],
@@ -3033,16 +2944,16 @@
               <div class="form-group otherUtilitiseRes d-none">
                 <label class="fw-bold">Utilities:</label>
                 <input type="text" name="otherUtilitise" id="legal_description" class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
             @php
 
-              $waterRes = [['name' => 'Canal/Lake For Irrigation', 'target' => ''], ['name' => 'Private', 'target' => ''], ['name' => 'Public', 'target' => ''], ['name' => 'Well', 'target' => ''],['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherWaterRes']];
+              $waterRes = [['name' => 'Canal/Lake For Irrigation', 'target' => ''], ['name' => 'Private', 'target' => ''], ['name' => 'Public', 'target' => ''], ['name' => 'Well', 'target' => ''], ['name' => 'Well Required', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherWaterRes']];
             @endphp
             <div class="form-group">
               <label class="fw-bold">Water:</label>
-              <select class="grid-picker" name="water" id="water12" style="justify-content: flex-start;">
+              <select class="grid-picker" name="water[]" id="water12" style="justify-content: flex-start;" multiple >
                 <option value="">Select</option>
                 @foreach ($waterRes as $water)
                   <option value="{{ $water['name'] }}" data-target="{{ $water['target'] }}"
@@ -3055,7 +2966,7 @@
               <div class="form-group otherWaterRes d-none">
                 <label class="fw-bold">Water:</label>
                 <input type="text" name="otherWater" id="legal_description" class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
 
@@ -3064,7 +2975,7 @@
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Sewer:</label>
-              <select class="grid-picker" name="sewer" id="sewer" style="justify-content: flex-start;">
+              <select class="grid-picker" name="sewer[]" id="sewer" style="justify-content: flex-start;" multiple >
                 <option value="">Select</option>
                 @foreach ($sewerRes as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
@@ -3077,11 +2988,11 @@
               <div class="form-group otherSewerRes d-none">
                 <label class="fw-bold">Sewer:</label>
                 <input type="text" name="otherSewer"  class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="33">
+          <div class="wizard-step" data-step="31">
             @php
               $air_conditioning = [['name' => 'Central Air', 'target' => ''], ['name' => 'Humidity Control', 'target' => ''], ['name' => 'Mini-Split Unit(s)', 'target' => ''], ['name' => 'Wall/Window Unit(s)', 'target' => ''], ['name' => 'Zoned', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.airConditionRes']];
             @endphp
@@ -3101,16 +3012,16 @@
               <div class="form-group airConditionRes d-none">
                 <label class="fw-bold">Air Conditioning:</label>
                 <input type="text" name="otherAirCondition"  class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
             @php
-              $heating_and_fuel = [['name' => 'Baseboard', 'target' => ''], ['name' => 'Central', 'target' => ''], ['name' => 'Electric', 'target' => ''], ['name' => 'Exhaust Fans', 'target' => ''], ['name' => 'Heat Pump', 'target' => ''], ['name' => 'Heat Recovery Unit', 'target' => ''], ['name' => 'Natural Gas', 'target' => ''], ['name' => 'Oil', 'target' => ''], ['name' => 'Partial', 'target' => ''], ['name' => 'Propane', 'target' => ''], ['name' => 'Radiant Ceiling', 'target' => ''], ['name' => 'Reverse Cycle', 'target' => ''], ['name' => 'Solar', 'target' => ''], ['name' => 'Space Heater', 'target' => ''], ['name' => 'Wall Furnace', 'target' => ''], ['name' => 'Wall Units / Window Unit', 'target' => ''], ['name' => 'Zoned', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherHeatingFuelRes']];
+              $heating_and_fuel = [['name' => 'Baseboard', 'target' => ''], ['name' => 'Central', 'target' => ''], ['name' => 'Electric', 'target' => ''], ['name' => 'Exhaust Fans', 'target' => ''], ['name' => 'Gas', 'target' => ''], ['name' => 'Heat Pump', 'target' => ''], ['name' => 'Heat Recovery Unit', 'target' => ''], ['name' => 'Natural Gas', 'target' => ''], ['name' => 'Oil', 'target' => ''], ['name' => 'Partial', 'target' => ''], ['name' => 'Propane', 'target' => ''], ['name' => 'Radiant Ceiling', 'target' => ''], ['name' => 'Reverse Cycle', 'target' => ''], ['name' => 'Solar', 'target' => ''], ['name' => 'Space Heater', 'target' => ''], ['name' => 'Wall Furnace', 'target' => ''], ['name' => 'Wall Units / Window Unit', 'target' => ''], ['name' => 'Zoned', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherHeatingFuelRes']];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Heating and Fuel:</label>
-              <select class="grid-picker" name="heating_and_fuel" id="heating_and_fuel"
-                style="justify-content: flex-start;">
+              <select class="grid-picker" name="heating_and_fuel[]" id="heating_and_fuel"
+                style="justify-content: flex-start;" multiple >
                 <option value="">Select</option>
                 @foreach ($heating_and_fuel as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
@@ -3123,15 +3034,11 @@
               <div class="form-group otherHeatingFuelRes d-none">
                 <label class="fw-bold">Heating and Fuel:</label>
                 <input type="text" name="otherHeatingFuel"  class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="34">
-            <div class="form-group">
-              <label class="fw-bold">Approximate Room Dimensions:</label>
-              <input type="text" name="approximate_room_dimensions" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" >
-            </div>
+          <div class="wizard-step" data-step="32">
             @php
               $room_types = [
                   ['name' => 'Additional Bedroom', 'target' => ''],
@@ -3163,14 +3070,18 @@
                   ['name' => 'Library', 'target' => ''],
                   ['name' => 'Living Room', 'target' => ''],
                   ['name' => 'Loft', 'target' => ''],
-                  ['name' => 'Master Bathroom', 'target' => ''],
-                  ['name' => 'Master Bedroom', 'target' => ''],
+                  ['name' => 'Primary Bathroom', 'target' => ''],
+                  ['name' => 'Primary Bedroom', 'target' => ''],
                   ['name' => 'Media Room', 'target' => ''],
                   ['name' => 'Office', 'target' => ''],
                   ['name' => 'Sauna', 'target' => ''],
                   ['name' => 'Studio', 'target' => ''],
                   ['name' => 'Study/Den', 'target' => ''],
                   ['name' => 'Workshop', 'target' => ''],
+                  ['name' => 'Dinette', 'target' => ''],
+                  ['name' => 'Garage Room', 'target' => ''],
+                  ['name' => 'Garage Apartment', 'target' => ''],
+                  ['name' => 'Double Primary Bedroom', 'target' => ''],
               ];
             @endphp
             <div class="form-group ">
@@ -3187,160 +3098,168 @@
                 @endforeach
               </select>
             </div>
-            @php
-              $room_levels = [['name' => 'Upper', 'target' => ''], ['name' => 'Basement', 'target' => ''], ['name' => 'First', 'target' => ''], ['name' => 'Second', 'target' => ''], ['name' => 'Third', 'target' => '']];
-            @endphp
-            <div class="form-group ">
-              <label class="fw-bold">Room Level:</label>
-              <select class="grid-picker" name="room_level[]" id="room_level" style="justify-content: flex-start;"
-                multiple>
-                <option value="">Select</option>
-                @foreach ($room_levels as $room_level)
-                  <option value="{{ $room_level['name'] }}" data-target="{{ $room_level['target'] }}"
-                    class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);">
-                    {{ $room_level['name'] }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-            @php
-              $bed_room_closest_types = [['name' => 'Built-in Closet', 'target' => ''], ['name' => 'No Closet', 'target' => ''], ['name' => 'Walk-in Closet', 'target' => '']];
-            @endphp
-            <div class="form-group ">
-              <label class="fw-bold">Bedroom Closet Type:</label>
-              <select class="grid-picker" name="bed_room_closest_type[]" id="bed_room_closest_type"
-                style="justify-content: flex-start;" multiple>
-                <option value="">Select</option>
-                @foreach ($bed_room_closest_types as $bed_room_closest_type)
-                  <option value="{{ $bed_room_closest_type['name'] }}"
-                    data-target="{{ $bed_room_closest_type['target'] }}" class="card flex-row"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);">
-                    {{ $bed_room_closest_type['name'] }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-            @php
-              $room_primary_floor_coverings = [
-                  ['name' => 'Bamboo', 'target' => ''],
-                  ['name' => 'Brick/Stone', 'target' => ''],
-                  ['name' => 'Carpet', 'target' => ''],
-                  ['name' => 'Ceramic Tile', 'target' => ''],
-                  ['name' => 'Concrete', 'target' => ''],
-                  ['name' => 'Cork', 'target' => ''],
-                  ['name' => 'Engineered Hardwood', 'target' => ''],
-                  ['name' => 'Epoxy', 'target' => ''],
-                  ['name' => 'Forestry Stewardship Certified', 'target' => ''],
-                  ['name' => 'Granite', 'target' => ''],
-                  ['name' => 'Laminate', 'target' => ''],
-                  ['name' => 'Linoleum', 'target' => ''],
-                  ['name' => 'Marble', 'target' => ''],
-                  ['name' => 'Parquet', 'target' => ''],
-                  ['name' => 'Porcelain Tile', 'target' => ''],
-                  ['name' => 'Quarry Tile', 'target' => ''],
-                  ['name' => 'Reclaimed Wood', 'target' => ''],
-                  ['name' => 'Recycled/Composite Flooring', 'target' => ''],
-                  ['name' => 'Slate', 'target' => ''],
-                  ['name' => 'Terrazzo', 'target' => ''],
-                  ['name' => 'Tile', 'target' => ''],
-                  ['name' => 'Travertine', 'target' => ''],
-                  ['name' => 'Other', 'target' => ''],
-              ];
-            @endphp
-            <div class="form-group ">
-              <label class="fw-bold">Room Primary Floor Covering:</label>
-              <select class="grid-picker" name="room_primary_floor_covering[]" id="room_primary_floor_covering"
-                style="justify-content: flex-start;" multiple>
-                <option value="">Select</option>
-                @foreach ($room_primary_floor_coverings as $room_primary_floor_covering)
-                  <option value="{{ $room_primary_floor_covering['name'] }}"
-                    data-target="{{ $room_primary_floor_covering['target'] }}"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
-                    {{ $room_primary_floor_covering['name'] }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-            @php
-              $room_features = [
-                  ['name' => 'Bar', 'target' => ''],
-                  ['name' => 'Bath with Spa/Hydro Massage Tub', 'target' => ''],
-                  ['name' => 'Bath With Whirlpoo', 'target' => ''],
-                  ['name' => 'Bidet', 'target' => ''],
-                  ['name' => 'Breakfast Bar', 'target' => ''],
-                  ['name' => 'Built-In Shelving', 'target' => ''],
-                  ['name' => 'Built-In Shower Bench', 'target' => ''],
-                  ['name' => 'Ceiling Fan(s)', 'target' => ''],
-                  ['name' => 'Claw Foot Tub', 'target' => ''],
-                  ['name' => 'Closet Pantry', 'target' => ''],
-                  ['name' => 'Cooking Island', 'target' => ''],
-                  ['name' => 'Desk Built-In ', 'target' => ''],
-                  ['name' => 'Dual Sinks', 'target' => ''],
-                  ['name' => 'En Suite Bathroom ', 'target' => ''],
-                  ['name' => 'Exhaust Fan', 'target' => ''],
-                  ['name' => 'Garden Bath ', 'target' => ''],
-                  ['name' => 'Granite Counters', 'target' => ''],
-                  ['name' => 'Handicap Accessible', 'target' => ''],
-                  ['name' => 'Heated Floors', 'target' => ''],
-                  ['name' => 'Island', 'target' => ''],
-                  ['name' => 'Jack and Jill Bathroom', 'target' => ''],
-                  ['name' => 'Linen Closet Bath', 'target' => ''],
-                  ['name' => 'Makeup/Vanity Space', 'target' => ''],
-                  ['name' => 'Multiple Shower Heads', 'target' => ''],
-                  ['name' => 'Other- Specify in Remarks', 'target' => ''],
-                  ['name' => 'Pantry', 'target' => ''],
-                  ['name' => 'Rain Shower Head', 'target' => ''],
-                  ['name' => 'Sauna', 'target' => ''],
-                  ['name' => 'Shower- No Tub', 'target' => ''],
-                  ['name' => 'Single Vanity', 'target' => ''],
-                  ['name' => 'Sink-Pedestal ', 'target' => ''],
-                  ['name' => 'Split Vanities ', 'target' => ''],
-                  ['name' => 'Steam Shower', 'target' => ''],
-                  ['name' => 'Stone Counters', 'target' => ''],
-                  ['name' => 'Sunken Shower', 'target' => ''],
-                  ['name' => 'Tall Countertops ', 'target' => ''],
-                  ['name' => 'Tile Counters', 'target' => ''],
-                  ['name' => 'Tub with Separate Shower Stall ', 'target' => ''],
-                  ['name' => 'Tub with Shower', 'target' => ''],
-                  ['name' => 'Urinal', 'target' => ''],
-                  ['name' => 'Walk-In Pantry', 'target' => ''],
-                  ['name' => 'Walk-In Tub', 'target' => ''],
-                  ['name' => 'Water Closet/Priv Toliet', 'target' => ''],
-                  ['name' => 'Window/Skylight in Bath', 'target' => ''],
-                  ['name' => 'Other', 'target' => ''],
-              ];
-            @endphp
-            <div class="form-group ">
-              <label class="fw-bold">Room Features:</label>
-              <select class="grid-picker" name="room_feature[]" id="room_feature"
-                style="justify-content: flex-start;" multiple>
-                <option value="">Select</option>
-                @foreach ($room_features as $room_feature)
-                  @php
-                    if ($room_feature['name'] == 'Other') {
-                        $target = '.custom_room_features';
-                    } else {
-                        $target = '';
-                    }
-                  @endphp
-                  <option value="{{ $room_feature['name'] }}" data-target="{{ $target }}"
-                    class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);">
-                    {{ $room_feature['name'] }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-            <div class="form-group custom_room_features">
-              <label class="fw-bold">Room Features:</label>
-              <input type="text" name="custom_room_features" id="custom_room_features"
-                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+            <div class="form-group d-none room-type-fields">
+              <div class="form-group">
+                <label class="fw-bold">Approximate Room Dimensions:</label>
+                <input type="text" name="approximate_room_dimensions" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" >
+              </div>
+              @php
+                $room_levels = [['name' => 'Upper', 'target' => ''], ['name' => 'Basement', 'target' => ''], ['name' => 'First', 'target' => ''], ['name' => 'Second', 'target' => ''], ['name' => 'Third', 'target' => '']];
+              @endphp
+              <div class="form-group ">
+                <label class="fw-bold">Room Level:</label>
+                <select class="grid-picker" name="room_level[]" id="room_level" style="justify-content: flex-start;"
+                  multiple>
+                  <option value="">Select</option>
+                  @foreach ($room_levels as $room_level)
+                    <option value="{{ $room_level['name'] }}" data-target="{{ $room_level['target'] }}"
+                      class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
+                      style="width:calc(33.3% - 10px);">
+                      {{ $room_level['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+              @php
+                $bed_room_closest_types = [['name' => 'Built-in Closet', 'target' => ''], ['name' => 'Coat Closet', 'target' => ''], ['name' => 'Dual Closets', 'target' => ''], ['name' => 'Linen Closet', 'target' => ''], ['name' => 'No Closet', 'target' => ''], ['name' => 'Storage Closet', 'target' => ''], ['name' => 'Walk-in Closet', 'target' => '']];
+              @endphp
+              <div class="form-group ">
+                <label class="fw-bold">Closet Type:</label>
+                <select class="grid-picker" name="bed_room_closest_type[]" id="bed_room_closest_type"
+                  style="justify-content: flex-start;" multiple>
+                  <option value="">Select</option>
+                  @foreach ($bed_room_closest_types as $bed_room_closest_type)
+                    <option value="{{ $bed_room_closest_type['name'] }}"
+                      data-target="{{ $bed_room_closest_type['target'] }}" class="card flex-row"
+                      data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);">
+                      {{ $bed_room_closest_type['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+              @php
+                $room_primary_floor_coverings = [
+                    ['name' => 'Bamboo', 'target' => ''],
+                    ['name' => 'Brick/Stone', 'target' => ''],
+                    ['name' => 'Carpet', 'target' => ''],
+                    ['name' => 'Ceramic Tile', 'target' => ''],
+                    ['name' => 'Concrete', 'target' => ''],
+                    ['name' => 'Cork', 'target' => ''],
+                    ['name' => 'Engineered Hardwood', 'target' => ''],
+                    ['name' => 'Epoxy', 'target' => ''],
+                    ['name' => 'Forestry Stewardship Certified', 'target' => ''],
+                    ['name' => 'Granite', 'target' => ''],
+                    ['name' => 'Laminate', 'target' => ''],
+                    ['name' => 'Linoleum', 'target' => ''],
+                    ['name' => 'Marble', 'target' => ''],
+                    ['name' => 'Parquet', 'target' => ''],
+                    ['name' => 'Porcelain Tile', 'target' => ''],
+                    ['name' => 'Quarry Tile', 'target' => ''],
+                    ['name' => 'Reclaimed Wood', 'target' => ''],
+                    ['name' => 'Recycled/Composite Flooring', 'target' => ''],
+                    ['name' => 'Slate', 'target' => ''],
+                    ['name' => 'Terrazzo', 'target' => ''],
+                    ['name' => 'Tile', 'target' => ''],
+                    ['name' => 'Travertine', 'target' => ''],
+                    ['name' => 'Vinyl', 'target' => ''],
+                    ['name' => 'Wood', 'target' => ''],
+                    ['name' => 'Other', 'target' => ''],
+                ];
+              @endphp
+              <div class="form-group ">
+                <label class="fw-bold">Room Primary Floor Covering:</label>
+                <select class="grid-picker" name="room_primary_floor_covering[]" id="room_primary_floor_covering"
+                  style="justify-content: flex-start;" multiple>
+                  <option value="">Select</option>
+                  @foreach ($room_primary_floor_coverings as $room_primary_floor_covering)
+                    <option value="{{ $room_primary_floor_covering['name'] }}"
+                      data-target="{{ $room_primary_floor_covering['target'] }}"
+                      data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
+                      style="width:calc(33.3% - 10px);">
+                      {{ $room_primary_floor_covering['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+              @php
+                $room_features = [
+                    ['name' => 'Bar', 'target' => ''],
+                    ['name' => 'Bath with Spa/Hydro Massage Tub', 'target' => ''],
+                    ['name' => 'Bath With Whirlpoo', 'target' => ''],
+                    ['name' => 'Bidet', 'target' => ''],
+                    ['name' => 'Breakfast Bar', 'target' => ''],
+                    ['name' => 'Built-In Shelving', 'target' => ''],
+                    ['name' => 'Built-In Shower Bench', 'target' => ''],
+                    ['name' => 'Ceiling Fan(s)', 'target' => ''],
+                    ['name' => 'Claw Foot Tub', 'target' => ''],
+                    ['name' => 'Closet Pantry', 'target' => ''],
+                    ['name' => 'Cooking Island', 'target' => ''],
+                    ['name' => 'Desk Built-In ', 'target' => ''],
+                    ['name' => 'Dual Sinks', 'target' => ''],
+                    ['name' => 'En Suite Bathroom ', 'target' => ''],
+                    ['name' => 'Exhaust Fan', 'target' => ''],
+                    ['name' => 'Garden Bath ', 'target' => ''],
+                    ['name' => 'Granite Counters', 'target' => ''],
+                    ['name' => 'Handicap Accessible', 'target' => ''],
+                    ['name' => 'Heated Floors', 'target' => ''],
+                    ['name' => 'Island', 'target' => ''],
+                    ['name' => 'Jack and Jill Bathroom', 'target' => ''],
+                    ['name' => 'Linen Closet Bath', 'target' => ''],
+                    ['name' => 'Makeup/Vanity Space', 'target' => ''],
+                    ['name' => 'Multiple Shower Heads', 'target' => ''],
+                    ['name' => 'Pantry', 'target' => ''],
+                    ['name' => 'Rain Shower Head', 'target' => ''],
+                    ['name' => 'Sauna', 'target' => ''],
+                    ['name' => 'Shower- No Tub', 'target' => ''],
+                    ['name' => 'Single Vanity', 'target' => ''],
+                    ['name' => 'Sink-Pedestal ', 'target' => ''],
+                    ['name' => 'Split Vanities ', 'target' => ''],
+                    ['name' => 'Steam Shower', 'target' => ''],
+                    ['name' => 'Stone Counters', 'target' => ''],
+                    ['name' => 'Sunken Shower', 'target' => ''],
+                    ['name' => 'Tall Countertops ', 'target' => ''],
+                    ['name' => 'Tile Counters', 'target' => ''],
+                    ['name' => 'Tub with Separate Shower Stall ', 'target' => ''],
+                    ['name' => 'Tub with Shower', 'target' => ''],
+                    ['name' => 'Urinal', 'target' => ''],
+                    ['name' => 'Walk-In Pantry', 'target' => ''],
+                    ['name' => 'Walk-In Tub', 'target' => ''],
+                    ['name' => 'Water Closet/Priv Toliet', 'target' => ''],
+                    ['name' => 'Window/Skylight in Bath', 'target' => ''],
+                    ['name' => 'Wet Bar', 'target' => ''],
+                    ['name' => 'Other', 'target' => ''],
+                ];
+              @endphp
+              <div class="form-group ">
+                <label class="fw-bold">Room Features:</label>
+                <select class="grid-picker" name="room_feature[]" id="room_feature"
+                  style="justify-content: flex-start;" multiple>
+                  <option value="">Select</option>
+                  @foreach ($room_features as $room_feature)
+                    @php
+                      if ($room_feature['name'] == 'Other') {
+                          $target = '.custom_room_features';
+                      } else {
+                          $target = '';
+                      }
+                    @endphp
+                    <option value="{{ $room_feature['name'] }}" data-target="{{ $target }}"
+                      class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
+                      style="width:calc(33.3% - 10px);">
+                      {{ $room_feature['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="form-group custom_room_features">
+                <label class="fw-bold">Room Features:</label>
+                <input type="text" name="custom_room_features" id="custom_room_features"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+              </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="35">
-
+          <div class="wizard-step" data-step="33">
+            <label class="fw-bold">Water and Dock Information:</label>
             <div class="form-group">
               <label class="fw-bold">Water Access:</label>
               <select class="grid-picker" name="has_water_access" id="has_water_access"
@@ -3443,18 +3362,6 @@
                   ['name' => 'Bridges - Fixed', 'target' => ''],
                   ['name' => 'Bridges - No Fixed Bridges', 'target' => ''],
                   ['name' => 'Davits', 'target' => ''],
-                  ['name' => 'Dock - Composite', 'target' => ''],
-                  ['name' => 'Dock - Concrete', 'target' => ''],
-                  ['name' => 'Dock - Covered', 'target' => ''],
-                  ['name' => 'Dock - Open', 'target' => ''],
-                  ['name' => 'Dock - Slip 1st Come', 'target' => ''],
-                  ['name' => 'Dock - Slip Deeded Off-Site', 'target' => ''],
-                  ['name' => 'Dock - Slip Deeded On-Site', 'target' => ''],
-                  ['name' => 'Dock - Wood', 'target' => ''],
-                  ['name' => 'Dock w/Electric', 'target' => ''],
-                  ['name' => 'Dock w/o Electric', 'target' => ''],
-                  ['name' => 'Dock w/o Water Supply', 'target' => ''],
-                  ['name' => 'Dock w/Water Supply', 'target' => ''],
                   ['name' => 'Fishing Pier', 'target' => ''],
                   ['name' => 'Lift', 'target' => ''],
                   ['name' => 'Lift - Covered', 'target' => ''],
@@ -3505,7 +3412,7 @@
               </select>
             </div>
             @php
-              $water_frontage = [['name' => 'Bay/Harbor', 'target' => ''], ['name' => 'Bayou', 'target' => ''], ['name' => 'Beach', 'target' => ''], ['name' => 'Brackish Water', 'target' => ''], ['name' => 'Canal - Brackish', 'target' => ''], ['name' => 'Canal - Freshwater', 'target' => ''], ['name' => 'Canal - Saltwater', 'target' => ''], ['name' => 'Creek', 'target' => ''], ['name' => 'Freshwater Canal w/Lift to Saltwater Canal', 'target' => ''], ['name' => 'Gulf/Ocean', 'target' => ''], ['name' => 'Gulf/Ocean to Bay', 'target' => ''], ['name' => 'Intracoastal Waterway', 'target' => ''], ['name' => 'Lagoon/Estuary', 'target' => ''], ['name' => 'Lake', 'target' => ''], ['name' => 'Lake - Chain of Lakes', 'target' => ''], ['name' => 'Marina', 'target' => ''], ['name' => 'Pond', 'target' => ''], ['name' => 'River', 'target' => '']];
+              $water_frontage = [['name' => 'Bay/Harbor', 'target' => ''], ['name' => 'Bayou', 'target' => ''], ['name' => 'Beach', 'target' => ''], ['name' => 'Brackish Water', 'target' => ''], ['name' => 'Canal - Brackish', 'target' => ''], ['name' => 'Canal - Freshwater', 'target' => ''], ['name' => 'Canal - Saltwater', 'target' => ''], ['name' => 'Creek', 'target' => ''], ['name' => 'Freshwater Canal w/Lift to Saltwater Canal', 'target' => ''], ['name' => 'Gulf/Ocean', 'target' => ''], ['name' => 'Gulf/Ocean to Bay', 'target' => ''], ['name' => 'Intracoastal Waterway', 'target' => ''], ['name' => 'Lagoon/Estuary', 'target' => ''], ['name' => 'Lake', 'target' => ''], ['name' => 'Lake - Chain of Lakes', 'target' => ''], ['name' => 'Marina', 'target' => ''], ['name' => 'Pond', 'target' => ''], ['name' => 'River', 'target' => ''], ['name' => 'Canal Front', 'target' => ''], ['name' => 'Riparian Rights', 'target' => '']];
             @endphp
             <div class="form-group water_frontage_residential_and_income d-none">
               <select class="grid-picker" name="water_frontage[]" id="water_frontage"
@@ -3520,111 +3427,15 @@
                 @endforeach
               </select>
             </div>
-          </div>
-          <div class="wizard-step" data-step="36">
-            @php
-              $ownerships = [['name' => 'Co-Op', 'target' => ''], ['name' => 'Condominium', 'target' => ''], ['name' => 'Fee Simple', 'target' => ''],['name' => 'Fractional', 'target' => ''], ['name' => 'Other', 'target' => '']];
-            @endphp
             <div class="form-group">
-              <label class="fw-bold">Ownership:</label>
-              <select class="grid-picker" name="ownership" id="ownership" style="justify-content: flex-start;">
-                <option value="">Select</option>
-                @foreach ($ownerships as $item)
-                  @php
-                    if ($item['name'] == 'Other') {
-                        $target = '.otherOwnershipRes';
-                    } else {
-                        $target = '';
-                    }
-                  @endphp
-                  <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'>
-                    {{ $item['name'] }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-            <div class="form-group otherOwnershipRes d-none">
-              <label class="fw-bold">Ownership:</label>
-              <input type="text" name="otherOwnership" id="custom_ownership" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined">
-            </div>
-          </div>
-          <div class="wizard-step" data-step="37">
-            @php
-              $occupant_types = [['name' => 'Owner', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Tenant', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Vacant', 'target' => '', 'icon' => 'fa-regular fa-circle-check']];
-            @endphp
-            <div class="form-group">
-              <label class="fw-bold">Occupant Type:</label>
-              <select class="grid-picker" name="occupant_type" id="occupant_type"
-                style="justify-content: flex-start;">
-                <option value="">Select</option>
-                @foreach ($occupant_types as $item)
-                  @php
-                    if ($item['name'] == 'Tenant') {
-                        $target = '.tenant_conditions_residential_and_income';
-                    } else {
-                        $target = '';
-                    }
-                  @endphp
-                  <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
-                    {{ $item['name'] }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-            <div class="row tenant_conditions_residential_and_income">
-              <div class="row for_residential_only">
-                <div class="form-group">
-                  @php
-                  $existingLease = [['name' => 'Yes, Existing Lease', 'target' => '.existingLeaseyes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Yes, Month to Month', 'target' => '.monthToMonth', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
-                  @endphp
-                  <label class="fw-bold">Existing Lease or Tenant:</label>
-                  <select class="grid-picker" name="exiting_lease_or_tenant" id="exiting_lease_or_tenant"
-                    style="justify-content: flex-start;">
-                    <option value="">Select</option>
-                    @foreach ($existingLease as $item)
-                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                        class="card flex-row" style="width:calc(33.3% - 10px);"
-                        data-icon='<i class="{{ $item['icon'] }}"></i>'>
-                        {{ $item['name'] }}
-                      </option>
-                    @endforeach
-                  </select>
-                  <div class="form-group existingLeaseyes d-none">
-                    <label for="address" class="fw-bold">End Date of Lease:</label>
-                    <input type="date" name="end_of_lease_date" class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
-                  </div>
-                  <div class="form-group monthToMonth d-none">
-                    <label for="address" class="fw-bold">What is the required notice period for the tenant to vacate the property?</label>
-                    <input type="text" name="monthToMonth" class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="fw-bold">Monthly Rental Amount:</label>
-                  <input type="number" name="monthly_rental_ammount" id="monthly_rental_ammount" 
-                    class="form-control has-icon" data-icon="fa-solid fa-dollar">
-                </div>
-                <div class="form-group">
-                  <label class="fw-bold">Days Notice to Tenant if not Renewing:</label>
-                  <input type="text" name="days_notice_to_terminate" id="days_notice_to_terminate"
-                     class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-                </div>
-                
-              </div>
-            </div>
-          </div>
-          <div class="wizard-step" data-step="38">
-            <div class="form-group">
-              <label class="fw-bold">Can the property be leased?  </label>
-              <select class="grid-picker" name="has_leasing" id="has_leasing"
+              <label class="fw-bold">Dock:</label>
+              <select class="grid-picker" name="has_dock" id="has_dock"
                 style="justify-content: flex-start;">
                 <option value="">Select</option>
                 @foreach ($yes_or_nos as $item)
                   @php
                     if ($item['name'] == 'Yes') {
-                        $target = '.lease_restriction';
+                        $target = '.dock_residential_and_income';
                     } else {
                         $target = '';
                     }
@@ -3636,97 +3447,94 @@
                 @endforeach
               </select>
             </div>
-            <div class="row lease_restriction">
-              <div class="form-group ">
-                <label class="fw-bold">Lease Restrictions:</label>
-                <select class="grid-picker" name="has_lease_restriction" id="has_lease_restriction"
-                  style="justify-content: flex-start;">
-                  <option value="">Select</option>
-                  @foreach ($yes_or_nos as $item)
-                    @php
-                      if ($item['name'] == 'Yes') {
-                          $target = '';
-                      } else {
-                          $target = '';
-                      }
-                    @endphp
-                    <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
+            @php
+              $dock = [
+                  ['name' => '2 Point Moorage', 'target' => ''],
+                  ['name' => '3 Point Moorage', 'target' => ''],
+                  ['name' => '4 Point Moorage', 'target' => ''],
+                  ['name' => 'CATV' => ''],
+                  ['name' => 'Clubhouse', 'target' => ''],
+                  ['name' => 'Dock - Composite', 'target' => ''],
+                  ['name' => 'Dock - Concrete', 'target' => ''],
+                  ['name' => 'Dock - Covered', 'target' => ''],
+                  ['name' => 'Dock - Open', 'target' => ''],
+                  ['name' => 'Dock - Slip 1st Come', 'target' => ''],
+                  ['name' => 'Dock - Slip Deeded Off-Site', 'target' => ''],
+                  ['name' => 'Dock - Slip Deeded On-Site', 'target' => ''],
+                  ['name' => 'Dock - Wood', 'target' => ''],
+                  ['name' => 'Dock w/Electric', 'target' => ''],
+                  ['name' => 'Dock w/o Electric', 'target' => ''],
+                  ['name' => 'Dock w/Water Supply', 'target' => ''],
+                  ['name' => 'Dock w/o Water Supply', 'target' => ''],
+                  ['name' => 'Dry Dock' => ''],
+                  ['name' => 'Fish Cleaning Station', 'target' => ''],
+                  ['name' => 'Floating Dock', 'target' => ''],
+                  ['name' => 'Harbormaster', 'target' => ''],
+                  ['name' => 'Internet', 'target' => ''],
+                  ['name' => 'Lift', 'target' => ''],
+                  ['name' => 'Restroom/Shower', 'target' => ''],
+                  ['name' => 'Wet Dock', 'target' => ''],
+                  ['name' => 'None', 'target' => ''],
+                  ['name' => 'Other', 'target' => '.other-dock'],
+              ];
+            @endphp
+            <div class="form-group dock_residential_and_income d-none ">
+              <label class="fw-bold">Dock Description:</label>
+              <select class="grid-picker" name="dock[]" id="dock"
+                style="justify-content: flex-start;" multiple>
+                <option value="">Select</option>
+                @foreach ($dock as $item)
+                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                    class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
+                    style="width:calc(33.3% - 10px);" required>
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+              <div class="form-group other-dock d-none">
+                <label class="fw-bold">Dock Description:</label>
+                <input type="text" name="custom_dock" id="custom_dock"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
               </div>
               <div class="form-group">
-                <label class="fw-bold">Association Approval Required:</label>
-                <select class="grid-picker" name="association_approval_required" id="association_approval_required"
-                  style="justify-content: flex-start;">
-                  <option value="">Select</option>
-                  @foreach ($yes_or_nos as $item)
-                    @php
-                      if ($item['name'] == 'Yes') {
-                          $target = '';
-                      } else {
-                          $target = '';
-                      }
-                    @endphp
-                    <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
+                <label class="fw-bold">Dock Lift Capacity:</label>
+                <input type="text" name="dock_lift_capacity" id="dock_lift_capacity"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Dock Year Built:</label>
+                <input type="text" name="dock_year_built" id="dock_year_built"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Dock Dimension:</label>
+                <input type="text" name="dock_dimension" id="dock_dimension"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Dock Maintenance Fee:</label>
+                <input type="text" name="dock_maintenance_fee" id="dock_maintenance_fee"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
               </div>
               @php
-                $minimum_lease_period = [['name' => '1-7 Days', 'target' => ''], ['name' => '1 Week', 'target' => ''], ['name' => '2 Week', 'target' => ''], ['name' => '1 Month', 'target' => ''], ['name' => '2 Month', 'target' => ''], ['name' => '3 Month', 'target' => ''], ['name' => '4 Month', 'target' => ''], ['name' => '5 Month', 'target' => ''], ['name' => '6 Month', 'target' => ''], ['name' => '7 Month', 'target' => ''], ['name' => '8-12 Month', 'target' => ''], ['name' => '1-2 Years', 'target' => ''], ['name' => '2+ Years', 'target' => ''], ['name' => 'No Minimum', 'target' => ''], ['name' => 'No Rent', 'target' => '']];
+                $feeFrequency = [['name' => 'Annual', 'target' => ''], ['name' => 'Monthly', 'target' => ''], ['name' => 'Quarterly', 'target' => ''], ['name' => 'N/A', 'target' => '']]
               @endphp
-              <div class="form-group ">
-                <label class="fw-bold">Minimum Lease Period:</label>
-                <select class="grid-picker" name="minimum_lease_period" id="minimum_lease_period"
-                  style="justify-content: flex-start;">
-                  <option value="">Select</option>
-                  @foreach ($minimum_lease_period as $item)
-                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                      data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                      style="width:calc(33.3% - 10px);">
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="fw-bold">Maximum Times Per Year:</label>
-                <input type="text" name="minimum_lease_per_year"
-                  class="form-control has-icon" data-icon="fa-solid fa-calendar-days">
-              </div>
-              <div class="form-group">
-                <label class="fw-bold">Years of Ownership Prior to Leasing Required:</label>
-                <select class="grid-picker" name="years_of_ownership" id="years_of_ownership"
-                  style="justify-content: flex-start;">
-                  <option value="">Select</option>
-                  @foreach ($yes_or_nos as $item)
-                    @php
-                      if ($item['name'] == 'Yes') {
-                          $target = '';
-                      } else {
-                          $target = '';
-                      }
-                    @endphp
-                    <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="fw-bold">Number of Ownership Years Prior to Leasing:</label>
-                <input type="number" name="number_of_ownership_prior_lease" class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
-              </div>
+              <label class="fw-bold">Dock Maintenance Fee Frequency:</label>
+              <select class="grid-picker" name="dock_maintenance_fee_frequency" id="dock_maintenance_fee_frequency"
+                style="justify-content: flex-start;" required>
+                <option value="">Select</option>
+                @foreach ($dock as $item)
+                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                    class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
+                    style="width:calc(33.3% - 10px);">
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="39">
+          <div class="wizard-step" data-step="34">
+            <label class="fw-bold">HOA, Condo Association and/or Master Association Information:</label>
             <div class="form-group">
               @php
                 $propsOpt = [
@@ -3785,6 +3593,7 @@
                     ['name' => ' Water Access', 'target' => ''],
                     ['name' => 'Waterfront', 'target' => ''],
                     ['name' => 'Wheelchair Access', 'target' => ''],
+                    ['name' => 'Dog Park', 'target' => ''],
                     ['name' => 'None', 'target' => ''],
                 ];
               @endphp
@@ -3836,6 +3645,7 @@
                     ['name' => 'Trails', 'target' => ''],
                     ['name' => 'Vehicle Restrictions', 'target' => ''],
                     ['name' => 'Wheelchair Access', 'target' => ''],
+                    ['name' => 'None', 'target' => ''],
                     ['name' => 'Other', 'target' => '.otherAssocAmenitiesRes'],
                 ];
               @endphp
@@ -3855,7 +3665,7 @@
                 </select>
                 <div class="form-group otherAssocAmenitiesRes d-none">
                   <label class="fw-bold">Association Amenities: </label>
-                  <input type="text" name="otherAssocAmenities" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                  <input type="text" name="otherAssocAmenities" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                 </div>
               </div>
               @php
@@ -3902,13 +3712,13 @@
                 </select>
                 <div class="form-group otherFeeIncludeRes d-none">
                   <label class="fw-bold">Fee Includes:</label>
-                  <input type="text" name="otherFeeInclude" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                  <input type="text" name="otherFeeInclude" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                 </div>
               </div>
               <div class="form-group">
                 <label class="fw-bold">Amenities with Additional Fees:</label>
-                <input type="number" name="amenities_with_additional_fees"
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="amenities_with_additional_fees"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
                 <div class="form-group">
@@ -4061,7 +3871,7 @@
                 <div class="form-group additionalFeeYesRes d-none">
                   <div class="form-group">
                     <label class="fw-bold">What is the fee for?</label>
-                    <input type="text" name="additionalFeeReason" id="additionalFeeReason" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
+                    <input type="text" name="additionalFeeReason" id="additionalFeeReason" class="form-control has-icon" data-icon="">
                   </div>
                   <div class="form-group">
                     <label class="fw-bold">Other Fee:</label>
@@ -4128,7 +3938,270 @@
                   </select>
                 </div>
           </div>
-          <div class="wizard-step" data-step="40">
+          <div class="wizard-step" data-step="35">
+            <label class="fw-bold">Ownership, Leasing Restrictions and Pets Information:</label>
+            @php
+              $ownerships = [['name' => 'Co-Op', 'target' => ''], ['name' => 'Condominium', 'target' => ''], ['name' => 'Fee Simple', 'target' => ''],['name' => 'Fractional', 'target' => ''], ,['name' => 'Leasehold', 'target' => ''] ['name' => 'Other', 'target' => '']];
+            @endphp
+            <div class="form-group">
+              <label class="fw-bold">Ownership:</label>
+              <select class="grid-picker" name="ownership" id="ownership" style="justify-content: flex-start;">
+                <option value="">Select</option>
+                @foreach ($ownerships as $item)
+                  @php
+                    if ($item['name'] == 'Other') {
+                        $target = '.otherOwnershipRes';
+                    } else {
+                        $target = '';
+                    }
+                  @endphp
+                  <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group otherOwnershipRes d-none">
+              <label class="fw-bold">Ownership:</label>
+              <input type="text" name="otherOwnership" id="custom_ownership" class="form-control has-icon"
+                data-icon="fa-regular fa-check-circle">
+            </div>
+            @php
+            $occupant_types = [['name' => 'Owner', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Tenant', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Vacant', 'target' => '', 'icon' => 'fa-regular fa-circle-check']];
+            @endphp
+            <div class="form-group">
+              <label class="fw-bold">Occupant Type:</label>
+              <select class="grid-picker" name="occupant_type" id="occupant_type"
+                style="justify-content: flex-start;">
+                <option value="">Select</option>
+                @foreach ($occupant_types as $item)
+                  @php
+                    if ($item['name'] == 'Tenant') {
+                        $target = '.tenant_conditions_residential_and_income';
+                    } else {
+                        $target = '';
+                    }
+                  @endphp
+                  <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+            <div class="row tenant_conditions_residential_and_income">
+              <div class="row for_residential_only">
+                <div class="form-group">
+                  @php
+                  $existingLease = [['name' => 'Yes, Existing Lease', 'target' => '.existingLeaseyes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Yes, Month to Month', 'target' => '.monthToMonth', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
+                  @endphp
+                  <label class="fw-bold">Existing Lease or Tenant:</label>
+                  <select class="grid-picker" name="exiting_lease_or_tenant" id="exiting_lease_or_tenant"
+                    style="justify-content: flex-start;">
+                    <option value="">Select</option>
+                    @foreach ($existingLease as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                        class="card flex-row" style="width:calc(33.3% - 10px);"
+                        data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                        {{ $item['name'] }}
+                      </option>
+                    @endforeach
+                  </select>
+                  <div class="form-group existingLeaseyes d-none">
+                    <label for="address" class="fw-bold">End Date of Lease:</label>
+                    <input type="date" name="end_of_lease_date" class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
+                  </div>
+                  <div class="form-group monthToMonth d-none">
+                    <label for="address" class="fw-bold">What is the required notice period for the tenant to vacate the property?</label>
+                    <input type="text" name="monthToMonth" class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="fw-bold">Monthly Rental Amount:</label>
+                  <input type="number" name="monthly_rental_ammount" id="monthly_rental_ammount" 
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar">
+                </div>
+                <div class="form-group">
+                  <label class="fw-bold">Days Notice to Tenant if not Renewing:</label>
+                  <input type="text" name="days_notice_to_terminate" id="days_notice_to_terminate"
+                    class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="fw-bold">Can the property be leased?  </label>
+              <select class="grid-picker" name="has_leasing" id="has_leasing"
+                style="justify-content: flex-start;">
+                <option value="">Select</option>
+                @foreach ($yes_or_nos as $item)
+                  @php
+                    if ($item['name'] == 'Yes') {
+                        $target = '.lease_restriction';
+                    } else {
+                        $target = '';
+                    }
+                  @endphp
+                  <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+            <div class="row lease_restriction">
+              <div class="form-group ">
+                <label class="fw-bold">Lease Restrictions:</label>
+                <select class="grid-picker" name="has_lease_restriction" id="has_lease_restriction"
+                  style="justify-content: flex-start;">
+                  <option value="">Select</option>
+                  @foreach ($yes_or_nos as $item)
+                    @php
+                      if ($item['name'] == 'Yes') {
+                          $target = '';
+                      } else {
+                          $target = '';
+                      }
+                    @endphp
+                    <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Association Approval Required:</label>
+                <select class="grid-picker" name="association_approval_required" id="association_approval_required"
+                  style="justify-content: flex-start;">
+                  <option value="">Select</option>
+                  @foreach ($yes_or_nos as $item)
+                    @php
+                      if ($item['name'] == 'Yes') {
+                          $target = '';
+                      } else {
+                          $target = '';
+                      }
+                    @endphp
+                    <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+              @php
+                $minimum_lease_period = [['name' => '1-7 Days', 'target' => ''], ['name' => '1 Week', 'target' => ''], ['name' => '2 Week', 'target' => ''], ['name' => '1 Month', 'target' => ''], ['name' => '2 Month', 'target' => ''], ['name' => '3 Month', 'target' => ''], ['name' => '4 Month', 'target' => ''], ['name' => '5 Month', 'target' => ''], ['name' => '6 Month', 'target' => ''], ['name' => '7 Month', 'target' => ''], ['name' => '8-12 Month', 'target' => ''], ['name' => '1-2 Years', 'target' => ''], ['name' => '2+ Years', 'target' => ''], ['name' => 'No Minimum', 'target' => ''], ['name' => 'No Rent', 'target' => '']];
+              @endphp
+              <div class="form-group ">
+                <label class="fw-bold">Minimum Lease Period:</label>
+                <select class="grid-picker" name="minimum_lease_period" id="minimum_lease_period"
+                  style="justify-content: flex-start;">
+                  <option value="">Select</option>
+                  @foreach ($minimum_lease_period as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                      data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
+                      style="width:calc(33.3% - 10px);">
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Maximum Lease Times Per Year:</label>
+                <input type="text" name="minimum_lease_per_year"
+                  class="form-control has-icon" data-icon="fa-solid fa-calendar-days">
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Years of Ownership Prior to Leasing Required:</label>
+                <select class="grid-picker" name="years_of_ownership" id="years_of_ownership"
+                  style="justify-content: flex-start;">
+                  <option value="">Select</option>
+                  @foreach ($yes_or_nos as $item)
+                    @php
+                      if ($item['name'] == 'Yes') {
+                          $target = '';
+                      } else {
+                          $target = '';
+                      }
+                    @endphp
+                    <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Number of Ownership Years Prior to Leasing:</label>
+                <input type="text" name="number_of_ownership_prior_lease" class="form-control has-icon"
+                  data-icon="fa-regular fa-calendar-days">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="fw-bold">Pets Allowed:</label>
+              <select class="grid-picker" name="ptesAllowed" id="has_rental_restrictions"
+                style="justify-content: flex-start;">
+                <option value="">Select</option>
+                @foreach ($yes_or_nos as $item)
+                  @php
+                    if ($item['name'] == 'Yes') {
+                        $target = '.pets_allowed_question12';
+                    } else {
+                        $target = '';
+                    }
+                  @endphp
+                  <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+              <div class="row ">
+                <div class="form-group">
+                  <label class="fw-bold">Acceptable Pet Types:</label>
+                  <input type="text" name="acceptablePet" class="form-control has-icon" data-icon="fa-solid fa-dog">
+                </div>
+                @php
+                  $total_pets_allowed = [['target' => '', 'name' => '1'], ['target' => '', 'name' => '2'], ['target' => '', 'name' => '3'], ['target' => '', 'name' => '4'], ['target' => '', 'name' => '5'], ['target' => '', 'name' => '6'], ['target' => '', 'name' => '7'], ['target' => '', 'name' => '8'], ['target' => '', 'name' => '9'], ['target' => '', 'name' => '10'], ['target' => '.custom_pets_allowed', 'name' => 'Other']];
+                @endphp
+                <div class="form-group pets_allowed_question12 d-none">
+                  <div class="form-group">
+                    <label class="fw-bold">Number of Pets Allowed:</label>
+                    <select class="grid-picker" name="total_pets_allowed" id="total_pets_allowed"
+                      style="justify-content: flex-start;">
+                      <option value="">Select</option>
+                      @foreach ($total_pets_allowed as $item)
+                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                          class="card flex-column" style="width:calc(10% - 10px);"
+                          data-icon='<i class="fa-solid fa-dog"></i>'>
+                          {{ $item['name'] }}
+                        </option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group custom_pets_allowed d-none">
+                    <label class="fw-bold">Number of Pets Allowed:</label>
+                    <input type="text" name="custom_pets_allowed" id="custom_pets_allowed"
+                      class="form-control has-icon" data-icon="fa-solid fa-dog">
+                  </div>
+                  <div class="form-group">
+                    <label class="fw-bold">Max Pet Weight:</label>
+                    <input type="text" name="max_pet_weight" id="max_pet_weight" class="form-control has-icon"
+                      data-icon="fa-solid fa-dog">
+                  </div>
+                  <div class="form-group">
+                    <label class="fw-bold">Pet Restrictions:</label>
+                    <textarea name="pet_restrictions" id="pet_restrictions" class="form-control" cols="30" rows="5"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="wizard-step" data-step="36">
+            <label>Green Features:</label>
+          </div>
+          <div class="wizard-step" data-step="37">
             <div class="form-group">
               <label class="fw-bold"> Description:</label>
               <textarea name="description" id="description" class="form-control" cols="30" rows="10" required></textarea>
@@ -4173,7 +4246,7 @@
                 </div>
               </div>
           </div>
-          <div class="wizard-step" data-step="41">
+          <div class="wizard-step" data-step="38">
             <div class="form-group">
               <label class="fw-bold">Is the Seller actively seeking to purchase another property?
               </label>
@@ -4201,7 +4274,7 @@
                 class="form-control has-icon" data-icon="fa-solid fa-link">
             </div>
           </div>
-          <div class="wizard-step" data-step="42">
+          <div class="wizard-step" data-step="39">
             <h4> Title Company Information:</h4>
             <div class="form-group">
               <label class="fw-bold">Name:</label>
@@ -4226,7 +4299,7 @@
             </div>
         
           </div>
-          <div class="wizard-step" data-step="43">
+          <div class="wizard-step" data-step="40">
             <h4>Agent info:</h4>
             <div class="form-group row">
               <div class="form-group col-md-6">
@@ -4284,7 +4357,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="44">
+          <div class="wizard-step" data-step="41">
             <div class="form-group">
               <label class="fw-bold">3D Tour:</label>
               <input type="url" name="three_d_tour" id="three_d_tour" placeholder=""
@@ -4332,7 +4405,7 @@
               </div>
             </span>
           </div>
-          <div class="wizard-step" data-step="45">
+          <div class="wizard-step" data-step="42">
             <div class="form-group">
               <label class="fw-bold">Bathrooms:</label>
               <select class="grid-picker" name="bathrooms" id="bathrooms" style="">
@@ -4352,7 +4425,7 @@
                 data-icon="fa-solid fa-bath">
             </div>
           </div>
-          <div class="wizard-step" data-step="46">
+          <div class="wizard-step" data-step="43">
             <div class="row">
               <div class="form-group col-md-4">
                 <label class="fw-bold">Unit Type</label>
@@ -8018,6 +8091,10 @@
     });
     // setTimeout(check_custom, 500);
   }
+
+  $('#room_type').change(function(){
+    $('.room-type-fields').removeClass('d-none');
+  })
 </script>
 <script>
   $(function() {
