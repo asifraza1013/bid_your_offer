@@ -284,6 +284,26 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("dock_year_built",$request->dock_year_built);
             $auction->saveMeta("dock_dimension",$request->dock_dimension);
             $auction->saveMeta("dock_maintenance_fee",$request->dock_maintenance_fee);
+
+            $auction->saveMeta("green_features",$request->green_features);
+            $auction->saveMeta("building_verification",$request->building_verification);
+            $auction->saveMeta("green_status",$request->green_status);
+            $auction->saveMeta("green_year",$request->green_year);
+            $auction->saveMeta("green_version",$request->green_version);
+            $auction->saveMeta("green_body",$request->green_body);
+            $auction->saveMeta("green_metric",$request->green_metric);
+            $auction->saveMeta("green_rating",$request->green_rating);
+            $auction->saveMeta("green_source",$request->green_source);
+            $auction->saveMeta("green_url",$request->green_url);
+            $auction->saveMeta("green_sustainability",$request->green_sustainability);
+            $auction->saveMeta("green_generation",$request->green_generation);
+            $auction->saveMeta("green_water_features",$request->green_water_features);
+            $auction->saveMeta("green_energy_features",$request->green_energy_features);
+            $auction->saveMeta("green_landscaping",$request->green_landscaping);
+            $auction->saveMeta("green_solar",$request->green_solar);
+            $auction->saveMeta("green_disaster",$request->green_disaster);
+            $auction->saveMeta("green_air",$request->green_air);
+
             $auction->saveMeta("has_water_fontage",$request->has_water_fontage);
             $auction->saveMeta("water_frontage",json_encode($request->water_frontage));
             $auction->saveMeta("viewOpt",$request->viewOpt);

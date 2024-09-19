@@ -3942,13 +3942,7 @@
           <div class="wizard-step" data-step="35">
             <label class="fw-bold">Ownership, Leasing Restrictions and Pets Information:</label>
             @php
-              $ownerships = [
-                ['name' => 'Co-Op', 'target' => ''], 
-                ['name' => 'Condominium', 'target' => ''], 
-                ['name' => 'Fee Simple', 'target' => ''],
-                ['name' => 'Fractional', 'target' => ''],
-                ['name' => 'Leasehold', 'target' => ''] ,
-                ['name' => 'Other', 'target' => '']];
+              $ownerships = [['name' => 'Co-Op', 'target' => ''], ['name' => 'Condominium', 'target' => ''], ['name' => 'Fee Simple', 'target' => ''],['name' => 'Fractional', 'target' => ''], ,['name' => 'Leasehold', 'target' => ''] ['name' => 'Other', 'target' => '']];
             @endphp
             <div class="form-group">
               <label class="fw-bold">Ownership:</label>
@@ -4205,20 +4199,20 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="36">
+          {{-- <div class="wizard-step" data-step="36">
             <label class="fw-bold">Green Features:</label>
             @php
-              $greenOpt = [
-                ['name'=>'Yes','icon'=>'<i class="fa-regular fa-circle-check"></i>','target'=>'.green-field-opts'],
-                ['name'=>'No','icon'=>'<i class="fa-regular fa-circle-xmark"></i>','target'=>'']
-              ];
-            @endphp
+                $greenOpt = [
+                  ['name'=>'Yes','icon'=>'<i class="fa-regular fa-circle-check"></i>','target'=>'.green-field-opts'],
+                  ['name'=>'No','icon'=>'<i class="fa-regular fa-circle-xmark"></i>','target'=>'']
+                ];
+              @endphp
             <div class="form-group">
               <label class="fw-bold">Does the property have any Green Features?</label>
               <select class="grid-picker" name="green_features" id="green_features" style="justify-content: flex-start;" required>
                 <option value="">Select</option>
                 @foreach ($greenOpt as $item)
-                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                  <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
                     style="width:calc(33.3% - 10px);" data-icon="{{$item['icon']}}" >
                     {{ $item['name'] }}
                   </option>
@@ -4260,7 +4254,7 @@
                 ['name'=>'Pearl Certification','target'=>''],
                 ['name'=>'PHIUS+','target'=>''],
                 ['name'=>'WaterSense','target'=>''],
-                ['name'=>'Zero Energy Ready Home','target'=>'']
+                ['name'=>'Zero Energy Ready Home','target'=>''],
               ];
               @endphp
               <div class="form-group">
@@ -4278,8 +4272,8 @@
               @php
               $statusOpt = [
                 ['name'=>'Complete','target'=>''],
-                ['name'=>'In Progress','target'=>'']
-              ];
+                ['name'=>'In Progress','target'=>''],
+              ],
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Status:</label>
@@ -4323,8 +4317,8 @@
                 ['name'=>'Owner','target'=>''],
                 ['name'=>'Program Sponser','target'=>''],
                 ['name'=>'Program Verifier','target'=>''],
-                ['name'=>'Public Records','target'=>'']
-              ];
+                ['name'=>'Public Records','target'=>''],
+              ],
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Source:</label>
@@ -4350,8 +4344,8 @@
                 ['name'=>'Recycled Materials','target'=>''],
                 ['name'=>'Regionally-Sourced Materials','target'=>''],
                 ['name'=>'Renewable Materials','target'=>''],
-                ['name'=>'Salvaged Materials','target'=>'']
-              ];
+                ['name'=>'Salvaged Materials','target'=>''],
+              ],
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Green Sustainability:</label>
@@ -4369,8 +4363,8 @@
               $generationOpt = [
                 ['name'=>'Hydro Power','target'=>''],
                 ['name'=>'Solar','target'=>''],
-                ['name'=>'Wind','target'=>'']
-              ];
+                ['name'=>'Wind','target'=>''],
+              ],
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Green Energy Generation:</label>
@@ -4396,8 +4390,8 @@
                 ['name'=>'Low-Flow Fixtures','target'=>''],
                 ['name'=>'Water Recycling','target'=>''],
                 ['name'=>'Water Smart Landscaping','target'=>''],
-                ['name'=>'Whole House Water Purification','target'=>'']
-              ];
+                ['name'=>'Whole House Water Purification','target'=>''],
+              ],
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Green Water Features:</label>
@@ -4426,8 +4420,8 @@
                 ['name'=>'Roof','target'=>''],
                 ['name'=>'Thermostat','target'=>''],
                 ['name'=>'Water Heater','target'=>''],
-                ['name'=>'Windows','target'=>'']
-            ];
+                ['name'=>'Windows','target'=>''],
+              ],
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Green Energy Features:</label>
@@ -4447,8 +4441,8 @@
                 ['name'=>'Non-Toxic Fertilizer/Pesticides','target'=>''],
                 ['name'=>'Rain Water Harvesting','target'=>''],
                 ['name'=>'Veg. (Productive) Garden','target'=>''],
-                ['name'=>'Xeriscape','target'=>'']
-              ];
+                ['name'=>'Xeriscape','target'=>''],
+              ],
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Green Landscaping:</label>
@@ -4466,8 +4460,8 @@
               $solarOpt = [
                 ['name'=>'Owned','target'=>''],
                 ['name'=>'Leased/Assumable','target'=>''],
-                ['name'=>'Leased/Non-Assumable','target'=>'']
-              ];
+                ['name'=>'Leased/Non-Assumable','target'=>''],
+              ],
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Solar Panel Ownership:</label>
@@ -4489,8 +4483,8 @@
                 ['name'=>'Hurricane Insur. Deduction Qual.','target'=>''],
                 ['name'=>'Hurricane Shutters/Windows','target'=>''],
                 ['name'=>'Lightning Protection System','target'=>''],
-                ['name'=>'Safe Room','target'=>'']
-              ];
+                ['name'=>'Safe Room','target'=>''],
+              ],
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Disaster Mitigation:</label>
@@ -4521,8 +4515,8 @@
                 ['name'=>'Non-Toxic Pest Control','target'=>''],
                 ['name'=>'Sealed Combustion','target'=>''],
                 ['name'=>'Ventilation','target'=>''],
-                ['name'=>'Whole House Vacuum System','target'=>'']
-              ];
+                ['name'=>'Whole House Vacuum System','target'=>''],
+              ],
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Indoor Air Quality:</label>
@@ -4537,7 +4531,7 @@
                 </select>
               </div>
             </div>
-          </div>
+          </div> --}}
           <div class="wizard-step" data-step="37">
             <div class="form-group">
               <label class="fw-bold"> Description:</label>
