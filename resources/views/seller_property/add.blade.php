@@ -4543,22 +4543,13 @@
               <label class="fw-bold"> Description:</label>
               <textarea name="description" id="description" class="form-control" cols="30" rows="10" required></textarea>
             </div>
-
-            <div class="form-group">
-              <label class="fw-bold">Keywords:<small class="small">(Add keywords of the
-                  best property features) </small></label>
-              <input type="text" name="keywords" id="keywords" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined">
-            </div>
             <div class="form-group">
               <label class="fw-bold">Legal Disclamers:</label>
-              <input type="text" name="disclamer" id="keywords" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined">
+              <textarea name="disclamer" id="keywords" class="form-control" cols="30" rows="10" ></textarea>  
             </div>
             <div class="form-group">
               <label class="fw-bold">Driving Directions:</label>
-              <input type="text" name="driving_directions" id="keywords" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined">
+              <textarea name="driving_directions" id="keywords" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" cols="30" rows="10" ></textarea>    
             </div>
             <div class="form-group">
                   @php
@@ -4577,9 +4568,16 @@
                   @endforeach
                 </select>
                 <div class="form-group sellerComYesRes d-none">
-                  <label class="fw-bold">Buyer’s Agent Compensation:</label>
+                  <div class="d-flex justify-content-between aalign-items-center">
+                    <label class="fw-bold">Buyer’s Agent Compensation:</label>
+                    <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                        <button type="button" class="select-btn me-1 active"
+                            data-type="amount">$</button>
+                        <button type="button" class="select-btn" data-type="percent">%</button>
+                    </div>
+                  </div>
                   <input type="text" name="compensation_amount" class="form-control has-icon"
-                    data-icon="fa-solid fa-dollar">
+                    data-icon="fa-solid fa-percent">
                 </div>
               </div>
           </div>
@@ -4607,7 +4605,7 @@
             </div>
             <div class="form-group link_residential_and_income">
               <label class="fw-bold">Link to the listing on the Bid Your Offer platform:</label>
-              <input type="url" name="listing_link" id="listing_link" placeholder=""
+              <input type="text" name="listing_link" id="listing_link" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-link">
             </div>
           </div>
@@ -4637,7 +4635,12 @@
         
           </div>
           <div class="wizard-step" data-step="40">
-            <h4>Agent info:</h4>
+            @if (auth()->user()->user_type == 'agent')
+              <h4>Listing Agent Information:</h4>
+            @else
+              <h4>Seller’s Information:</h4>
+            @endif
+            
             <div class="form-group row">
               <div class="form-group col-md-6">
                 <label class="fw-bold">First Name:</label>
@@ -4666,6 +4669,7 @@
                   value="{{ Auth::user()->email }}">
               </div>
             </div>
+            @if (auth()->user()->user_type == 'agent')
             <div class="form-group row">
               <div class="form-group col-md-6">
                 <label class="fw-bold">Brokerage:</label>
@@ -4687,22 +4691,18 @@
                   class="form-control has-icon" data-icon="fa-solid fa-id-badge"
                   value="{{ optional(Auth::user())->mls_id }}">
               </div>
-              <div class="form-group  col-md-6">
-                <label class="fw-bold">Listed By: Real Estate Agent:</label>
-                <input type="text" name="realEstateAgent" id="titl_company_email"
-                  data-icon="fa-solid fa-user" class="form-control has-icon">
-              </div>
             </div>
+            @endif
           </div>
           <div class="wizard-step" data-step="41">
             <div class="form-group">
-              <label class="fw-bold">3D Tour:</label>
-              <input type="url" name="three_d_tour" id="three_d_tour" placeholder=""
-              class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+              <label class="fw-bold">3D Tour (Link):</label>
+              <input type="text" name="three_d_tour" id="three_d_tour" placeholder=""
+              class="form-control has-icon" data-icon="fa-solid fa-link">
             </div>
             <div class="form-group">
               <label class="fw-bold">Floor Plan:</label>
-              <input type="file" name="floor_plan" id="floor_plan" class="form-control">
+              <input type="file" name="floor_plan" id="floor_plan" class="form-control" accept="image/*" >
             </div>
             <div class="form-group">
               <label class="fw-bold">Addendums/Disclosures:</label>
@@ -4732,7 +4732,7 @@
                             <div class="js--image-preview"></div>
                             <div class="upload-options">
                               <label>
-                                <input type="file" name="photo" class="image-upload" accept="image/*" />
+                                <input type="file" name="photo" class="image-upload" accept="image/*" multiple />
                               </label>
                             </div>
                           </div>
@@ -4742,6 +4742,8 @@
               </div>
             </span>
           </div>
+          {{-- residential/income end --}}
+          {{-- commercial/business --}}
           <div class="wizard-step" data-step="42">
             <div class="form-group">
               <label class="fw-bold">Bathrooms:</label>
@@ -4924,7 +4926,7 @@
 
             </div>
           </div>
-          <div class="wizard-step" data-step="47">
+          <div class="wizard-step" data-step="44">
             <div class="row ">
               <div class="form-group">
                 <label class="fw-bold" for="heated_sqft">Heated Sqft:</label>
@@ -4983,7 +4985,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="48">
+          <div class="wizard-step" data-step="45">
             @php
               $appliances = [
                   ['name' => 'Bar Fridge', 'target' => ''],
@@ -5041,7 +5043,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="49">
+          <div class="wizard-step" data-step="46">
             <div class="form-group ">
               @php
                 $furnishingsIncome = [['name' => 'Yes', 'target' => '','target'=>'','icon'=>'<i class="fa-regular fa-circle-check"></i>'], ['name' => 'No', 'target' => '','target'=>'','icon'=>'<i class="fa-regular fa-circle-xmark"></i>'],['name' => 'Optional', 'target' => '','target'=>'','icon'=>'<i class="fa-regular fa-circle-question"></i>']];
@@ -5102,7 +5104,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="50">
+          <div class="wizard-step" data-step="47">
             <h4>Business Listing Only</h4>
             @php
               $yes_or_nos = [['name' => 'Yes', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
@@ -5147,7 +5149,7 @@
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="51">
+          <div class="wizard-step" data-step="48">
             <div class="form-group">
               <label class="fw-bold">Number of Floors within the Property:</label>
               <input type="text" name="number_of_buildings" id="number_of_buildings" placeholder=""
@@ -5177,7 +5179,7 @@
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="52">
+          <div class="wizard-step" data-step="49">
             @php
               $floor_coverings = [
                   ['name' => 'Brick/Stone', 'target' => ''],
@@ -5229,7 +5231,7 @@
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="53">
+          <div class="wizard-step" data-step="50">
             @php
               $front_exposures = [['name' => 'North', 'target' => ''], ['name' => 'East', 'target' => ''], ['name' => 'South', 'target' => ''], ['name' => 'West', 'target' => ''], ['name' => 'Southeast', 'target' => ''], ['name' => 'Northeast', 'target' => ''], ['name' => 'Southwest', 'target' => ''], ['name' => 'Northwest', 'target' => '']];
             @endphp
@@ -5248,7 +5250,7 @@
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="54">
+          <div class="wizard-step" data-step="51">
             @php
               $foundations = [['name' => 'Basement', 'target' => ''], ['name' => 'Block', 'target' => ''], ['name' => 'Brick/Mortar', 'target' => ''], ['name' => 'Concrete Perimeter', 'target' => ''], ['name' => 'Crawlspace', 'target' => ''], ['name' => 'Other', 'target' => ''], ['name' => 'Pillar/Post/Pier', 'target' => ''], ['name' => 'Slab', 'target' => ''], ['name' => 'Stem Wall', 'target' => ''], ['name' => 'Stilt/On Piling', 'target' => '']];
             @endphp
@@ -5267,7 +5269,7 @@
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="55">
+          <div class="wizard-step" data-step="52">
             @php
               $exterior_constructions = [['name' => 'Asbestos', 'target' => ''], ['name' => 'Block', 'target' => ''], ['name' => 'Brick', 'target' => ''], ['name' => 'Cedar', 'target' => ''], ['name' => 'Cement Siding', 'target' => ''], ['name' => 'Concrete', 'target' => ''], ['name' => 'HardiPlank Type', 'target' => ''], ['name' => 'ICFs (Insulated Concrete Forms)', 'target' => ''], ['name' => 'Log', 'target' => ''], ['name' => 'Metal Frame', 'target' => ''], ['name' => 'Metal Siding', 'target' => ''], ['name' => 'SIP (Structurally Insulated Panel)', 'target' => ''], ['name' => 'Stone', 'target' => ''], ['name' => 'Stucco', 'target' => ''], ['name' => 'Tilt up Walls', 'target' => ''], ['name' => 'Vinyl Siding', 'target' => ''], ['name' => 'Wood Frame', 'target' => ''], ['name' => 'Wood Frame (FSC)', 'target' => ''], ['name' => 'Wood Siding ', 'target' => ''], ['name' => 'Other ', 'target' => '.otherExteriorCon']];
             @endphp
@@ -5291,7 +5293,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="56">
+          <div class="wizard-step" data-step="53">
             @php
               $exterior_features = [
                   ['name' => 'Awning(s)', 'target' => ''],
@@ -5339,7 +5341,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="57">
+          <div class="wizard-step" data-step="54">
             @php
               $lot_features = [
                   ['name' => 'Central Business District', 'target' => ''],
@@ -5406,7 +5408,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="58">
+          <div class="wizard-step" data-step="55">
             @php
               $building_features = [
                   ['name' => 'Bathrooms', 'target' => ''],
@@ -5465,7 +5467,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="59">
+          <div class="wizard-step" data-step="56">
             @php
               $adjoining_properties = [['name' => 'Airport', 'target' => ''], ['name' => 'Church', 'target' => ''], ['name' => 'Commercial', 'target' => ''], ['name' => 'Hotel/Motel', 'target' => ''], ['name' => 'Industrial', 'target' => ''], ['name' => 'Multi-Family', 'target' => ''], ['name' => 'Natural State', 'target' => ''], ['name' => 'Professional Office', 'target' => ''], ['name' => 'Railroad', 'target' => ''], ['name' => 'Residential', 'target' => ''], ['name' => 'School', 'target' => ''], ['name' => 'Undeveloped', 'target' => ''], ['name' => 'Vacant', 'target' => ''], ['name' => 'Waterway', 'target' => ''], ['name' => 'Other', 'target' => '.otherAdjoiningCommercial']];
             @endphp
@@ -5489,7 +5491,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="60">
+          <div class="wizard-step" data-step="57">
             @php
               $roofs = [['name' => 'Built-Up', 'target' => ''], ['name' => 'Concrete', 'target' => ''], ['name' => 'Membrane', 'target' => ''], ['name' => 'Metal', 'target' => ''], ['name' => 'Roof Over', 'target' => ''], ['name' => 'Shake', 'target' => ''], ['name' => 'Shingle', 'target' => ''], ['name' => 'Slate', 'target' => ''], ['name' => 'Tile', 'target' => ''], ['name' => 'Cement', 'target' => ''], ['name' => 'Other', 'target' => '.otherRoofCommercial']];
             @endphp
@@ -5511,7 +5513,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="61">
+          <div class="wizard-step" data-step="58">
             @php
               $road_surface_types = [['name' => 'Asphalt', 'target' => ''], ['name' => 'Brick', 'target' => ''], ['name' => 'Chip And Seal', 'target' => ''], ['name' => 'Concrete', 'target' => ''], ['name' => 'Dirt', 'target' => ''], ['name' => 'Gravel', 'target' => ''], ['name' => 'Limerock', 'target' => ''], ['name' => 'Paved', 'target' => ''], ['name' => 'Unimproved', 'target' => ''], ['name' => 'Other', 'target' => '.otherSurfaceCommercial']];
             @endphp
@@ -5534,7 +5536,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="62">
+          <div class="wizard-step" data-step="59">
             @php
               $road_frontage = [['name' => 'Access Road', 'target' => ''], ['name' => 'Alley', 'target' => ''], ['name' => 'Business District', 'target' => ''], ['name' => 'City Street', 'target' => ''], ['name' => 'County Road', 'target' => ''], ['name' => 'Divided Highway', 'target' => ''], ['name' => 'Easement', 'target' => ''], ['name' => 'Highway', 'target' => ''], ['name' => 'Interchange', 'target' => ''], ['name' => 'Interstate', 'target' => ''], ['name' => 'Main Thoroughfare', 'target' => ''], ['name' => 'Private Road', 'target' => ''], ['name' => 'Rail', 'target' => ''], ['name' => 'State Road', 'target' => ''], ['name' => 'Turn Lanes', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherFrontageCommercial']];
             @endphp
@@ -5556,7 +5558,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="63">
+          <div class="wizard-step" data-step="60">
             @php
               $garage_parking_feature = [['name' => '1 to 5 Spaces', 'target' => ''], ['name' => '6 to 12 Spaces', 'target' => ''], ['name' => '13 to 18 Spaces', 'target' => ''], ['name' => '19 to 30 Spaces', 'target' => ''], ['name' => 'Airplane Hangar', 'target' => ''], ['name' => 'Common', 'target' => ''], ['name' => 'Curb Parking', 'target' => ''], ['name' => 'Deeded', 'target' => ''], ['name' => 'Electric Vehicle Charging Station(s)', 'target' => ''], ['name' => 'Ground Level', 'target' => ''], ['name' => 'Lighted', 'target' => ''], ['name' => 'Over 30 Spaces', 'target' => ''], ['name' => 'Secured', 'target' => ''], ['name' => 'Under Building', 'target' => ''], ['name' => 'Underground', 'target' => ''], ['name' => 'Valet', 'target' => ''],['name' => 'RV Parking', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherGarageFeatureCommercial']];
             @endphp
@@ -5579,7 +5581,7 @@
               </div>
             </div>
           </div>  
-          <div class="wizard-step" data-step="64">
+          <div class="wizard-step" data-step="61">
             <h4>Tax Info</h4>
             <div class="form-group">
               <label class="fw-bold">Tax ID (Parcel Number):</label>
@@ -5649,7 +5651,7 @@
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="65">
+          <div class="wizard-step" data-step="62">
             <div class="form-group">
               <label class="fw-bold">Is the property in a flood zone?</label>
               <select class="grid-picker" name="is_in_flood_zone" id="is_in_flood_zone"
@@ -5676,7 +5678,7 @@
                 class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
             </div>
           </div>
-          <div class="wizard-step" data-step="66">
+          <div class="wizard-step" data-step="63">
             @php
               $utilitiseCommercial = [
                 ['name' => 'BB/HS Internet Available', 'target' => ''],
@@ -5774,7 +5776,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="67">
+          <div class="wizard-step" data-step="64">
             @php
               $air_conditioning = [['name' => 'Central Air', 'target' => ''], ['name' => 'Humidity Control', 'target' => ''], ['name' => 'Mini-Split Unit(s)', 'target' => ''],  ['name' => 'Wall/Window Unit(s)', 'target' => ''], ['name' => 'Zoned', 'target' => ''],['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherAirConditionCommercial']];
             @endphp
@@ -5818,7 +5820,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="68">
+          <div class="wizard-step" data-step="65">
             <div class="form-group ">
               <label class="fw-bold">Water View:</label>
               <select class="grid-picker" name="has_water_view" id="has_water_view"
@@ -6000,7 +6002,7 @@
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="69">
+          <div class="wizard-step" data-step="66">
             @php
               $ownerships = [['name' => 'Condominium', 'target' => ''], ['name' => 'Corporation', 'target' => ''], ['name' => 'Franchise', 'target' => ''], ['name' => 'Partnership', 'target' => ''], ['name' => 'Sole', 'target' => ''], ['name' => 'Proprietor', 'target' => ''], ['name' => 'Fractional', 'target' => ''], ['name' => 'Other', 'target' => '']];
             @endphp
@@ -6030,7 +6032,7 @@
                 data-icon="fa-solid fa-ruler-combined">
             </div>
           </div>
-          <div class="wizard-step" data-step="70">
+          <div class="wizard-step" data-step="67">
             @php
               $occupantCommercial = [['name' => 'Owner', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Tenant', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Vacant', 'target' => '', 'icon' => 'fa-regular fa-circle-check']];
             @endphp
@@ -6095,7 +6097,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="71">
+          <div class="wizard-step" data-step="68">
             <h4>Financial Information:</h4>
             @php
               $acutual_or_projected = [['name' => 'Actual', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Projected', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
@@ -6190,7 +6192,7 @@
                 data-icon="fa-solid fa-ruler-combined">
             </div>
           </div>
-          <div class="wizard-step" data-step="72">
+          <div class="wizard-step" data-step="69">
 
             @php
               $space_type = [['name' => 'New', 'target' => ''], ['name' => 'Re Let', 'target' => ''], ['name' => 'Sub Let', 'target' => '']];
@@ -6249,7 +6251,7 @@
                 data-icon="fa-solid fa-ruler-combined">
             </div>
           </div>
-          <div class="wizard-step" data-step="73">
+          <div class="wizard-step" data-step="70">
             <div class="form-group">
               <label class="fw-bold"> Is the property in a condo environment?  </label>
               <select class="grid-picker" name="has_condo_enviornment" id="has_condo_enviornment"
@@ -6332,7 +6334,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="74">
+          <div class="wizard-step" data-step="71">
             <div class="form-group">
               <label class="fw-bold"> Description:</label>
               <textarea name="description" id="description" class="form-control" cols="30" rows="10"></textarea>
@@ -6391,7 +6393,7 @@
                 data-icon="fa-solid fa-dollar">
             </div>
           </div>
-          <div class="wizard-step" data-step="75">
+          <div class="wizard-step" data-step="72">
             <div class="form-group">
               <label class="fw-bold">Is the Seller actively seeking to purchase another property?
               </label>
@@ -6419,7 +6421,7 @@
                 class="form-control has-icon" data-icon="fa-solid fa-link">
             </div>
           </div>
-          <div class="wizard-step" data-step="76">
+          <div class="wizard-step" data-step="73">
             <h4> Title Company Information:</h4>
             <div class="form-group">
               <label class="fw-bold">Name:</label>
@@ -6444,7 +6446,7 @@
                 class="form-control has-icon">
             </div>
           </div>
-          <div class="wizard-step" data-step="77">
+          <div class="wizard-step" data-step="74">
             <h4>Agent info:</h4>
             <div class="form-group row">
               <div class="form-group col-md-6">
@@ -6503,7 +6505,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="78">
+          <div class="wizard-step" data-step="75">
             <div class="form-group">
               <label class="fw-bold">3D Tour:</label>
               <input type="url" name="three_d_tour" id="three_d_tour" placeholder=""
@@ -6556,7 +6558,7 @@
               </div>
             </span>
           </div>
-          <div class="wizard-step" data-step="79">
+          <div class="wizard-step" data-step="76">
             @php
               $front_exposures1 = [['name' => 'North', 'target' => ''], ['name' => 'East', 'target' => ''], ['name' => 'South', 'target' => ''], ['name' => 'West', 'target' => ''], ['name' => 'Southeast', 'target' => ''], ['name' => 'Northeast', 'target' => ''], ['name' => 'Southwest', 'target' => ''], ['name' => 'Northwest', 'target' => ''], ['name' => 'Undetermined', 'target' => '']];
             @endphp
@@ -6576,7 +6578,7 @@
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="80">
+          <div class="wizard-step" data-step="77">
             @php
               $lot_features = [
                   ['name' => 'Brownfield', 'target' => ''],
@@ -6676,7 +6678,7 @@
             @endphp
            
           </div>
-          <div class="wizard-step" data-step="81">
+          <div class="wizard-step" data-step="78">
             <div class="form-group">
               <label class="fw-bold">Current Adjacent Use:</label>
               <select class="grid-picker" name="current_adjacent_use[]" id="lot_features"
@@ -6691,7 +6693,7 @@
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="82">
+          <div class="wizard-step" data-step="79">
             @php
               $road_frontages = [['name' => 'Access Road', 'target' => ''], ['name' => 'Alley', 'target' => ''], ['name' => 'Business District', 'target' => ''], ['name' => 'City Street', 'target' => ''], ['name' => 'County Road', 'target' => ''], ['name' => 'Divided Highway', 'target' => ''], ['name' => 'Easement', 'target' => ''], ['name' => 'Highway', 'target' => ''], ['name' => 'Interchange', 'target' => ''], ['name' => 'Interstate', 'target' => ''], ['name' => 'Main Thoroughfare', 'target' => ''], ['name' => 'Private Road', 'target' => ''], ['name' => 'Rail', 'target' => ''], ['name' => 'State Road', 'target' => ''], ['name' => 'Turn Lanes', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherFrontageVacant']];
             @endphp
@@ -6715,7 +6717,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="83">
+          <div class="wizard-step" data-step="80">
             @php
               $road_surface_types = [['name' => 'Asphalt', 'target' => ''], ['name' => 'Brick', 'target' => ''], ['name' => 'Chip And Seal', 'target' => ''], ['name' => 'Concrete', 'target' => ''], ['name' => 'Dirt', 'target' => ''], ['name' => 'Gravel', 'target' => ''], ['name' => 'Limerock', 'target' => ''], ['name' => 'Paved', 'target' => ''], ['name' => 'Unimproved', 'target' => ''], ['name' => 'Other', 'target' => '.otherSurfaceVacant']];
             @endphp
@@ -6738,7 +6740,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="84">
+          <div class="wizard-step" data-step="81">
             @php
               $utilitiseRes = [
                 ['name' => 'BB/HS Internet Available', 'target' => ''],
@@ -6836,7 +6838,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="85">
+          <div class="wizard-step" data-step="82">
             <h4>Tax Info</h4>
             <div class="form-group">
               <label class="fw-bold">Tax ID (Parcel Number):</label>
@@ -6910,7 +6912,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="86">
+          <div class="wizard-step" data-step="83">
             <div class="form-group">
               <label class="fw-bold">Is the property in a flood zone?</label>
               <select class="grid-picker" name="is_in_flood_zone" id="is_in_flood_zone"
@@ -6936,7 +6938,7 @@
               <input type="text" name="flood_zone_code" id="flood_zone_code" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
             </div>
           </div>
-          <div class="wizard-step" data-step="87">
+          <div class="wizard-step" data-step="84">
             @php
               $total_acreages = [['name' => '0 to less than 14', 'target' => ''], ['name' => '1/4 to less than 1/2', 'target' => ''], ['name' => '1/2 to less than 1', 'target' => ''], ['name' => '1 to less than 2', 'target' => ''], ['name' => '2 to less than 5', 'target' => ''], ['name' => '5 to less than 10', 'target' => ''], ['name' => '10 to less than 20', 'target' => ''], ['name' => '20 to less than 50', 'target' => ''], ['name' => '50 to less than 100', 'target' => ''], ['name' => '100 to less than 200', 'target' => ''], ['name' => '200 to less than 500', 'target' => ''], ['name' => '500+ acres', 'target' => ''], ['name' => 'Non-Applicable', 'target' => '']];
             @endphp
@@ -6975,7 +6977,7 @@
                 data-icon="fa-solid fa-ruler-combined">
             </div>
           </div>
-          <div class="wizard-step" data-step="88">
+          <div class="wizard-step" data-step="85">
 
             <div class="form-group">
               <label class="fw-bold">Water Access:</label>
@@ -7195,7 +7197,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="89">
+          <div class="wizard-step" data-step="86">
             @php
               $ownerships = [['name' => 'Co-op', 'target' => ''], ['name' => 'Condominium', 'target' => ''], ['name' => 'Fee Simple', 'target' => ''], ['name' => 'Fractional', 'target' => ''], ['name' => 'Other', 'target' => '']];
             @endphp
@@ -7226,7 +7228,7 @@
                 data-icon="fa-solid fa-ruler-combined" >
             </div>
           </div>
-          <div class="wizard-step" data-step="90">
+          <div class="wizard-step" data-step="87">
             <div class="form-group">
               @php
                 $propsOptVacant = [
@@ -7675,7 +7677,7 @@
                   </select>
                 </div>
           </div>
-          <div class="wizard-step" data-step="91">
+          <div class="wizard-step" data-step="88">
             <div class="form-group">
               <label class="fw-bold"> Description:</label>
               <textarea name="description" id="description" class="form-control" cols="30" rows="10" required></textarea>
@@ -7720,7 +7722,7 @@
                 </div>
               </div>
           </div>
-          <div class="wizard-step" data-step="92">
+          <div class="wizard-step" data-step="89">
             <div class="form-group">
               <label class="fw-bold">Is the Seller actively seeking to purchase another property?
               </label>
@@ -7748,7 +7750,7 @@
                 class="form-control has-icon" data-icon="fa-solid fa-link">
             </div>
           </div>
-          <div class="wizard-step" data-step="93">
+          <div class="wizard-step" data-step="90">
             <h4> Title Company Information:</h4>
             <div class="form-group">
               <label class="fw-bold">Name:</label>
@@ -7773,7 +7775,7 @@
             </div>
         
           </div>
-          <div class="wizard-step" data-step="94">
+          <div class="wizard-step" data-step="91">
             <h4>Agent info:</h4>
             <div class="form-group row">
               <div class="form-group col-md-6">
@@ -7831,7 +7833,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="95">
+          <div class="wizard-step" data-step="92">
             <div class="form-group">
               <label class="fw-bold">3D Tour:</label>
               <input type="url" name="three_d_tour" id="three_d_tour" placeholder=""
@@ -7907,8 +7909,8 @@
     // Once something is selected the change function will run
     $('.fileuploader').change(function() {
       $('#errorDiv').remove();
-      if (this.files[0].size > 10000000) {
-        $(this).parent().after('<span id="errorDiv" style="color: red;">Please upload a file less than 10MB. Thanks!!</span>');
+      if (this.files[0].size > 30000000) {
+        $(this).parent().after('<span id="errorDiv" style="color: red;">Please upload a file less than 30MB. Thanks!!</span>');
         $(this).val('');
         $('#saveBtn').prop('disabled', true);
       } else {
@@ -8475,7 +8477,7 @@
             if (StepWizard.currentStep == 7 && property_type ==
               'Vacant Land'
             ) {
-              StepWizard.nextStep = 79;
+              StepWizard.nextStep = 75;
               StepWizard.backStep = 7;
             } 
             // else if (StepWizard.currentStep == 34 && property_type ==
@@ -8505,7 +8507,7 @@
                 'Commercial Property' || property_type == 'Business Opportunity')
 
             ) {
-              StepWizard.nextStep = 55;
+              StepWizard.nextStep = 51;
               StepWizard.backStep = 22;
             } else if (StepWizard.currentStep == 10 && (property_type ==
                 'Commercial Property' || property_type == 'Business Opportunity')
@@ -8530,14 +8532,14 @@
             }
             $('[ data-step="' + StepWizard.nextStep + '"]').addClass("active");
             StepWizard.setStep();
-            if (StepWizard.currentStep == 44 &&
+            if (StepWizard.currentStep == 41 &&
               (property_type == 'Residential Property' || property_type ==
                 'Income Property')
             ) {
               $('.wizard-step-next').hide();
               $('.wizard-step-finish').show();
             }
-            if (StepWizard.currentStep == 78 &&
+            if (StepWizard.currentStep == 75 &&
               (property_type == 'Commercial Property' || property_type ==
                 'Business Opportunity')
             ) {
@@ -8560,7 +8562,7 @@
           //   'Commercial Property') {
           //   StepWizard.backStep = 46;
           // }
-          if (StepWizard.currentStep == 55 && (property_type == 'Business Opportunity' || property_type ==
+          if (StepWizard.currentStep == 51 && (property_type == 'Business Opportunity' || property_type ==
               'Commercial Property'))
 
           {
@@ -8606,7 +8608,7 @@
             (property_type == 'Residential Property' || property_type == 'Income Property')
           ) {
             StepWizard.backStep = 7;
-          } else if (StepWizard.currentStep == 79 && property_type ==
+          } else if (StepWizard.currentStep == 76 && property_type ==
             'Vacant Land') {
             StepWizard.backStep = 7;
           } else {
@@ -8682,8 +8684,8 @@
       var comp = 0;
 
       if (property_type === 'Residential Property' || property_type === 'Income Property') {
-        if (StepWizard.currentStep >= 7 && StepWizard.currentStep <= 44) {
-          comp = 20 + (((StepWizard.currentStep - 7) / (44 - 7)) * 80);
+        if (StepWizard.currentStep >= 7 && StepWizard.currentStep <= 41) {
+          comp = 20 + (((StepWizard.currentStep - 7) / (41 - 7)) * 80);
         }
       }
       // else if (property_type === 'Commercial Property' || property_type === 'Business Opportunity') {
@@ -8696,18 +8698,18 @@
       else if (property_type === 'Commercial Property' || property_type === 'Business Opportunity') {
         //   console.log(StepWizard.currentStep)
         if (StepWizard.currentStep >= 7 && StepWizard.currentStep <= 20) {
-          comp = 20 + (((StepWizard.currentStep - 7) / (78 - 7)) * 80);
+          comp = 20 + (((StepWizard.currentStep - 7) / (75 - 7)) * 80);
         }
         if (StepWizard.currentStep >= 20 && StepWizard.currentStep <= 23) {
-          comp = 20 + (((StepWizard.currentStep - 7) / (78 - 7)) * 80);
+          comp = 20 + (((StepWizard.currentStep - 7) / (75 - 7)) * 80);
 
         }
-        if (StepWizard.currentStep >= 55 && StepWizard.currentStep <= 78) {
-          comp = 20 + (((StepWizard.currentStep - 45) / (78 - 45)) * 80);
+        if (StepWizard.currentStep >= 51 && StepWizard.currentStep <= 75) {
+          comp = 20 + (((StepWizard.currentStep - 44) / (75 - 44)) * 80);
         }
       } else if (property_type === 'Vacant Land') {
         // Calculate progress for vacant land steps (77 to 91)
-        comp = 20 + (((StepWizard.currentStep - 79) / (95 - 79)) * 80);
+        comp = 20 + (((StepWizard.currentStep - 76) / (91 - 76)) * 80);
       } else {
 
         // Default progress calculation for other property types (steps 1 to 8)
