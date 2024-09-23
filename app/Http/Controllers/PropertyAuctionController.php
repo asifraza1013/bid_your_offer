@@ -242,6 +242,7 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("carport_spaces",$request->carport_spaces);
             $auction->saveMeta("pool",$request->pool);
             $auction->saveMeta("poolOpt",$request->poolOpt);
+            $auction->saveMeta("ptes_Allowed",$request->ptes_Allowed);
             $auction->saveMeta("ptesAllowed",$request->ptesAllowed);
             $auction->saveMeta("acceptablePet",$request->acceptablePet);
             $auction->saveMeta("has_rental_restrictions",$request->has_rental_restrictions);
@@ -303,6 +304,11 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("green_solar",$request->green_solar);
             $auction->saveMeta("green_disaster",$request->green_disaster);
             $auction->saveMeta("green_air",$request->green_air);
+
+            $auction->saveMeta("licenses",$request->licenses);
+            $auction->saveMeta("custom_licenses",$request->custom_licenses);
+            $auction->saveMeta("other_structures",json_encode($request->other_structures));
+            $auction->saveMeta("custom_other_structures",$request->custom_other_structures);
 
             $auction->saveMeta("has_water_fontage",$request->has_water_fontage);
             $auction->saveMeta("water_frontage",json_encode($request->water_frontage));

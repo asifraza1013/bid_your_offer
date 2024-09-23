@@ -1655,6 +1655,7 @@
             $yes_or_nos = [['name' => 'Yes', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
 
           @endphp
+          {{-- Residential/income Start --}}
           <div class="wizard-step" data-step="9">
             <div class="form-group">
               <label class="fw-bold">Bedrooms:</label>
@@ -1704,7 +1705,6 @@
           </div>
           @php
             $unitStructure = [['target' => '', 'name' => '1 Bed/1 Bath'], ['target' => '', 'name' => '1 Bedroom'], ['target' => '', 'name' => '2 Bed/1 Bath'], ['target' => '', 'name' => '2 Bed/2 Bath'], ['target' => '', 'name' => '2 Bedroom'], ['target' => '', 'name' => '3 Bed/1 Bath'], ['target' => '', 'name' => '3 Bed/2 Bath'], ['target' => '', 'name' => '3 Bedroom'], ['target' => '', 'name' => '4 Bedroom or more'], ['target' => '', 'name' => '4+ Bed/1 Bath'], ['target' => '', 'name' => '4 Bed/2 Bath'], ['target' => '', 'name' => 'Apartments'], ['target' => '', 'name' => 'Efficiency'], ['target' => '', 'name' => 'Loft'], ['target' => '', 'name' => "Manager's Unit"]];
-
           @endphp
           <div class="wizard-step" data-step="11">
             <div class="row">
@@ -1992,7 +1992,7 @@
                   class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group fireplace">
               <label class="fw-bold">
                 Fireplace:
               </label>
@@ -4646,13 +4646,13 @@
                 <label class="fw-bold">First Name:</label>
                 <input type="text" name="agent_first_name" id="first_name" placeholder=""
                   value="{{ Auth::user()->first_name }}" class="form-control has-icon"
-                  data-icon="fa-solid fa-user">
+                  data-icon="fa-solid fa-user" required>
               </div>
               <div class="form-group col-md-6">
                 <label class="fw-bold">Last Name:</label>
                 <input type="text" name="agent_last_name" id="last_name" placeholder=""
                   value="{{ Auth::user()->last_name }}" class="form-control has-icon"
-                  data-icon="fa-solid fa-user">
+                  data-icon="fa-solid fa-user" required>
               </div>
             </div>
             <div class="form-group row">
@@ -4660,13 +4660,13 @@
                 <label class="fw-bold">Phone Number:</label>
                 <input type="text" name="agent_phone" id="agent_phone" placeholder=""
                   value="{{ optional(Auth::user())->phone }}" class="form-control has-icon"
-                  data-icon="fa-solid fa-phone">
+                  data-icon="fa-solid fa-phone" required>
               </div>
               <div class="form-group col-md-6 ">
                 <label class="fw-bold">Email:</label>
                 <input type="text" name="agent_email" id="agent_email" placeholder=""
                   class="form-control has-icon" data-icon="fa-solid fa-envelope"
-                  value="{{ Auth::user()->email }}">
+                  value="{{ Auth::user()->email }}" required>
               </div>
             </div>
             @if (auth()->user()->user_type == 'agent')
@@ -4675,13 +4675,13 @@
                 <label class="fw-bold">Brokerage:</label>
                 <input type="text" name="agent_brokerage" id="agent_brokerage" placeholder=""
                   value="{{ optional(Auth::user())->brokerage }}" class="form-control has-icon"
-                  data-icon="fa-solid fa-handshake">
+                  data-icon="fa-solid fa-handshake" required>
               </div>
               <div class="form-group col-md-6">
                 <label class="fw-bold">Real Estate License #:</label>
                 <input type="text" name="agent_license_no" id="agent_license_no" placeholder=""
                   value="{{ optional(Auth::user())->license_no }}" class="form-control has-icon"
-                  data-icon="fa-solid fa-id-card">
+                  data-icon="fa-solid fa-id-card" required>
               </div>
             </div>
             <div class="form-group row">
@@ -4689,7 +4689,7 @@
                 <label class="fw-bold">NAR Member ID (NRDS ID):</label>
                 <input type="text" name="agent_mls_id" id="agent_mls_id" placeholder=""
                   class="form-control has-icon" data-icon="fa-solid fa-id-badge"
-                  value="{{ optional(Auth::user())->mls_id }}">
+                  value="{{ optional(Auth::user())->mls_id }}" required>
               </div>
             </div>
             @endif
@@ -4743,7 +4743,7 @@
             </span>
           </div>
           {{-- residential/income end --}}
-          {{-- commercial/business --}}
+          {{-- commercial/business Start --}}
           <div class="wizard-step" data-step="42">
             <div class="form-group">
               <label class="fw-bold">Bathrooms:</label>
@@ -4931,12 +4931,12 @@
               <div class="form-group">
                 <label class="fw-bold" for="heated_sqft">Heated Sqft:</label>
                 <input type="number" name="heated_sqft" placeholder="Heated sqft" id="heated_sqft"
-                  class="form-control has-icon hide_arrow" data-icon="fa-solid fa-ruler-combined">
+                  class="form-control has-icon hide_arrow" data-icon="fa-solid fa-ruler-combined" required>
               </div>
               <div class="form-group">
                 <label class="fw-bold" for="sqft">Total Sqft:</label>
                 <input type="number" name="total_sqft" placeholder="Heated sqft" id="heated_sqft"
-                  class="form-control has-icon hide_arrow" data-icon="fa-solid fa-ruler-combined">
+                  class="form-control has-icon hide_arrow" data-icon="fa-solid fa-ruler-combined" required>
               </div>
               @php
                 $heated_sources = [['name' => 'Appraisal', 'target' => ''], ['name' => 'Building', 'target' => ''], ['name' => 'Measured', 'target' => ''], ['name' => 'Owner Provided', 'target' => ''], ['name' => 'Public Records', 'target' => '']];
@@ -4944,7 +4944,7 @@
               <div class="form-group">
                 <label class="fw-bold">Sqft Heated Source:</label>
                 <select class="grid-picker" name="heated_source" id="heated_sources"
-                  style="justify-content: flex-start;">
+                  style="justify-content: flex-start;" required>
                   <option value="">Select</option>
                   @foreach ($heated_sources as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
@@ -4954,34 +4954,6 @@
                     </option>
                   @endforeach
                 </select>
-              </div>
-              @php
-                $lot_sizes = [['name' => '0 to less than 1/4', 'target' => ''], ['name' => '1/4 to less than 1/2', 'target' => ''], ['name' => '1/2 to less than 1', 'target' => ''], ['name' => '1 to less than 2', 'target' => ''], ['name' => '2 to less than 5', 'target' => ''], ['name' => '5 to less than 10', 'target' => ''], ['name' => '10 to less than 20', 'target' => ''], ['name' => '20 to less than 50', 'target' => ''], ['name' => '50 to less than 100', 'target' => ''], ['name' => '100 to less than 200', 'target' => ''], ['name' => '200 to less than 500', 'target' => ''], ['name' => '500+ Acers', 'target' => ''], ['name' => 'Non-Applicable', 'target' => '']];
-              @endphp
-              <div class="form-group">
-                <label class="fw-bold">Total Acreage:</label>
-                <select class="grid-picker" name="total_aceage" id="lot_size"
-                  style="justify-content: flex-start;">
-                  <option value="">Select</option>
-                  @foreach ($lot_sizes as $item)
-                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                      data-icon='<i class="fa-solid fa-ruler-combined"></i>' class="card flex-column"
-                      style="width:calc(33.3% - 10px);">
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="fw-bold" for="lot_size">Lot size:</label>
-                <input type="number" name="lot_size" placeholder="Lot Size" id="lot_size"
-                  class="form-control has-icon hide_arrow" data-icon="fa-solid fa-ruler-combined"
-                 >
-              </div>
-              <div class="form-group">
-                <label class="fw-bold" for="year_built">Year Built:</label>
-                <input type="text" name="year_built" id="year_built"
-                  class="form-control has-icon " data-icon="fa-solid fa-calendar-day">
               </div>
             </div>
           </div>
@@ -5011,6 +4983,7 @@
                   ['name' => 'Solar Hot Water Owned', 'target' => ''],
                   ['name' => 'Solar Hot Water Rented', 'target' => ''],
                   ['name' => 'Tankless Water Heater', 'target' => ''],
+                  ['name' => 'Touchless Faucet', 'target' => ''],
                   ['name' => 'Trash Compactor', 'target' => ''],
                   ['name' => 'Washer', 'target' => ''],
                   ['name' => 'Water Filtration System', 'target' => ''],
@@ -5039,7 +5012,7 @@
               <div class="form-group otherAppliancesIncome d-none">
                 <label class="fw-bold">Appliances:</label>
                 <input type="text" name="otherAppliances" id="flood_zone_code" placeholder=""
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
@@ -5066,17 +5039,14 @@
                 <div class="form-group">
                   <label class="fw-bold">What furnishings are included in the purchase?</label>
                   <input type="text" name="furnishings_include" id="flood_zone_code" placeholder=""
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                    class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                 </div>
               </div>
               @php
                 $additional_fees = [['name' => 'Additional Fees', 'target' => ''], ['name' => 'Included in Purchase Price', 'target' => '']];
               @endphp
               <div class="form-group">
-                <label class="fw-bold">Are there any additional fees for the listed furnishings, or are
-                  they
-                  included in the purchase price? </label>
-
+                <label class="fw-bold">Are there any additional fees for the listed furnishings, or are they included in the purchase price?</label>
                 <select class="grid-picker" name="has_additional_fees" id="has_water_view"
                   style="justify-content: flex-start;">
                   <option value="">Select</option>
@@ -5099,13 +5069,12 @@
                 <div class="form-group">
                   <label class="fw-bold">How much is the listed furniture?</label>
                   <input type="text" name="listed_furniture_price" id="listed_furniture_price" placeholder=""
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
                 </div>
               </div>
             </div>
           </div>
           <div class="wizard-step" data-step="47">
-            <h4>Business Listing Only</h4>
             @php
               $yes_or_nos = [['name' => 'Yes', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
             @endphp
@@ -5148,31 +5117,38 @@
                 @endforeach
               </select>
             </div>
+            <div class="form-group">
+              <div class="form-group">
+                <label class="fw-bold">Licenses:</label>
+                <input type="text" name="custom_licenses" id="custom_licenses" placeholder=""
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+              </div>
+            </div>
           </div>
           <div class="wizard-step" data-step="48">
             <div class="form-group">
-              <label class="fw-bold">Number of Floors within the Property:</label>
+              <label class="fw-bold">How many floors are in the property?</label>
               <input type="text" name="number_of_buildings" id="number_of_buildings" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-hotel">
             </div>
             <div class="form-group">
-              <label class="fw-bold">Floor Number:</label>
+              <label class="fw-bold">What floor number is the property on?</label>
               <input type="number" name="floors_in_unit" id="floors_in_unit" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-building">
             </div>
             <div class="form-group">
-              <label class="fw-bold">Total Number of Floors in the Entire Building:</label>
+              <label class="fw-bold">How many floors are in the entire building?</label>
               <input type="number" name="total_floors" id="total_floors" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-building">
             </div>
             <div class="form-group">
-              <label class="fw-bold">Building Elevator:</label>
+              <label class="fw-bold">Building Elevator</label>
               <select class="grid-picker" name="building_elevator" id="building_elevator"
                 style="justify-content: flex-start;">
                 <option value="">Select</option>
                 @foreach ($yes_or_nos as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(25% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    style="width:calc(25% - 10px);" data-icon='<i class="fa-solid fa-building"></i>'>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -5213,7 +5189,7 @@
                   ['name' => 'Whole House R.O. System', 'target' => ''],
                   ['name' => 'Wine Refrigerator', 'target' => ''],
                   ['name' => 'None', 'target' => ''],
-                  ['name' => 'Other', 'target' => ''],
+                  ['name' => 'Other', 'target' => '.otherFloorCoveringCom'],
               ];
             @endphp
             <div class="form-group ">
@@ -5229,6 +5205,10 @@
                   </option>
                 @endforeach
               </select>
+            </div>
+            <div class="form-group otherFloorCoveringCom d-none">
+              <label class="fw-bold">Floor Covering:</label>
+              <input type="text" name="otherFloorCovering" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
             </div>
           </div>
           <div class="wizard-step" data-step="50">
@@ -5252,12 +5232,12 @@
           </div>
           <div class="wizard-step" data-step="51">
             @php
-              $foundations = [['name' => 'Basement', 'target' => ''], ['name' => 'Block', 'target' => ''], ['name' => 'Brick/Mortar', 'target' => ''], ['name' => 'Concrete Perimeter', 'target' => ''], ['name' => 'Crawlspace', 'target' => ''], ['name' => 'Other', 'target' => ''], ['name' => 'Pillar/Post/Pier', 'target' => ''], ['name' => 'Slab', 'target' => ''], ['name' => 'Stem Wall', 'target' => ''], ['name' => 'Stilt/On Piling', 'target' => '']];
+              $foundations = [['name' => 'Basement', 'target' => ''], ['name' => 'Block', 'target' => ''], ['name' => 'Brick/Mortar', 'target' => ''], ['name' => 'Concrete Perimeter', 'target' => ''], ['name' => 'Crawlspace', 'target' => ''], ['name' => 'Other', 'target' => ''], ['name' => 'Pillar/Post/Pier', 'target' => ''], ['name' => 'Slab', 'target' => ''], ['name' => 'Stem Wall', 'target' => ''], ['name' => 'Stilt/On Piling', 'target' => ''], ['name' => 'Other', 'target' => '.otherFoundationCom']];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Foundation:</label>
               <select class="grid-picker" name="foundation[]" id="foundation" style="justify-content: flex-start;"
-                multiple>
+                multiple required>
                 <option value="">Select</option>
                 @foreach ($foundations as $foundation)
                   <option value="{{ $foundation['name'] }}" data-target="{{ $foundation['target'] }}"
@@ -5268,6 +5248,10 @@
                 @endforeach
               </select>
             </div>
+            <div class="form-group otherFoundationCom d-none">
+              <label class="fw-bold">Foundation:</label>
+              <input type="text" name="otherFoundation" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+            </div>
           </div>
           <div class="wizard-step" data-step="52">
             @php
@@ -5276,7 +5260,7 @@
             <div class="form-group ">
               <label class="fw-bold">Exterior Construction:</label>
               <select class="grid-picker" name="exterior_construction[]" id="exterior_construction"
-                style="justify-content: flex-start;" multiple>
+                style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($exterior_constructions as $exterior_construction)
                   <option value="{{ $exterior_construction['name'] }}"
@@ -5289,59 +5273,11 @@
               <div class="form-group otherExteriorCon d-none">
                 <label class="fw-bold">Exterior Construction:</label>
                 <input type="text" name="otherExterior" id="max_pet_weight" class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
           <div class="wizard-step" data-step="53">
-            @php
-              $exterior_features = [
-                  ['name' => 'Awning(s)', 'target' => ''],
-                  ['name' => 'Balcony', 'target' => ''],
-                  ['name' => 'Courtyard', 'target' => ''],
-                  ['name' => 'Dog Run', 'target' => ''],
-                  ['name' => 'French Doors', 'target' => ''],
-                  ['name' => 'Garden', 'target' => ''],
-                  ['name' => 'Gray Water System', 'target' => ''],
-                  ['name' => 'Hurricane Shutters', 'target' => ''],
-                  ['name' => 'Irrigation System', 'target' => ''],
-                  ['name' => 'Lighting', 'target' => ''],
-                  ['name' => 'Outdoor Grill', 'target' => ''],
-                  ['name' => 'Outdoor Kitchen', 'target' => ''],
-                  ['name' => 'Outdoor Shower', 'target' => ''],
-                  ['name' => 'Private Mailbox', 'target' => ''],
-                  ['name' => 'Rain Barrel/Cistern(s)', 'target' => ''],
-                  ['name' => 'Rain Gutters', 'target' => ''],
-                  ['name' => 'Sauna', 'target' => ''],
-                  ['name' => 'Shade Shutter(s)', 'target' => ''],
-                  ['name' => 'Sidewalk', 'target' => ''],
-                  ['name' => 'Sliding Doors', 'target' => ''],
-                  ['name' => 'Sprinkler Metered', 'target' => ''],
-                  ['name' => 'Storage', 'target' => ''],
-                  ['name' => 'Tennis Court(s)', 'target' => ''],
-                  ['name' => 'Other', 'target' => '.otherFeatureCommercial'],
-              ];
-            @endphp
-            <div class="form-group ">
-              <label class="fw-bold">Exterior Features:</label>
-              <select class="grid-picker" name="exterior_feature[]" id="exterior_feature"
-                style="justify-content: flex-start;" multiple>
-                <option value="">Select</option>
-                @foreach ($exterior_features as $exterior_feature)
-                  <option value="{{ $exterior_feature['name'] }}" data-target="{{ $exterior_feature['target'] }}"
-                    class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);">
-                    {{ $exterior_feature['name'] }}
-                  </option>
-                @endforeach
-              </select>
-              <div class="form-group otherFeatureCommercial d-none">
-                <label class="fw-bold">Exterior Features:</label>
-                <input type="text" name="otherExterior" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-              </div>
-            </div>
-          </div>
-          <div class="wizard-step" data-step="54">
             @php
               $lot_features = [
                   ['name' => 'Central Business District', 'target' => ''],
@@ -5357,6 +5293,7 @@
                   ['name' => 'In City Limits', 'target' => ''],
                   ['name' => 'Industrial Condo', 'target' => ''],
                   ['name' => 'Industrial Park', 'target' => ''],
+                  ['name' => 'Infrastructure', 'target' => ''],
                   ['name' => 'Interior Lot', 'target' => ''],
                   ['name' => 'Landscaped', 'target' => ''],
                   ['name' => 'Near Golf Course', 'target' => ''],
@@ -5388,7 +5325,6 @@
                   ['name' => 'Other', 'target' => '.otherLotFeatureCommercial'],
               ];
             @endphp
-
             <div class="form-group">
               <label class="fw-bold">Lot Features:</label>
               <select class="grid-picker" name="lot_features[]" id="lot_features"
@@ -5404,7 +5340,41 @@
               </select>
               <div class="form-group otherLotFeatureCommercial d-none">
                 <label class="fw-bold">Lot Features:</label>
-                <input type="text" name="otherLotFeature" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherLotFeature" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+              </div>
+            </div>
+          </div>
+          <div class="wizard-step" data-step="54">
+            @php
+              $otherStructures = [
+                  ['name' => 'Airplane Hangar', 'target' => ''],
+                  ['name' => 'Annex', 'target' => ''],
+                  ['name' => 'Containers', 'target' => ''],
+                  ['name' => 'Garage(s)', 'target' => ''],
+                  ['name' => 'Maintenance', 'target' => ''],
+                  ['name' => 'Outbuilding', 'target' => ''],
+                  ['name' => 'Security Trailer', 'target' => ''],
+                  ['name' => 'Storage', 'target' => ''],
+                  ['name' => 'Workshop', 'target' => ''],
+                  ['name' => 'Other', 'target' => '.otherStructures'],
+              ];
+            @endphp
+            <div class="form-group">
+              <label class="fw-bold">Other Structures:</label>
+              <select class="grid-picker" name="other_structures[]" id="lot_features"
+                style="justify-content: flex-start;" multiple>
+                <option value="">Select</option>
+                @foreach ($otherStructures as $structure)
+                  <option value="{{ $structure['name'] }}" data-target="{{ $structure['target'] }}"
+                    class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
+                    style="width:calc(33.3% - 10px);">
+                    {{ $structure['name'] }}
+                  </option>
+                @endforeach
+              </select>
+              <div class="form-group otherStructures d-none">
+                <label class="fw-bold">Other Structures::</label>
+                <input type="text" name="custom_other_structures" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
@@ -5434,6 +5404,7 @@
                   ['name' => 'On Site Shower', 'target' => ''],
                   ['name' => 'Outside Storage', 'target' => ''],
                   ['name' => 'Overhead Doors', 'target' => ''],
+                  ['name' => 'Pool/Spa', 'target' => ''],
                   ['name' => 'Ramp', 'target' => ''],
                   ['name' => 'Reception', 'target' => ''],
                   ['name' => 'Seating', 'target' => ''],
@@ -5463,7 +5434,7 @@
               </select>
               <div class="form-group otherBuildingCommercial d-none">
                 <label class="fw-bold">Building Features:</label>
-                <input type="text" name="otherBuilding" placeholder="" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherBuilding" placeholder="" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
@@ -5487,13 +5458,13 @@
               </select>
               <div class="form-group otherAdjoiningCommercial d-none">
                 <label class="fw-bold">Adjoining Property:</label>
-                <input type="text" name="otherAdjoining" placeholder="" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherAdjoining" placeholder="" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
           <div class="wizard-step" data-step="57">
             @php
-              $roofs = [['name' => 'Built-Up', 'target' => ''], ['name' => 'Concrete', 'target' => ''], ['name' => 'Membrane', 'target' => ''], ['name' => 'Metal', 'target' => ''], ['name' => 'Roof Over', 'target' => ''], ['name' => 'Shake', 'target' => ''], ['name' => 'Shingle', 'target' => ''], ['name' => 'Slate', 'target' => ''], ['name' => 'Tile', 'target' => ''], ['name' => 'Cement', 'target' => ''], ['name' => 'Other', 'target' => '.otherRoofCommercial']];
+              $roofs = [['name' => 'Built-Up', 'target' => ''], ['name' => 'Cement', 'target' => ''], ['name' => 'Concrete', 'target' => ''], ['name' => 'Membrane', 'target' => ''], ['name' => 'Metal', 'target' => ''], ['name' => 'Roof Over', 'target' => ''], ['name' => 'Shake', 'target' => ''], ['name' => 'Shingle', 'target' => ''], ['name' => 'Slate', 'target' => ''], ['name' => 'Tile', 'target' => ''], ['name' => 'Other', 'target' => '.otherRoofCommercial']];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Roof:</label>
@@ -5509,7 +5480,7 @@
               </select>
               <div class="form-group otherRoofCommercial d-none" >
                 <label class="fw-bold">Roof:</label>
-                <input type="text" name="otherRoof" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherRoof" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
@@ -5532,7 +5503,7 @@
               </select>
               <div class="form-group otherSurfaceCommercial d-none" >
                 <label class="fw-bold">Road Surface Type:</label>
-                <input type="text" name="otherRoof" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherRoof" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
@@ -5543,7 +5514,7 @@
             <div class="form-group ">
               <label class="fw-bold">Road Frontage:</label>
               <select class="grid-picker" name="road_frontage[]" id="road_frontage"
-                style="justify-content: flex-start;" multiple>
+                style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($road_frontage as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
@@ -5554,7 +5525,7 @@
               </select>
               <div class="form-group otherFrontageCommercial d-none" >
                 <label class="fw-bold">Road Frontage:</label>
-                <input type="text" name="otherFrontage" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherFrontage" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
@@ -5570,51 +5541,33 @@
                 <option value="">Select</option>
                 @foreach ($garage_parking_feature as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);">
+                    data-icon="<i class='fa-solid fa-warehouse'></i>" style="width:calc(33.3% - 10px);">
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherGarageFeatureCommercial d-none" >
                 <label class="fw-bold">Garage/Parking Features:</label>
-                <input type="text" name="otherGarageFeature" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherGarageFeature" class="form-control has-icon" data-icon="fa-solid fa-warehouse">
               </div>
             </div>
           </div>  
           <div class="wizard-step" data-step="61">
-            <h4>Tax Info</h4>
+            <h4>Land and Tax Information:</h4>
             <div class="form-group">
               <label class="fw-bold">Tax ID (Parcel Number):</label>
               <input type="text" name="tax_id" id="tax_id" class="form-control has-icon"
-                data-icon="fa-regular fa-id-card">
+                data-icon="fa-solid fa-ruler-combined">
             </div>
             <div class="form-group">
               <label class="fw-bold">Tax Year:</label>
               <input type="text" name="tax_year" id="tax_year" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined" >
+                data-icon="fa-regular fa-calendar-days" >
             </div>
             <div class="form-group">
               <label class="fw-bold">Taxes (Annual Amount):</label>
               <input type="text" name="taxes_annual_amount" id="taxes_annual_ammount"
-                class="form-control has-icon" data-icon="fa-solid fa-dollar" "
-                >
-            </div>
-            <div class="form-group">
-              <label class="fw-bold">Total Number of Parcels:</label>
-              <input type="text" name="total_number_of_parcels" id="total_number_of_parcels"
-                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-            </div>
-            <div class="form-group">
-              <label class="fw-bold">Additional Tax ID's:</label>
-              <input type="text" name="additional_tax_id" id="additional_tax_id" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-            </div>
-            <div class="form-group">
-              <label class="fw-bold">Zoning:</label>
-              <input type="text" name="zoning" id="zoning" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-            </div>
-            <div class="form-group">
-              <label class="fw-bold">Legal Description:</label>
-              <input type="text" name="legal_description" id="legal_description" class="form-control has-icon" data-icon="fa-solid fa-tag">
+                class="form-control has-icon" data-icon="fa-solid fa-dollar">
             </div>
             <div class="form-group ">
               @php
@@ -5633,23 +5586,68 @@
               </select>
               <div class="form-group parcelYesCommercial d-none">
                 <label class="fw-bold">Additional Parcels: </label>
-                <input type="text" name="parcelYes" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="parcelYes" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
-            <div class="form-group ">
-              <label class="fw-bold">Homestead:</label>
-              <select class="grid-picker" name="has_homestead" id="sewer"
+            <div class="form-group">
+              <label class="fw-bold">Total Number of Parcels:</label>
+              <input type="text" name="total_number_of_parcels" id="total_number_of_parcels"
+                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+            </div>
+            <div class="form-group">
+              <label class="fw-bold">Additional Tax ID's:</label>
+              <input type="text" name="additional_tax_id" id="additional_tax_id" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+            </div>
+            <div class="form-group">
+              <label class="fw-bold" for="year_built">Year Built:</label>
+              <input type="text" name="year_built" id="year_built"
+                class="form-control has-icon " data-icon="fa-solid fa-calendar-day">
+            </div>
+            <div class="form-group">
+              <label class="fw-bold">Zoning:</label>
+              <input type="text" name="zoning" id="zoning" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+            </div>
+            <div class="form-group">
+              <label class="fw-bold">Legal Description:</label>
+              <input type="text" name="legal_description" id="legal_description" class="form-control has-icon" data-icon="fa-solid fa-tag">
+            </div>
+            <div class="form-group">
+              <label class="fw-bold" for="year_built">Legal Subdivison:</label>
+              <input type="text" name="legal_subdivison_name" id="legal_subdivison_name"
+                class="form-control has-icon " data-icon="fa-solid fa-ruler-combined" >
+            </div>
+            @php
+            $lot_sizes = [['name' => '0 to less than 1/4', 'target' => ''], ['name' => '1/4 to less than 1/2', 'target' => ''], ['name' => '1/2 to less than 1', 'target' => ''], ['name' => '1 to less than 2', 'target' => ''], ['name' => '2 to less than 5', 'target' => ''], ['name' => '5 to less than 10', 'target' => ''], ['name' => '10 to less than 20', 'target' => ''], ['name' => '20 to less than 50', 'target' => ''], ['name' => '50 to less than 100', 'target' => ''], ['name' => '100 to less than 200', 'target' => ''], ['name' => '200 to less than 500', 'target' => ''], ['name' => '500+ Acers', 'target' => ''], ['name' => 'Non-Applicable', 'target' => '']];
+            @endphp
+            <div class="form-group">
+              <label class="fw-bold">Total Acreage:</label>
+              <select class="grid-picker" name="total_aceage" id="lot_size"
                 style="justify-content: flex-start;">
                 <option value="">Select</option>
-                @foreach ($yes_or_nos as $item)
+                @foreach ($lot_sizes as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
+                    data-icon='<i class="fa-solid fa-ruler-combined"></i>' class="card flex-column"
                     style="width:calc(33.3% - 10px);">
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
+            <div class="form-group">
+              <label class="fw-bold">Flood Zone Code:</label>
+              <input type="text" name="flood_zone_code"
+                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+            </div>
+            <div class="form-group">
+              <label class="fw-bold" for="lot_size">Lot Size Square Footage:</label>
+              <input type="text" name="lot_size" id="lot_size" class="form-control has-icon "
+                data-icon="fa-solid fa-ruler-combined" data-msg-required="Please enter Lot Size">
+            </div>
+            <div class="form-group">
+              <label class="fw-bold">Lot Size Acres:</label>
+              <input type="text" name="lot_size_acres" id="lot_size_acres" class="form-control has-icon"
+                data-icon="fa-solid fa-ruler-combined">
+            </div>     
           </div>
           <div class="wizard-step" data-step="62">
             <div class="form-group">
@@ -5672,42 +5670,24 @@
                 @endforeach
               </select>
             </div>
-            <div class="form-group floodZoonYesCommercial">
-              <label class="fw-bold">Flood Zone Code:</label>
-              <input type="text" name="flood_zone_code"
-                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-            </div>
+            
           </div>
           <div class="wizard-step" data-step="63">
             @php
               $utilitiseCommercial = [
-                ['name' => 'BB/HS Internet Available', 'target' => ''],
-                ['name' => 'Cable Available', 'target' => ''],
-                ['name' => 'Cable Connected', 'target' => ''],
-                ['name' => 'Electric - Multiple Meters', 'target' => ''],
+                ['name' => 'Electrical Nearby', 'target' => ''],
                 ['name' => 'Electricity Available', 'target' => ''],
-                ['name' => 'Electricity Connected', 'target' => ''],
                 ['name' => 'Emergency Power', 'target' => ''],
-                ['name' => 'Fiber Optics', 'target' => ''],
-                ['name' => 'Fire Hydrant', 'target' => ''],
-                ['name' => 'Mini Sewer', 'target' => ''],
                 ['name' => 'Natural Gas Available', 'target' => ''],
-                ['name' => 'Natural Gas Connected', 'target' => ''],
                 ['name' => 'Phone Available', 'target' => ''],
                 ['name' => 'Private', 'target' => ''],
-                ['name' => 'Propane', 'target' => ''],
                 ['name' => 'Public', 'target' => ''],
-                ['name' => 'Sewer Available', 'target' => ''],
-                ['name' => 'Sewer Connected', 'target' => ''],
+                ['name' => 'Sewer Nearby', 'target' => ''],
                 ['name' => 'Solar', 'target' => ''],
-                ['name' => 'Sprinkler Meter', 'target' => ''],
-                ['name' => 'Sprinkler Recycled', 'target' => ''],
-                ['name' => 'Sprinkler Well', 'target' => ''],
-                ['name' => 'Street Lights', 'target' => ''],
+                ['name' => 'Telephone Nearby', 'target' => ''],
                 ['name' => 'Underground Utilities', 'target' => ''],
-                ['name' => 'Water - Multiple Meters', 'target' => ''],
-                ['name' => 'Water Available', 'target' => ''],
                 ['name' => 'Water Connected', 'target' => ''],
+                ['name' => 'Water Nearby', 'target' => ''],
                 ['name' => 'None', 'target' => ''],
                 ['name' => 'Other', 'target' => '.otherUtilitiseCommercial'],
               ];
@@ -5728,7 +5708,7 @@
               <div class="form-group otherUtilitiseCommercial d-none">
                 <label class="fw-bold">Utilities:</label>
                 <input type="text" name="otherUtilitise" id="legal_description" class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
             @php
@@ -5750,7 +5730,7 @@
               <div class="form-group otherWaterCommercial d-none">
                 <label class="fw-bold">Water:</label>
                 <input type="text" name="otherWater" id="legal_description" class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
 
@@ -5772,18 +5752,18 @@
               <div class="form-group otherSewerCommercial d-none">
                 <label class="fw-bold">Sewer:</label>
                 <input type="text" name="otherSewer"  class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
           <div class="wizard-step" data-step="64">
             @php
-              $air_conditioning = [['name' => 'Central Air', 'target' => ''], ['name' => 'Humidity Control', 'target' => ''], ['name' => 'Mini-Split Unit(s)', 'target' => ''],  ['name' => 'Wall/Window Unit(s)', 'target' => ''], ['name' => 'Zoned', 'target' => ''],['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherAirConditionCommercial']];
+              $air_conditioning = [['name' => 'A/C Office Only', 'target' => ''], ['name' => 'Central Air', 'target' => ''], ['name' => 'Humidity Control', 'target' => ''], ['name' => 'Mini-Split Unit(s)', 'target' => ''],  ['name' => 'Wall/Window Unit(s)', 'target' => ''], ['name' => 'Zoned', 'target' => ''],['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherAirConditionCom']];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Air Conditioning:</label>
               <select class="grid-picker" name="air_conditioning" id="air_conditioning"
-                style="justify-content: flex-start;">
+                style="justify-content: flex-start;" required>
                 <option value="">Select</option>
                 @foreach ($air_conditioning as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
@@ -5793,13 +5773,35 @@
                   </option>
                 @endforeach
               </select>
-              <div class="form-group otherAirConditionCommercial d-none">
+              <div class="form-group otherAirConditionCom d-none">
                 <label class="fw-bold">Air Conditioning:</label>
-                <input type="text" name="otherAirCondition"  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherAirCondition"  class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
             @php
-              $heating_and_fuel = [['name' => 'Baseboard', 'target' => ''], ['name' => 'Central', 'target' => ''], ['name' => 'Electric', 'target' => ''], ['name' => 'Exhaust Fans', 'target' => ''], ['name' => 'Heat Pump', 'target' => ''], ['name' => 'Heat Recovery Unit', 'target' => ''], ['name' => 'Natural Gas', 'target' => ''], ['name' => 'Oil', 'target' => ''], ['name' => 'Partial', 'target' => ''], ['name' => 'Propane', 'target' => ''], ['name' => 'Radiant Ceiling', 'target' => ''], ['name' => 'Reverse Cycle', 'target' => ''], ['name' => 'Solar', 'target' => ''], ['name' => 'Space Heater', 'target' => ''], ['name' => 'Wall Furnace', 'target' => ''], ['name' => 'Wall Units / Window Unit', 'target' => ''], ['name' => 'Zoned', 'target' => ''],['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherHeatingFuelCommercial']];
+              $heating_and_fuel = [
+                ['name' => 'Baseboard', 'target' => ''], 
+                ['name' => 'Central', 'target' => ''], 
+                ['name' => 'Central Building', 'target' => ''], 
+                ['name' => 'Central Individual', 'target' => ''], 
+                ['name' => 'Electric', 'target' => ''], 
+                ['name' => 'Exhaust Fans', 'target' => ''], 
+                ['name' => 'Gas', 'target' => ''], 
+                ['name' => 'Heat Pump', 'target' => ''], 
+                ['name' => 'Heat Recovery Unit', 'target' => ''], 
+                ['name' => 'Natural Gas', 'target' => ''], 
+                ['name' => 'Oil', 'target' => ''], 
+                ['name' => 'Partial', 'target' => ''], 
+                ['name' => 'Propane', 'target' => ''], 
+                ['name' => 'Radiant Ceiling', 'target' => ''], 
+                ['name' => 'Reverse Cycle', 'target' => ''], 
+                ['name' => 'Solar', 'target' => ''], 
+                ['name' => 'Space Heater', 'target' => ''], 
+                ['name' => 'Wall Furnace', 'target' => ''], 
+                ['name' => 'Wall Units / Window Unit', 'target' => ''], 
+                ['name' => 'Zoned', 'target' => ''],
+                ['name' => 'None', 'target' => ''], 
+                ['name' => 'Other', 'target' => '.otherHeatingFuelCom']];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Heating and Fuel:</label>
@@ -5814,13 +5816,14 @@
                   </option>
                 @endforeach
               </select>
-              <div class="form-group otherHeatingFuelCommercial d-none">
-                <label class="fw-bold">Heating and Fuel:</label>
-                <input type="text" name="otherHeatingFuel"  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+              <div class="form-group otherHeatingFuelCom d-none">
+                <input type="text" name="otherHeatingFuel"  class="form-control has-icon"
+                    data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
           <div class="wizard-step" data-step="65">
+            <h4>Water and Dock Information:</h4>
             <div class="form-group ">
               <label class="fw-bold">Water View:</label>
               <select class="grid-picker" name="has_water_view" id="has_water_view"
@@ -5887,18 +5890,6 @@
                   ['name' => 'Bridges - Fixed', 'target' => ''],
                   ['name' => 'Bridges - No Fixed Bridges', 'target' => ''],
                   ['name' => 'Davits', 'target' => ''],
-                  ['name' => 'Dock - Composite', 'target' => ''],
-                  ['name' => 'Dock - Concrete', 'target' => ''],
-                  ['name' => 'Dock - Covered', 'target' => ''],
-                  ['name' => 'Dock - Open', 'target' => ''],
-                  ['name' => 'Dock - Slip 1st Come', 'target' => ''],
-                  ['name' => 'Dock - Slip Deeded Off-Site', 'target' => ''],
-                  ['name' => 'Dock - Slip Deeded On-Site', 'target' => ''],
-                  ['name' => 'Dock - Wood', 'target' => ''],
-                  ['name' => 'Dock w/Electric', 'target' => ''],
-                  ['name' => 'Dock w/o Electric', 'target' => ''],
-                  ['name' => 'Dock w/o Water Supply', 'target' => ''],
-                  ['name' => 'Dock w/Water Supply', 'target' => ''],
                   ['name' => 'Fishing Pier', 'target' => ''],
                   ['name' => 'Lift', 'target' => ''],
                   ['name' => 'Lift - Covered', 'target' => ''],
@@ -5949,7 +5940,27 @@
               </select>
             </div>
             @php
-              $water_frontage = [['name' => 'Bay/Harbor', 'target' => ''], ['name' => 'Bayou', 'target' => ''], ['name' => 'Beach', 'target' => ''], ['name' => 'Brackish Water', 'target' => ''], ['name' => 'Canal - Brackish', 'target' => ''], ['name' => 'Canal - Freshwater', 'target' => ''], ['name' => 'Canal - Saltwater', 'target' => ''], ['name' => 'Creek', 'target' => ''], ['name' => 'Freshwater Canal w/Lift to Saltwater Canal', 'target' => ''], ['name' => 'Gulf/Ocean', 'target' => ''], ['name' => 'Gulf/Ocean to Bay', 'target' => ''], ['name' => 'Intracoastal Waterway', 'target' => ''], ['name' => 'Lagoon/Estuary', 'target' => ''], ['name' => 'Lake', 'target' => ''], ['name' => 'Lake - Chain of Lakes', 'target' => ''], ['name' => 'Marina', 'target' => ''], ['name' => 'Pond', 'target' => ''], ['name' => 'River', 'target' => ''], ['name' => 'Canal Front and Riparian Rights', 'target' => '']];
+              $water_frontage = [
+                ['name' => 'Bay/Harbor', 'target' => ''], 
+                ['name' => 'Bayou', 'target' => ''], 
+                ['name' => 'Beach', 'target' => ''], 
+                ['name' => 'Brackish Water', 'target' => ''], 
+                ['name' => 'Canal - Brackish', 'target' => ''], 
+                ['name' => 'Canal - Freshwater', 'target' => ''], 
+                ['name' => 'Canal - Saltwater', 'target' => ''], 
+                ['name' => 'Creek', 'target' => ''], 
+                ['name' => 'Freshwater Canal w/Lift to Saltwater Canal', 'target' => ''], 
+                ['name' => 'Gulf/Ocean', 'target' => ''], 
+                ['name' => 'Gulf/Ocean to Bay', 'target' => ''], 
+                ['name' => 'Intracoastal Waterway', 'target' => ''], 
+                ['name' => 'Lagoon/Estuary', 'target' => ''], 
+                ['name' => 'Lake', 'target' => ''], 
+                ['name' => 'Lake - Chain of Lakes', 'target' => ''], 
+                ['name' => 'Marina', 'target' => ''], 
+                ['name' => 'Pond', 'target' => ''], 
+                ['name' => 'River', 'target' => ''], 
+                ['name' => 'Canal Front', 'target' => ''],
+                ['name' => 'Riparian Rights', 'target' => '']];
 
             @endphp
             <div class="form-group water_frontage_commercial_and_business d-none">
@@ -6001,10 +6012,124 @@
                 @endforeach
               </select>
             </div>
+            <div class="form-group">
+              <label class="fw-bold">Dock:</label>
+              <select class="grid-picker" name="has_dock" id="has_dock"
+                style="justify-content: flex-start;">
+                <option value="">Select</option>
+                @foreach ($yes_or_nos as $item)
+                  @php
+                    if ($item['name'] == 'Yes') {
+                        $target = '.dock_commercial_business';
+                    } else {
+                        $target = '';
+                    }
+                  @endphp
+                  <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+            @php
+            $dock = [
+                ['name' => '2 Point Moorage', 'target' => ''],
+                ['name' => '3 Point Moorage', 'target' => ''],
+                ['name' => '4 Point Moorage', 'target' => ''],
+                ['name' => 'CATV', 'target' => ''],
+                ['name' => 'Clubhouse', 'target' => ''],
+                ['name' => 'Dock - Composite', 'target' => ''],
+                ['name' => 'Dock - Concrete', 'target' => ''],
+                ['name' => 'Dock - Covered', 'target' => ''],
+                ['name' => 'Dock - Open', 'target' => ''],
+                ['name' => 'Dock - Slip 1st Come', 'target' => ''],
+                ['name' => 'Dock - Slip Deeded Off-Site', 'target' => ''],
+                ['name' => 'Dock - Slip Deeded On-Site', 'target' => ''],
+                ['name' => 'Dock - Wood', 'target' => ''],
+                ['name' => 'Dock w/Electric', 'target' => ''],
+                ['name' => 'Dock w/o Electric', 'target' => ''],
+                ['name' => 'Dock w/Water Supply', 'target' => ''],
+                ['name' => 'Dock w/o Water Supply', 'target' => ''],
+                ['name' => 'Dry Dock', 'target' => ''],
+                ['name' => 'Fish Cleaning Station', 'target' => ''],
+                ['name' => 'Floating Dock', 'target' => ''],
+                ['name' => 'Harbormaster', 'target' => ''],
+                ['name' => 'Internet', 'target' => ''],
+                ['name' => 'Lift', 'target' => ''],
+                ['name' => 'Restroom/Shower', 'target' => ''],
+                ['name' => 'Wet Dock', 'target' => ''],
+                ['name' => 'None', 'target' => ''],
+                ['name' => 'Other', 'target' => '.other-dock-com'],
+            ];
+            @endphp
+            <div class="form-group dock_commercial_business d-none ">
+              <label class="fw-bold">Dock Description:</label>
+              <select class="grid-picker" name="dock[]" id="dock"
+                style="justify-content: flex-start;" multiple>
+                <option value="">Select</option>
+                @foreach ($dock as $item)
+                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                    class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
+                    style="width:calc(33.3% - 10px);" required>
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+              <div class="form-group other-dock-com d-none">
+                <label class="fw-bold">Dock Description:</label>
+                <input type="text" name="custom_dock" id="custom_dock"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Dock Lift Capacity:</label>
+                <input type="text" name="dock_lift_capacity" id="dock_lift_capacity"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Dock Year Built:</label>
+                <input type="text" name="dock_year_built" id="dock_year_built"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Dock Dimension:</label>
+                <input type="text" name="dock_dimension" id="dock_dimension"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Dock Maintenance Fee:</label>
+                <input type="text" name="dock_maintenance_fee" id="dock_maintenance_fee"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
+              @php
+                $feeFrequency = [['name' => 'Annual', 'target' => ''], ['name' => 'Monthly', 'target' => ''], ['name' => 'Quarterly', 'target' => ''], ['name' => 'N/A', 'target' => '']]
+              @endphp
+              <label class="fw-bold">Dock Maintenance Fee Frequency:</label>
+              <select class="grid-picker" name="dock_maintenance_fee_frequency" id="dock_maintenance_fee_frequency"
+                style="justify-content: flex-start;" required>
+                <option value="">Select</option>
+                @foreach ($dock as $item)
+                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                    class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
+                    style="width:calc(33.3% - 10px);">
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
           </div>
           <div class="wizard-step" data-step="66">
+            <h4>Ownership and Occupant Type:</h4>
             @php
-              $ownerships = [['name' => 'Condominium', 'target' => ''], ['name' => 'Corporation', 'target' => ''], ['name' => 'Franchise', 'target' => ''], ['name' => 'Partnership', 'target' => ''], ['name' => 'Sole', 'target' => ''], ['name' => 'Proprietor', 'target' => ''], ['name' => 'Fractional', 'target' => ''], ['name' => 'Other', 'target' => '']];
+              $ownerships = [
+                ['name' => 'Condominium', 'target' => ''], 
+                ['name' => 'Corporation', 'target' => ''], 
+                ['name' => 'Franchise', 'target' => ''], 
+                ['name' => 'Leasehold', 'target' => ''], 
+                ['name' => 'Partnership', 'target' => ''], 
+                ['name' => 'Sole Proprietor', 'target' => ''], 
+                ['name' => 'Other', 'target' => '']
+              ];
             @endphp
             <div class="form-group">
               <label class="fw-bold">Ownership:</label>
@@ -6029,10 +6154,8 @@
             <div class="form-group otherOwnershipCommercial">
               <label class="fw-bold">Ownership:</label>
               <input type="text" name="otherOwnership" id="custom_ownership" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined">
+                data-icon="fa-regular fa-check-circle">
             </div>
-          </div>
-          <div class="wizard-step" data-step="67">
             @php
               $occupantCommercial = [['name' => 'Owner', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Tenant', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Vacant', 'target' => '', 'icon' => 'fa-regular fa-circle-check']];
             @endphp
@@ -6091,12 +6214,12 @@
                 <div class="form-group">
                   <label class="fw-bold">Days Notice to Tenant if not Renewing:</label>
                   <input type="text" name="days_notice_to_terminate" id="days_notice_to_terminate"
-                     class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                     class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
                 </div>
-                
               </div>
             </div>
           </div>
+          <div class="wizard-step" data-step="67"></div>
           <div class="wizard-step" data-step="68">
             <h4>Financial Information:</h4>
             @php
@@ -6182,22 +6305,21 @@
                 <div class="form-group otherSaleCommercial d-none">
                   <label class="fw-bold">Sale Includes:</label>
                   <input type="text" name="otherSale" class="form-control has-icon"
-                    data-icon="fa-solid fa-ruler-combined">
+                    data-icon="fa-regular fa-check-circle">
                 </div>
               </div>
             </div>
             <div class="form-group">
               <label class="fw-bold">Number of Tenants:</label>
               <input type="text" name="number_of_tenants" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined">
+                data-icon="fa-solid fa-person">
             </div>
           </div>
           <div class="wizard-step" data-step="69">
-
+            <h4>Space:</h4>
             @php
               $space_type = [['name' => 'New', 'target' => ''], ['name' => 'Re Let', 'target' => ''], ['name' => 'Sub Let', 'target' => '']];
             @endphp
-            <h4>Space:</h4>
             <div class="form-group">
               <label class="fw-bold">Class of Space:</label>
               <input type="text" name="class_of_space" id="operating_expenses" class="form-control has-icon"
@@ -6232,7 +6354,7 @@
             <div class="form-group">
               <label class="fw-bold"># of Restrooms:</label>
               <input type="text" name="number_of_restrooms" id="annual_ttl_schedule_income"
-                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                class="form-control has-icon" data-icon="fa-solid fa-restroom">
             </div>
 
             <div class="form-group">
@@ -6252,8 +6374,9 @@
             </div>
           </div>
           <div class="wizard-step" data-step="70">
+            <h4>Condo Environment:</h4>
             <div class="form-group">
-              <label class="fw-bold"> Is the property in a condo environment?  </label>
+              <label class="fw-bold"> Is the property in a condo environment?</label>
               <select class="grid-picker" name="has_condo_enviornment" id="has_condo_enviornment"
                 style="justify-content: flex-start;">
                 <option value="">Select</option>
@@ -6274,8 +6397,8 @@
             </div>
             <div class="row has_condo d-none">
               <div class="form-group ">
-                <label class="fw-bold">Condo Fee:$</label>
-                <input type="text" name="condo_fee" id="condo_fee" class="form-control ">
+                <label class="fw-bold">Condo Fee:</label>
+                <input type="text" name="condo_fee" id="condo_fee" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
               </div>
               @php
                 $condo_fee_terms = [['target' => '', 'name' => 'Annual', 'icon' => 'fa-regular fa-circle-check'], ['target' => '', 'name' => 'Monthly', 'icon' => 'fa-regular fa-circle-check'], ['target' => '', 'name' => 'Quarterly', 'icon' => 'fa-regular fa-circle-check'], ['target' => '', 'name' => 'Semi Annual ', 'icon' => 'fa-regular fa-circle-check']];
@@ -6316,7 +6439,14 @@
               </div>
 
               @php
-                $community_features = [['name' => 'Activity Core/Center', 'target' => ''], ['name' => 'Airport/Runway', 'target' => ''], ['name' => 'Beach Area', 'target' => ''], ['name' => 'Curbs', 'target' => ''], ['name' => 'Expressway', 'target' => ''], ['name' => 'Sidewalk', 'target' => ''], ['name' => 'Stream Seasonal', 'target' => '']];
+                $community_features = [
+                  ['name' => 'Activity Core/Center', 'target' => ''], 
+                  ['name' => 'Airport/Runway', 'target' => ''], 
+                  ['name' => 'Beach Area', 'target' => ''], 
+                  ['name' => 'Curbs', 'target' => ''], 
+                  ['name' => 'Expressway', 'target' => ''], 
+                  ['name' => 'Sidewalk', 'target' => ''], 
+                  ['name' => 'Stream Seasonal', 'target' => '']];
               @endphp
               <div class="form-group ">
                 <label class="fw-bold">Community Features:</label>
@@ -6333,39 +6463,29 @@
                 </select>
               </div>
             </div>
+            <label class="fw-bold">Pets Allowed:</label>
+            <select class="grid-picker" name="ptes_Allowed" id="has_rental_restrictions"
+              style="justify-content: flex-start;">
+              <option value="">Select</option>
+              @foreach ($yes_or_nos as $item)
+                @php
+                  if ($item['name'] == 'Yes') {
+                      $target = '';
+                  } else {
+                      $target = '';
+                  }
+                @endphp
+                <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
+                  style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                  {{ $item['name'] }}
+                </option>
+              @endforeach
+            </select>
           </div>
           <div class="wizard-step" data-step="71">
             <div class="form-group">
               <label class="fw-bold"> Description:</label>
               <textarea name="description" id="description" class="form-control" cols="30" rows="10"></textarea>
-            </div>
-            <div class="form-group">
-                @php
-                  $sellerCompCommercial = [['name' => 'Yes', 'target' => '','target'=>'.sellerComYesCommercial','icon'=>'<i class="fa-regular fa-circle-check"></i>'], ['name' => 'No', 'target' => '','target'=>'','icon'=>'<i class="fa-regular fa-circle-xmark"></i>'],['name' => 'Negotiable', 'target' => '','target'=>'','icon'=>'<i class="fa-regular fa-circle-check"></i>']];
-                @endphp
-              <label class="fw-bold">Is the seller offering compensation for a buyer’s agent?
-              </label>
-              <select class="grid-picker" name="looking_other_property" id="looking_other_property"
-                style="justify-content: flex-start;">
-                <option value="">Select</option>
-                @foreach ($sellerCompCommercial as $item)
-                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33% - 10px);" data-icon="{{ $item['icon'] }}">
-                    {{ $item['name'] }}
-                  </option>
-                @endforeach
-              </select>
-              <div class="form-group sellerComYesCommercial d-none">
-                <label class="fw-bold">Buyer’s Agent Compensation:</label>
-                <input type="text" name="compensation_amount" class="form-control has-icon"
-                  data-icon="fa-solid fa-dollar">
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="fw-bold">Keywords:<small class="small">(Add keywords of the
-                  best property features) </small></label>
-              <input type="text" name="keywords" id="keywords" class="form-control has-icon"
-                data-icon="fa-solid fa-tag">
             </div>
             <div class="form-group">
               <label class="fw-bold">Legal Disclamers:</label>
@@ -6377,20 +6497,34 @@
               <input type="text" name="driving_directions" id="keywords" class="form-control has-icon"
                 data-icon="fa-solid fa-tag">
             </div>
-            <div class="form-group single_agent_compensation_amount_commercial_and_business_opportunity">
-              <label class="fw-bold">Single Agent Compensation Amount:</label>
-              <input type="number" name="compensation_amount" class="form-control has-icon"
-                data-icon="fa-solid fa-dollar">
-            </div>
-            <div class="form-group non_rep_compensation_amount_commercial_and_business_opportunity ">
-              <label class="fw-bold"> Non Rep Compensation Amount:</label>
-              <input type="number" name="compensation_amount" class="form-control has-icon"
-                data-icon="fa-solid fa-dollar">
-            </div>
-            <div class="form-group transaction_amount_commercial_and_business_opportunity">
-              <label class="fw-bold">Transaction Broker Compensation Amount:</label>
-              <input type="number" name="compensation_amount" class="form-control has-icon"
-                data-icon="fa-solid fa-dollar">
+            <div class="form-group">
+              @php
+                $sellerCompCommercial = [['name' => 'Yes', 'target' => '','target'=>'.sellerComYesCommercial','icon'=>'<i class="fa-regular fa-circle-check"></i>'], ['name' => 'No', 'target' => '','target'=>'','icon'=>'<i class="fa-regular fa-circle-xmark"></i>'],['name' => 'Negotiable', 'target' => '','target'=>'','icon'=>'<i class="fa-regular fa-circle-check"></i>']];
+              @endphp
+              <label class="fw-bold">Is the seller offering compensation for a buyer’s agent?</label>
+              <select class="grid-picker" name="looking_other_property" id="looking_other_property"
+                style="justify-content: flex-start;">
+                <option value="">Select</option>
+                @foreach ($sellerCompCommercial as $item)
+                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                    style="width:calc(33% - 10px);" data-icon="{{ $item['icon'] }}">
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+              <div class="form-group sellerComYesCommercial d-none">
+                <div class="d-flex justify-content-between aalign-items-center">
+                  <label class="fw-bold">Buyer’s Agent Compensation:</label>
+                  <div
+                      class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                      <button type="button" class="select-btn me-1 active"
+                          data-type="percent">%</button>
+                      <button type="button" class="select-btn" data-type="amount">$</button>
+                  </div>
+                </div>
+                <input type="text" name="compensation_amount" class="form-control has-icon"
+                  data-icon="fa-solid fa-percent">
+              </div>
             </div>
           </div>
           <div class="wizard-step" data-step="72">
@@ -6417,12 +6551,12 @@
             </div>
             <div class="form-group link_commercial">
               <label class="fw-bold">Link to the listing on the Bid Your Offer platform:</label>
-              <input type="url" name="listing_link" id="listing_link" placeholder=""
+              <input type="text" name="listing_link" id="listing_link" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-link">
             </div>
           </div>
           <div class="wizard-step" data-step="73">
-            <h4> Title Company Information:</h4>
+            <h4>Title Company Information:</h4>
             <div class="form-group">
               <label class="fw-bold">Name:</label>
               <input type="text" name="title_company_name" id="title_company_name" placeholder=""
@@ -6447,19 +6581,23 @@
             </div>
           </div>
           <div class="wizard-step" data-step="74">
-            <h4>Agent info:</h4>
+            @if (auth()->user()->user_type == 'agent')
+              <h4>Listing Agent Information:</h4>
+            @else
+              <h4>Seller’s Information:</h4>
+            @endif
             <div class="form-group row">
               <div class="form-group col-md-6">
                 <label class="fw-bold">First Name:</label>
                 <input type="text" name="first_name" id="first_name" placeholder=""
                   value="{{ Auth::user()->first_name }}" class="form-control has-icon"
-                  data-icon="fa-solid fa-user">
+                  data-icon="fa-solid fa-user" required>
               </div>
               <div class="form-group col-md-6">
                 <label class="fw-bold">Last Name:</label>
                 <input type="text" name="last_name" id="last_name" placeholder=""
                   value="{{ Auth::user()->last_name }}" class="form-control has-icon"
-                  data-icon="fa-solid fa-user">
+                  data-icon="fa-solid fa-user" required>
               </div>
             </div>
             <div class="form-group row">
@@ -6467,58 +6605,60 @@
                 <label class="fw-bold">Phone Number:</label>
                 <input type="text" name="agent_phone" id="agent_phone" placeholder=""
                   value="{{ optional(Auth::user())->phone }}" class="form-control has-icon"
-                  data-icon="fa-solid fa-phone">
+                  data-icon="fa-solid fa-phone" required>
               </div>
               <div class="form-group col-md-6">
                 <label class="fw-bold">Email:</label>
                 <input type="text" name="agent_email" id="agent_email" placeholder=""
                   class="form-control has-icon" data-icon="fa-solid fa-envelope"
-                  value="{{ Auth::user()->email }}">
+                  value="{{ Auth::user()->email }}" required>
               </div>
             </div>
+            @if (auth()->user()->user_type == 'user')
+              <div class="form-group col-md-6">
+                <label class="fw-bold">Listed By Owner</label>
+              </div>
+            @endif
+            @if (auth()->user()->user_type == 'agent')
             <div class="form-group row">
               <div class="form-group col-md-6">
                 <label class="fw-bold">Brokerage:</label>
                 <input type="text" name="agent_brokerage" id="agent_brokerage" placeholder=""
                   value="{{ optional(Auth::user())->brokerage }}" class="form-control has-icon"
-                  data-icon="fa-solid fa-handshake">
+                  data-icon="fa-solid fa-handshake" required>
               </div>
               <div class="form-group col-md-6">
                 <label class="fw-bold">Real Estate License #:</label>
                 <input type="text" name="agent_license_no" id="agent_license_no" placeholder=""
                   value="{{ optional(Auth::user())->license_no }}" class="form-control has-icon"
-                  data-icon="fa-solid fa-id-card">
+                  data-icon="fa-solid fa-id-card" required>
               </div>
             </div>
             <div class="form-group row">
               <div class="form-group col-md-6">
                 <label class="fw-bold">NAR Member ID (NRDS ID):</label>
                 <input type="number" name="agent_mls_id" id="agent_mls_id" placeholder=""
-                  class="form-control has-icon" data-icon="fa-solid fa-id-badge"
-                  value="{{ optional(Auth::user())->mls_id }}">
+                  class="form-control has-icon" data-icon="fa-solid fa-id-card-clip"
+                  value="{{ optional(Auth::user())->mls_id }}" required>
               </div>
               <div class="form-group col-md-6">
                 <label class="fw-bold">Listed By: Real Estate Agent:</label>
-                <input type="number" name="agent_mls_id" id="agent_mls_id" placeholder=""
+                {{-- <input type="number" name="agent_mls_id" id="agent_mls_id" placeholder=""
                   class="form-control has-icon" data-icon="fa-solid fa-id-badge"
-                  value="{{ optional(Auth::user())->mls_id }}">
+                  value="{{ optional(Auth::user())->mls_id }}"> --}}
               </div>
             </div>
+            @endif
           </div>
           <div class="wizard-step" data-step="75">
             <div class="form-group">
-              <label class="fw-bold">3D Tour:</label>
-              <input type="url" name="three_d_tour" id="three_d_tour" placeholder=""
+              <label class="fw-bold">3D Tour (Link):</label>
+              <input type="text" name="three_d_tour" id="three_d_tour" placeholder=""
                   class="form-control has-icon" data-icon="fa-solid fa-link">
               </div>
               <div class="form-group">
                 <label class="fw-bold">Floor Plan:</label>
                 <input type="file" name="visible_note" id="visible_note" class="form-control">
-              </div>
-              <div class="form-group">
-                <label class="fw-bold">Lable Addendums/Disclosures:</label>
-                <input type="text" name="lable_visible_upload_file" id="lable_visible_upload_file" placeholder=""
-                class="form-control has-icon" data-icon="fa-solid fa-link" multiple>
               </div>
               <div class="form-group">
                 <label class="fw-bold">Addendums/Disclosures:</label>
@@ -6548,7 +6688,7 @@
                             <div class="js--image-preview"></div>
                             <div class="upload-options">
                               <label>
-                                <input type="file" name="photo" class="image-upload" accept="image/*" />
+                                <input type="file" name="photo" class="image-upload" accept="image/*" required />
                               </label>
                             </div>
                           </div>
@@ -6558,6 +6698,8 @@
               </div>
             </span>
           </div>
+          {{-- Commercial/Business End --}}
+          {{-- Vacant Start --}}
           <div class="wizard-step" data-step="76">
             @php
               $front_exposures1 = [['name' => 'North', 'target' => ''], ['name' => 'East', 'target' => ''], ['name' => 'South', 'target' => ''], ['name' => 'West', 'target' => ''], ['name' => 'Southeast', 'target' => ''], ['name' => 'Northeast', 'target' => ''], ['name' => 'Southwest', 'target' => ''], ['name' => 'Northwest', 'target' => ''], ['name' => 'Undetermined', 'target' => '']];
@@ -6670,17 +6812,59 @@
               </select>
               <div class="form-group otherLotFeatureVacant d-none">
                 <label class="fw-bold">Lot Features:</label>
-                <input type="text" name="otherLotFeature" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherLotFeature" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
-            @php
-              $current_adjacent_use = [['name' => 'Church', 'target' => ''], ['name' => 'Commercial', 'target' => ''], ['name' => 'Industrial', 'target' => ''], ['name' => 'Mobile Home Park', 'target' => ''], ['name' => 'Multi-Family', 'target' => ''], ['name' => 'Park', 'target' => ''], ['name' => 'Professional Office', 'target' => ''], ['name' => 'Residential', 'target' => ''], ['name' => 'Retail', 'target' => ''], ['name' => 'School', 'target' => ''], ['name' => 'Vacant', 'target' => '']];
-            @endphp
-           
           </div>
           <div class="wizard-step" data-step="78">
+            @php
+              $otherStructures = [
+                  ['name' => 'Barn(s)', 'target' => ''],
+                  ['name' => 'Billboard', 'target' => ''],
+                  ['name' => 'Corral(s)', 'target' => ''],
+                  ['name' => 'Finished RV Port', 'target' => ''],
+                  ['name' => 'Greenhouse', 'target' => ''],
+                  ['name' => 'Utility', 'target' => ''],
+                  ['name' => 'Workshop', 'target' => ''],
+                  ['name' => 'Other', 'target' => '.otherStructuresVac'],
+              ];
+            @endphp
+            <div class="form-group">
+              <label class="fw-bold">Other Structures:</label>
+              <select class="grid-picker" name="other_structures[]" id="lot_features"
+                style="justify-content: flex-start;" multiple>
+                <option value="">Select</option>
+                @foreach ($otherStructures as $structure)
+                  <option value="{{ $structure['name'] }}" data-target="{{ $structure['target'] }}"
+                    class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
+                    style="width:calc(33.3% - 10px);">
+                    {{ $structure['name'] }}
+                  </option>
+                @endforeach
+              </select>
+              <div class="form-group otherStructuresVac d-none">
+                <label class="fw-bold">Other Structures::</label>
+                <input type="text" name="custom_other_structures" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+              </div>
+            </div>
+          </div>
+          <div class="wizard-step" data-step="79">
             <div class="form-group">
               <label class="fw-bold">Current Adjacent Use:</label>
+              @php
+              $current_adjacent_use = [
+                ['name' => 'Church', 'target' => ''], 
+                ['name' => 'Commercial', 'target' => ''], 
+                ['name' => 'Industrial', 'target' => ''], 
+                ['name' => 'Mobile Home Park', 'target' => ''], 
+                ['name' => 'Multi-Family', 'target' => ''], 
+                ['name' => 'Park', 'target' => ''], 
+                ['name' => 'Professional Office', 'target' => ''], 
+                ['name' => 'Residential', 'target' => ''], 
+                ['name' => 'Retail', 'target' => ''], 
+                ['name' => 'School', 'target' => ''], 
+                ['name' => 'Vacant', 'target' => '']];
+              @endphp
               <select class="grid-picker" name="current_adjacent_use[]" id="lot_features"
                 style="justify-content: flex-start;" multiple>
                 <option value="">Select</option>
@@ -6693,9 +6877,26 @@
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="79">
+          <div class="wizard-step" data-step="80">
             @php
-              $road_frontages = [['name' => 'Access Road', 'target' => ''], ['name' => 'Alley', 'target' => ''], ['name' => 'Business District', 'target' => ''], ['name' => 'City Street', 'target' => ''], ['name' => 'County Road', 'target' => ''], ['name' => 'Divided Highway', 'target' => ''], ['name' => 'Easement', 'target' => ''], ['name' => 'Highway', 'target' => ''], ['name' => 'Interchange', 'target' => ''], ['name' => 'Interstate', 'target' => ''], ['name' => 'Main Thoroughfare', 'target' => ''], ['name' => 'Private Road', 'target' => ''], ['name' => 'Rail', 'target' => ''], ['name' => 'State Road', 'target' => ''], ['name' => 'Turn Lanes', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherFrontageVacant']];
+              $road_frontages = [
+                ['name' => 'Access Road', 'target' => ''], 
+                ['name' => 'Alley', 'target' => ''], 
+                ['name' => 'Business District', 'target' => ''], 
+                ['name' => 'City Street', 'target' => ''], 
+                ['name' => 'County Road', 'target' => ''], 
+                ['name' => 'Divided Highway', 'target' => ''], 
+                ['name' => 'Easement', 'target' => ''], 
+                ['name' => 'Highway', 'target' => ''], 
+                ['name' => 'Interchange', 'target' => ''], 
+                ['name' => 'Interstate', 'target' => ''], 
+                ['name' => 'Main Thoroughfare', 'target' => ''], 
+                ['name' => 'Private Road', 'target' => ''], 
+                ['name' => 'Rail', 'target' => ''], 
+                ['name' => 'State Road', 'target' => ''], 
+                ['name' => 'Turn Lanes', 'target' => ''], 
+                ['name' => 'None', 'target' => ''], 
+                ['name' => 'Other', 'target' => '.otherFrontageVacant']];
             @endphp
             <div class="form-group">
               <label class="fw-bold">Road Frontage:</label>
@@ -6713,13 +6914,23 @@
               </select>
               <div class="form-group otherFrontageVacant d-none">
                 <label class="fw-bold">Road Frontage:</label>
-                <input type="text" name="otherFrontage" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherFrontage" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="80">
+          <div class="wizard-step" data-step="81">
             @php
-              $road_surface_types = [['name' => 'Asphalt', 'target' => ''], ['name' => 'Brick', 'target' => ''], ['name' => 'Chip And Seal', 'target' => ''], ['name' => 'Concrete', 'target' => ''], ['name' => 'Dirt', 'target' => ''], ['name' => 'Gravel', 'target' => ''], ['name' => 'Limerock', 'target' => ''], ['name' => 'Paved', 'target' => ''], ['name' => 'Unimproved', 'target' => ''], ['name' => 'Other', 'target' => '.otherSurfaceVacant']];
+              $road_surface_types = [
+                ['name' => 'Asphalt', 'target' => ''], 
+                ['name' => 'Brick', 'target' => ''], 
+                ['name' => 'Chip And Seal', 'target' => ''], 
+                ['name' => 'Concrete', 'target' => ''], 
+                ['name' => 'Dirt', 'target' => ''], 
+                ['name' => 'Gravel', 'target' => ''], 
+                ['name' => 'Limerock', 'target' => ''], 
+                ['name' => 'Paved', 'target' => ''], 
+                ['name' => 'Unimproved', 'target' => ''], 
+                ['name' => 'Other', 'target' => '.otherSurfaceVacant']];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Road Surface Type:</label>
@@ -6736,14 +6947,15 @@
               </select>
               <div class="form-group otherSurfaceVacant d-none">
                 <label class="fw-bold">Road Surface Type:</label>
-                <input type="text" name="otherSurface" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="otherSurface" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="81">
+          <div class="wizard-step" data-step="82">
             @php
               $utilitiseRes = [
                 ['name' => 'BB/HS Internet Available', 'target' => ''],
+                ['name' => 'BB/HS Internet Connected', 'target' => ''],
                 ['name' => 'Cable Available', 'target' => ''],
                 ['name' => 'Cable Connected', 'target' => ''],
                 ['name' => 'Electric - Multiple Meters', 'target' => ''],
@@ -6770,6 +6982,7 @@
                 ['name' => 'Water - Multiple Meters', 'target' => ''],
                 ['name' => 'Water Available', 'target' => ''],
                 ['name' => 'Water Connected', 'target' => ''],
+                ['name' => 'Water Nearby', 'target' => ''],
                 ['name' => 'None', 'target' => ''],
                 ['name' => 'Other', 'target' => '.otherUtilitiseVacant'],
               ];
@@ -6790,12 +7003,17 @@
               <div class="form-group otherUtilitiseVacant d-none">
                 <label class="fw-bold">Utilities:</label>
                 <input type="text" name="otherUtilitise" id="legal_description" class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
             @php
-
-              $waterVacant = [['name' => 'Canal/Lake For Irrigation', 'target' => ''], ['name' => 'Private', 'target' => ''], ['name' => 'Public', 'target' => ''], ['name' => 'Well', 'target' => ''],['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherWaterVacant']];
+              $waterVacant = [
+                ['name' => 'Canal/Lake For Irrigation', 'target' => ''], 
+                ['name' => 'Private', 'target' => ''], 
+                ['name' => 'Public', 'target' => ''], 
+                ['name' => 'Well', 'target' => ''],
+                ['name' => 'None', 'target' => ''], 
+                ['name' => 'Other', 'target' => '.otherWaterVacant']];
             @endphp
             <div class="form-group">
               <label class="fw-bold">Water:</label>
@@ -6812,12 +7030,18 @@
               <div class="form-group otherWaterVacant d-none">
                 <label class="fw-bold">Water:</label>
                 <input type="text" name="otherWater" id="legal_description" class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
-
             @php
-              $sewerVacant = [['name' => 'Aerobic Septic', 'target' => ''],['name' => 'PEP-Holding Tank', 'target' => ''], ['name' => 'Private Sewer', 'target' => ''], ['name' => 'Public Sewer', 'target' => ''], ['name' => 'Septic Needed', 'target' => ''], ['name' => 'Septic Tank', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherSewerVacant']];
+              $sewerVacant = [
+                ['name' => 'PEP-Holding Tank', 'target' => ''], 
+                ['name' => 'Private Sewer', 'target' => ''], 
+                ['name' => 'Public Sewer', 'target' => ''], 
+                ['name' => 'Septic Needed', 'target' => ''], 
+                ['name' => 'Septic Tank', 'target' => ''], 
+                ['name' => 'None', 'target' => ''], 
+                ['name' => 'Other', 'target' => '.otherSewerVacant']];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Sewer:</label>
@@ -6834,21 +7058,21 @@
               <div class="form-group otherSewerVacant d-none">
                 <label class="fw-bold">Sewer:</label>
                 <input type="text" name="otherSewer"  class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="82">
-            <h4>Tax Info</h4>
+          <div class="wizard-step" data-step="83">
+            <h4>Land and Tax Information:</h4>
             <div class="form-group">
               <label class="fw-bold">Tax ID (Parcel Number):</label>
               <input type="text" name="tax_id" id="tax_id" class="form-control has-icon"
-                data-icon="fa-regular fa-id-card">
+                data-icon="fa-solid fa-ruler-combined">
             </div>
             <div class="form-group">
               <label class="fw-bold">Tax Year:</label>
               <input type="text" name="tax_year" id="tax_year" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined" >
+                data-icon="fa-regular fa-calendar-days" >
             </div>
             <div class="form-group">
               <label class="fw-bold">Taxes (Annual Amount):</label>
@@ -6857,11 +7081,12 @@
             </div>
             <div class="form-group ">
               @php
-              $additialParcelVacant = [
+              $additialParcelVacant = 
+              [
                 ['name'=>'Yes','target'=>'.additialParcelVacantYes','icon'=>'<i class="fa-regular fa-circle-check"></i>'],
                 ['name'=>'No','target'=>'','icon'=>'<i class="fa-regular fa-circle-xmark"></i>']
               ];
-            @endphp
+              @endphp
               <label class="fw-bold">Additional Parcels:</label>
               <select class="grid-picker" name="has_homestead" id="sewer"
                 style="justify-content: flex-start;">
@@ -6876,145 +7101,71 @@
               </select>
               <div class="form-group additialParcelVacantYes d-none">
                 <div class="form-group">
-                  <label class="fw-bold">Total Number of Parcels:</label>
-                  <input type="number" name="total_number_of_parcels" id="total_number_of_parcels"
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-                </div>
-                <div class="form-group">
                   <label class="fw-bold">Additional Tax ID's:</label>
-                  <input type="number" name="additional_tax_id" id="additional_tax_id" class="form-control has-icon"
+                  <input type="text" name="additional_tax_id" id="additional_tax_id" class="form-control has-icon"
                     data-icon="fa-solid fa-ruler-combined">
-                </div>
-                <div class="form-group">
-                  <label class="fw-bold">Zoning:</label>
-                  <input type="text" name="zoning" id="zoning"
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-                </div>
-                <div class="form-group">
-                  <label class="fw-bold">Legal Description:</label>
-                  <input type="text" name="legal_description" id="legal_description" class="form-control has-icon"
-                    data-icon="fa-solid fa-tag">
-                </div>
-                <div class="form-group ">
-                  <label class="fw-bold">Homestead:</label>
-                  <select class="grid-picker" name="has_homestead" id="sewer"
-                    style="justify-content: flex-start;">
-                    <option value="">Select</option>
-                    @foreach ($yes_or_nos as $item)
-                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                        data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                        style="width:calc(33.3% - 10px);">
-                        {{ $item['name'] }}
-                      </option>
-                    @endforeach
-                  </select>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="wizard-step" data-step="83">
             <div class="form-group">
-              <label class="fw-bold">Is the property in a flood zone?</label>
-              <select class="grid-picker" name="is_in_flood_zone" id="is_in_flood_zone"
-                style="justify-content: flex-start;">
-                <option value="">Select</option>
-                @foreach ($yes_or_nos as $item)
-                  @php
-                    if ($item['name'] == 'Yes') {
-                        $target = '.floodZoneVacant';
-                    } else {
-                        $target = '';
-                    }
-                  @endphp
-                  <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
-                    {{ $item['name'] }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-            <div class="form-group floodZoneVacant d-none">
-              <label class="fw-bold">Flood Zone Code:</label>
-              <input type="text" name="flood_zone_code" id="flood_zone_code" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
-            </div>
-          </div>
-          <div class="wizard-step" data-step="84">
-            @php
-              $total_acreages = [['name' => '0 to less than 14', 'target' => ''], ['name' => '1/4 to less than 1/2', 'target' => ''], ['name' => '1/2 to less than 1', 'target' => ''], ['name' => '1 to less than 2', 'target' => ''], ['name' => '2 to less than 5', 'target' => ''], ['name' => '5 to less than 10', 'target' => ''], ['name' => '10 to less than 20', 'target' => ''], ['name' => '20 to less than 50', 'target' => ''], ['name' => '50 to less than 100', 'target' => ''], ['name' => '100 to less than 200', 'target' => ''], ['name' => '200 to less than 500', 'target' => ''], ['name' => '500+ acres', 'target' => ''], ['name' => 'Non-Applicable', 'target' => '']];
-            @endphp
-            <div class="form-group ">
-              <label class="fw-bold">Total Acreage :</label>
-              <select class="grid-picker" name="total_acreage" id="total_acreage"
-                style="justify-content: flex-start;">
-                <option value="">Select</option>
-                @foreach ($total_acreages as $total_acreage)
-                  <option value="{{ $total_acreage['name'] }}" data-target="{{ $total_acreage['target'] }}"
-                    class="card flex-column" style="width:calc(25% - 10px);"
-                    data-icon='<i class="fa-solid fa-ruler-combined"></i>'>
-                    {{ $total_acreage['name'] }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="fw-bold">Lot Dimensions:</label>
-              <input type="text" name="lot_dimensions" id="lot_dimensions" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined">
-            </div>
-            <div class="form-group">
-              <label class="fw-bold">S</label>
-              <input type="text" name="lot_size_square_footage" id="lot_size_square_footage"
+              <label class="fw-bold">Total Number of Parcels:</label>
+              <input type="number" name="total_number_of_parcels" id="total_number_of_parcels"
                 class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
             </div>
             <div class="form-group">
-              <label class="fw-bold">Front Footage:</label>
-              <input type="text" name="front_footage" id="front_footage1" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined" >
+              <label class="fw-bold">Zoning:</label>
+              <input type="text" name="zoning" id="zoning"
+                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
             </div>
             <div class="form-group">
-              <label class="fw-bold">Lot Size Acres:</label>
-              <input type="text" name="lot_size_acres" id="lot_size_acres" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined">
+              <label class="fw-bold">Legal Description:</label>
+              <input type="text" name="legal_description" id="legal_description" class="form-control has-icon"
+                data-icon="fa-solid fa-tag">
             </div>
-          </div>
-          <div class="wizard-step" data-step="85">
-
             <div class="form-group">
-              <label class="fw-bold">Water Access:</label>
-              <select class="grid-picker" name="has_water_access" id="has_water_access"
-                style="justify-content: flex-start;">
-                <option value="">Select</option>
-                @foreach ($yes_or_nos as $item)
-                  @php
-                    if ($item['name'] == 'Yes') {
-                        $target = '.waterAccessVacant';
-                    } else {
-                        $target = '';
-                    }
-                  @endphp
-                  <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
-                    {{ $item['name'] }}
-                  </option>
-                @endforeach
-              </select>
+              <label class="fw-bold" for="year_built">Legal Subdivison Name:</label>
+              <input type="text" name="legal_subdivison_name" id="legal_subdivison_name"
+                class="form-control has-icon " data-icon="fa-solid fa-ruler-combined"
+                >
             </div>
             @php
-              $waterAccessVacant = [['name' => 'Bay/Harbor', 'target' => ''], ['name' => 'Bayou', 'target' => ''], ['name' => 'Beach', 'target' => ''], ['name' => 'Beach - Access Deeded', 'target' => ''], ['name' => 'Brackish Water', 'target' => ''], ['name' => 'Canal - Brackish', 'target' => ''], ['name' => 'Canal - Freshwater', 'target' => ''], ['name' => 'Canal - Saltwater', 'target' => ''], ['name' => 'Creek', 'target' => ''], ['name' => 'Freshwater Canal w/Lift to Saltwater Canal', 'target' => ''], ['name' => 'Gulf/Ocean', 'target' => ''], ['name' => 'Gulf/Ocean to Bay', 'target' => ''], ['name' => 'Intracoastal Waterway', 'target' => ''], ['name' => 'Lagoon/Estuary', 'target' => ''], ['name' => 'Lake', 'target' => ''], ['name' => 'Lake - Chain of Lakes', 'target' => ''], ['name' => 'Limited Access', 'target' => ''], ['name' => 'Marina', 'target' => ''], ['name' => 'Pond', 'target' => ''], ['name' => 'River', 'target' => '']];
+              $lot_sizes = [['name' => '0 to less than 1/4', 'target' => ''], ['name' => '1/4 to less than 1/2', 'target' => ''], ['name' => '1/2 to less than 1', 'target' => ''], ['name' => '1 to less than 2', 'target' => ''], ['name' => '2 to less than 5', 'target' => ''], ['name' => '5 to less than 10', 'target' => ''], ['name' => '10 to less than 20', 'target' => ''], ['name' => '20 to less than 50', 'target' => ''], ['name' => '50 to less than 100', 'target' => ''], ['name' => '100 to less than 200', 'target' => ''], ['name' => '200 to less than 500', 'target' => ''], ['name' => '500+ Acers', 'target' => ''], ['name' => 'Non-Applicable', 'target' => '']];
             @endphp
-            <div class="form-group waterAccessVacant">
-              <select class="grid-picker" name="water_access[]" id="water_access"
-                style="justify-content: flex-start;" multiple>
+            <div class="form-group">
+              <label class="fw-bold">Total Acreage:</label>
+              <select class="grid-picker" name="total_aceage" id="lot_size" style="justify-content: flex-start;">
                 <option value="">Select</option>
-                @foreach ($waterAccessVacant as $item)
+                @foreach ($lot_sizes as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                    class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
+                    data-icon='<i class="fa-solid fa-ruler-combined"></i>' class="card flex-column"
                     style="width:calc(33.3% - 10px);">
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
+            <div class="form-group has_flood_zoon d-none">
+              <label class="fw-bold">Flood Zone Code:</label>
+              <input type="text" name="flood_zone_code" id="flood_zone_code" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+            </div>
+            <div class="form-group">
+              <label class="fw-bold" for="lot_size">Lot Size Square Footage:</label>
+              <input type="text" name="lot_size" id="lot_size" class="form-control has-icon "
+                data-icon="fa-solid fa-ruler-combined" data-msg-required="Please enter Lot Size">
+            </div>
+            <div class="form-group">
+              <label class="fw-bold">Lot Size Acres:</label>
+              <input type="text" name="lot_size_acres" id="lot_size_acres" class="form-control has-icon"
+                data-icon="fa-solid fa-ruler-combined">
+            </div>
+            <div class="form-group">
+              <label class="fw-bold">Lot Dimensions:</label>
+              <input type="text" name="lot_dimensions" id="lot_dimensions" class="form-control has-icon"
+                data-icon="fa-solid fa-ruler-combined">
+            </div>
+          </div>
+          <div class="wizard-step" data-step="84">
+            <h4>Water and Dock Information:</h4>
             <div class="form-group ">
               <label class="fw-bold">Water View:</label>
               <select class="grid-picker" name="has_water_view" id="has_water_view"
@@ -7023,7 +7174,7 @@
                 @foreach ($yes_or_nos as $item)
                   @php
                     if ($item['name'] == 'Yes') {
-                        $target = '.waterViewVacant';
+                        $target = '.water_view_vacant';
                     } else {
                         $target = '';
                     }
@@ -7036,17 +7187,17 @@
               </select>
             </div>
             @php
-              $waterViewVacant = [['name' => 'Bay/Harbor - Full', 'target' => ''], ['name' => 'Bay/Harbor - Partial', 'target' => ''], ['name' => 'Bayou', 'target' => ''], ['name' => 'Beach', 'target' => ''], ['name' => 'Canal', 'target' => ''], ['name' => 'Creek', 'target' => ''], ['name' => 'Gulf/Ocean - Full', 'target' => ''], ['name' => 'Gulf/Ocean - Partial', 'target' => ''], ['name' => 'Gulf/Ocean to Bay', 'target' => ''], ['name' => 'Intracoastal Waterway', 'target' => ''], ['name' => 'Lagoon/Estuary', 'target' => ''], ['name' => 'Lake', 'target' => ''], ['name' => 'Lake - Chain of Lakes', 'target' => ''], ['name' => 'Marina', 'target' => ''], ['name' => 'Pond', 'target' => ''], ['name' => 'River', 'target' => ''], ['name' => 'None', 'target' => '']];
+              $water_views = [['name' => 'Bay/Harbor - Full', 'target' => ''], ['name' => 'Bay/Harbor - Partial', 'target' => ''], ['name' => 'Bayou', 'target' => ''], ['name' => 'Beach', 'target' => ''], ['name' => 'Canal', 'target' => ''], ['name' => 'Creek', 'target' => ''], ['name' => 'Gulf/Ocean - Full', 'target' => ''], ['name' => 'Gulf/Ocean - Partial', 'target' => ''], ['name' => 'Gulf/Ocean to Bay', 'target' => ''], ['name' => 'Intracoastal Waterway', 'target' => ''], ['name' => 'Lagoon/Estuary', 'target' => ''], ['name' => 'Lake', 'target' => ''], ['name' => 'Lake - Chain of Lakes', 'target' => ''], ['name' => 'Marina', 'target' => ''], ['name' => 'Pond', 'target' => ''], ['name' => 'River', 'target' => ''], ['name' => 'None', 'target' => '']];
             @endphp
-            <div class="form-group waterViewVacant d-none">
+            <div class="form-group water_view_vacant d-none">
               <select class="grid-picker" name="water_view[]" id="water_view" style="justify-content: flex-start;"
                 multiple>
                 <option value="">Select</option>
-                @foreach ($waterViewVacant as $item)
-                  <option value="{{ $item['name'] }}" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    data-target="{{ $item['target'] }}" class="card flex-row"
+                @foreach ($water_views as $water_view)
+                  <option value="{{ $water_view['name'] }}" data-icon="<i class='fa-regular fa-circle-check'></i>"
+                    data-target="{{ $water_view['target'] }}" class="card flex-row"
                     style="width:calc(33.3% - 10px);">
-                    {{ $item['name'] }}
+                    {{ $water_view['name'] }}
                   </option>
                 @endforeach
               </select>
@@ -7059,7 +7210,7 @@
                 @foreach ($yes_or_nos as $item)
                   @php
                     if ($item['name'] == 'Yes') {
-                        $target = '.waterEXtraVacant';
+                        $target = '.water_extras_vacant';
                     } else {
                         $target = '';
                     }
@@ -7072,7 +7223,7 @@
               </select>
             </div>
             @php
-              $waterExtraVacant = [
+              $water_extras = [
                   ['name' => 'Assigned Boat Slip', 'target' => ''],
                   ['name' => 'Boat Port', 'target' => ''],
                   ['name' => 'Boat Ramp - Private', 'target' => ''],
@@ -7081,18 +7232,6 @@
                   ['name' => 'Bridges - Fixed', 'target' => ''],
                   ['name' => 'Bridges - No Fixed Bridges', 'target' => ''],
                   ['name' => 'Davits', 'target' => ''],
-                  ['name' => 'Dock - Composite', 'target' => ''],
-                  ['name' => 'Dock - Concrete', 'target' => ''],
-                  ['name' => 'Dock - Covered', 'target' => ''],
-                  ['name' => 'Dock - Open', 'target' => ''],
-                  ['name' => 'Dock - Slip 1st Come', 'target' => ''],
-                  ['name' => 'Dock - Slip Deeded Off-Site', 'target' => ''],
-                  ['name' => 'Dock - Slip Deeded On-Site', 'target' => ''],
-                  ['name' => 'Dock - Wood', 'target' => ''],
-                  ['name' => 'Dock w/Electric', 'target' => ''],
-                  ['name' => 'Dock w/o Electric', 'target' => ''],
-                  ['name' => 'Dock w/o Water Supply', 'target' => ''],
-                  ['name' => 'Dock w/Water Supply', 'target' => ''],
                   ['name' => 'Fishing Pier', 'target' => ''],
                   ['name' => 'Lift', 'target' => ''],
                   ['name' => 'Lift - Covered', 'target' => ''],
@@ -7109,15 +7248,15 @@
                   ['name' => 'None', 'target' => ''],
               ];
             @endphp
-            <div class="form-group waterEXtraVacant d-none ">
+            <div class="form-group water_extras_vacant d-none ">
               <select class="grid-picker" name="water_extras[]" id="water_extras"
                 style="justify-content: flex-start;" multiple>
                 <option value="">Select</option>
-                @foreach ($waterExtraVacant as $item)
-                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                @foreach ($water_extras as $water_extra)
+                  <option value="{{ $water_extra['name'] }}" data-target="{{ $water_extra['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
                     style="width:calc(33.3% - 10px);">
-                    {{ $item['name'] }}
+                    {{ $water_extra['name'] }}
                   </option>
                 @endforeach
               </select>
@@ -7130,7 +7269,7 @@
                 @foreach ($yes_or_nos as $item)
                   @php
                     if ($item['name'] == 'Yes') {
-                        $target = '.waterFrontageVacant';
+                        $target = '.water_frontage_vacant';
                     } else {
                         $target = '';
                     }
@@ -7143,13 +7282,34 @@
               </select>
             </div>
             @php
-              $waterFrontageVacant = [['name' => 'Bay/Harbor', 'target' => ''], ['name' => 'Bayou', 'target' => ''], ['name' => 'Beach', 'target' => ''], ['name' => 'Brackish Water', 'target' => ''], ['name' => 'Canal - Brackish', 'target' => ''], ['name' => 'Canal - Freshwater', 'target' => ''], ['name' => 'Canal - Saltwater', 'target' => ''], ['name' => 'Creek', 'target' => ''], ['name' => 'Freshwater Canal w/Lift to Saltwater Canal', 'target' => ''], ['name' => 'Gulf/Ocean', 'target' => ''], ['name' => 'Gulf/Ocean to Bay', 'target' => ''], ['name' => 'Intracoastal Waterway', 'target' => ''], ['name' => 'Lagoon/Estuary', 'target' => ''], ['name' => 'Lake', 'target' => ''], ['name' => 'Lake - Chain of Lakes', 'target' => ''], ['name' => 'Marina', 'target' => ''], ['name' => 'Pond', 'target' => ''], ['name' => 'River', 'target' => '']];
+              $water_frontage = [
+                ['name' => 'Bay/Harbor', 'target' => ''], 
+                ['name' => 'Bayou', 'target' => ''], 
+                ['name' => 'Beach', 'target' => ''], 
+                ['name' => 'Brackish Water', 'target' => ''], 
+                ['name' => 'Canal - Brackish', 'target' => ''], 
+                ['name' => 'Canal - Freshwater', 'target' => ''], 
+                ['name' => 'Canal - Saltwater', 'target' => ''], 
+                ['name' => 'Creek', 'target' => ''], 
+                ['name' => 'Freshwater Canal w/Lift to Saltwater Canal', 'target' => ''], 
+                ['name' => 'Gulf/Ocean', 'target' => ''], 
+                ['name' => 'Gulf/Ocean to Bay', 'target' => ''], 
+                ['name' => 'Intracoastal Waterway', 'target' => ''], 
+                ['name' => 'Lagoon/Estuary', 'target' => ''], 
+                ['name' => 'Lake', 'target' => ''], 
+                ['name' => 'Lake - Chain of Lakes', 'target' => ''], 
+                ['name' => 'Marina', 'target' => ''], 
+                ['name' => 'Pond', 'target' => ''], 
+                ['name' => 'River', 'target' => ''], 
+                ['name' => 'Canal Front', 'target' => ''],
+                ['name' => 'Riparian Rights', 'target' => '']];
+
             @endphp
-            <div class="form-group waterFrontageVacant d-none">
+            <div class="form-group water_frontage_vacant d-none">
               <select class="grid-picker" name="water_frontage[]" id="water_frontage"
                 style="justify-content: flex-start;" multiple>
                 <option value="">Select</option>
-                @foreach ($waterFrontageVacant as $item)
+                @foreach ($water_frontage as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
                     style="width:calc(33.3% - 10px);">
@@ -7159,49 +7319,161 @@
               </select>
             </div>
             <div class="form-group">
-            @php
-              $viewOptVacant = [['name' => 'Yes', 'target' => '.viewYesVacant','icon'=>'<i class="fa-regular fa-circle-check"></i>'], ['name' => 'No', 'target' => '','icon'=>'<i class="fa-regular fa-circle-xmark"></i>']];
-            @endphp
-              <label class="fw-bold">View:</label>
-              <select class="grid-picker" name="viewOpt" id="view" style="justify-content: flex-start;">
+              <label class="fw-bold">Water Access:</label>
+              <select class="grid-picker" name="has_water_access" id="has_water_access"
+                style="justify-content: flex-start;">
                 <option value="">Select</option>
-                @foreach ($viewOptVacant as $item)
-                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                    data-icon="{{$item['icon']}}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                @foreach ($yes_or_nos as $item)
+                  @php
+                    if ($item['name'] == 'Yes') {
+                        $target = '.water_access_vacant';
+                    } else {
+                        $target = '';
+                    }
+                  @endphp
+                  <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
-            <div class="form-group viewYesVacant d-none">
-                @php
-                  $viewVacant = [['name' => 'City', 'target' => ''], ['name' => 'Garden', 'target' => ''], ['name' => 'Golf Course', 'target' => ''], ['name' => 'Greenbelt', 'target' => ''], ['name' => 'Mountain(s)', 'target' => ''], ['name' => 'Park', 'target' => ''], ['name' => 'Pool', 'target' => ''], ['name' => 'Tennis Court', 'target' => ''], ['name' => 'Trees/Woods', 'target' => ''], ['name' => 'Water', 'target' => ''], ['name' => 'Beach', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherViewVacant']];
-                @endphp
-              <label class="fw-bold">View:</label>
-              <select class="grid-picker" name="view[]" id="view" style="justify-content: flex-start;"
-                multiple>
+            @php
+              $water_access = [['name' => 'Bay/Harbor', 'target' => ''], ['name' => 'Bayou', 'target' => ''], ['name' => 'Beach', 'target' => ''], ['name' => 'Beach - Access Deeded', 'target' => ''], ['name' => 'Brackish Water', 'target' => ''], ['name' => 'Canal - Brackish', 'target' => ''], ['name' => 'Canal - Freshwater', 'target' => ''], ['name' => 'Canal - Saltwater', 'target' => ''], ['name' => 'Creek', 'target' => ''], ['name' => 'Freshwater Canal w/Lift to Saltwater Canal', 'target' => ''], ['name' => 'Gulf/Ocean', 'target' => ''], ['name' => 'Gulf/Ocean to Bay', 'target' => ''], ['name' => 'Intracoastal Waterway', 'target' => ''], ['name' => 'Lagoon/Estuary', 'target' => ''], ['name' => 'Lake', 'target' => ''], ['name' => 'Lake - Chain of Lakes', 'target' => ''], ['name' => 'Limited Access', 'target' => ''], ['name' => 'Marina', 'target' => ''], ['name' => 'Pond', 'target' => ''], ['name' => 'River', 'target' => '']];
+            @endphp
+            <div class="form-group water_access_vacant">
+              <select class="grid-picker" name="water_access[]" id="water_access"
+                style="justify-content: flex-start;" multiple>
                 <option value="">Select</option>
-                @foreach ($viewVacant as $item)
+                @foreach ($water_access as $water_access1)
+                  <option value="{{ $water_access1['name'] }}" data-target="{{ $water_access1['target'] }}"
+                    class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
+                    style="width:calc(33.3% - 10px);">
+                    {{ $water_access1['name'] }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="fw-bold">Dock:</label>
+              <select class="grid-picker" name="has_dock" id="has_dock"
+                style="justify-content: flex-start;">
+                <option value="">Select</option>
+                @foreach ($yes_or_nos as $item)
+                  @php
+                    if ($item['name'] == 'Yes') {
+                        $target = '.dock_vacant';
+                    } else {
+                        $target = '';
+                    }
+                  @endphp
+                  <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+            @php
+            $dock = [
+                ['name' => '2 Point Moorage', 'target' => ''],
+                ['name' => '3 Point Moorage', 'target' => ''],
+                ['name' => '4 Point Moorage', 'target' => ''],
+                ['name' => 'CATV', 'target' => ''],
+                ['name' => 'Clubhouse', 'target' => ''],
+                ['name' => 'Dock - Composite', 'target' => ''],
+                ['name' => 'Dock - Concrete', 'target' => ''],
+                ['name' => 'Dock - Covered', 'target' => ''],
+                ['name' => 'Dock - Open', 'target' => ''],
+                ['name' => 'Dock - Slip 1st Come', 'target' => ''],
+                ['name' => 'Dock - Slip Deeded Off-Site', 'target' => ''],
+                ['name' => 'Dock - Slip Deeded On-Site', 'target' => ''],
+                ['name' => 'Dock - Wood', 'target' => ''],
+                ['name' => 'Dock w/Electric', 'target' => ''],
+                ['name' => 'Dock w/o Electric', 'target' => ''],
+                ['name' => 'Dock w/Water Supply', 'target' => ''],
+                ['name' => 'Dock w/o Water Supply', 'target' => ''],
+                ['name' => 'Dry Dock', 'target' => ''],
+                ['name' => 'Fish Cleaning Station', 'target' => ''],
+                ['name' => 'Floating Dock', 'target' => ''],
+                ['name' => 'Harbormaster', 'target' => ''],
+                ['name' => 'Internet', 'target' => ''],
+                ['name' => 'Lift', 'target' => ''],
+                ['name' => 'Restroom/Shower', 'target' => ''],
+                ['name' => 'Wet Dock', 'target' => ''],
+                ['name' => 'None', 'target' => ''],
+                ['name' => 'Other', 'target' => '.other-dock-vacant'],
+            ];
+            @endphp
+            <div class="form-group dock_vacant d-none ">
+              <label class="fw-bold">Dock Description:</label>
+              <select class="grid-picker" name="dock[]" id="dock"
+                style="justify-content: flex-start;" multiple>
+                <option value="">Select</option>
+                @foreach ($dock as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
+                    class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
+                    style="width:calc(33.3% - 10px);" required>
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+              <div class="form-group other-dock-vacant d-none">
+                <label class="fw-bold">Dock Description:</label>
+                <input type="text" name="custom_dock" id="custom_dock"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Dock Lift Capacity:</label>
+                <input type="text" name="dock_lift_capacity" id="dock_lift_capacity"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Dock Year Built:</label>
+                <input type="text" name="dock_year_built" id="dock_year_built"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Dock Dimension:</label>
+                <input type="text" name="dock_dimension" id="dock_dimension"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Dock Maintenance Fee:</label>
+                <input type="text" name="dock_maintenance_fee" id="dock_maintenance_fee"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
+              @php
+                $feeFrequency = [
+                  ['name' => 'Annual', 'target' => ''], 
+                  ['name' => 'Monthly', 'target' => ''], 
+                  ['name' => 'Quarterly', 'target' => ''], 
+                  ['name' => 'N/A', 'target' => '']]
+              @endphp
+              <label class="fw-bold">Dock Maintenance Fee Frequency:</label>
+              <select class="grid-picker" name="dock_maintenance_fee_frequency" id="dock_maintenance_fee_frequency"
+                style="justify-content: flex-start;" required>
+                <option value="">Select</option>
+                @foreach ($dock as $item)
+                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                    class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
                     style="width:calc(33.3% - 10px);">
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
-              <div class="form-group otherViewVacant d-none">
-                <label class="fw-bold">View:</label>
-                <input type="text" name="otherView" class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
-              </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="86">
+          <div class="wizard-step" data-step="85">
+            <h4>Ownership Information:</h4>
             @php
-              $ownerships = [['name' => 'Co-op', 'target' => ''], ['name' => 'Condominium', 'target' => ''], ['name' => 'Fee Simple', 'target' => ''], ['name' => 'Fractional', 'target' => ''], ['name' => 'Other', 'target' => '']];
+              $ownerships = [
+                ['name' => 'Co-op', 'target' => ''], 
+                ['name' => 'Condominium', 'target' => ''], 
+                ['name' => 'Fee Simple', 'target' => ''], 
+                ['name' => 'Fractional', 'target' => ''], 
+                ['name' => 'Other', 'target' => '']];
             @endphp
-
             <div class="form-group">
               <label class="fw-bold">Ownership:</label>
               <select class="grid-picker" name="ownership_co_op" id="ownership"
@@ -7225,10 +7497,11 @@
             <div class="form-group otherOwnershipVacant">
               <label class="fw-bold">Ownership:</label>
               <input type="text" name="otherOwnership" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined" >
+                data-icon="fa-regular fa-check-circle" >
             </div>
           </div>
-          <div class="wizard-step" data-step="87">
+          <div class="wizard-step" data-step="86">
+            <h4>HOA, Condo Association and/or Master Association Information:</h4>
             <div class="form-group">
               @php
                 $propsOptVacant = [
@@ -7236,8 +7509,7 @@
                   ['name'=>'No','icon'=>'<i class="fa-regular fa-circle-xmark"></i>','target'=>'']
                 ];
               @endphp
-              <label class="fw-bold">Does the property have an HOA, condo association, master
-                association, and/or community fee?</label>
+              <label class="fw-bold">Does the property have an HOA, condo association, master association, and/or community fee?</label>
               <select class="grid-picker" name="has_hoa" id="has_hoa" style="justify-content: flex-start;">
                 <option value="">Select</option>
                 @foreach ($propsOptVacant as $item)
@@ -7254,14 +7526,16 @@
             <div class="row hoasVacant d-none">
               @php
                 $communityFeaturesVacant = [
+                    ['name' => 'Activity Core/Center', 'target' => ''],
                     ['name' => 'Airport/Runway', 'target' => ''],
                     ['name' => 'Association Recreation - Lease', 'target' => ''],
-                    ['name' => ' Association Recreation - Owned', 'target' => ''],
-                    ['name' => 'Buyer Approval Required', 'target' => ''],
-                    ['name' => 'Clubhouse', 'target' => ''],
+                    ['name' => 'Association Recreation - Owned', 'target' => ''],
+                    ['name' => 'Beach Area', 'target' => ''],
                     ['name' => 'Community Boat Ramp', 'target' => ''],
-                    ['name' => 'Community Mailbox', 'target' => ''],
+                    ['name' => 'Curbs', 'target' => ''],
                     ['name' => 'Deed Restrictions', 'target' => ''],
+                    ['name' => 'Dog Park', 'target' => ''],
+                    ['name' => 'Expressway', 'target' => ''],
                     ['name' => 'Fishing', 'target' => ''],
                     ['name' => 'Fitness Center', 'target' => ''],
                     ['name' => 'Gated Community - Guard', 'target' => ''],
@@ -7272,22 +7546,21 @@
                     ['name' => 'Horse Stable(s)', 'target' => ''],
                     ['name' => 'Horses Allowed', 'target' => ''],
                     ['name' => 'Irrigation-Reclaimed Water', 'target' => ''],
-                    ['name' => 'Lake', 'target' => ''],
                     ['name' => 'No Truck/RV/Motorcycle Parking', 'target' => ''],
+                    ['name' => 'None', 'target' => ''],
                     ['name' => 'Park', 'target' => ''],
                     ['name' => 'Playground', 'target' => ''],
                     ['name' => 'Pool', 'target' => ''],
                     ['name' => 'Public Boat Ramp', 'target' => ''],
                     ['name' => 'Racquetball', 'target' => ''],
-                    ['name' => 'Restaurant', 'target' => ''],
+                    ['name' => 'Shopping Center', 'target' => ''],
                     ['name' => 'Sidewalk', 'target' => ''],
                     ['name' => 'Special Community Restrictions', 'target' => ''],
                     ['name' => 'Stream Seasonal', 'target' => ''],
                     ['name' => 'Tennis Courts', 'target' => ''],
-                    ['name' => ' Water Access', 'target' => ''],
+                    ['name' => 'Water Access', 'target' => ''],
                     ['name' => 'Waterfront', 'target' => ''],
-                    ['name' => 'Wheelchair Access', 'target' => ''],
-                    ['name' => 'None', 'target' => ''],
+                    ['name' => 'Waterfront Complex', 'target' => '']
                 ];
               @endphp
               <div class="form-group ">
@@ -7357,7 +7630,7 @@
                 </select>
                 <div class="form-group otherAssocAmenitiesVacant d-none">
                   <label class="fw-bold">Association Amenities: </label>
-                  <input type="text" name="otherAssocAmenities" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                  <input type="text" name="otherAssocAmenities" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                 </div>
               </div>
               @php
@@ -7404,12 +7677,12 @@
                 </select>
                 <div class="form-group otherFeeIncludeVacant d-none">
                   <label class="fw-bold">Fee Includes:</label>
-                  <input type="text" name="otherFeeInclude" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                  <input type="text" name="otherFeeInclude" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                 </div>
               </div>
               <div class="form-group">
                 <label class="fw-bold">Amenities with Additional Fees:</label>
-                <input type="number" name="amenities_with_additional_fees"
+                <input type="text" name="amenities_with_additional_fees"
                   class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
               </div>
               <div class="form-group">
@@ -7432,7 +7705,7 @@
               </div>
               <div class="form-group ccdVacant d-none">
                 <label class="fw-bold">Annual CDD Fee:</label>
-                <input type="number" name="annual_cdd_fee" id="annual_cdd_fee" class="form-control has-icon"
+                <input type="text" name="annual_cdd_fee" id="annual_cdd_fee" class="form-control has-icon"
                   data-icon="fa-solid fa-dollar ">
               </div>
               <div class="form-group">
@@ -7610,7 +7883,7 @@
                 <div class="form-group additionalFeeYesVacant d-none">
                   <div class="form-group">
                     <label class="fw-bold">What is the fee for?</label>
-                    <input type="text" name="additionalFeeReason" id="additionalFeeReason" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
+                    <input type="text" name="additionalFeeReason" id="additionalFeeReason" class="form-control has-icon" data-icon="">
                   </div>
                   <div class="form-group">
                     <label class="fw-bold">Other Fee:</label>
@@ -7677,27 +7950,19 @@
                   </select>
                 </div>
           </div>
-          <div class="wizard-step" data-step="88">
+          <div class="wizard-step" data-step="87">
             <div class="form-group">
               <label class="fw-bold"> Description:</label>
               <textarea name="description" id="description" class="form-control" cols="30" rows="10" required></textarea>
             </div>
-
-            <div class="form-group">
-              <label class="fw-bold">Keywords:<small class="small">(Add keywords of the
-                  best property features) </small></label>
-              <input type="text" name="keywords" id="keywords" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined">
-            </div>
             <div class="form-group">
               <label class="fw-bold">Legal Disclamers:</label>
-              <input type="text" name="driving_directions" id="keywords" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined">
+              <textarea name="driving_directions" id="keywords" class="form-control" cols="30" rows="10" required></textarea>
             </div>
             <div class="form-group">
               <label class="fw-bold">Driving Directions:</label>
               <input type="text" name="driving_directions" id="keywords" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined">
+                data-icon="fa-solid fa-car">
             </div>
             <div class="form-group">
                   @php
@@ -7716,13 +7981,21 @@
                   @endforeach
                 </select>
                 <div class="form-group sellerComYesVacant d-none">
-                  <label class="fw-bold">Buyer’s Agent Compensation:</label>
+                  <div class="d-flex justify-content-between aalign-items-center">
+                    <label class="fw-bold">Buyer’s Agent Compensation:</label>
+                    <div
+                        class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                        <button type="button" class="select-btn me-1 active"
+                            data-type="percent">%</button>
+                        <button type="button" class="select-btn" data-type="amount">$</button>
+                    </div>
+                  </div>
                   <input type="text" name="compensation_amount" class="form-control has-icon"
-                    data-icon="fa-solid fa-dollar">
+                    data-icon="fa-solid fa-percent">
                 </div>
               </div>
           </div>
-          <div class="wizard-step" data-step="89">
+          <div class="wizard-step" data-step="88">
             <div class="form-group">
               <label class="fw-bold">Is the Seller actively seeking to purchase another property?
               </label>
@@ -7746,12 +8019,12 @@
             </div>
             <div class="form-group anotherPropVacant">
               <label class="fw-bold">Link to the listing on the Bid Your Offer platform:</label>
-              <input type="url" name="listing_link" id="listing_link" placeholder=""
+              <input type="text" name="listing_link" id="listing_link" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-link">
             </div>
           </div>
-          <div class="wizard-step" data-step="90">
-            <h4> Title Company Information:</h4>
+          <div class="wizard-step" data-step="89">
+            <h4>Title Company Information:</h4>
             <div class="form-group">
               <label class="fw-bold">Name:</label>
               <input type="text" name="title_company_name" id="title_company_name" placeholder=""
@@ -7775,20 +8048,24 @@
             </div>
         
           </div>
-          <div class="wizard-step" data-step="91">
-            <h4>Agent info:</h4>
+          <div class="wizard-step" data-step="90">
+            @if (auth()->user()->user_type == 'agent')
+              <h4>Listing Agent Information:</h4>
+            @else
+              <h4>Seller’s Information:</h4>
+            @endif
             <div class="form-group row">
               <div class="form-group col-md-6">
                 <label class="fw-bold">First Name:</label>
                 <input type="text" name="agent_first_name" id="first_name" placeholder=""
                   value="{{ Auth::user()->first_name }}" class="form-control has-icon"
-                  data-icon="fa-solid fa-user">
+                  data-icon="fa-solid fa-user" required>
               </div>
               <div class="form-group col-md-6">
                 <label class="fw-bold">Last Name:</label>
                 <input type="text" name="agent_last_name" id="last_name" placeholder=""
                   value="{{ Auth::user()->last_name }}" class="form-control has-icon"
-                  data-icon="fa-solid fa-user">
+                  data-icon="fa-solid fa-user" required>
               </div>
             </div>
             <div class="form-group row">
@@ -7796,27 +8073,33 @@
                 <label class="fw-bold">Phone Number:</label>
                 <input type="text" name="agent_phone" id="agent_phone" placeholder=""
                   value="{{ optional(Auth::user())->phone }}" class="form-control has-icon"
-                  data-icon="fa-solid fa-phone">
+                  data-icon="fa-solid fa-phone" required>
               </div>
               <div class="form-group col-md-6 ">
                 <label class="fw-bold">Email:</label>
                 <input type="text" name="agent_email" id="agent_email" placeholder=""
                   class="form-control has-icon" data-icon="fa-solid fa-envelope"
-                  value="{{ Auth::user()->email }}">
+                  value="{{ Auth::user()->email }}" required>
               </div>
             </div>
+            @if (auth()->user()->user_type == 'user')
+            <div class="form-group  col-md-6">
+              <label class="fw-bold">Listed By: Listed By Owner:</label>
+            </div>
+            @endif
+            @if (auth()->user()->user_type == 'agent')
             <div class="form-group row">
               <div class="form-group col-md-6">
                 <label class="fw-bold">Brokerage:</label>
                 <input type="text" name="agent_brokerage" id="agent_brokerage" placeholder=""
                   value="{{ optional(Auth::user())->brokerage }}" class="form-control has-icon"
-                  data-icon="fa-solid fa-handshake">
+                  data-icon="fa-solid fa-handshake" required>
               </div>
               <div class="form-group col-md-6">
                 <label class="fw-bold">Real Estate License #:</label>
                 <input type="text" name="agent_license_no" id="agent_license_no" placeholder=""
                   value="{{ optional(Auth::user())->license_no }}" class="form-control has-icon"
-                  data-icon="fa-solid fa-id-card">
+                  data-icon="fa-solid fa-id-card" required>
               </div>
             </div>
             <div class="form-group row">
@@ -7824,23 +8107,22 @@
                 <label class="fw-bold">NAR Member ID (NRDS ID):</label>
                 <input type="text" name="agent_mls_id" id="agent_mls_id" placeholder=""
                   class="form-control has-icon" data-icon="fa-solid fa-id-badge"
-                  value="{{ optional(Auth::user())->mls_id }}">
+                  value="{{ optional(Auth::user())->mls_id }}" required>
               </div>
               <div class="form-group  col-md-6">
                 <label class="fw-bold">Listed By: Real Estate Agent:</label>
-                <input type="text" name="realEstateAgent" id="titl_company_email"
-                  data-icon="fa-solid fa-user" class="form-control has-icon">
               </div>
             </div>
+            @endif
           </div>
-          <div class="wizard-step" data-step="92">
+          <div class="wizard-step" data-step="91">
             <div class="form-group">
-              <label class="fw-bold">3D Tour:</label>
-              <input type="url" name="three_d_tour" id="three_d_tour" placeholder=""
+              <label class="fw-bold">3D Tour (Link):</label>
+              <input type="text" name="three_d_tour" id="three_d_tour" placeholder=""
                   class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
                 </div>
               <div class="form-group">
-                <label class="fw-bold">Floor Plan:</label>
+                <label class="fw-bold">Plot Plan:</label>
                 <input type="file" name="floor_plan" id="floor_plan" class="form-control">
               </div>
               <div class="form-group">
@@ -7871,7 +8153,7 @@
                             <div class="js--image-preview"></div>
                             <div class="upload-options">
                               <label>
-                                <input type="file" name="photo" class="image-upload" accept="image/*" />
+                                <input type="file" name="photo" class="image-upload" accept="image/*" multiple />
                               </label>
                             </div>
                           </div>
@@ -7881,6 +8163,7 @@
               </div>
             </span>
           </div>
+          {{-- Vacant end --}}
           <div class="d-flex justify-content-between form-group mt-4">
             <div>
               <a class="wizard-step-back btn btn-success btn-lg text-600" style="display: none;">Back</a>
@@ -8223,6 +8506,7 @@
       $('.business-length').hide();
       $('.property_style').hide();
       $('.currentUse').hide();
+      $('.fireplace').show();
       $('.businessType').hide();
       $('.resFields').each(function() {
         $(this).find('select, input ,textarea').prop('disabled', false);
@@ -8244,6 +8528,7 @@
       $('.currentUse').hide();
       $('.property_style').hide();
       $('.businessType').hide();
+      $('.fireplace').show();
       $('.resFields').each(function() {
         $(this).find('select, input ,textarea').prop('disabled', false);
       });
@@ -8266,6 +8551,7 @@
       $('.currentUse').hide();
       $('.property_style').hide();
       $('.businessType').hide();
+      $('.fireplace').hide();
       $('.commercialFields').each(function() {
         $(this).find('select, input ,textarea').prop('disabled', false);
       });
@@ -8288,6 +8574,7 @@
       $('.property_style').hide();
       $('.currentUse').show();
       $('.businessType').hide();
+      $('.fireplace').show();
       $('.vacantFields').each(function() {
         $(this).find('select, input ,textarea').prop('disabled', false);
       });
@@ -8310,6 +8597,7 @@
       $('.currentUse').hide();
       $('.businessType').show();
       $('.property_style').show();
+      $('.fireplace').hide();
       $('.commercialFields').each(function() {
         $(this).find('select, input ,textarea').prop('disabled', false);
       });
@@ -8474,10 +8762,8 @@
             // $('.wizard-step.active').removeClass('active').next().addClass('active');
             $('.wizard-step.active').removeClass('active');
             console.log(StepWizard.currentStep)
-            if (StepWizard.currentStep == 7 && property_type ==
-              'Vacant Land'
-            ) {
-              StepWizard.nextStep = 75;
+            if (StepWizard.currentStep == 7 && property_type == 'Vacant Land') {
+              StepWizard.nextStep = 76;
               StepWizard.backStep = 7;
             } 
             // else if (StepWizard.currentStep == 34 && property_type ==
@@ -8501,33 +8787,66 @@
                 'Commercial Property' || property_type == 'Business Opportunity')
 
             ) {
-              StepWizard.nextStep = 10;
+              StepWizard.nextStep = 42;
               StepWizard.backStep = 8;
-            } else if (StepWizard.currentStep == 22 && (property_type ==
+            } 
+            else if (StepWizard.currentStep == 42 && (property_type ==
                 'Commercial Property' || property_type == 'Business Opportunity')
 
             ) {
-              StepWizard.nextStep = 51;
-              StepWizard.backStep = 22;
-            } else if (StepWizard.currentStep == 10 && (property_type ==
+              StepWizard.nextStep = 44;
+              StepWizard.backStep = 42;
+            } 
+            else if (StepWizard.currentStep == 61 && (property_type ==
                 'Commercial Property' || property_type == 'Business Opportunity')
 
             ) {
-              StepWizard.nextStep = 12;
-              StepWizard.backStep = 10;
-            } else if (StepWizard.currentStep == 14 && (property_type ==
+              StepWizard.nextStep = 63;
+              StepWizard.backStep = 61;
+            }
+            else if (StepWizard.currentStep == 66 && (property_type ==
                 'Commercial Property' || property_type == 'Business Opportunity')
 
             ) {
-              StepWizard.nextStep = 16;
-              StepWizard.backStep = 14;
-            } else if (StepWizard.currentStep == 20 && (property_type ==
-                'Commercial Property' || property_type == 'Business Opportunity')
+              StepWizard.nextStep = 68;
+              StepWizard.backStep = 66;
+            }
+            // else if (StepWizard.currentStep == 14 && (property_type ==
+            //     'Commercial Property' || property_type == 'Business Opportunity')
 
-            ) {
-              StepWizard.nextStep = 22;
-              StepWizard.backStep = 20;
-            } else {
+            // ) {
+            //   StepWizard.nextStep = 47;
+            //   StepWizard.backStep = 14;
+            // } 
+            // else if (StepWizard.currentStep == 47 && (property_type ==
+            //     'Commercial Property' || property_type == 'Business Opportunity')
+
+            // ) {
+            //   StepWizard.nextStep = 17;
+            //   StepWizard.backStep = 47;
+            // } 
+            
+            // else if (StepWizard.currentStep == 21 && (property_type ==
+            //     'Commercial Property' || property_type == 'Business Opportunity')
+
+            // ) {
+            //   StepWizard.nextStep = 52;
+            //   StepWizard.backStep = 21;
+            // }  else if (StepWizard.currentStep == 10 && (property_type ==
+            //     'Commercial Property' || property_type == 'Business Opportunity')
+
+            // ) {
+            //   StepWizard.nextStep = 12;
+            //   StepWizard.backStep = 10;
+            // } else if (StepWizard.currentStep == 20 && (property_type ==
+            //     'Commercial Property' || property_type == 'Business Opportunity')
+
+            // ) {
+            //   StepWizard.nextStep = 21;
+            //   StepWizard.backStep = 20;
+            // } 
+            
+            else {
               StepWizard.backStep = StepWizard.currentStep;
             }
             $('[ data-step="' + StepWizard.nextStep + '"]').addClass("active");
@@ -8562,54 +8881,60 @@
           //   'Commercial Property') {
           //   StepWizard.backStep = 46;
           // }
-          if (StepWizard.currentStep == 51 && (property_type == 'Business Opportunity' || property_type ==
-              'Commercial Property'))
-
-          {
-            StepWizard.backStep = 22;
-          }
-          else if (StepWizard.currentStep == 11 && property_type == 'Income Property') {
+          
+          if (StepWizard.currentStep == 11 && property_type == 'Income Property') {
               StepWizard.backStep = 8
               StepWizard.nextStep = 11;
-            } 
-            else if (StepWizard.currentStep == 12 && property_type == 'Residential Property') {
+            }else if (StepWizard.currentStep == 12 && property_type == 'Residential Property') {
               StepWizard.backStep = 10
               StepWizard.nextStep = 12;
-            }
-            else if (StepWizard.currentStep == 13 && (property_type == 'Commercial Property' ||
-              property_type ==
-              'Business Opportunity')) {
-            StepWizard.backStep = 11;
-            StepWizard.nextStep = 13;
-          } else if (StepWizard.currentStep == 10 && (property_type ==
-              'Commercial Property' || property_type == 'Business Opportunity')
+            }else if (StepWizard.currentStep == 42 && (property_type == 'Business Opportunity' || property_type == 'Commercial Property')){
+              StepWizard.backStep = 8;
+              StepWizard.nextStep = 42;
+            }else if (StepWizard.currentStep == 44 && (property_type == 'Business Opportunity' || property_type == 'Commercial Property')){
+              StepWizard.backStep = 42;
+              StepWizard.nextStep = 44;
+            }else if (StepWizard.currentStep == 63 && (property_type == 'Business Opportunity' || property_type == 'Commercial Property')){
+              StepWizard.backStep = 61;
+              StepWizard.nextStep = 63;
+            }else if (StepWizard.currentStep == 68 && (property_type == 'Business Opportunity' || property_type == 'Commercial Property')){
+              StepWizard.backStep = 66;
+              StepWizard.nextStep = 68;
+            } 
+            
+          //   else if (StepWizard.currentStep == 13 && (property_type == 'Commercial Property' || property_type == 'Business Opportunity')) {
+          //   StepWizard.backStep = 11;
+          //   StepWizard.nextStep = 13;
+          // } else if (StepWizard.currentStep == 47 && (property_type == 'Commercial Property' ||
+          //     property_type ==
+          //     'Business Opportunity')) {
+          //   StepWizard.backStep = 14;
+          //   StepWizard.nextStep = 47;
+          // } else if (StepWizard.currentStep == 17 && (property_type == 'Commercial Property' ||
+          //     property_type ==
+          //     'Business Opportunity')) {
+          //   StepWizard.backStep = 47;
+          //   StepWizard.nextStep = 17;
+          // } else if (StepWizard.currentStep == 10 && (property_type ==
+          //     'Commercial Property' || property_type == 'Business Opportunity')
 
-          ) {
-            StepWizard.backStep = 8;
-            StepWizard.nextStep = 10;
-          } else if (StepWizard.currentStep == 16 && (property_type ==
-              'Commercial Property' || property_type == 'Business Opportunity')
+          // ) {
+          //   StepWizard.backStep = 8;
+          //   StepWizard.nextStep = 10;
+          // } else if (StepWizard.currentStep == 21 && (property_type ==
+          //     'Commercial Property' || property_type == 'Business Opportunity')
 
-          ) {
-            StepWizard.backStep = 14;
-            StepWizard.nextStep = 16;
-          } else if (StepWizard.currentStep == 22 && (property_type ==
-              'Commercial Property' || property_type == 'Business Opportunity')
-
-          ) {
-            StepWizard.nextStep = 22;
-            StepWizard.backStep = 20;
-          } 
+          // ) {
+          //   StepWizard.nextStep = 21;
+          //   StepWizard.backStep = 20;
+          // } 
           // else if (StepWizard.currentStep == 36 && property_type ==
           //   'Residential Property') {
           //   StepWizard.backStep = 34;
           // } 
-          else if (StepWizard.currentStep == 8 &&
-            (property_type == 'Residential Property' || property_type == 'Income Property')
-          ) {
+          else if (StepWizard.currentStep == 8 && (property_type == 'Residential Property' || property_type == 'Income Property')) {
             StepWizard.backStep = 7;
-          } else if (StepWizard.currentStep == 76 && property_type ==
-            'Vacant Land') {
+          } else if (StepWizard.currentStep == 76 && property_type == 'Vacant Land') {
             StepWizard.backStep = 7;
           } else {
             StepWizard.backStep = StepWizard.currentStep - 1;
@@ -8688,26 +9013,49 @@
           comp = 20 + (((StepWizard.currentStep - 7) / (41 - 7)) * 80);
         }
       }
+      else if (property_type === 'Commercial Property' || property_type === 'Business Opportunity') {
+        // Calculate progress for commercial and business opportunity steps (42 to 76)
+        comp = 20 + (((StepWizard.currentStep - 7) / (75 - 7)) * 80);
+        if (StepWizard.currentStep == 21) {
+          comp = 20 + (((StepWizard.currentStep - 21) / (55 - 21)) * 80);
+        }
+      }
       // else if (property_type === 'Commercial Property' || property_type === 'Business Opportunity') {
-      //   // Calculate progress for commercial and business opportunity steps (42 to 76)
-      //   comp = 20 + (((StepWizard.currentStep - 7) / (75 - 7)) * 80);
-      //   if (StepWizard.currentStep == 21) {
-      //     comp = 20 + (((StepWizard.currentStep - 21) / (55 - 21)) * 80);
+      //   //   console.log(StepWizard.currentStep)
+      //   if (StepWizard.currentStep >= 7 && StepWizard.currentStep <= 20) {
+      //     comp = 20 + (((StepWizard.currentStep - 7) / (75 - 7)) * 80);
+      //   }
+      //   if (StepWizard.currentStep >= 20 && StepWizard.currentStep <= 23) {
+      //     comp = 20 + (((StepWizard.currentStep - 7) / (75 - 7)) * 80);
+
+      //   }
+      //   if (StepWizard.currentStep >= 44 && StepWizard.currentStep <= 75) {
+      //     comp = 20 + (((StepWizard.currentStep - 44) / (75 - 44)) * 80);
       //   }
       // }
       else if (property_type === 'Commercial Property' || property_type === 'Business Opportunity') {
-        //   console.log(StepWizard.currentStep)
-        if (StepWizard.currentStep >= 7 && StepWizard.currentStep <= 20) {
-          comp = 20 + (((StepWizard.currentStep - 7) / (75 - 7)) * 80);
+        if (StepWizard.currentStep >= 1 && StepWizard.currentStep <= 8) {
+            // Steps 1 to 8
+            comp = 20 + ((StepWizard.currentStep - 1) / 7) * 20; // 20% for this range
+        } else if (StepWizard.currentStep >= 9 && StepWizard.currentStep <= 41) {
+            // Jump from step 8 to 42, so 8 is 20%, and 42 is 100% (80% for steps 9 to 41)
+            comp = 20 + (80 * (StepWizard.currentStep - 9) / 33); // Steps 9 to 41 contribute to the middle range
+        } else if (StepWizard.currentStep >= 42 && StepWizard.currentStep <= 61) {
+            // Steps 42 to 61
+            comp = 100 * ((StepWizard.currentStep - 42) / 19) + 20; // 80% for this range (20% already added)
+        } else if (StepWizard.currentStep >= 62 && StepWizard.currentStep <= 66) {
+            // Steps 62 to 66
+            comp = 100 * ((StepWizard.currentStep - 62) / 4) + 100; // 100% (20% + 80% + 20% of the last range)
+        } else if (StepWizard.currentStep >= 67 && StepWizard.currentStep <= 75) {
+            // Steps 67 to 75
+            comp = 100 * ((StepWizard.currentStep - 67) / 8) + 120; // 20% for last range
+        }else if (StepWizard.currentStep === 75) {
+            // Step 75 is the final step
+            comp = 100; // Final step, complete
         }
-        if (StepWizard.currentStep >= 20 && StepWizard.currentStep <= 23) {
-          comp = 20 + (((StepWizard.currentStep - 7) / (75 - 7)) * 80);
-
-        }
-        if (StepWizard.currentStep >= 51 && StepWizard.currentStep <= 75) {
-          comp = 20 + (((StepWizard.currentStep - 44) / (75 - 44)) * 80);
-        }
-      } else if (property_type === 'Vacant Land') {
+      }
+      
+      else if (property_type === 'Vacant Land') {
         // Calculate progress for vacant land steps (77 to 91)
         comp = 20 + (((StepWizard.currentStep - 76) / (91 - 76)) * 80);
       } else {
