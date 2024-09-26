@@ -1180,7 +1180,10 @@
                   </div>
                 @endif
                 @if (@$auction->get->additionalRooms != null)
-                  <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i> Additional Rooms: <span class="removeBold"> {{ @$auction->get->additionalRooms }}</span> </div>
+                  <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i> Additional Rooms: 
+                    @foreach (@$auction->get->additionalRooms as $item)
+                      <span class="removeBold"> {{ $item }}</span> </div>
+                    @endforeach
                 @endif
                 @if (@$auction->get->approximate_room_dimensions != null)
                   <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i> Approximate Room Dimensions: <span class="removeBold"> {{ @$auction->get->approximate_room_dimensions }}</span> </div>
