@@ -67,6 +67,28 @@ class PropertyAuctionBidController extends Controller
             $bid->saveMeta("term", $request->term);
             $bid->saveMeta("montylyPayment", $request->montylyPayment);
             $bid->saveMeta("ballonPayment", $request->ballonPayment);
+            $bid->saveMeta("mortgage_approved", $request->mortgage_approved);
+            $bid->saveMeta("mortgage_approved_amount", $request->mortgage_approved_amount);
+            $bid->saveMeta("mortgage_denied", $request->mortgage_denied);
+            $bid->saveMeta("financial_situation", $request->financial_situation);
+            $bid->saveMeta("employement_duration", $request->employement_duration);
+            $bid->saveMeta("employement_detail", $request->employement_detail);
+            $bid->saveMeta("employement_status_change", $request->employement_status_change);
+            $bid->saveMeta("gross_income", $request->gross_income);
+            $bid->saveMeta("debt_payment", $request->debt_payment);
+            $bid->saveMeta("credit_score", $request->credit_score);
+            $bid->saveMeta("down_payment_loan_balance", $request->down_payment_loan_balance);
+            $bid->saveMeta("assumable_mortgage_approved", $request->assumable_mortgage_approved);
+            $bid->saveMeta("assumable_mortgage_approved_amount", $request->assumable_mortgage_approved_amount);
+            $bid->saveMeta("assumable_mortgage_denied", $request->assumable_mortgage_denied);
+            $bid->saveMeta("assumable_financial_situation", $request->assumable_financial_situation);
+            $bid->saveMeta("assumable_employement_duration", $request->assumable_employement_duration);
+            $bid->saveMeta("assumable_employement_detail", $request->assumable_employement_detail);
+            $bid->saveMeta("assumable_employement_status_change", $request->assumable_employement_status_change);
+            $bid->saveMeta("assumable_gross_income", $request->assumable_gross_income);
+            $bid->saveMeta("assumable_debt_payment", $request->assumable_debt_payment);
+            $bid->saveMeta("assumable_credit_score", $request->assumable_credit_score);
+
             $bid->saveMeta("custom_seller_financings_security", $request->custom_seller_financings_security);
             $bid->saveMeta("prepayment", $request->prepayment);
             $bid->saveMeta("closingCosts", $request->closingCosts);
@@ -88,6 +110,38 @@ class PropertyAuctionBidController extends Controller
             $bid->saveMeta("closing_days2", $request->closing_days2);
             $bid->saveMeta("desired_days", $request->desired_days);
             $bid->saveMeta("contingency", $request->contingency);
+
+            $bid->saveMeta("contigencies_accepted_by_seller", $request->contigencies_accepted_by_seller);
+            $bid->saveMeta("inspection", $request->inspection);
+            $bid->saveMeta("appraisal", $request->appraisal);
+            $bid->saveMeta("finance", $request->finance);
+            $bid->saveMeta("saleContingency", $request->saleContingency);
+            $bid->saveMeta("acceptable", $request->acceptable);
+            $bid->saveMeta("acceptable_days", $request->acceptable_days);
+
+            $bid->saveMeta("buyer_represented", $request->buyer_represented);
+            $bid->saveMeta("buyer_agent_accept_compensation", $request->buyer_agent_accept_compensation);
+            $bid->saveMeta("buyer_requests_agent_commission", $request->buyer_requests_agent_commission);
+            $bid->saveMeta("buyer_requests_agent_commission_amount", $request->buyer_requests_agent_commission_amount);
+            $bid->saveMeta("buyer_requests_agent_commission_amount_other", $request->buyer_requests_agent_commission_amount_other);
+
+            $bid->saveMeta("offer_expiry", $request->offer_expiry);
+            $bid->saveMeta("increase_bid_price", $request->increase_bid_price);
+            $bid->saveMeta("autobid_price", $request->autobid_price);
+            $bid->saveMeta("autobid_escrow_deposit", $request->autobid_escrow_deposit);
+            $bid->saveMeta("autobid_contingency", $request->autobid_contingency);
+            $bid->saveMeta("autobid_inspection", $request->autobid_inspection);
+            $bid->saveMeta("autobid_appraisal", $request->autobid_appraisal);
+            $bid->saveMeta("autobid_finance", $request->autobid_finance);
+            $bid->saveMeta("autobid_saleContingency", $request->autobid_saleContingency);
+            $bid->saveMeta("autobid_offered_contingency", $request->autobid_offered_contingency);
+            $bid->saveMeta("autobid_offered_contingency_days", $request->autobid_offered_contingency_days);
+            $bid->saveMeta("autobid_closing_date", $request->autobid_closing_date);
+            $bid->saveMeta("acceptable_days", $request->acceptable_days);
+            $bid->saveMeta("acceptable_days", $request->acceptable_days);
+            $bid->saveMeta("acceptable_days", $request->acceptable_days);
+            $bid->saveMeta("acceptable_days", $request->acceptable_days);
+
             $bid->saveMeta("custom_inspection", $request->custom_inspection);
             $bid->saveMeta("creditForm", $request->creditForm);
             $bid->saveMeta("sellerPreminum", $request->sellerPreminum);
