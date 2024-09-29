@@ -898,42 +898,7 @@
   <div class="container listingDescription">
     <div class="row">
       <div class="col-sm-12 col-md-8 col-lg-8 leftCol">
-        <!-- Galery Start Here  -->
-        <div class="row d-flex flex-wrap" data-toggle="modal" data-target="#lightbox">
-          <!-- Main Video Baner  -->
-          @php
-            $i_sr = 0;
-            $mediaImage = url('auction/images/noimage.png');
-            if (gettype(@$auction->get->photos) == 'array') {
-                $photos = @$auction->get->photos;
-                $mediaImage = url(current($photos));
-            }
-          @endphp
-          <div class="col-sm-12 col-md-6 col-lg-8">
-            <img class="w-100" src="{{ asset(@$mediaImage) }}" data-target="#indicators"
-              data-slide-to="{{ $i_sr }}" alt="" />
-          </div>
-          <!-- Small Images  -->
-          <div class="col-sm-12 col-md-4 col-lg-4">
-            <div class="row">
-              {{-- @dd(@$auction->get) --}}
-              @if (@$auction->get->photos)
-                @foreach (@$auction->get->photos as $image)
-                  <div class="col-sm-4 col-md-6 col-lg-6 p-2">
-                    <img class="w-100" src="{{ asset($image) }}" data-target="#indicators"
-                      data-slide-to="{{ $i_sr++ }}" alt="" />
-                  </div>
-                @endforeach
-              @else
-                <div class="col-sm-4 col-md-6 col-lg-6 p-2">
-                  <img class="w-100" src="{{ asset($mediaImage) }}" data-target="#indicators"
-                    data-slide-to="{{ $i_sr++ }}" alt="" />
-                </div>
-              @endif
-            </div>
-          </div>
-
-        </div>
+        
         <!-- Modal -->
         @if (@$auction->get->photos)
           <div class="modal fade" id="lightbox" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -978,10 +943,75 @@
         <!-- End  -->
         <!-- Description Box  -->
         <div class="card description">
-          <div class="card-header">
-            <h5>Description</h5>
-          </div>
           <div class="card-body">
+            <h4>Marketing Materials:</h4>
+            <!-- Galery Start Here  -->
+            <div class="row" style="flex-wrap: wrap;">
+              <div class="col-md-12 col-12 fw-bold mt-1 mb-1" data-toggle="modal" data-target="#lightbox">
+                Property Photos:
+                <!-- Main Video Baner  -->
+                @php
+                  $i_sr = 0;
+                  $mediaImage = url('auction/images/noimage.png');
+                  if (gettype(@$auction->get->photos) == 'array') {
+                      $photos = @$auction->get->photos;
+                      $mediaImage = url(current($photos));
+                  }
+                @endphp
+                <div class="col-sm-12 col-md-6 col-lg-8">
+                  <img class="w-100" src="{{ asset(@$mediaImage) }}" data-target="#indicators"
+                    data-slide-to="{{ $i_sr }}" alt="" />
+                </div>
+                <!-- Small Images  -->
+                <div class="col-sm-12 col-md-4 col-lg-4">
+                  <div class="row">
+                    {{-- @dd(@$auction->get) --}}
+                    @if (@$auction->get->photos)
+                      @foreach (@$auction->get->photos as $image)
+                        <div class="col-sm-4 col-md-6 col-lg-6 p-2">
+                          <img class="w-100" src="{{ asset($image) }}" data-target="#indicators"
+                            data-slide-to="{{ $i_sr++ }}" alt="" />
+                        </div>
+                      @endforeach
+                    @else
+                      <div class="col-sm-4 col-md-6 col-lg-6 p-2">
+                        <img class="w-100" src="{{ asset($mediaImage) }}" data-target="#indicators"
+                          data-slide-to="{{ $i_sr++ }}" alt="" />
+                      </div>
+                    @endif
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 col-12 fw-bold mt-1 mb-1">
+                Property Video:
+                <span class="removeBold">
+                  <video src="{{ asset($auction->get->video) }}" style="width:100%;height:29vh;"
+                      controls autoplay></video>
+                </span>
+              </div>
+              <div class="col-md-12 col-12 fw-bold mt-1 mb-1">
+                Floor Plan:
+                @if (isset($auction->get->floor_plan) && $auction->get->floor_plan !== null && !is_array($auction->get->floor_plan))
+                  <span class="removeBold">
+                    <a href="{{ asset($item) }}" download><img src="{{ asset($auction->get->floor_plan) }}" style="width:100px;height:130px;" /></a>
+                  </span>
+                @endif
+              </div>
+              <div class="col-md-12 col-12 fw-bold mt-1 mb-1">
+                Addendums/Disclosure:
+                @if ($auction->get->disclosures !== null && is_array($auction->get->disclosures) && count($auction->get->disclosures) > 0)
+                 <div>
+                  @foreach ($auction->get->disclosures as $item)
+                  <span class="removeBold">
+                    <a href="{{ asset($item) }}" download><img src="{{ asset($item) }}" style="width:100px;height:130px;" /></a>
+                  </span>
+                  @endforeach
+                 </div>
+                @endif
+              </div>
+            </div>
+            <hr />
+            <h4>Description:</h4>
             <p class="card-text">{{ @$auction->get->description }}</p>
             <hr />
             <h4>Features</h4>
@@ -1181,9 +1211,14 @@
                 @endif
                 @if (@$auction->get->additionalRooms != null)
                   <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i> Additional Rooms: 
-                    @foreach (@$auction->get->additionalRooms as $item)
+                    @if (is_array($auction->get->additionalRooms))
+                      @foreach (@$auction->get->additionalRooms as $item)
                       <span class="removeBold"> {{ $item }}</span> </div>
-                    @endforeach
+                      @endforeach
+                    @else
+                      <span class="removeBold"> {{  $auction->get->additionalRooms }}</span> </div>
+                    @endif
+                    
                 @endif
                 @if (@$auction->get->approximate_room_dimensions != null)
                   <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i> Approximate Room Dimensions: <span class="removeBold"> {{ @$auction->get->approximate_room_dimensions }}</span> </div>

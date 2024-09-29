@@ -361,6 +361,8 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("associationManagerContactWebsite",$request->associationManagerContactWebsite);
             $auction->saveMeta("olderPersons",$request->olderPersons);
             $auction->saveMeta("description",$request->description);
+            $auction->saveMeta("descriptionCom",$request->descriptionCom);
+            $auction->saveMeta("descriptionVac",$request->descriptionVac);
             $auction->saveMeta("keywords",$request->keywords);
             $auction->saveMeta("disclamer",$request->disclamer);
             $auction->saveMeta("driving_directions",$request->driving_directions);
@@ -403,17 +405,38 @@ class PropertyAuctionController extends Controller
                     $auction->saveMeta('floor_plan', 'auction/files/' . $fileName);
                 }
             }
+            // if ($request->hasFile('photo')) {
+            //     $photo = $request->photo;
+            //     $extension = $photo->getClientOriginalExtension();
+            //     $check = in_array($extension, $allowedFiles);
+            //     if ($check) {
+            //         $uuid = (string) Str::uuid();
+            //         $photoName = $uuid . '.' . $extension;
+            //         $photo->move(public_path('auction/images'), $photoName);
+            //         $auction->saveMeta('photo', 'auction/images/' . $photoName);
+            //     }
+            // }
+
             if ($request->hasFile('photo')) {
-                $photo = $request->photo;
-                $extension = $photo->getClientOriginalExtension();
-                $check = in_array($extension, $allowedFiles);
-                if ($check) {
-                    $uuid = (string) Str::uuid();
-                    $photoName = $uuid . '.' . $extension;
-                    $photo->move(public_path('auction/images'), $photoName);
-                    $auction->saveMeta('photo', 'auction/images/' . $photoName);
+                $photos = $request->file('photo'); // Get the array of uploaded files
+                $photoLinks = []; // Array to hold photo links
+                foreach ($photos as $photo)  {
+                    $extension = $photo->getClientOriginalExtension();
+                    $check = in_array($extension, $allowedFiles);
+                    
+                    if ($check) {
+                        $uuid = (string) Str::uuid();
+                        $photoName = $uuid . '.' . $extension;
+                        $photo->move(public_path('auction/images'), $photoName);
+                        $photoLinks[] = 'auction/images/' . $photoName; // Store each link
+                    }
                 }
+                // dd($photoLinks);
+
+                // Save all links as JSON or a comma-separated string
+                $auction->saveMeta('photos', json_encode($photoLinks));
             }
+            
             // Picture Upload
             // Video Upload
             if ($request->hasFile('video')) {

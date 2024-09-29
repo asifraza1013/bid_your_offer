@@ -167,10 +167,20 @@
           <div class="wizard-step">
             <h4 style="color: black">Please provide your offered price and terms for this property:</h4>
             <div class="form-group">
+              @php
+                $startingPrice = $page_data['auction']->get->starting_price;
+              @endphp
               <label class="fw-bold" for="price">Offered Price:</label>
+              @if ($page_data['auction']->get->auction_type == 'Auction Listing')
+              <input type="number" step="0.01" name="price" placeholder="0.00" id="price"
+              class="form-control has-icon" data-icon="fa-solid fa-dollar"
+              data-msg-required="Please enter Price" min="{{$startingPrice}}" autofocus required>
+              <small>(Minimum starting price is {{$startingPrice}})</small>
+              @else
               <input type="number" step="0.01" name="price" placeholder="0.00" id="price"
                 class="form-control has-icon" data-icon="fa-solid fa-dollar"
                 data-msg-required="Please enter Price" autofocus required>
+              @endif
             </div>
 
 

@@ -16,7 +16,7 @@
                 <div class="card p-3 mb-3" data-bs-toggle="collapse" data-bs-target="#collapse{{$loop->iteration}}" aria-expanded="true"
                     aria-controls="collapse{{$loop->iteration}}">
                     <div class="row myBidsDetails">
-                        <div class="col-12 col-md-8 col-lg-8">
+                        <div class="col-12 col-md-4 col-lg-4">
                             <div class="float-start me-3">
                                 @if (gettype($bid->auction->photos) == 'array')
                                     <a href="/"><img src="{{ $bid->auction->photos[0] }}"
@@ -25,6 +25,16 @@
                             </div>
                             <div class="fw-bold">{{ $bid->auction->address }}</div>
                         </div>
+                        @if ($bid->auction->get->auction_type == 'Auction Listing')
+                            @php
+                                $reservePrice = $bid->auction->get->reserve_price;
+                                $price = number_format($bid->auction->bids->max('price'));
+                                $lowBid = $price < intval($reservePrice);
+                            @endphp
+                            <div class="col-4 col-lg-4">
+                                <div class="fw-bold text-danger">{{$lowBid ? "Bid did'nt met the reserve price" : ""}}</div>
+                            </div>
+                        @endif
                         <div class="col-12 col-lg-4">
                             <div class="fw-bold">${{ number_format($bid->auction->bids->max('price')) }}
                                 <span class="text-sm-end opacity-5 badge bg-secondary">Current price</span>

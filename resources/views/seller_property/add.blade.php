@@ -4732,7 +4732,7 @@
                             <div class="js--image-preview"></div>
                             <div class="upload-options">
                               <label>
-                                <input type="file" name="photo" class="image-upload" accept="image/*" multiple />
+                                <input type="file" name="photo[]" class="image-upload" accept="image/*" multiple />
                               </label>
                             </div>
                           </div>
@@ -6485,7 +6485,7 @@
           <div class="wizard-step" data-step="71">
             <div class="form-group">
               <label class="fw-bold"> Description:</label>
-              <textarea name="description" id="description" class="form-control" cols="30" rows="10"></textarea>
+              <textarea name="descriptionCom" id="description" class="form-control" cols="30" rows="10"></textarea>
             </div>
             <div class="form-group">
               <label class="fw-bold">Legal Disclamers:</label>
@@ -6688,7 +6688,7 @@
                             <div class="js--image-preview"></div>
                             <div class="upload-options">
                               <label>
-                                <input type="file" name="photo" class="image-upload" accept="image/*" required />
+                                <input type="file" name="photo[]" class="image-upload" accept="image/*" required />
                               </label>
                             </div>
                           </div>
@@ -7953,7 +7953,7 @@
           <div class="wizard-step" data-step="87">
             <div class="form-group">
               <label class="fw-bold"> Description:</label>
-              <textarea name="description" id="description" class="form-control" cols="30" rows="10" required></textarea>
+              <textarea name="descriptionVac" id="description" class="form-control" cols="30" rows="10" required></textarea>
             </div>
             <div class="form-group">
               <label class="fw-bold">Legal Disclamers:</label>
@@ -8153,7 +8153,7 @@
                             <div class="js--image-preview"></div>
                             <div class="upload-options">
                               <label>
-                                <input type="file" name="photo" class="image-upload" accept="image/*" multiple />
+                                <input type="file" name="photo[]" class="image-upload" accept="image/*" multiple />
                               </label>
                             </div>
                           </div>
