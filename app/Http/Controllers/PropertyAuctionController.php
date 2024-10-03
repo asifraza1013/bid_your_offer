@@ -49,7 +49,7 @@ class PropertyAuctionController extends Controller
     }
     public function store(Request $request)
     {
-        // dd('slkjdf');
+        // dd($request);
         try {
             DB::beginTransaction();
 
@@ -395,7 +395,7 @@ class PropertyAuctionController extends Controller
             $allowedFiles = ['jpg', 'png', 'jpeg', 'gif', 'svg', 'csv', 'txt', 'xlx', 'xls', 'pdf', 'doc', 'docs', 'docm', 'docx', 'dot', 'dotm', 'dotx', 'odt', 'rtf', 'wps', 'xml', 'xps']; //csv,txt,xlx,xls,pdf
 
             if ($request->hasFile('floor_plan')) {
-                $file = $request->floor_plan;
+                $file = $request->floor_plan[0];
                 $extension = $file->getClientOriginalExtension();
                 $check = in_array($extension, $allowedFiles);
                 if ($check) {
@@ -475,7 +475,7 @@ class PropertyAuctionController extends Controller
             DB::commit();
             // SellerPropertyAuctionCreated::dispatch($auction);
 
-            return redirect()->back()->with('success', 'Property listing added successfully.');
+            return redirect()->route('myAuctions')->with('success', 'Property listing added successfully.');
         } catch (\Exception $e) {
             //throw $e;
             DB::rollBack();

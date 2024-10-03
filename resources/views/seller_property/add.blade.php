@@ -4702,7 +4702,7 @@
             </div>
             <div class="form-group">
               <label class="fw-bold">Floor Plan:</label>
-              <input type="file" name="floor_plan" id="floor_plan" class="form-control" accept="image/*" >
+              <input type="file" name="floor_plan[]" id="floor_plan_1" class="form-control" accept="image/*" >
             </div>
             <div class="form-group">
               <label class="fw-bold">Addendums/Disclosures:</label>
@@ -8123,7 +8123,7 @@
                 </div>
               <div class="form-group">
                 <label class="fw-bold">Plot Plan:</label>
-                <input type="file" name="floor_plan" id="floor_plan" class="form-control">
+                <input type="file" name="floor_plan[]" id="floor_plan_1" class="form-control">
               </div>
               <div class="form-group">
                 <label class="fw-bold">Addendums/Disclosures:</label>

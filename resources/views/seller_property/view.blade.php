@@ -982,82 +982,215 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-12 col-12 fw-bold mt-1 mb-1">
-                Property Video:
-                <span class="removeBold">
-                  <video src="{{ asset($auction->get->video) }}" style="width:100%;height:29vh;"
-                      controls autoplay></video>
-                </span>
-              </div>
-              <div class="col-md-12 col-12 fw-bold mt-1 mb-1">
-                Floor Plan:
-                @if (isset($auction->get->floor_plan) && $auction->get->floor_plan !== null && !is_array($auction->get->floor_plan))
+              @if (isset($auction->get->video) && $auction->get->video !== null)
+                <div class="col-md-12 col-12 fw-bold mt-2 mb-1">
+                  Property Video:
                   <span class="removeBold">
-                    <a href="{{ asset($item) }}" download><img src="{{ asset($auction->get->floor_plan) }}" style="width:100px;height:130px;" /></a>
+                    <video src="{{ asset($auction->get->video) }}" style="width:100%;height:29vh;"
+                        controls autoplay></video>
                   </span>
-                @endif
-              </div>
-              <div class="col-md-12 col-12 fw-bold mt-1 mb-1">
-                Addendums/Disclosure:
-                @if ($auction->get->disclosures !== null && is_array($auction->get->disclosures) && count($auction->get->disclosures) > 0)
-                 <div>
-                  @foreach ($auction->get->disclosures as $item)
-                  <span class="removeBold">
-                    <a href="{{ asset($item) }}" download><img src="{{ asset($item) }}" style="width:100px;height:130px;" /></a>
-                  </span>
-                  @endforeach
-                 </div>
-                @endif
-              </div>
+                </div>
+              @endif
+              @if (isset($auction->get->floor_plan) && $auction->get->floor_plan !== null)
+                <div class="col-md-12 col-12 fw-bold mt-2 mb-1">
+                  Floor Plan:
+                  @if (isset($auction->get->floor_plan) && $auction->get->floor_plan !== null && !is_array($auction->get->floor_plan))
+                    <span class="removeBold">
+                      <a href="{{ asset($auction->get->floor_plan) }}" class="d-block" download><img src="{{ asset($auction->get->floor_plan) }}" style="width:100px;height:130px;" /></a>
+                    </span>
+                  @endif
+                </div>
+              @endif
+              @if (isset($auction->get->disclosures) && $auction->get->disclosures !== null && is_array($auction->get->disclosures))
+                <div class="col-md-12 col-12 fw-bold mt-2 mb-1">
+                  Addendums/Disclosure:
+                  @if ($auction->get->disclosures !== null && is_array($auction->get->disclosures) && count($auction->get->disclosures) > 0)
+                  <div>
+                    @foreach ($auction->get->disclosures as $item)
+                    <span class="removeBold">
+                      <a href="{{ asset($item) }}" download><img src="{{ asset($item) }}" style="width:100px;height:130px;" /></a>
+                    </span>
+                    @endforeach
+                  </div>
+                  @endif
+                </div>
+              @endif
             </div>
             <hr />
             <h4>Description:</h4>
             <p class="card-text">{{ @$auction->get->description }}</p>
             <hr />
-            <h4>Features</h4>
+            <h4>Price and Terms:</h4>
+            @if ($auction->get->auction_type == 'Traditional Listing')
+              <div class="row" style="flex-wrap: wrap;">
+                @if (isset($auction->get->price) && $auction->get->price !== null)
+                  <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                    Price: <span class="removeBold">${{ @$auction->get->price }}</span> 
+                  </div>
+                @endif
+                @if (isset($auction->get->price_per_sqfeet) && $auction->get->price_per_sqfeet !== null)
+                  <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                    List Price Per Sqf: <span class="removeBold">${{ @$auction->get->price_per_sqfeet}}</span> 
+                  </div>
+                @endif
+                @if (isset($auction->get->escrow_amount) && $auction->get->escrow_amount !== null)
+                  <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                    Acceptable Escrow Deposit: <span class="removeBold">${{ @$auction->get->escrow_amount}}</span> 
+                  </div>
+                @endif
+                @if (isset($auction->get->closing_days2) && $auction->get->closing_days2 !== null)
+                  <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                    Number of Days the Seller Will Accept For Closing: <span class="removeBold">${{ @$auction->get->closing_days2}}</span> 
+                  </div>
+                @endif
+                @if (isset($auction->get->contigencies_accepted_by_seller) && $auction->get->contigencies_accepted_by_seller !== null)
+                  <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                    Acceptable Contingencies: <span class="d-inline-block removeBold">${{ @$auction->get->contigencies_accepted_by_seller}}</span> 
+                    @if ($auction->get->contigencies_accepted_by_seller == 'Inspection contingency')
+                      <span class="badge bg-secondary removeBold">${{ @$auction->get->inspection}}</span> 
+                    @elseif ($auction->get->contigencies_accepted_by_seller == 'Appraisal contingency')
+                      <span class="badge bg-secondary removeBold">${{ @$auction->get->appraisal}}</span> 
+                    @elseif ($auction->get->contigencies_accepted_by_seller == 'Financing contingency')
+                      <span class="badge bg-secondary removeBold">${{ @$auction->get->finance}}</span>
+                    @elseif ($auction->get->contigencies_accepted_by_seller == 'Sale of a property contingency')
+                      <span class="badge bg-secondary removeBold">${{ @$auction->get->saleContingency}}</span>
+                    @elseif ($auction->get->contigencies_accepted_by_seller == 'Other')
+                      <span class="badge bg-secondary removeBold">${{ @$auction->get->acceptable}}</span>
+                      <span class="badge bg-secondary removeBold">${{ @$auction->get->acceptable_days}}</span>
+                    @endif
+                  </div>
+                @endif
+                @if (isset($auction->get->sellerOffer) && $auction->get->sellerOffer !== null)
+                  <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                    Offered Credit to Buyer at Closing: <span class="removeBold">${{ @$auction->get->sellerOffer}}</span> 
+                  </div>
+                @endif
+                @if (isset($auction->get->otherFinancing) && $auction->get->otherFinancing !== null)
+                  <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                    Acceptable Currency/Financing: <span class="removeBold">${{ @$auction->get->otherFinancing}}</span> 
+                  </div>
+                @endif
+                @if (isset($auction->get->expiration_date) && $auction->get->expiration_date !== null)
+                  <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                    Time Frame Allocated to Respond Offers: <span class="removeBold">${{ @$auction->get->expiration_date}}</span> 
+                  </div>
+                @endif
+              </div>
+            @elseif ($auction->get->auction_type == 'Auction Listing')
+              @if(isset($auction->get->buy_now_price) && $auction->get->buy_now_price !== null)
+                <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                  Buy Now Price: <span class="removeBold">${{ @$auction->get->buy_now_price}}</span> 
+                </div>
+              @endif
+              @if (isset($auction->get->buy_now_price_per_sqfeet) && $auction->get->buy_now_price_per_sqfeet !== null)
+                <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                  Buy Now Price Per Sqft: <span class="removeBold">${{ @$auction->get->buy_now_price_per_sqfeet}}</span> 
+                </div>
+              @endif
+              @if (isset($auction->get->starting_price) && $auction->get->starting_price !== null)
+                <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                  Starting Price: <span class="removeBold">${{ @$auction->get->starting_price}}</span> 
+                </div>
+              @endif
+              @if (isset($auction->get->reserve_price) && $auction->get->reserve_price !== null)
+                <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                  Reserve Price: <span class="removeBold">${{ @$auction->get->reserve_price}}</span> 
+                </div>
+              @endif
+              @if (isset($auction->get->escrow_amount) && $auction->get->escrow_amount !== null)
+                <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                  Acceptable Escrow Deposit: <span class="removeBold">${{ @$auction->get->escrow_amount}}</span> 
+                </div>
+              @endif
+              @if (isset($auction->get->closing_days2) && $auction->get->closing_days2 !== null)
+                <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                  Number of Days the Seller Will Accept For Closing: <span class="removeBold">${{ @$auction->get->closing_days2}}</span> 
+                </div>
+              @endif
+              @if (isset($auction->get->contigencies_accepted_by_seller) && $auction->get->contigencies_accepted_by_seller !== null)
+                <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                  Acceptable Contingencies: <span class="d-inline-block removeBold">${{ @$auction->get->contigencies_accepted_by_seller}}</span> 
+                  @if ($auction->get->contigencies_accepted_by_seller == 'Inspection contingency')
+                    <span class="badge bg-secondary removeBold">${{ @$auction->get->inspection}}</span> 
+                  @elseif ($auction->get->contigencies_accepted_by_seller == 'Appraisal contingency')
+                    <span class="badge bg-secondary removeBold">${{ @$auction->get->appraisal}}</span> 
+                  @elseif ($auction->get->contigencies_accepted_by_seller == 'Financing contingency')
+                    <span class="badge bg-secondary removeBold">${{ @$auction->get->finance}}</span>
+                  @elseif ($auction->get->contigencies_accepted_by_seller == 'Sale of a property contingency')
+                    <span class="badge bg-secondary removeBold">${{ @$auction->get->saleContingency}}</span>
+                  @elseif ($auction->get->contigencies_accepted_by_seller == 'Other')
+                    <span class="badge bg-secondary removeBold">${{ @$auction->get->acceptable}}</span>
+                    <span class="badge bg-secondary removeBold">${{ @$auction->get->acceptable_days}}</span>
+                  @endif
+                </div>
+              @endif'
+              @if (isset($auction->get->sellerOffer) && $auction->get->sellerOffer !== null)
+                <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                  Offered Credit to Buyer at Closing: <span class="removeBold">${{ @$auction->get->sellerOffer}}</span> 
+                </div>
+              @endif
+              @if (isset($auction->get->otherFinancing) && $auction->get->otherFinancing !== null)
+                <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                  Acceptable Currency/Financing: <span class="removeBold">${{ @$auction->get->otherFinancing}}</span> 
+                </div>
+              @endif
+            @endif
+            <hr>
+            <h4>Listing Information:</h4>
             <div class="row" style="flex-wrap: wrap;">
               <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
                 Address: <span class="removeBold">{{ @$auction->get->address }}</span> </div>
-              <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i> City:
-                <span class="removeBold">{{ @$auction->get->city }} </span>
+              <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i> 
+                City: <span class="removeBold">{{ @$auction->get->city }} </span>
               </div>
               <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
                 County: <span class="removeBold">{{ @$auction->get->county }} </span></div>
                 <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
                   State: <span class="removeBold">{{ @$auction->get->state }} </span></div>
                 @if (@$auction->get->listing_date != null)
-                  <div class="col-md-12 col-12 pt-2 fw-bold"><i class="fa-regular fa-check-square"></i> Listing Date:
-                    <span class="removeBold">{{ date('Y-m-d', strtotime($auction->get->listing_date)) }}
+                  <div class="col-md-12 col-12 pt-2 fw-bold"><i class="fa-regular fa-check-square"></i> 
+                    Listing Date: <span class="removeBold">{{ date('Y-m-d', strtotime($auction->get->listing_date)) }}
                     </span>
                   </div>
                 @endif
                 @if (@$auction->get->expiration_date != null)
-                  <div class="col-md-12 col-12 pt-2 fw-bold"><i class="fa-regular fa-check-square"></i> Expiration Date:
-                    <span class="removeBold"> {{ date('Y-m-d', strtotime($auction->get->expiration_date)) }}
+                  <div class="col-md-12 col-12 pt-2 fw-bold"><i class="fa-regular fa-check-square"></i> 
+                    Listing Expiration Date: <span class="removeBold"> {{ date('Y-m-d', strtotime($auction->get->expiration_date)) }}
                     </span>
                   </div>
                 @endif
                 @if (@$auction->get->service_type != null)
                   <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
-                    Listing Service Type: <span class="removeBold">{{ @$auction->get->service_type }}</span> </div>
+                    Listing Service Type: <span class="removeBold">{{ @$auction->get->service_type }}</span> 
+                  </div>
                 @endif
                 @if (@$auction->get->representation != null)
                   <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
-                    Representation: <span class="removeBold">{{ @$auction->get->representation }}</span> </div>
+                    Representation: <span class="removeBold">{{ @$auction->get->representation }}</span> 
+                  </div>
                 @endif
                 @if (@$auction->get->auction_type != null)
                   <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
-                    Listing Type: <span class="removeBold">{{ @$auction->get->auction_type }}</span> </div>
+                    Listing Type: <span class="removeBold">{{ @$auction->get->auction_type }}</span> 
+                  </div>
                 @endif
                 @if (@$auction->get->property_type != null)
-                  <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i> Property Style: <span class="removeBold"> {{ @$auction->get->property_type }} </span></div>
+                  <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i> 
+                    Property Style: <span class="d-inline-block removeBold"> {{ @$auction->get->property_type }} </span>
+                    @if ($auction->get->property_items !== null)
+                      <span class="badge bg-secondary removeBold">{{ @$auction->get->property_items}}</span>
+                    @endif
+                  </div>
+                @endif
+                @if (@$auction->get->special_sale != null)
+                  <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                    Special Sale Provision: <span class="removeBold">{{ @$auction->get->special_sale }} </span>
+                  </div>
                 @endif
                 @if (@$auction->get->prop_condition != null)
-                  <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i> Property Condition: <span class="removeBold"> {{ @$auction->get->prop_condition }} </span></div>
-                  @endif
-                  @if (@$auction->get->special_sale != null)
-                  <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
-                    Special Sale Provision: <span class="removeBold">{{ @$auction->get->special_sale }} </span></div>
+                  <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i> 
+                    Property Condition: <span class="removeBold"> {{ @$auction->get->prop_condition }} </span>
+                  </div>
                 @endif
             
             <hr>
