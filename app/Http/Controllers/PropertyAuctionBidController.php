@@ -58,6 +58,7 @@ class PropertyAuctionBidController extends Controller
             $bid->saveMeta('escrow_amount', $request->escrow_amount);
             $bid->saveMeta('escrow_amount2', $request->escrow_amount2);
             $bid->saveMeta("price", $request->price);
+            $bid->saveMeta("term_financings", $request->term_financings);
             $bid->saveMeta("financing", $request->financing);
             $bid->saveMeta("financeOther", $request->financeOther);
             $bid->saveMeta("purchasePrice", $request->purchasePrice);

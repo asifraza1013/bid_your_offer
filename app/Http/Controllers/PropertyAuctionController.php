@@ -954,7 +954,7 @@ class PropertyAuctionController extends Controller
     {
 
         $data = PropertyAuction::with('meta')->find($id);
-        $auction = PropertyAuction::whereId($id)->with('user')->first();
+        $auction = PropertyAuction::whereId($id)->with('user', 'bids')->first();
         $bids = PropertyAuctionBid::with('meta')->where('property_auction_id', $id)->get();
         if (!$auction) {
             // Resource not found, handle the error

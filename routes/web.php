@@ -158,7 +158,8 @@ Route::get('/tenant/criteria/auctions/search', [TenantCriteriaAuctionController:
 
 
 Route::get('/property/listing/view/{id}', [PropertyAuctionController::class, 'viewPropertyListing'])->name('view-pl');
-Route::post('/property/counter/bid', [CounterBidController::class, 'store'])->name('counterBiding');
+Route::get('property/counter/bid/{bid_id}/{auction_id}', [CounterBidController::class, 'addCounterBid'])->name('add-counterBiding');
+Route::post('/property/counter/bid/{bid_id}', [CounterBidController::class, 'store'])->name('counterBiding');
 Route::post('/seller/counter/bid', [SellerCounterBidController::class, 'store'])->name('sellerCounterBid');
 
 // add new route for seller nisar
