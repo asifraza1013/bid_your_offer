@@ -66,9 +66,9 @@
 
 <body>
     <div class="signupMainDiv">
-        <div class="row">
-            <div class="col-4 leftCol" style="background:#11b7cf; min-height:100vh;">
-                {{-- <img class="w-100" src="{{ asset('assets/pictures/signup/signup.jpg') }}" alt="" /> --}}
+        <div class="row justify-content-center">
+            {{-- <div class="col-4 leftCol" style="background:#11b7cf; min-height:100vh;">
+                <img class="w-100" src="{{ asset('assets/pictures/signup/signup.jpg') }}" alt="" />
 
                 <div class="p-4">
                     <div class="logo" style="width:200px; height:200px;">
@@ -87,7 +87,7 @@
                             help you win more listings.</li>
                     </ul>
                 </div>
-            </div>
+            </div> --}}
             <div class="col-8 signup p-5">
                 <div class="d-flex justify-content-between">
 
@@ -100,7 +100,6 @@
 
                     <form method="POST" class="register_form" action="{{ route('register') }}">
                         @csrf
-
                         <div class="card">
                             <div class="card-body">
                                 {{-- <h5 class="card-title">Card title</h5> --}}
@@ -108,69 +107,128 @@
                                 <div class="step-1">
                                     <h5 class="card-title">Your professional details</h5>
                                     <div class="row form-group position-relative">
-                                        <div class="col-md-12">
-                                            <label for="">Full Name *</label>
-                                            <input type="text" class="form-control" placeholder="Full Name"
-                                                name="name" value="" data-rule="name" required />
-                                            @if ($errors->has('name'))
-                                                <div class="error">{{ $errors->first('name') }}</div>
+                                        <div class="col-md-4">
+                                            <label for="">First Name *</label>
+                                            <input type="text" class="form-control" placeholder="First Name"
+                                                name="first_name" value="" data-rule="first_name" required />
+                                            @if ($errors->has('first_name'))
+                                                <div class="error">{{ $errors->first('first_name') }}</div>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="">Middle Initial</label>
+                                            <input type="text" class="form-control" placeholder="Middle  Initial"
+                                                name="middle_name" value="" data-rule="middle_name" required />
+                                            @if ($errors->has('middle_name'))
+                                                <div class="error">{{ $errors->first('middle_name') }}</div>
+                                            @endif
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="">Last Name *</label>
+                                            <input type="text" class="form-control" placeholder="Last Name"
+                                                name="last_name" value="" data-rule="last_name" required />
+                                            @if ($errors->has('last_name'))
+                                                <div class="error">{{ $errors->first('last_name') }}</div>
                                             @endif
                                         </div>
                                     </div>
                                     <div class="row form-group">
-                                        <div class="col-md-4">
-                                            <label for="">License # *</label>
-                                            <input type="number" class="form-control hide_arrow" minlength="9"
-                                                maxlength="9" placeholder="000000000" name="license_no" value=""
-                                                data-rule="license" required />
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="">License Date *</label>
-                                            <input type="date" class="form-control" data-rule="date"
-                                                name="license_date" value="" required />
-                                        </div>
-                                        <div class="col-md-5">
-                                            <label for="">NAR ID *</label>
-                                            <input type="number" class="form-control hide_arrow" minlength="8"
-                                                maxlength="8" placeholder="00000000" name="nar_id" value=""
-                                                data-rule="nar" required />
+                                        <div class="col-md-12">
+                                            <label for="">Pick Your Account Type:</label>
+                                            <select class="form-select" aria-label="Default select example"
+                                                name="user_type" id="userType">
+                                                <option value="" selected>Pick your account type</option>
+                                                <option value="seller">Seller</option>
+                                                <option value="buyer">Buyer</option>
+                                                <option value="landlord">Landlord</option>
+                                                <option value="tenant">Tenant</option>
+                                                <option value="agent">Real Estate Agent</option>
+                                            </select>
+                                            @if ($errors->has('user_type'))
+                                                <div class="error">{{ $errors->first('user_type') }}</div>
+                                            @endif
                                         </div>
                                     </div>
-
-                                    <div class="row form-group position-relative">
+                                    <div class="row form-group d-none real_estate_only my-4">
+                                        <div class="col-md-12">
+                                            <label for="">Office address *</label>
+                                            <input type="text" class="form-control"
+                                                placeholder="199 Market St, San Francisco, CA" name="office_address"
+                                                value="" data-rule="address" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="">Suite</label>
+                                            <input type="text" class="form-control" name="office_suite_no"
+                                                value="" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="">Building #</label>
+                                            <input type="text" class="form-control" name="office_building_no"
+                                                value="" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="">Zip code *</label>
+                                            <input type="number" class="form-control hide_arrow" minlength="5"
+                                                maxlength="5" placeholder="00000" name="office_zip" data-rule="zip"
+                                                value=""/>
+                                        </div>
                                         <div class="col-md-12">
                                             <label for="">Brokerage *</label>
                                             <input type="text" placeholder="Best Realty" class="form-control"
-                                                name="brokerage" id="brokerage" data-rule="brokerage" value=""
-                                                required />
+                                                name="brokerage" id="brokerage" data-rule="brokerage" value=""/>
                                             @if ($errors->has('brokerage'))
                                                 <div class="error">{{ $errors->first('brokerage') }}</div>
                                             @endif
                                         </div>
-                                    </div>
-
-                                    <div class="row form-group">
-                                        <div class="col-md-6">
-                                            <label for="">Office address *</label>
-                                            <input type="text" class="form-control"
-                                                placeholder="199 Market St, San Francisco, CA" name="office_address"
-                                                value="" data-rule="address" required />
+                                        <div class="col-md-4">
+                                            <label for="">License # *</label>
+                                            <input type="number" class="form-control hide_arrow" minlength="9"
+                                                maxlength="9" placeholder="000000000" name="license_no" value=""
+                                                data-rule="license"/>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="">Suite, Building #</label>
-                                            <input type="text" class="form-control" name="office_building_no"
-                                                value="" />
+                                            <label for="">License Date *</label>
+                                            <input type="date" class="form-control" data-rule="date"
+                                                name="license_date" value=""/>
                                         </div>
-                                        <div class="col-md-2">
-                                            <label for="">Zip code *</label>
-                                            <input type="number" class="form-control hide_arrow" minlength="5"
-                                                maxlength="5" placeholder="00000" name="office_zip" data-rule="zip"
-                                                value="" required />
+                                        <div class="col-md-4">
+                                            <label for="">NAR ID *</label>
+                                            <input type="number" class="form-control hide_arrow" minlength="8"
+                                                maxlength="8" placeholder="00000000" name="nar_id" value=""
+                                                data-rule="nar"/>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>MLS ID *</label>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control" placeholder="MLS ID"
+                                                    name="mls_id" data-rule="mls" value=""/>
+                                                @if ($errors->has('mls_id'))
+                                                    <div class="error">{{ $errors->first('mls_id') }}</div>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
+                                    
                                     <div class="row form-group">
+                                        <div class="col-md-4">
+                                            <label class="fw-bold" for="email">Email *</label>
+                                            <input type="email" placeholder="john.smith@example.com"
+                                                class="form-control required" data-error="0" data-rule="email"
+                                                name="email" id="email" value="" required />
+                                            @if ($errors->has('email'))
+                                                <div class="error">{{ $errors->first('email') }}</div>
+                                            @endif
+                                        </div>
                                         <div class="form-group col-md-4">
-                                            <label class="fw-bold" for="address">City:</label>
+                                            <label class="fw-bold" for="address">Phone Number *:</label>
+                                            <input type="text" name="phone_number" placeholder="Phone Number"
+                                                data-type="phone" id="phone_number"
+                                                class="form-control has-icon search_places"
+                                                data-icon="fa-solid fa-flag-usa"
+                                                data-msg-required="Please enter phone number" required>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label class="fw-bold" for="address">City *:</label>
                                             <input type="text" name="city" placeholder="City"
                                                 data-type="cities" id="city"
                                                 class="form-control has-icon search_places"
@@ -178,72 +236,61 @@
                                                 required>
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label class="fw-bold" for="address">County:</label>
-                                            <input type="text" name="county" placeholder="County" id="county"
-                                                data-type="counties" class="form-control has-icon search_places"
-                                                data-icon="fa-solid fa-tree-city"
-                                                data-msg-required="Please enter county" required>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label class="fw-bold" for="address">State:</label>
+                                            <label class="fw-bold" for="address">State *:</label>
                                             <input type="text" name="state" placeholder="State"
                                                 data-type="states" id="state"
                                                 class="form-control has-icon search_places"
                                                 data-icon="fa-solid fa-flag-usa"
                                                 data-msg-required="Please enter state" required>
                                         </div>
+                                        <div class="form-group col-md-4">
+                                            <label class="fw-bold" for="address">County *:</label>
+                                            <input type="text" name="county" placeholder="County" id="county"
+                                                data-type="counties" class="form-control has-icon search_places"
+                                                data-icon="fa-solid fa-tree-city"
+                                                data-msg-required="Please enter county" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="fw-bold" for="zip_code">Zip code *</label>
+                                            <input type="number" class="form-control hide_arrow" minlength="5"
+                                                maxlength="5" placeholder="00000" name="sales_zip" data-rule="zip" id="zip_code"
+                                                value="" required />
+                                        </div>
                                     </div>
                                     <hr>
-                                    <div class="row form-group">
+                                    {{-- <div class="row form-group">
                                         <div class="col-md-10">How many transactions have you closed in the past 12
                                             months? *</div>
                                         <div class="col-md-2">
                                             <input type="number" step="1" name="total_transactions"
                                                 class="form-control" data-rule="number" value="0" required>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="row form-group mt-4">
                                         <div class="col-md-12 text-end">
                                             <button type="button" onclick="step_validate(1);"
                                                 class="btn btn-success">Next</button>
                                         </div>
                                     </div>
-
                                 </div>
+
+
                                 <div class="step-2 d-none">
                                     <h5 class="card-title">Your professional details</h5>
-
-
-
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <label>In the past 12 months, what was the highest value property sold by
-                                                you?</label>
-                                        </div>
+                                    {{-- <div class="row form-group">
                                         <div class="col-md-6">
                                             <label for="">Address *</label>
                                             <input type="text" class="form-control"
                                                 placeholder="199 Market St, San Francisco, CA" name="sales_address"
                                                 value="" data-rule="address" required />
                                         </div>
-
-                                        <div class="col-md-3">
-                                            <label for="">Zip code *</label>
-                                            <input type="number" class="form-control hide_arrow" minlength="5"
-                                                maxlength="5" placeholder="00000" name="sales_zip" data-rule="zip"
-                                                value="" required />
-                                        </div>
-
                                         <div class="col-md-3">
                                             <label for="">Sales Price *</label>
                                             <input type="number" class="form-control hide_arrow" placeholder="$0"
                                                 name="sales_price" data-rule="price" value="" required />
                                         </div>
-
-                                    </div>
-
-
-                                    <div class="row form-group position-relative">
+                                    </div> --}}
+                                    {{-- <div class="row form-group position-relative">
                                         <div class="col-md-12">
                                             <label>Realtor.com Profile</label>
                                             <input type="text"
@@ -254,19 +301,7 @@
                                                 <div class="error">{{ $errors->first('realtor_profile') }}</div>
                                             @endif
                                         </div>
-                                    </div>
-
-                                    <div class="row form-group position-relative">
-                                        <div class="col-md-12">
-                                            <label>Email *</label>
-                                            <input type="email" placeholder="john.smith@example.com"
-                                                class="form-control required" data-error="0" data-rule="email"
-                                                name="email" id="email" value="" required />
-                                            @if ($errors->has('email'))
-                                                <div class="error">{{ $errors->first('email') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="row form-group position-relative">
                                         <div class="col-md-12">
                                             <label>Password *</label>
@@ -292,35 +327,6 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <select class="form-select" aria-label="Default select example"
-                                                name="user_type" id="userType">
-                                                <option value="" selected>Pick your account type.</option>
-                                                <option value="buyer">Buyer</option>
-                                                <option value="seller">Seller</option>
-                                                <option value="landlord">Landlord</option>
-                                                <option value="tenant">Tenant</option>
-                                                <option value="agent">Real Estate Agent</option>
-                                            </select>
-                                            @if ($errors->has('user_type'))
-                                                <div class="error">{{ $errors->first('user_type') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-
-
-                                    <div class="row form-group position-relative mls_id">
-                                        <label>MLS ID *</label>
-                                        <div class="col-md-12">
-                                            <input type="text" class="form-control" placeholder="MLS ID"
-                                                name="mls_id" data-rule="mls" value="" required />
-                                            @if ($errors->has('mls_id'))
-                                                <div class="error">{{ $errors->first('mls_id') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-
                                     <div class="row form-group opacity-80 d-flex align-items-center">
                                         <div class="col-md-12 my-4">
                                             <div class="form-check">
@@ -341,18 +347,10 @@
                                         <button type="button" onclick="step_validate(2)"
                                             class="btn btn-success">Next</button>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
                     </form>
-
                 </div>
             </div>
         </div>
@@ -595,9 +593,11 @@
                 let userType = $('#userType').val();
                 // alert(user_type);
                 if (userType == "agent") {
-                    $('.mls_id').removeClass('d-none');
+                    $('.real_estate_only').removeClass('d-none');
+                    $('.real_estate_only').find('input').attr('required', 'required');
                 } else {
-                    $('.mls_id').addClass('d-none');
+                    $('.real_estate_only').addClass('d-none');
+                    $('.real_estate_only').find('input').removeAttr('required');
                 }
             })
         });

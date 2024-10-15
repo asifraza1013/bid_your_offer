@@ -35,9 +35,12 @@ class RegisteredUserController extends Controller
     {
 
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'middle_name' => ['string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
             'user_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone_number' =>  ['required'],
             'password' => ['required', 'string', Rules\Password::defaults()],
             'user_type' => ['required', 'string', 'max:255'],
             'terms' => ['required'],
@@ -47,28 +50,41 @@ class RegisteredUserController extends Controller
 
         // dd($request->user_name);
 
-        $names = explode(" ", $request->name);
-        $first_name = current($names);
-        $last_name = end($names);
+        // $names = explode(" ", $request->name);
+        // $first_name = current($names);
+        // $last_name = end($names);
+
+        $fullNameParts = [
+            $request->first_name,
+            $request->middle_name,
+            $request->last_name,
+        ];
+
+        // Filter out null or empty values
+        $fullName = implode(' ', array_filter($fullNameParts));
 
         $user = User::create([
-            'name' => $request->name,
-            'first_name' => $first_name,
-            'last_name' => $last_name,
+            'name' => $fullName,
+            'first_name' => $request->first_name,
+            'middle_name' => $request->middle_name,
+            'last_name' => $request->last_name,
             'user_name' => $request->user_name,
             'email' => $request->email,
+            'phone_number' => $request->phone_number,
             'password' => Hash::make($request->password),
             'user_type' => $request->user_type,
             'mls_id' => $request->mls_id,
         ]);
-        $user->saveMeta("name", $request->name);
-        $user->saveMeta("first_name", $first_name);
-        $user->saveMeta("last_name", $last_name);
+        $user->saveMeta("name", $fullName);
+        $user->saveMeta("first_name", $request->first_name);
+        $user->saveMeta("last_name", $request->last_name);
+        $user->saveMeta("user_type", $request->user_type);
         $user->saveMeta("license_no", $request->license_no);
         $user->saveMeta("license_date", $request->license_date);
         $user->saveMeta("nar_id", $request->nar_id);
         $user->saveMeta("brokerage", $request->brokerage);
         $user->saveMeta("office_building_no", $request->office_building_no);
+        $user->saveMeta("office_suite_no", $request->office_suite_no);
         $user->saveMeta("office_zip", $request->office_zip);
         $user->saveMeta("total_transactions", $request->total_transactions);
         $user->saveMeta("sales_address", $request->sales_address);
@@ -76,13 +92,14 @@ class RegisteredUserController extends Controller
         $user->saveMeta("sales_price", $request->sales_price);
         $user->saveMeta("realtor_profile", $request->realtor_profile);
         $user->saveMeta("email", $request->email);
+        $user->saveMeta("phone_number", $request->phone_number);
         $user->saveMeta("user_name", $request->user_name);
-        $user->saveMeta("user_type", $request->user_type);
         $user->saveMeta("mls_id", $request->mls_id);
         $user->saveMeta("office_address", $request->office_address);
         $user->saveMeta("city", $request->city);
         $user->saveMeta("county", $request->county);
         $user->saveMeta("state", $request->state);
+        // dd($user);
         event(new Registered($user));
         Auth::login($user);
         return redirect(RouteServiceProvider::HOME);
