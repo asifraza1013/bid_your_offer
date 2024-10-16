@@ -70,6 +70,21 @@
                 <a href="{{ route('password.request') }}" rel="nofollow"><u>Lost password?</u></a>
               </div>
             </div>
+            <div class="d-flex justify-content-center align-items-center">
+              <span>OR</span>
+            </div>
+            <div class="row justify-content-center mt-4">
+              <div class="col-lg-6 col-12">
+                <a href="{{route('facebook.login')}}" class="btn btn-sm fb-btn w-100">
+                  <i class="fa fa-facebook"></i>
+                </a>
+              </div>
+              <div class="col-lg-6 col-12">
+                <a href="{{route('google.login')}}" class="btn btn-sm google-btn w-100">
+                  <i class="fa fa-google"></i>
+                </a>
+              </div>
+            </div>
         </form>
           </div>
         </div>

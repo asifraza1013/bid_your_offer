@@ -11,6 +11,7 @@
         "laravel/breeze": "1.9.2",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
+        "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.5",
         "merujan99/laravel-video-embed": "dev-master",
         "pion/laravel-chunk-upload": "^1.5",

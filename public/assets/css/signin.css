@@ -96,6 +96,39 @@ a {
     box-shadow: none;
     border-color:  rgb(150 150 150 / 30%);;
 }
+.fb-btn{
+    padding: 10px 0;
+    background-color: #38529A;
+    border-radius: 5px;
+}
+
+.fb-btn:hover, .fb-btn:active, .fb-btn:focus-visible{
+    padding: 10px 0;
+    background-color: #38529A !important;
+    
+}
+
+.fb-btn i {
+    color: #fff;
+    font-size: 16px;
+}
+
+.google-btn{
+    padding: 10px 0;
+    background-color: #3F81EC;
+    border-radius: 5px;
+}
+
+.google-btn:hover, .fb-btn:active, .fb-btn:focus-visible{
+    padding: 10px 0;
+    background-color: #3F81EC !important;
+    
+}
+  
+.google-btn i {
+    color: #fff;
+    font-size: 16px;
+}
 @media screen and (max-width:986px) {
     .signin {
         width: 80%;

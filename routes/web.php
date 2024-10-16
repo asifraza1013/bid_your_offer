@@ -76,6 +76,7 @@ use App\Http\Controllers\SellerCounteredTermsController;
 use App\Http\Controllers\SellerServiceAuctionBidController;
 use App\Http\Controllers\TenantCounteredTermsController;
 use App\Http\Controllers\TenantCriteriaAuctionBidController;
+use App\Http\Controllers\SocialAuth;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +89,14 @@ use App\Http\Controllers\TenantCriteriaAuctionBidController;
 | To add countries data please run this command "php artisan country-data:install"
 */
 
+
+
+//social auth  routes
+Route::get('/login/facebook', [SocialAuth::class, 'facebookIndex'])->name('facebook.login');
+Route::get('/login/facebook/callback', [SocialAuth::class, 'facebookCallback'])->name('facebook.callback');
+
+Route::get('/login/google', [SocialAuth::class, 'googleIndex'])->name('google.login');
+Route::get('/login/google/callback', [SocialAuth::class, 'googleCallback'])->name('google.callback');
 
 //Route by waqas
 

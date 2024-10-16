@@ -91,6 +91,7 @@ a {
     box-shadow: none;
     border-color:  rgb(150 150 150 / 30%);;
 }
+x
 @media screen and (max-width:986px) {
     .signup {
         width: 80%;
