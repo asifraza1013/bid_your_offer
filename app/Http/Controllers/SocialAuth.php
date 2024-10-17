@@ -10,11 +10,11 @@ use Illuminate\Http\Request;
 class SocialAuth extends Controller
 {
     public function facebookIndex(){
-        return Socialite::driver('facebook')->redirect();
+        return Socialite::driver('facebook')->stateless()->redirect();
     }
 
     public function facebookCallback(){
-        $facebookUser = Socialite::driver('facebook')->user();
+        $facebookUser = Socialite::driver('facebook')->stateless()->user();
 
         $user = User::where('email', $facebookUser->getEmail())->first();
 
