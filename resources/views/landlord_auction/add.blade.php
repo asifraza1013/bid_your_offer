@@ -434,13 +434,13 @@
                                 @php
                                     $auction_types = [
                                         [
-                                            'name' => 'Auction (Timer)',
+                                            'name' => 'Auction Listing',
                                             'icon' => '<i class="fa-regular fa-clock"></i>',
                                             'target' => '.auctionTimer',
                                         ],
                                         [
-                                            'name' => 'Traditional (No Timer)',
-                                            'icon' => '<i class="fa-regular fa-circle-xmark"></i>',
+                                            'name' => 'Traditional Listing',
+                                            'icon' => '<i class="fa-solid fa-clipboard-list"></i>',
                                             'target' => '',
                                         ],
                                     ];
@@ -461,7 +461,7 @@
                         </div>
 
                         <div class="form-group auctionTimer d-none">
-                            <label class="fw-bold">Listing Type:</label>
+                            <label class="fw-bold">Timer Length:</label>
                             <div>
                                 @php
                                     $auction_lengths = [
@@ -517,18 +517,18 @@
                                 @php
                                     $property_items = [
                                         ['name' => 'Single Family Residence', 'class' => 'residential-length'],
-                                        ['name' => 'Apartments', 'class' => 'residential-length'],
+                                        ['name' => 'Apartment', 'class' => 'residential-length'],
                                         ['name' => 'Townhouse', 'class' => 'residential-length'],
                                         ['name' => 'Villa', 'class' => 'residential-length'],
                                         ['name' => 'Condominium', 'class' => 'residential-length'],
                                         ['name' => 'Condo-Hotel', 'class' => 'residential-length'],
                                         ['name' => '½ Duplex', 'class' => 'residential-length'],
+                                        ['name' => '1/3 Triplex', 'class' => 'residential-length'],
+                                        ['name' => '1/4 Quadplex', 'class' => 'residential-length'],
                                         ['name' => 'Dock-Rackominium', 'class' => 'residential-length'],
                                         ['name' => 'Farm', 'class' => 'residential-length'],
                                         ['name' => 'Garage Condo', 'class' => 'residential-length'],
                                         ['name' => 'Manufactured Home- Post 1977', 'class' => 'residential-length'],
-                                        ['name' => '1/3 Triplex', 'class' => 'residential-length'],
-                                        ['name' => '1/4 Quadplex', 'class' => 'residential-length'],
                                         ['name' => 'Mobile Home- Pre 1976', 'class' => 'residential-length'],
                                         ['name' => 'Unimproved Land', 'class' => 'residential-length'],
                                         ['name' => 'Modular Home', 'class' => 'residential-length'],
@@ -566,8 +566,7 @@
                     </div>
                     <div class="wizard-step" data-step="6">
                         <div class="form-group ">
-                            <label class="fw-bold">Is the landlord looking to lease their entire property or a single
-                                room?</label>
+                            <label class="fw-bold">Leasing Space:</label>
                             @php
                                 $leasePropOption = [
                                     ['name' => 'Entire Property', 'target' => ''],
@@ -669,32 +668,42 @@
                             <div class="form-group propOtherRes d-none">
                                 <label class="fw-bold" for="">Property Condition: </label>
                                 <input type="text" name="propOther" id="" placeholder=""
-                                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                                    class="form-control has-icon" data-icon="fa-regular fa-circle-check" required>
                             </div>
                         </div>
                     </div>
                     <div class="wizard-step" data-step="8">
                       <span class="timerAuction">
                         <div class="form-group">
-                          <label class="fw-bold" for="custom_terms">Rent Now Price: $</label>
-                          <input type="text" name="rentNow" class="form-control has-icon"
+                          <label class="fw-bold" for="custom_terms">Rent Now Price:</label>
+                          <input type="number" name="rentNow" class="form-control has-icon"
                                   data-icon="fa-solid fa-dollar-sign" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold" for="custom_terms">Starting Price: $</label>
-                            <input type="text" name="startingPrice" class="form-control has-icon"
+                            <label class="fw-bold" for="custom_terms">Rent Now Price Per Sqft:</label>
+                            <input type="number" name="rentNowSqft" class="form-control has-icon"
+                                    data-icon="fa-solid fa-dollar-sign" required>
+                          </div>
+                        <div class="form-group">
+                            <label class="fw-bold" for="custom_terms">Starting Price:</label>
+                            <input type="number" name="startingPrice" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold" for="custom_terms">Reserve Price: $</label>
-                            <input type="text" name="reservePrice" class="form-control has-icon"
+                            <label class="fw-bold" for="custom_terms">Reserve Price:</label>
+                            <input type="number" name="reservePrice" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" required>
                         </div>
                       </span>
                       <span class="traditional">
                         <div class="form-group">
                             <label class="fw-bold" for="custom_terms">Price:</label>
-                            <input type="text" name="price" class="form-control has-icon"
+                            <input type="number" name="price" class="form-control has-icon"
+                                data-icon="fa-solid fa-dollar-sign" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="fw-bold" for="custom_terms">List Price Per Sqft:</label>
+                            <input type="number" name="list_price_per_sq" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" required>
                         </div>
                       </span>
@@ -731,64 +740,39 @@
                         </select>
                         <div class="form-group otherLeaseDuration d-none">
                             <div class="form-group">
-                                <label class="fw-bold">Start date:</label>
-                                <input type="date" name="start_date" id="start_date" class="form-control has-icon"
-                                    data-icon="fa-regular fa-calendar-days">
-                            </div>
-                            <div class="form-group">
-                                <label class="fw-bold">End Date:</label>
-                                <input type="date" name="end_date" id="end_date" class="form-control has-icon"
+                                <label class="fw-bold">Acceptable Lease Duration:</label>
+                                <input type="text" name="other_lease_duration" id="other_lease_duration" class="form-control has-icon"
                                     data-icon="fa-regular fa-calendar-days">
                             </div>
                         </div>
                       </div>
                       <span class="commercialFields">
-                      <div class="form-group">
-                        @php
-                            $leaseTerms = [
-                                ["name" => 'Absolute (Triple) Net', "target" => '' ],
-                                ["name" => 'Gross Lease', "target" => '' ],
-                                ["name" => 'Gross Percentages', "target" => '' ],
-                                ["name" => 'Ground Lease', "target" => '' ],
-                                ["name" => 'Lease Option', "target" => '' ],
-                                ["name" => 'Modified Gross', "target" => '' ],
-                                ["name" => 'Net Lease', "target" => '' ],
-                                ["name" => 'Net Net', "target" => '' ],
-                                ["name" => 'Other', "target" => '' ],
-                                ["name" => 'Pass Throughs', "target" => '' ],
-                                ["name" => 'Purchase Option', "target" => '' ],
-                                ["name" => 'Renewal Option', "target" => '' ],
-                                ["name" => 'Sale-Leaseback', "target" => '' ],
-                                ["name" => 'Seasonal', "target" => '' ],
-                                ["name" => 'Special Available (CLO)', "target" => '' ],
-                                ["name" => 'Varied Terms', "target" => '' ]
-                        ];
-                        @endphp
-                         <label class="fw-bold"> Terms of Lease: </label>
-                         <select class="grid-picker" name="leaseTerms[]" id="leaseTermRes"
-                             style="justify-content: flex-start;" required multiple>
-                             <option value="">Select</option>
-                             @foreach ($leaseTerms as $item)
-                                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                                    class="card flex-row" style="width:calc(25% - 10px);"
-                                    data-icon='<i class="fa-regular fa-calendar-days"></i>'>
-                                    {{ $item['name'] }}
-                                </option>
-                             @endforeach
-                         </select>
-                      </div>
-                      <div class="form-group">
-                        @php
-                            $frequencyRes = [
-                                ['name' => 'Annually', 'target' => ''],
-                                ['name' => 'Monthly', 'target' => ''],
+                        <div class="form-group">
+                            @php
+                                $leaseTerms = [
+                                    ["name" => 'Absolute (Triple) Net', "target" => '' ],
+                                    ["name" => 'Gross Lease', "target" => '' ],
+                                    ["name" => 'Gross Percentages', "target" => '' ],
+                                    ["name" => 'Ground Lease', "target" => '' ],
+                                    ["name" => 'Lease Option', "target" => '' ],
+                                    ["name" => 'Modified Gross', "target" => '' ],
+                                    ["name" => 'Net Lease', "target" => '' ],
+                                    ["name" => 'Net Net', "target" => '' ],
+                                    ["name" => 'Other', "target" => '' ],
+                                    ["name" => 'Pass Throughs', "target" => '' ],
+                                    ["name" => 'Purchase Option', "target" => '' ],
+                                    ["name" => 'Renewal Option', "target" => '' ],
+                                    ["name" => 'Sale-Leaseback', "target" => '' ],
+                                    ["name" => 'Seasonal', "target" => '' ],
+                                    ["name" => 'Special Available (CLO)', "target" => '' ],
+                                    ["name" => 'Varied Terms', "target" => '' ]
                             ];
-                        @endphp
-                            <label class="fw-bold">Select the frequency in which the Lease Amount is paid: </label>
-                            <select class="grid-picker" name="frequency[]" style="justify-content: flex-start;" required
-                                multiple>
+                            @endphp
+                            <label class="fw-bold"> Terms of Lease: </label>
+                            <select class="grid-picker" name="leaseTerms[]" id="leaseTermRes"
+                                style="justify-content: flex-start;" required multiple>
                                 <option value="">Select</option>
-                                @foreach ($frequencyRes as $item)
+                                @foreach ($leaseTerms as $item)
                                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                                         class="card flex-row" style="width:calc(25% - 10px);"
                                         data-icon='<i class="fa-regular fa-calendar-days"></i>'>
@@ -798,92 +782,112 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            @php
-                                $tenant_pays = [
-                                    ['name' => 'Cable TV', 'target' => ''],
-                                    ['name' => 'Electricity', 'target' => ''],
-                                    ['name' => 'Gas', 'target' => ''],
-                                    ['name' => 'Grounds Care', 'target' => ''],
-                                    ['name' => 'Insurance', 'target' => ''],
-                                    ['name' => 'Internet', 'target' => ''],
-                                    ['name' => 'Laundry', 'target' => ''],
-                                    ['name' => 'Management', 'target' => ''],
-                                    ['name' => 'Pest Control', 'target' => ''],
-                                    ['name' => 'Pool Maintenance', 'target' => ''],
-                                    ['name' => 'Recreational', 'target' => ''],
-                                    ['name' => 'Repairs', 'target' => ''],
-                                    ['name' => 'Security', 'target' => ''],
-                                    ['name' => 'Sewer', 'target' => ''],
-                                    ['name' => 'Taxes', 'target' => ''],
-                                    ['name' => 'Telephone', 'target' => ''],
-                                    ['name' => 'Trash Collection', 'target' => ''],
-                                    ['name' => 'Water', 'target' => ''],
-                                    ['name' => 'None', 'target' => ''],
-                                    ['name' => 'Other', 'target' => '.tenantPaysOther'],
-                                ];
-                            @endphp
-                            <label class="fw-bold">Tenant Pays:</label>
-                            <select class="grid-picker" name="tenant_pays[]" multiple id="tenant_pays"
-                                style="justify-content: flex-start;">
-                                <option value="">Select</option>
-                                @foreach ($tenant_pays as $tenant_pay)
-                                    <option value="{{ $tenant_pay['name'] }}"
-                                        data-target="{{ $tenant_pay['target'] }}" class="card flex-row"
-                                        style="width:calc(33.3% - 10px);"
-                                        data-icon='<i class="fa-regular fa-circle-check"></i>'>
-                                        {{ $tenant_pay['name'] }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <div class="form-group tenantPaysOther d-none">
+                                @php
+                                    $frequencyRes = [
+                                        ['name' => 'Annually', 'target' => ''],
+                                        ['name' => 'Monthly', 'target' => ''],
+                                    ];
+                                @endphp
+                                <label class="fw-bold">Select the frequency in which the Lease Amount is paid: </label>
+                                <select class="grid-picker" name="frequency[]" style="justify-content: flex-start;" required
+                                    multiple>
+                                    <option value="">Select</option>
+                                    @foreach ($frequencyRes as $item)
+                                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                                            class="card flex-row" style="width:calc(25% - 10px);"
+                                            data-icon='<i class="fa-regular fa-calendar-days"></i>'>
+                                            {{ $item['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                @php
+                                    $tenant_pays = [
+                                        ['name' => 'Cable TV', 'target' => ''],
+                                        ['name' => 'Electricity', 'target' => ''],
+                                        ['name' => 'Gas', 'target' => ''],
+                                        ['name' => 'Grounds Care', 'target' => ''],
+                                        ['name' => 'Insurance', 'target' => ''],
+                                        ['name' => 'Internet', 'target' => ''],
+                                        ['name' => 'Laundry', 'target' => ''],
+                                        ['name' => 'Management', 'target' => ''],
+                                        ['name' => 'Pest Control', 'target' => ''],
+                                        ['name' => 'Pool Maintenance', 'target' => ''],
+                                        ['name' => 'Recreational', 'target' => ''],
+                                        ['name' => 'Repairs', 'target' => ''],
+                                        ['name' => 'Security', 'target' => ''],
+                                        ['name' => 'Sewer', 'target' => ''],
+                                        ['name' => 'Taxes', 'target' => ''],
+                                        ['name' => 'Telephone', 'target' => ''],
+                                        ['name' => 'Trash Collection', 'target' => ''],
+                                        ['name' => 'Water', 'target' => ''],
+                                        ['name' => 'None', 'target' => ''],
+                                        ['name' => 'Other', 'target' => '.tenantPaysOther'],
+                                    ];
+                                @endphp
                                 <label class="fw-bold">Tenant Pays:</label>
-                                <input type="text" name="tenantPaysOther" class="form-control has-icon"
-                                    data-icon="fa-solid fa-ruler-combined">
+                                <select class="grid-picker" name="tenant_pays[]" multiple id="tenant_pays"
+                                    style="justify-content: flex-start;">
+                                    <option value="">Select</option>
+                                    @foreach ($tenant_pays as $tenant_pay)
+                                        <option value="{{ $tenant_pay['name'] }}"
+                                            data-target="{{ $tenant_pay['target'] }}" class="card flex-row"
+                                            style="width:calc(33.3% - 10px);"
+                                            data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                                            {{ $tenant_pay['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="form-group tenantPaysOther d-none">
+                                    <label class="fw-bold">Tenant Pays:</label>
+                                    <input type="text" name="tenantPaysOther" class="form-control has-icon"
+                                        data-icon="fa-solid fa-ruler-combined">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            @php
-                                $landlordPays = [
-                                    ['name' => 'Cable TV', 'target' => ''],
-                                    ['name' => 'Electricity', 'target' => ''],
-                                    ['name' => 'Gas', 'target' => ''],
-                                    ['name' => 'Grounds Care', 'target' => ''],
-                                    ['name' => 'Insurance', 'target' => ''],
-                                    ['name' => 'Internet', 'target' => ''],
-                                    ['name' => 'Laundry', 'target' => ''],
-                                    ['name' => 'Management', 'target' => ''],
-                                    ['name' => 'Pest Control', 'target' => ''],
-                                    ['name' => 'Pool Maintenance', 'target' => ''],
-                                    ['name' => 'Recreational', 'target' => ''],
-                                    ['name' => 'Repairs', 'target' => ''],
-                                    ['name' => 'Security', 'target' => ''],
-                                    ['name' => 'Sewer', 'target' => ''],
-                                    ['name' => 'Taxes', 'target' => ''],
-                                    ['name' => 'Telephone', 'target' => ''],
-                                    ['name' => 'Trash Collection', 'target' => ''],
-                                    ['name' => 'Water', 'target' => ''],
-                                    ['name' => 'None', 'target' => ''],
-                                    ['name' => 'Other', 'target' => '.landlordPaysOther'],
-                                ];
-                            @endphp
-                            <label class="fw-bold">Landlord Pays:</label>
-                            <select class="grid-picker" name="wnerPays[]" multiple
-                                style="justify-content: flex-start;">
-                                <option value="">Select</option>
-                                @foreach ($landlordPays as $item)
-                                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                                        class="card flex-row" style="width:calc(33.3% - 10px);"
-                                        data-icon='<i class="fa-regular fa-circle-check"></i>'>
-                                        {{ $item['name'] }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <div class="form-group landlordPaysOther d-none">
+                            <div class="form-group">
+                                @php
+                                    $landlordPays = [
+                                        ['name' => 'Cable TV', 'target' => ''],
+                                        ['name' => 'Electricity', 'target' => ''],
+                                        ['name' => 'Gas', 'target' => ''],
+                                        ['name' => 'Grounds Care', 'target' => ''],
+                                        ['name' => 'Insurance', 'target' => ''],
+                                        ['name' => 'Internet', 'target' => ''],
+                                        ['name' => 'Laundry', 'target' => ''],
+                                        ['name' => 'Management', 'target' => ''],
+                                        ['name' => 'Pest Control', 'target' => ''],
+                                        ['name' => 'Pool Maintenance', 'target' => ''],
+                                        ['name' => 'Recreational', 'target' => ''],
+                                        ['name' => 'Repairs', 'target' => ''],
+                                        ['name' => 'Security', 'target' => ''],
+                                        ['name' => 'Sewer', 'target' => ''],
+                                        ['name' => 'Taxes', 'target' => ''],
+                                        ['name' => 'Telephone', 'target' => ''],
+                                        ['name' => 'Trash Collection', 'target' => ''],
+                                        ['name' => 'Water', 'target' => ''],
+                                        ['name' => 'None', 'target' => ''],
+                                        ['name' => 'Other', 'target' => '.landlordPaysOther'],
+                                    ];
+                                @endphp
                                 <label class="fw-bold">Landlord Pays:</label>
-                                <input type="text" name="landlordPaysOther" id="owner_pays"
-                                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                                <select class="grid-picker" name="wnerPays[]" multiple
+                                    style="justify-content: flex-start;">
+                                    <option value="">Select</option>
+                                    @foreach ($landlordPays as $item)
+                                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                                            class="card flex-row" style="width:calc(33.3% - 10px);"
+                                            data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                                            {{ $item['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="form-group landlordPaysOther d-none">
+                                    <label class="fw-bold">Landlord Pays:</label>
+                                    <input type="text" name="landlordPaysOther" id="owner_pays"
+                                        class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                                </div>
                             </div>
-                        </div>
                       </span>
                       <span class="resFields">
                         <div class="form-group">
@@ -941,7 +945,7 @@
                             @foreach ($rentRes as $item)
                                 <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                                     class="card flex-row" style="width:calc(33.3% - 10px);"
-                                    data-icon='<i class="fa-solid fa-ruler-combined"></i>'>
+                                    data-icon='<i class="fa-regular fa-circle-check"></i>'>
                                     {{ $item['name'] }}
                                 </option>
                             @endforeach
@@ -949,7 +953,7 @@
                         <div class="form-group rentOtherRes d-none">
                             <label class="fw-bold">Rent Includes:</label>
                             <input type="text" name="rentOther" class="form-control has-icon"
-                                data-icon="fa-solid fa-ruler-combined">
+                                data-icon="fa-regular fa-circle-check">
                         </div>
                       </div>
                       <div class="form-group">
@@ -998,65 +1002,67 @@
                             @endforeach
                         </select>
                       </div>
-                      <div class="form-group custom_input d-none">
-                        <label class="fw-bold">Please enter the required move-in amounts:</label>
-                        <input type="text" name="leaseTermOther" class="form-control has-icon"
-                            data-icon="fa-solid fa-ruler-combined">
+                      <div class="custom_input d-none">
+                        <div class="form-group">
+                            <label class="fw-bold">What is required at move-in?</label>
+                            <input type="text" name="leaseTermOther" class="form-control has-icon"
+                                data-icon="fa-regular fa-circle-check">
+                        </div>
+                        <div class="form-group">
+                            <label class="fw-bold">Please enter the required move-in amounts:</label>
+                            <input type="number" name="leaseTermOther" class="form-control has-icon"
+                                data-icon="fa-solid fa-dollar-sign">
+                        </div>
                       </div>
                       <div class="form-group depositOne d-none">
                         <label class="fw-bold">Please enter the required move-in amounts:</label>
                         <div class="form-group">
-                            <label class="fw-bold">First Month: $</label>
-                            <input type="text" name="firstMonthDeposit" class="form-control has-icon"
+                            <label class="fw-bold">First Month:</label>
+                            <input type="number" name="firstMonthDeposit" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Last Month: $</label>
-                            <input type="text" name="lastMonthDeposit" class="form-control has-icon"
+                            <label class="fw-bold">Last Month:</label>
+                            <input type="number" name="lastMonthDeposit" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Security Deposit: $</label>
-                            <input type="text" name="securityDeposit" class="form-control has-icon"
+                            <label class="fw-bold">Security Deposit:</label>
+                            <input type="number" name="securityDeposit" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                       </div>
                       <div class="form-group depositSecond d-none">
                         <label class="fw-bold">Please enter the required move-in amounts:</label>
                         <div class="form-group">
-                            <label class="fw-bold">First Month: $</label>
-                            <input type="text" name="firstMonthSecond" class="form-control has-icon"
+                            <label class="fw-bold">First Month:</label>
+                            <input type="number" name="firstMonthSecond" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Last Month: $</label>
-                            <input type="text" name="lastMonthSecond" class="form-control has-icon"
+                            <label class="fw-bold">Last Month:</label>
+                            <input type="number" name="lastMonthSecond" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Security Deposit: $</label>
-                            <input type="text" name="securityDepositSecond" class="form-control has-icon"
+                            <label class="fw-bold">Security Deposit:</label>
+                            <input type="number" name="securityDepositSecond" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Pet Deposit: $</label>
-                            <input type="text" name="petDepositSecond" class="form-control has-icon"
+                            <label class="fw-bold">Exit Cleaning Fee:</label>
+                            <input type="number" name="exitCleaningFeeSecond" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Exit Cleaning Fee: $</label>
-                            <input type="text" name="exitCleaningFeeSecond" class="form-control has-icon"
-                                data-icon="fa-solid fa-dollar-sign" placeholder="" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="fw-bold">Application Fee: $</label>
-                            <input type="text" name="applicationFeeSecond" data-type="cities" id="cities"
+                            <label class="fw-bold">Application Fee:</label>
+                            <input type="number" name="applicationFeeSecond" data-type="cities" id="cities"
                                 class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" placeholder=""
                                 required>
                         </div>
                         <div class="form-group">
                             <label class="fw-bold">Application Link: </label>
-                            <input type="text" name="applicationLinkSecond" data-type="cities" id="cities"
+                            <input type="number" name="applicationLinkSecond" data-type="cities" id="cities"
                                 class="form-control has-icon search_places" data-icon="fa-solid fa-link" placeholder=""
                                 required>
                         </div>
@@ -1064,37 +1070,37 @@
                       <div class="form-group depositThird d-none">
                         <label class="fw-bold">Please enter the required move-in amounts:</label>
                         <div class="form-group">
-                            <label class="fw-bold">First Month: $</label>
-                            <input type="text" name="firstMonthThird" class="form-control has-icon"
+                            <label class="fw-bold">First Month:</label>
+                            <input type="number" name="firstMonthThird" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Last Month: $</label>
-                            <input type="text" name="lastMonthThird" class="form-control has-icon"
+                            <label class="fw-bold">Last Month:</label>
+                            <input type="number" name="lastMonthThird" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Security Deposit: $</label>
-                            <input type="text" name="securityDepositThird" class="form-control has-icon"
+                            <label class="fw-bold">Security Deposit:</label>
+                            <input type="number" name="securityDepositThird" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Pet Deposit: $</label>
-                            <input type="text" name="petDepositThird" class="form-control has-icon"
+                            <label class="fw-bold">Pet Deposit:</label>
+                            <input type="number" name="petDepositThird" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Exit Cleaning Fee: $</label>
-                            <input type="text" name="exitCleaningFeeThird" class="form-control has-icon"
+                            <label class="fw-bold">Exit Cleaning Fee:</label>
+                            <input type="number" name="exitCleaningFeeThird" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Application Fee: $</label>
-                            <input type="text" name="applicationFeeThird" class="form-control has-icon"
+                            <label class="fw-bold">Application Fee:</label>
+                            <input type="number" name="applicationFeeThird" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Application Link: </label>
+                            <label class="fw-bold">Application Link:</label>
                             <input type="text" name="applicationLinkThird" class="form-control has-icon "
                                 data-icon="fa-solid fa-link" placeholder="" required>
                         </div>
@@ -1102,23 +1108,28 @@
                       <div class="form-group depositFour d-none">
                         <label class="fw-bold">Please enter the required move-in amounts:</label>
                         <div class="form-group">
-                            <label class="fw-bold">First Month: $</label>
-                            <input type="text" name="firstMonthFour" class="form-control has-icon "
+                            <label class="fw-bold">First Month:</label>
+                            <input type="number" name="firstMonthFour" class="form-control has-icon "
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Last Month: $</label>
-                            <input type="text" name="lastMonthFour" class="form-control has-icon "
+                            <label class="fw-bold">Last Month:</label>
+                            <input type="number" name="lastMonthFour" class="form-control has-icon "
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Security Deposit: $</label>
-                            <input type="text" name="securityDepositFour" class="form-control has-icon "
+                            <label class="fw-bold">Security Deposit:</label>
+                            <input type="number" name="securityDepositFour" class="form-control has-icon "
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Application Fee: $</label>
-                            <input type="text" name="applicationFeeFour" class="form-control has-icon "
+                            <label class="fw-bold">Exit Cleaning Fee:</label>
+                            <input type="number" name="exitCleaningFeeFour" class="form-control has-icon"
+                                data-icon="fa-solid fa-dollar-sign" placeholder="" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="fw-bold">Application Fee:</label>
+                            <input type="number" name="applicationFeeFour" class="form-control has-icon "
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
@@ -1128,30 +1139,30 @@
                         </div>
                         <div class="form-group">
                             <label class="fw-bold">Vacation Tax:</label>
-                            <input type="text" name="vacationTaxFour"class="form-control has-icon"
+                            <input type="number" name="vacationTaxFour"class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign">
                         </div>
                       </div>
                       <div class="form-group depositFive d-none">
                         <label class="fw-bold">Please enter the required move-in amounts:</label>
                         <div class="form-group">
-                            <label class="fw-bold">First Month: $</label>
-                            <input type="text" name="firstMonthFive" class="form-control has-icon"
+                            <label class="fw-bold">First Month:</label>
+                            <input type="number" name="firstMonthFive" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Security Deposit: $</label>
-                            <input type="text" name="securityDepositFive" class="form-control has-icon"
+                            <label class="fw-bold">Security Deposit:</label>
+                            <input type="number" name="securityDepositFive" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Exit Cleaning Fee: $</label>
-                            <input type="text" name="exitCleaningFeeFive" class="form-control has-icon"
+                            <label class="fw-bold">Exit Cleaning Fee:</label>
+                            <input type="number" name="exitCleaningFeeFive" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Application Fee: $</label>
-                            <input type="text" name="applicationFeeFive" class="form-control has-icon"
+                            <label class="fw-bold">Application Fee:</label>
+                            <input type="number" name="applicationFeeFive" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
@@ -1160,31 +1171,31 @@
                                 class="form-control has-icon" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Vacation Tax: $</label>
-                            <input type="text" name="vacationTaxFive" class="form-control has-icon"
+                            <label class="fw-bold">Vacation Tax:</label>
+                            <input type="number" name="vacationTaxFive" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                       </div>
                       <div class="form-group depositSix d-none">
                         <label class="fw-bold">Please enter the required move-in amounts:</label>
                         <div class="form-group">
-                            <label class="fw-bold">First Month: $</label>
-                            <input type="text" name="firstMonthSix" class="form-control has-icon"
+                            <label class="fw-bold">First Month:</label>
+                            <input type="number" name="firstMonthSix" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Security Deposit: $</label>
-                            <input type="text" name="securityDepositSix" class="form-control has-icon"
+                            <label class="fw-bold">Security Deposit:</label>
+                            <input type="number" name="securityDepositSix" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Exit Cleaning Fee: $</label>
-                            <input type="text" name="exitCleaningFeeSix" class="form-control has-icon"
+                            <label class="fw-bold">Exit Cleaning Fee:</label>
+                            <input type="number" name="exitCleaningFeeSix" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Application Fee: $</label>
-                            <input type="text" name="applicationFeeSix" class="form-control has-icon"
+                            <label class="fw-bold">Application Fee:</label>
+                            <input type="number" name="applicationFeeSix" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
@@ -1192,32 +1203,22 @@
                             <input type="text" name="applicationLinkSix" data-icon="fa-solid fa-link"
                                 class="form-control has-icon" required>
                         </div>
-                        <div class="form-group">
-                            <label class="fw-bold">Vacation Tax: $</label>
-                            <input type="text" name="vacationTaxFive" class="form-control has-icon"
-                                data-icon="fa-solid fa-dollar-sign" placeholder="" required>
-                        </div>
                       </div>
                       <div class="form-group depositSeven d-none">
                         <label class="fw-bold">Please enter the required move-in amounts:</label>
                         <div class="form-group">
-                            <label class="fw-bold">First Month: $</label>
-                            <input type="text" name="firstMonthSeven" class="form-control has-icon"
+                            <label class="fw-bold">First Month:</label>
+                            <input type="number" name="firstMonthSeven" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Security Deposit: $</label>
-                            <input type="text" name="securityDepositSeven" class="form-control has-icon"
+                            <label class="fw-bold">Security Deposit:</label>
+                            <input type="number" name="securityDepositSeven" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Exit Cleaning Fee: $</label>
-                            <input type="text" name="exitCleaningFeeSeven" class="form-control has-icon"
-                                data-icon="fa-solid fa-dollar-sign" placeholder="" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="fw-bold">Application Fee: $</label>
-                            <input type="text" name="applicationFeeSeven" class="form-control has-icon"
+                            <label class="fw-bold">Application Fee:</label>
+                            <input type="number" name="applicationFeeSeven" class="form-control has-icon"
                                 data-icon="fa-solid fa-dollar-sign" placeholder="" required>
                         </div>
                         <div class="form-group">
@@ -1226,7 +1227,7 @@
                                 class="form-control has-icon" required>
                         </div>
                       </div>
-                      <div class="form-group">
+                      {{-- <div class="form-group">
                         <div class="form-group">
                             @php
                                 $timeFrame = [
@@ -1255,9 +1256,9 @@
                                 @endforeach
                             </select>
                         </div>
-                      </div>
+                      </div> --}}
                       <div class="form-group">
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                           @php
                               $timeFrame = [
                                   ['name' => '12 hours', 'target' => ''],
@@ -1284,7 +1285,7 @@
                                   </option>
                               @endforeach
                           </select>
-                        </div>
+                        </div> --}}
                         <div class="form-group ">
                           @php
                               $specialMoveRes = [
@@ -1312,7 +1313,7 @@
                           <div class="form-group specialMoveRes d-none">
                               <label class="fw-bold">What is the move in special?</label>
                               <input type="text" name="specialMove" id="" class="form-control has-icon"
-                                  data-icon="fa-solid fa-ruler-combined">
+                                  data-icon="fa-regular fa-circle-check">
                           </div>
                         </div>
                       </div>
@@ -1343,7 +1344,7 @@
                             </select>
                             <div class="from-group petsYesRes d-none">
                                 <label class="fw-bold">Number of Pets Allowed:</label>
-                                <input type="text" class="form-control has-icon" name="petsNumber"
+                                <input type="number" class="form-control has-icon" name="petsNumber"
                                     data-icon="fa-solid fa-dog">
                                 <label class="fw-bold">Acceptable Pet Types:</label>
                                 <input type="text" class="form-control has-icon" name="petsType"
@@ -1355,7 +1356,7 @@
                                 <input type="text" class="form-control has-icon" name="petsFee"
                                     data-icon="fa-solid fa-dog">
                                 <label class="fw-bold">Pet Fee Amount:</label>
-                                <input type="text" class="form-control has-icon" name="petsAmount"
+                                <input type="number" class="form-control has-icon" name="petsAmount"
                                     data-icon="fa-solid fa-dog">
                                 <label class="fw-bold">Is the Pet Fee Refundable or Non-Refundable?</label>
                                 <input type="text" class="form-control has-icon" name="petsFund"
@@ -1397,7 +1398,7 @@
                         </div>
                         <div class="form-group">
                             @php
-                                $creditScoreRes = ['Poor', 'Fair', 'Good', 'Excellent'];
+                                $creditScoreRes = ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
                             @endphp
                             <label class="fw-bold">What is the minimum credit score rating the landlord will
                                 accept?</label>
@@ -1414,8 +1415,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="fw-bold" for="offer_min_net_income">What is the minimum net income a household must earn to qualify for the rental?</label>
-                            <input type="number" name="offer_min_net_income" id="offer_min_net_income" class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dollar">
+                            <label class="fw-bold" for="offer_min_net_income">
+                                What is the minimum net income a household must earn to qualify for the rental?
+                            </label>
+                            <input type="number" name="offer_min_net_income" id="offer_min_net_income" class="form-control has-icon hide_arrow" 
+                                data-icon="fa-solid fa-dollar">
                         </div>
                         <div class="form-group">
                             @php
@@ -1429,9 +1433,7 @@
                                     ],
                                 ];
                             @endphp
-                            <label class="fw-bold">Will the landlord accept a tenant with a prior eviction within the last
-                                7
-                                Years?</label>
+                            <label class="fw-bold">Will the landlord accept a tenant with a prior eviction within the last 7 Years?</label>
                             <select class="grid-picker" name="eviction" id=""
                                 style="justify-content: flex-start;">
                                 <option value="">Select</option>
@@ -1490,7 +1492,7 @@
                             </select>
                             <div class="form-group other_bedrooms d-none">
                                 <label class="fw-bold" for="other_bedrooms">Bedrooms:</label>
-                                <input type="text" name="other_bedrooms" id="other_bedrooms"
+                                <input type="number" name="other_bedrooms" id="other_bedrooms"
                                     class="form-control has-icon" data-icon="fa-solid fa-bed" required>
                             </div>
                         </div>
@@ -1535,7 +1537,7 @@
                             </select>
                             <div class="form-group other_bathrooms d-none">
                                 <label class="fw-bold" for="other_bathrooms">Bathrooms:</label>
-                                <input type="text" name="other_bathrooms" class="form-control has-icon" data-icon="fa-solid fa-bath" required>
+                                <input type="number" name="other_bathrooms" class="form-control has-icon" data-icon="fa-solid fa-bath" required>
                             </div>
                         </div>
                     </div>
@@ -1568,7 +1570,7 @@
                         @endphp
                         <div class="form-group">
                             <label class="fw-bold">Sqft Heated Source:</label>
-                            <select class="grid-picker" name="heated_source" style="justify-content: center;" required>
+                            <select class="grid-picker" name="heated_source" style="justify-content: left;" required>
                                 <option value="">Select</option>
                                 @foreach ($heated_sources as $heated_source)
                                     <option value="{{ $heated_source['name'] }}"
@@ -1581,9 +1583,12 @@
                             </select>
                             <div class="form-group otherSqftRes d-none">
                                 <label for="sqft_total" class="fw-bold"> Sqft Heated Source:</label>
-                                <input type="text" name="otherSqft" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                                <input type="text" name="otherSqft" class="form-control has-icon" data-icon="fa-regular fa-circle-check" required>
                             </div>
                         </div>
+                    </div>
+                    <div class="wizard-step" data-step='13'>
+                        <h4>Land Information:</h4>
                         @php
                             $total_acreages = [
                                 ['name' => '0 to less than 1/4', 'target' => ''],
@@ -1620,10 +1625,8 @@
                         <div class="form-group">
                             <label class="fw-bold">Year Built:</label>
                             <input type="text" name="yearBuilt" class="form-control has-icon"
-                                data-icon="fa-solid fa-ruler-combined">
+                                data-icon="fa-regular fa-calendar-days">
                         </div>
-                    </div>
-                    <div class="wizard-step" data-step='13'>
                         <div class="form-group">
                             <label class="fw-bold">Lot Size:</label>
                             <input type="text" name="lotSize" class="form-control has-icon"
@@ -1697,6 +1700,7 @@
                                 ['name' => 'Solar Hot Water Owned', 'target' => ''],
                                 ['name' => 'Solar Hot Water Rented', 'target' => ''],
                                 ['name' => 'Tankless Water Heater', 'target' => ''],
+                                ['name' => 'Touchless Faucet', 'target' => ''],
                                 ['name' => 'Trash Compactor', 'target' => ''],
                                 ['name' => 'Washer', 'target' => ''],
                                 ['name' => 'Water Filtration System', 'target' => ''],
@@ -1724,7 +1728,7 @@
                             <div class="form-group appliancesOtherRes d-none">
                                 <label class="fw-bold">Appliances:</label>
                                 <input type="text" name="appliancesOther" id="total_floors" placeholder=""
-                                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                                    class="form-control has-icon" data-icon="fa-regular fa-circle-check">
                             </div>
                         </div>
                         @php
@@ -1817,7 +1821,7 @@
                             <label class="fw-bold" for="custom_negotiable_terms"> Amenities and Property Features:
                             </label>
                             <input type="text" name="otherAmenities" id="custom_negotiable_terms" placeholder=""
-                              class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                              class="form-control has-icon" data-icon="fa-regular fa-circle-check" required>
                           </div>
                           </span>
                           <span class="commercialFields">
@@ -1878,7 +1882,7 @@
                               <div class="form-group otherAmenitiesCommercial d-none">
                                 <label class="fw-bold">Amenities and Property Features:</label>
                                 <input type="text" class="form-control has-icon" name="otherAmenities"
-                                  data-icon="fa-regular fa-ruler-combined" required />
+                                  data-icon="fa-regular fa-check-circle" required />
                               </div>
                             </div>
                           </span>
@@ -1950,7 +1954,7 @@
                                 ['name' => 'Kitchen/Family Room Combo', 'target' => ''],
                                 ['name' => 'L Dining', 'target' => ''],
                                 ['name' => 'Living Room/Dining Room Combo', 'target' => ''],
-                                ['name' => 'Bedroom Main Floor', 'target' => ''],
+                                ['name' => 'Primary Bedroom Main Floor', 'target' => ''],
                                 ['name' => 'Primary Bedroom Upstairs', 'target' => ''],
                                 ['name' => 'Open Floorplan', 'target' => ''],
                                 ['name' => 'Pest Guard System', 'target' => ''],
@@ -1989,7 +1993,7 @@
                             <div class="form-group interiorFeatureOtherRes d-none">
                                 <label class="fw-bold">Interior Features:</label>
                                 <input type="text" name="interiorFeatureOther" id="floors_in_unit" placeholder=""
-                                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                                    class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                             </div>
                         </div>
                     </div>
@@ -2006,6 +2010,7 @@
                                 ['name' => 'Florida Room', 'target' => ''],
                                 ['name' => 'Formal Dining Room Separate', 'target' => ''],
                                 ['name' => 'Formal Living Room Separate', 'target' => ''],
+                                ['name' => 'Garage Apartment', 'target' => ''],
                                 ['name' => 'Great Room', 'target' => ''],
                                 ['name' => 'Inside Utility', 'target' => ''],
                                 ['name' => 'Interior In-Law Suite w/Private Entry', 'target' => ''],
@@ -2033,24 +2038,27 @@
                             <div class="form-group roomOtherRes d-none">
                                 <label class="fw-bold">Additional Rooms:</label>
                                 <input type="text" name="roomOther" id="number_of_buildings" placeholder=""
-                                    class="form-control has-icon" data-icon="fa-solid fa-hotel">
+                                    class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                             </div>
                         </div>
                     </div>
                     <div class="wizard-step" data-step='20'>
-                        <h4>Additional Rooms</h4>
-
                         @php
                             $laundryRes = [
+                                ['name' => 'Common Area', 'target' => ''],
                                 ['name' => 'Corridor Access', 'target' => ''],
+                                ['name' => 'Electric Dryer Hookup', 'target' => ''],
+                                ['name' => 'Gas Dryer Hookup', 'target' => ''],
+                                ['name' => 'Outside', 'target' => ''],
+                                ['name' => 'Same Floor As Condo Unit', 'target' => ''],
+                                ['name' => 'Upper Floor', 'target' => ''],
+                                ['name' => 'Washer Hookup', 'target' => ''],
                                 ['name' => 'Inside', 'target' => ''],
                                 ['name' => 'In Garage', 'target' => ''],
                                 ['name' => 'In Kitchen', 'target' => ''],
                                 ['name' => 'Laundry Chute', 'target' => ''],
                                 ['name' => 'Laundry Closet', 'target' => ''],
                                 ['name' => 'Laundry Room', 'target' => ''],
-                                ['name' => 'Outside', 'target' => ''],
-                                ['name' => 'Upper Floor', 'target' => ''],
                                 ['name' => 'None', 'target' => ''],
                                 ['name' => 'Other', 'target' => '.laundryOtherRes'],
                             ];
@@ -2071,7 +2079,7 @@
                             <div class="form-group laundryOtherRes d-none">
                                 <label class="fw-bold">Laundry Features: </label>
                                 <input type="text" name="laundryOther" id="number_of_buildings" placeholder=""
-                                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                                    class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                             </div>
                         </div>
                     </div>
@@ -2079,24 +2087,24 @@
                         <div class="form-group">
                             <label class="fw-bold">How many floors are in the property? </label>
                             <input type="text" name="propFloors" id="number_of_buildings" placeholder=""
-                                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                                class="form-control has-icon" data-icon="fa-solid fa-hotel">
                         </div>
                         <div class="form-group">
                             <label class="fw-bold">What floor number is the property on?</label>
                             <input type="text" name="floorNumber" id="floors_in_unit" placeholder=""
-                                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                                class="form-control has-icon" data-icon="fa-solid fa-hotel">
                         </div>
 
                         <div class="form-group">
                             <label class="fw-bold">How many floors are in the entire building? </label>
                             <input type="text" name="totalFloors" id="total_floors" placeholder=""
-                                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                                class="form-control has-icon" data-icon="fa-solid fa-hotel">
                         </div>
                         <span class="commercialFields">
                             <div class="form-group">
                                 <label class="fw-bold">Total Number of Buildings: </label>
                                 <input type="text" name="totalBuildings" placeholder=""
-                                    class="form-control has-icon" data-icon="fa-solid fa-warehouse">
+                                    class="form-control has-icon" data-icon="fa-solid fa-hotel">
                             </div>
                         </span>
                         <div class="form-group">
@@ -2107,7 +2115,7 @@
                                 @foreach ($yes_or_nos as $item)
                                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                                         class="card flex-row" style="width:calc(33.3% - 10px);"
-                                        data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                                        data-icon='<i class="fa-solid fa-hotel"></i>'>
                                         {{ $item['name'] }}
                                     </option>
                                 @endforeach
@@ -2161,18 +2169,12 @@
                             <div class="form-group  floorCoveringOtherRes d-none">
                                 <label class="fw-bold">Floor Covering:</label>
                                 <input type="text" name="floorConvringOther" class="form-control has-icon"
-                                    data-icon="fa-solid fa-ruler-combined">
+                                    data-icon="fa-regular fa-check-circle">
                             </div>
                         </div>
                     </div>
                     <div class="wizard-step" data-step='23'>
-                        <div class="form-group">
-                            <label class="fw-bold">Approximate Room Dimensions (Width x Length) </label>
-                            <input type="text" name="roomDimensions[]" class="form-control" required>
-                            <button type="button" class="btn btn-secondary btn-sm w-100 roomBtn mt-2"
-                                onclick="add_room_dimension();"><i class="fa-solid fa-plus"></i> Add New
-                                Row</button>
-                        </div>
+                        <h4>Room Details:</h4>
                         @php
                             $room_types = [
                                 ['name' => 'Additional Bedroom', 'target' => ''],
@@ -2191,6 +2193,10 @@
                                 ['name' => 'Bonus Room', 'target' => ''],
                                 ['name' => 'Breezeway', 'target' => ''],
                                 ['name' => 'Dining Room', 'target' => ''],
+                                ['name' => 'Dinette', 'target' => ''],
+                                ['name' => 'Garage Room', 'target' => ''],
+                                ['name' => 'Garage Apartment,', 'target' => ''],
+                                ['name' => 'Double Primary Bedroom', 'target' => ''],
                                 ['name' => 'Family Room', 'target' => ''],
                                 ['name' => 'Florida Room', 'target' => ''],
                                 ['name' => 'Foyer', 'target' => ''],
@@ -2204,8 +2210,8 @@
                                 ['name' => 'Library', 'target' => ''],
                                 ['name' => 'Living Room', 'target' => ''],
                                 ['name' => 'Loft', 'target' => ''],
-                                ['name' => 'Master Bathroom', 'target' => ''],
-                                ['name' => 'Master Bedroom', 'target' => ''],
+                                ['name' => 'Primary Bathroom', 'target' => ''],
+                                ['name' => 'Primary Bedroom', 'target' => ''],
                                 ['name' => 'Media Room', 'target' => ''],
                                 ['name' => 'Office', 'target' => ''],
                                 ['name' => 'Sauna', 'target' => ''],
@@ -2228,6 +2234,13 @@
                                     </option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="form-group roomDet">
+                            <label class="fw-bold">Approximate Room Dimensions (Width x Length) </label>
+                            <input type="text" name="roomDimensions[]" class="form-control" required>
+                            <button type="button" class="btn btn-secondary btn-sm w-100 roomBtn mt-2"
+                                onclick="add_room_dimension();"><i class="fa-solid fa-plus"></i> Add New
+                                Row</button>
                         </div>
                         @php
                             $room_levels = [
@@ -2256,12 +2269,16 @@
                         @php
                             $bedroomCloset = [
                                 ['name' => 'Built-in Closet', 'target' => ''],
+                                ['name' => 'Coat Closet', 'target' => ''],
+                                ['name' => 'Dual Closets', 'target' => ''],
+                                ['name' => 'Linen Closet', 'target' => ''],
                                 ['name' => 'No Closet', 'target' => ''],
+                                ['name' => 'Storage Closet', 'target' => ''],
                                 ['name' => 'Walk-in Closet', 'target' => ''],
                             ];
                         @endphp
                         <div class="form-group roomDet ">
-                            <label class="fw-bold">Bedroom Closet Type:</label>
+                            <label class="fw-bold">Closet Type:</label>
                             <select class="grid-picker" name="bedroomCloset[]" style="justify-content: flex-start;"
                                 required>
                                 <option value="">Select</option>
@@ -2298,6 +2315,8 @@
                                 ['name' => 'Terrazzo', 'target' => ''],
                                 ['name' => 'Tile', 'target' => ''],
                                 ['name' => 'Travertine', 'target' => ''],
+                                ['name' => 'Vinyl', 'target' => ''],
+                                ['name' => 'Wood', 'target' => ''],
                                 ['name' => 'Other', 'target' => ''],
                             ];
                         @endphp
@@ -2341,7 +2360,7 @@
                                 ['name' => 'Linen Closet Bath', 'target' => ''],
                                 ['name' => 'Makeup/Vanity Space', 'target' => ''],
                                 ['name' => 'Multiple Shower Heads', 'target' => ''],
-                                ['name' => 'Other- Specify in Remarks', 'target' => ''],
+                                ['name' => 'Wet Bar', 'target' => ''],
                                 ['name' => 'Pantry', 'target' => ''],
                                 ['name' => 'Rain Shower Head', 'target' => ''],
                                 ['name' => 'Sauna', 'target' => ''],
@@ -2380,11 +2399,12 @@
                             <div class="form-group roomFeatureOther d-none">
                                 <label class="fw-bold">Room Features:</label>
                                 <input type="text" name="roomFeatueOther" class="form-control has-icon"
-                                    data-icon="fa-solid fa-ruler-combined">
+                                    data-icon="fa-regular fa-check-circle">
                             </div>
                         </div>
                     </div>
                     <div class="wizard-step" data-step='24'>
+                        <h4>Water and Dock</h4>
                         <div class="form-group ">
                             @php
                                 $waterAccessOption = [
@@ -2436,7 +2456,7 @@
                             @endphp
                             <label class="fw-bold">Water Access:</label>
                             <select class="grid-picker" name="water_access[]" id="water_access"
-                                style="justify-content: flex-start;" required>
+                                style="justify-content: flex-start;" required multiple>
                                 <option value="">Select</option>
                                 @foreach ($water_access as $item)
                                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
@@ -2536,18 +2556,6 @@
                                 ['name' => 'Bridges - Fixed', 'target' => ''],
                                 ['name' => 'Bridges - No Fixed Bridges', 'target' => ''],
                                 ['name' => 'Davits', 'target' => ''],
-                                ['name' => 'Dock - Composite', 'target' => ''],
-                                ['name' => 'Dock - Concrete', 'target' => ''],
-                                ['name' => 'Dock - Covered', 'target' => ''],
-                                ['name' => 'Dock - Open', 'target' => ''],
-                                ['name' => 'Dock - Slip 1st Come', 'target' => ''],
-                                ['name' => 'Dock - Slip Deeded Off-Site', 'target' => ''],
-                                ['name' => 'Dock - Slip Deeded On-Site', 'target' => ''],
-                                ['name' => 'Dock - Wood', 'target' => ''],
-                                ['name' => 'Dock w/Electric', 'target' => ''],
-                                ['name' => 'Dock w/o Electric', 'target' => ''],
-                                ['name' => 'Dock w/o Water Supply', 'target' => ''],
-                                ['name' => 'Dock w/Water Supply', 'target' => ''],
                                 ['name' => 'Fishing Pier', 'target' => ''],
                                 ['name' => 'Lift', 'target' => ''],
                                 ['name' => 'Lift - Covered', 'target' => ''],
@@ -2636,7 +2644,116 @@
                                 </select>
                             </div>
                         </div>
-
+                        <div class="form-group ">
+                            <label class="fw-bold">Dock:</label>
+                            <select class="grid-picker" name="has_dock" id="has_dock"
+                                style="justify-content: flex-start;">
+                                <option value="">Select</option>
+                                @foreach ($yes_or_nos as $item)
+                                    @php
+                                        if ($item['name'] == 'Yes') {
+                                            $target = '.dockYes';
+                                        } else {
+                                            $target = '';
+                                        }
+                                    @endphp
+                                    <option value="{{ $item['name'] }}" data-target="{{ $target }}"
+                                        class="card flex-row" style="width:calc(33.3% - 10px);"
+                                        data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                                        {{ $item['name'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div class="form-group dockYes d-none">
+                                @php
+                                    $dock = [
+                                        ['name' => '2 Point Moorage', 'target' => ''],
+                                        ['name' => '3 Point Moorage', 'target' => ''],
+                                        ['name' => '4 Point Moorage', 'target' => ''],
+                                        ['name' => 'CATV', 'target' => ''],
+                                        ['name' => 'Clubhouse', 'target' => ''],
+                                        ['name' => 'Dock - Composite', 'target' => ''],
+                                        ['name' => 'Dock - Concrete', 'target' => ''],
+                                        ['name' => 'Dock - Covered', 'target' => ''],
+                                        ['name' => 'Dock - Open', 'target' => ''],
+                                        ['name' => 'Dock - Slip 1st Come', 'target' => ''],
+                                        ['name' => 'Dock - Slip Deeded Off-Site', 'target' => ''],
+                                        ['name' => 'Dock - Slip Deeded On-Site', 'target' => ''],
+                                        ['name' => 'Dock - Wood', 'target' => ''],
+                                        ['name' => 'Dock w/Electric', 'target' => ''],
+                                        ['name' => 'Dock w/o Electric', 'target' => ''],
+                                        ['name' => 'Dock w/o Water Supply', 'target' => ''],
+                                        ['name' => 'Dock w/Water Supply', 'target' => ''],
+                                        ['name' => 'Fish Cleaning Station', 'target' => ''],
+                                        ['name' => 'Floating Dock', 'target' => ''],
+                                        ['name' => 'Harbormaster', 'target' => ''],
+                                        ['name' => 'Internet', 'target' => ''],
+                                        ['name' => 'Lift', 'target' => ''],
+                                        ['name' => 'Restroom/Shower', 'target' => ''],
+                                        ['name' => 'Wet Dock', 'target' => ''],
+                                        ['name' => 'None', 'target' => ''],
+                                        ['name' => 'Other', 'target' => '.therDock']
+                                    ];
+                                @endphp
+                                <label class="fw-bold">Dock: </label>
+                                <select class="grid-picker" name="dock[]"
+                                    style="justify-content: flex-start;" multiple required>
+                                    <option value="">Select</option>
+                                    @foreach ($dock as $item)
+                                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                                            class="card flex-row" style="width:calc(33.3% - 10px);"
+                                            data-icon="<i class='fa-regular fa-circle-check'></i>">
+                                            {{ $item['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="form-group otherDock d-none">
+                                    <label class="fw-bold">Dock Description:</label>
+                                    <input type="text" name="dockDescription" class="form-control has-icon"
+                                        data-icon="fa-regular fa-check-circle">
+                                </div>
+                                <div class="form-group">
+                                    <label class="fw-bold">Dock Lift Capacity:</label>
+                                    <input type="text" name="dockLiftCapacity" class="form-control has-icon"
+                                        data-icon="fa-regular fa-check-circle">
+                                </div>
+                                <div class="form-group">
+                                    <label class="fw-bold">Dock Year Built:</label>
+                                    <input type="text" name="dockYearBuilt" class="form-control has-icon"
+                                        data-icon="fa-regular fa-check-circle">
+                                </div>
+                                <div class="form-group">
+                                    <label class="fw-bold">Dock Dimension:</label>
+                                    <input type="text" name="dockDimension" class="form-control has-icon"
+                                        data-icon="fa-regular fa-check-circle">
+                                </div>
+                                <div class="form-group">
+                                    <label class="fw-bold">Dock Maintenance Fee:</label>
+                                    <input type="text" name="dockMaintenanceFee" class="form-control has-icon"
+                                        data-icon="fa-regular fa-check-circle">
+                                </div>
+                                @php
+                                    $dock = [
+                                        ['name' => 'Annual', 'target' => ''],
+                                        ['name' => 'Monthly', 'target' => ''],
+                                        ['name' => 'Quarterly', 'target' => ''],
+                                        ['name' => 'N/A', 'target' => ''],
+                                    ];
+                                @endphp
+                                <label class="fw-bold">Dock Maintenance Fee Frequency:</label>
+                                <select class="grid-picker" name="dockMaintenanceFeeFrequency"
+                                    style="justify-content: flex-start;" multiple required>
+                                    <option value="">Select</option>
+                                    @foreach ($dock as $item)
+                                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                                            class="card flex-row" style="width:calc(33.3% - 10px);"
+                                            data-icon="<i class='fa-regular fa-circle-check'></i>">
+                                            {{ $item['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="wizard-step" data-step='25'>
                         @php
@@ -4193,7 +4310,7 @@
   </script>
     <script>
         function changeAuctionType(v) {
-            if (v == "Auction (Timer)") {
+            if (v == "Auction Listing") {
                 $('.auction_length').val("");
                 $('.auction_length').parent().children('.option-container').removeClass('active');
                 $('.traditional-length').hide();
@@ -4201,7 +4318,7 @@
                 $('.auction_length_cover').show();
                 $('.traditional').hide();
                 $('.timerAuction').show();
-            } else if (v == "Traditional (No Timer)") {
+            } else if (v == "Traditional Listing") {
                 $('.auction_length').val("");
                 $('.auction_length').parent().children('.option-container').removeClass('active');
                 $('.traditional-length').show();

@@ -2619,6 +2619,8 @@ table tbody .border-bottom-warning td {
                 animation: loader 2s linear infinite;
         opacity: 0; }
 
+      
+
 @-webkit-keyframes loader {
   0% {
     -webkit-transform: scale(0);

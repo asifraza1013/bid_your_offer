@@ -78,6 +78,19 @@
         .select-btn.active {
             border-color: #11b7cf;
         }
+
+        .loader .loader-content .loader-img{
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+        }
+
+        .loader .loader-content .loader-img img{
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+        }
+
     </style>
     @stack('styles')
     <style>
@@ -96,9 +109,15 @@
     @include('layouts.partials.header')
     <!-- End  -->
     <!-- BEGIN LOADER -->
-    <div id="load_screen"> <div class="loader"> <div class="loader-content">
-        <div class="spinner-grow align-self-center"></div>
-    </div></div></div>
+    <div id="load_screen"> 
+        <div class="loader"> 
+            <div class="loader-content">
+                <div class="loader-img align-self-center">
+                    <img src="{{ asset(get_setting('logo')) }}" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
     <!--  END LOADER -->
 
 

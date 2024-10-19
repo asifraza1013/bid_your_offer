@@ -54,9 +54,17 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("singleRoom",json_encode($request->singleRoom));
             $landlord_auction->saveMeta("propConditions",$request->propConditions);
             $landlord_auction->saveMeta("propOther",$request->propOther);
+
+            $landlord_auction->saveMeta("rentNow",$request->rentNow);
+            $landlord_auction->saveMeta("rentNowSqft",$request->rentNowSqft);
+            $landlord_auction->saveMeta("startingPrice",$request->startingPrice);
+            $landlord_auction->saveMeta("reservePrice",$request->reservePrice);
+
             $landlord_auction->saveMeta("price",$request->price);
+            $landlord_auction->saveMeta("list_price_per_sq",$request->list_price_per_sq);
             $landlord_auction->saveMeta("leaseDate",$request->leaseDate);
             $landlord_auction->saveMeta("leaseTime",json_encode($request->leaseTime));
+            $landlord_auction->saveMeta("other_lease_duration",$request->other_lease_duration);
             $landlord_auction->saveMeta("start_date",$request->start_date); 
             $landlord_auction->saveMeta("end_date",$request->end_date); 
             $landlord_auction->saveMeta("frequency",json_encode($request->frequency)); 
@@ -85,6 +93,7 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("lastMonthFour",$request->lastMonthFour);
             $landlord_auction->saveMeta("securityDepositFour",$request->securityDepositFour);
             $landlord_auction->saveMeta("applicationFeeFour",$request->applicationFeeFour);
+            $landlord_auction->saveMeta("exitCleaningFeeFour",$request->exitCleaningFeeFour);
             $landlord_auction->saveMeta("applicationLinkFour",$request->applicationLinkFour);
             $landlord_auction->saveMeta("vacationTaxFour",$request->vacationTaxFour);
             $landlord_auction->saveMeta("firstMonthFive",$request->firstMonthFive);
@@ -167,6 +176,15 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("water_view",json_encode($request->water_view));
             $landlord_auction->saveMeta("has_water_extra",$request->has_water_extra);
             $landlord_auction->saveMeta("water_extras",json_encode($request->water_extras));
+            $landlord_auction->saveMeta("has_dock", $request->has_dock);
+            $landlord_auction->saveMeta("dock",json_encode($request->dock));
+            $landlord_auction->saveMeta("dockDescription",json_encode($request->dockDescription));
+            $landlord_auction->saveMeta("dockLiftCapacity", $request->dockLiftCapacity);
+            $landlord_auction->saveMeta("dockYearBuilt", $request->dockYearBuilt);
+            $landlord_auction->saveMeta("dockDimension", $request->dockDimension);
+            $landlord_auction->saveMeta("dockMaintenanceFee", $request->dockMaintenanceFee);
+            $landlord_auction->saveMeta("dockMaintenanceFeeFrequency", $request->dockMaintenanceFeeFrequency);
+
             $landlord_auction->saveMeta("has_water_fontage",$request->has_water_fontage);
             $landlord_auction->saveMeta("waterFrontageView",json_encode($request->waterFrontageView));
             $landlord_auction->saveMeta("utilities",json_encode($request->utilities));
