@@ -2804,7 +2804,7 @@
                             </select>
                             <div class="form-group otherUtilitiesRes d-none">
                                 <label for="" class="fw-bold">Utilities: </label>
-                                <input type="text" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" name="otherUtilities">
+                                <input type="text" class="form-control has-icon" data-icon="fa-regular fa-check-circle" name="otherUtilities">
                             </div>
                         </div>
                         @php
@@ -2832,7 +2832,7 @@
                             </select>
                             <div class="form-group otherWaterRes d-none">
                                 <label for="" class="fw-bold">Water: </label>
-                                <input type="text" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" name="otherWater">
+                                <input type="text" class="form-control has-icon" data-icon="fa-regular fa-check-circle" name="otherWater">
                             </div>
                         </div>
 
@@ -2862,7 +2862,7 @@
                             </select>
                             <div class="form-group otherSewerRes d-none">
                                 <label for="" class="fw-bold">Sewer: </label>
-                                <input type="text" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" name="otherSewer">
+                                <input type="text" class="form-control has-icon" data-icon="fa-regular fa-check-circle" name="otherSewer">
                             </div>
                         </div>
                     </div>
@@ -2870,7 +2870,6 @@
                         <div class="form-group ">
                             @php
                                 $airConditioning = [
-                                    ['name' => 'A/C - Office Only', 'target' => ''],
                                     ['name' => 'Central Air', 'target' => ''],
                                     ['name' => 'Humidity Control', 'target' => ''],
                                     ['name' => 'Mini-Split Unit(s)', 'target' => ''],
@@ -2880,7 +2879,6 @@
                                     ['name' => 'Other', 'target' => '.otherAirConditionRes'],
                                 ];
                             @endphp
-                            <h4>Air Conditioning and Heating/Cooling</h4>
                             <label class="fw-bold">Air Conditioning: </label>
                             <select class="grid-picker" name="airConditioning[]" id="utilities"
                                 style="justify-content: flex-start;" multiple required>
@@ -2895,7 +2893,7 @@
                             </select>
                             <div class="form-group otherAirConditionRes d-none">
                                 <label for="" class="fw-bold"> Air Conditioning: </label>
-                                <input type="text" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" name="otherAirCondition">
+                                <input type="text" class="form-control has-icon" data-icon="fa-regular fa-check-circle" name="otherAirCondition">
                             </div>
                         </div>
                         <div class="form-group ">
@@ -2936,7 +2934,7 @@
                             </select>
                             <div class="form-group otherFuelRes d-none">
                                 <label for="" class="fw-bold"> Heating and Fuel: </label>
-                                <input type="text" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" name="otherFuel">
+                                <input type="text" class="form-control has-icon" data-icon="fa-regular fa-check-circle" name="otherFuel">
                             </div>
                         </div>
                     </div>
@@ -2965,8 +2963,8 @@
                                 @endforeach
                             </select>
                             <div class="form-group carprotYes d-none">
-                                <label class="fw-bold">How many Carport spaces?</label>
-                                <input type="text" name="carportOther" id="condo_fee"
+                                <label class="fw-bold">How many carport spaces?</label>
+                                <input type="number" name="carportOther" id="condo_fee"
                                     class="form-control has-icon" data-icon="fa-solid fa-warehouse">
                             </div>
                         </div>
@@ -2990,8 +2988,8 @@
                                 @endforeach
                             </select>
                             <div class="form-group garageYes d-none">
-                                <label class="fw-bold">How many Garage spaces?</label>
-                                <input type="text" name="garageOther" class="form-control has-icon"
+                                <label class="fw-bold">How many garage spaces?</label>
+                                <input type="number" name="garageOther" class="form-control has-icon"
                                     data-icon="fa-solid fa-warehouse">
                             </div>
                         </div>
@@ -3025,7 +3023,7 @@
                                             ['name' => 'Community', 'target' => '', 'icon' => 'fa-regular fa-circle-check'],
                                         ];
                                     @endphp
-                                    <label class="fw-bold">Pool:</label>
+                                    <label class="fw-bold">Pool Type:</label>
                                     <select class="grid-picker" name="pool" id="pool"
                                         style="justify-content: flex-start;" required>
                                         <option value="">Select</option>
@@ -3074,6 +3072,7 @@
                                             ['name' => 'Tennis Court', 'target' => ''],
                                             ['name' => 'Trees/Woods', 'target' => ''],
                                             ['name' => 'Water', 'target' => ''],
+                                            ['name' => 'Beach', 'target' => ''],
                                             ['name' => 'Other', 'target' => '.viewOther'],
                                         ];
                                     @endphp
@@ -3092,7 +3091,7 @@
                                     <div class="form-group viewOther d-none">
                                         <label for="" class="fw-bold">View: </label>
                                         <input type="text" class="form-control has-icon"
-                                            data-icon="fa-solid fa-ruler-combined" name="viewOther">
+                                            data-icon="fa-regular fa-check-circle" name="viewOther">
                                     </div>
                                 </div>
                             </div>
@@ -3207,7 +3206,7 @@
                             <div class="form-group foundationOther d-none">
                                 <label class="fw-bold">Foundation: </label>
                                 <input type="text" name="foundationOther" class="form-control has-icon"
-                                    data-icon="fa-solid fa-ruler-combined">
+                                    data-icon="fa-regular fa-check-circle">
                             </div>
                         </div>
                     </div>
@@ -3252,7 +3251,7 @@
                             <div class="form-group exteriorOther d-none">
                                 <label class="fw-bold">Exterior Construction: </label>
                                 <input type="text" name="exteriorOther" class="form-control has-icon"
-                                    data-icon="fa-solid fa-ruler-combined">
+                                    data-icon="fa-regular fa-check-circle">
                             </div>
                         </div>
                     </div>
@@ -3301,7 +3300,7 @@
                             </select>
                             <div class="form-group exteriorFeatureOther d-none">
                                 <label class="fw-bold">Exterior Features: </label>
-                                <input type="text" name="exteriorFeatureOther" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                                <input type="text" name="exteriorFeatureOther" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                             </div>
                         </div>
                     </div>
