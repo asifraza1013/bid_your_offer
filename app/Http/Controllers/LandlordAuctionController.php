@@ -408,7 +408,8 @@ class LandlordAuctionController extends Controller
             // }
 
             DB::commit();
-            return redirect()->back()->with('success', "Auction for landlord has been added successfully");
+            return redirect()->route('agent.landlord.auction', $landlord_auction->id)->with('success', "Auction for landlord has been added successfully");
+            // return redirect()->back()->with('success', "Auction for landlord has been added successfully");
         } catch (Exception $e) {
             // dd($e->getMessage());
             //throw $th;
@@ -785,9 +786,11 @@ class LandlordAuctionController extends Controller
             $auction_bid->user_id = Auth::user()->id;
             $auction_bid->landlord_auction_id = $auction->id;
             $auction_bid->save();
+            $auction_bid->saveMeta('offered_price', $request->offered_price);
             $auction_bid->saveMeta('lease_terms', json_encode($request->lease_terms));
             $auction_bid->saveMeta('price', $request->price);
             $auction_bid->saveMeta('start_date', $request->start_date);
+            $auction_bid->saveMeta('days_until_start_date', $request->days_until_start_date);
             $auction_bid->saveMeta('end_date', $request->end_date);
             $auction_bid->saveMeta('securityDeposit', $request->securityDeposit);
             $auction_bid->saveMeta('offered_price', $request->offered_price);
@@ -806,7 +809,22 @@ class LandlordAuctionController extends Controller
             $auction_bid->saveMeta('convicted', $request->convicted);
             $auction_bid->saveMeta('violations', $request->violations);
             $auction_bid->saveMeta('outstanding', $request->outstanding);
+            
+            $auction_bid->saveMeta('tenant_represented', $request->tenant_represented);
+            $auction_bid->saveMeta('agent_accept_compensation', $request->agent_accept_compensation);
+            $auction_bid->saveMeta('tenant_requests_commission', $request->tenant_requests_commission);
+            $auction_bid->saveMeta('tenant_requests_commission_amount', $request->tenant_requests_commission_amount);
+            $auction_bid->saveMeta('tenant_requests_commission_amount_other', $request->tenant_requests_commission_amount_other);
+
+            $auction_bid->saveMeta('offer_expiry', $request->offer_expiry);
+
+            $auction_bid->saveMeta('escalation_clause', $request->escalation_clause);
+            $auction_bid->saveMeta('autobid_price', $request->autobid_price);
+            $auction_bid->saveMeta('autobid_days_start_date', $request->autobid_days_start_date);
+            $auction_bid->saveMeta('autobid_lease_length', $request->autobid_lease_length);
+
             $auction_bid->saveMeta('additionalInfo', $request->additionalInfo);
+
             $auction_bid->saveMeta('first_name', $request->first_name);
             $auction_bid->saveMeta('last_name', $request->last_name);
             $auction_bid->saveMeta('agent_phone', $request->agent_phone);

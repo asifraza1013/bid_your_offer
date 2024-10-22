@@ -965,8 +965,8 @@
         <hr>
         @inject('carbon', 'Carbon\Carbon')
         @php
-          $lowest_bid_price = ''; //@$auction->bids->min('price') ?? @$auction->max_price;
-          $lowest_bidder = ''; //@$auction->bids->where('price', $lowest_bid_price)->first();
+          $lowest_bid_price = $auction->bids->min('price');
+          $lowest_bidder = @$auction->bids->where('price', $lowest_bid_price)->first();
           $my_bid = ''; //@$auction->bids->where('user_id', $auth_id)->first();
         @endphp
         @if (@$auction->user_id != $auth_id)
@@ -1017,7 +1017,7 @@
                       <div class="col-4">
                         {{ $bid->user->name }} </div>
                       <div class="col-4 text-right">
-                        ${{ $bid->get->price }} </div>
+                        ${{ $bid->get->offered_price }} </div>
                       <div class="col-2">
                         Terms↓
                       </div>
@@ -1029,44 +1029,59 @@
                       <div id="bidding_history_data">
                         <div>
                           <table class="table table-bordered">
-                            <thead>
+                            {{-- <thead>
                               <tr>
                                 <th colspan="2">Tenant/Tenant’s Agent Info</th>
                               </tr>
-                            </thead>
+                            </thead> --}}
                             <tbody>
                               <tr>
                                 <th class="small">First Name</th>
                                 <td class="small">{{ $bid->get->first_name }}</td>
                               </tr>
                               <tr>
-                                <th class="small">Last Name</th>
-                                <td class="small">{{ $bid->get->last_name }}</td>
+                                <th class="small">Offered Price:</th>
+                                <td class="small">${{ $bid->get->offered_price }}</td>
                               </tr>
                               <tr>
-                                <th class="small">Phone number</th>
-                                <td class="small">{{ $bid->get->agent_phone }}</td>
+                                <th class="small">Offered Lease Length:</th>
+                                @if (isset($bid->get->lease_terms))
+                                  @php
+                                    $data = json_decode($bid->get->lease_terms, true);
+                                  @endphp
+                                  @if (isset($data) && is_array($data) && count($data) > 0)
+                                    @foreach ($data as $item)
+                                      <td class="small">{{ $item !== 'Other' ? $item :  $bid->get->price}}</td>
+                                    @endforeach
+                                  @endif
+                                @endif
                               </tr>
                               <tr>
-                                <th class="small">Email</th>
-                                <td class="small">{{ $bid->get->agent_email }}</td>
+                                <th class="small">Offered Lease Start Date:</th>
+                                <td class="small">{{ $bid->get->start_date }}</td>
                               </tr>
                               <tr>
-                                <th class="small">Brokerage</th>
-                                <td class="small">{{ $bid->get->agent_brokerage }}</td>
+                                <th class="small">Offered Days Until the Lease Start Date:</th>
+                                <td class="small">{{ $bid->get->days_until_start_date }}</td>
                               </tr>
                               <tr>
-                                <th class="small">Real Estate License #:</th>
-                                <td class="small">{{ $bid->get->agent_license_no }}</td>
+                                <th class="small">Acceptable Real Estate Agent Commission:</th>
+                                <td class="small">{{ $bid->get->tenant_requests_commission_amount !== 'Other' ? $bid->get->tenant_requests_commission_amount : $bid->get->tenant_requests_commission_amount_other }}</td>
                               </tr>
+                              @if ($auction->get->auction_type == 'Traditional Listing')
+                                <tr>
+                                  <th class="small">Offer Expires</th>
+                                  <td class="small">{{ $bid->get->offer_expiry }}</td>
+                                </tr>
+                              @endif
                               <tr>
-                                <th class="small">MLS ID #</th>
-                                <td class="small">{{ $bid->get->agent_mls_id }}</td>
+                                <th class="small">Additional Details or Countered Terms:</th>
+                                <td class="small">{{ $bid->get->additionalInfo}}</td>
                               </tr>
                             </tbody>
                           </table>
 
-                          <table class="table table-bordered">
+                          {{-- <table class="table table-bordered">
                             <thead>
                               <tr>
                                 <th colspan="2">Terms offered by the tenant</th>
@@ -1085,7 +1100,6 @@
                                     </td>
                                   @endif
                                 @else
-                                  {{-- <td class="small">{{ json_decode($bid->get->lease_terms) }}</td> --}}
                                 @endif
                               </tr>
                               <tr>
@@ -1093,10 +1107,6 @@
                                 <td class="small">
                                   ${{ $bid->get->securityDeposit }}</td>
                               </tr>
-                              {{-- <tr>
-                                <th class="small">Offered Move in Date</th>
-                                <td class="small">{{ $bid->get->offer_move_date }}</td>
-                              </tr> --}}
                               <tr>
                                 <th class="small">How many occupants?</th>
                                 <td class="small">
@@ -1140,7 +1150,7 @@
                                 </td>
                               </tr>
                             </tbody>
-                          </table>
+                          </table> --}}
 
                           @if (@$auction->user_id == $auth_id)
                             @if (!@$auction->is_sold)

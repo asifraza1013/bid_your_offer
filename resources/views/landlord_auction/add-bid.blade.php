@@ -149,6 +149,11 @@
             $yes_or_nos = [['name' => 'Yes', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
           @endphp
           <div class="wizard-step" data-step="8">
+            <div class="form-group">
+              <label class="fw-bold" for="offered_price">Offered Price:</label>
+              <input type="text" id="offered_price" name="offered_price" class="form-control has-icon" data-icon="fa-regular fa-check-circle"
+                required>
+            </div>
             @php
               $lease_terms = [['name' => '3 months', 'target' => ''], ['name' => '6 months', 'target' => ''], ['name' => '9 months', 'target' => ''], ['name' => '1 year', 'target' => ''], ['name' => '2 years', 'target' => ''], ['name' => '3-5 years', 'target' => ''], ['name' => '5+ years', 'target' => ''], ['name' => 'Month to Month', 'target' => ''], ['name' => 'Other', 'target' => '.otherLease']];
             @endphp
@@ -166,7 +171,7 @@
               </select>
               <div class="form-group otherLease d-none">
                 <label class="fw-bold" for="custom_terms">Offered Lease Length:</label>
-                <input type="text" name="price" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"
+                <input type="text" name="price" class="form-control has-icon" data-icon="fa-regular fa-calendar-days"
                   required>
               </div>
             </div>
@@ -177,15 +182,18 @@
                   data-icon="fa-regular fa-calendar-days">
               </div>
             </div>
-          </div>
-          <div class="wizard-step">
+            <div class="form-group" >
+              <div class="form-group">
+                <label class="fw-bold">Days Until Lease Start Date:</label>
+                <input type="number" name="days_until_start_date" id="days_until_start_date" class="form-control has-icon"
+                  data-icon="fa-regular fa-calendar-days">
+              </div>
+            </div>
             <div class="form-group">
               <label class="fw-bold" for="custom_terms">How many people will be occupying the property? </label>
-              <input type="text" name="occupants" class="form-control has-icon" data-icon="fa-solid fa-users"
+              <input type="number" name="occupants" class="form-control has-icon" data-icon="fa-solid fa-users"
                 required>
             </div>
-          </div>
-          <div class="wizard-step">
             <div class="form-group">
               @php
                 $tenantPet = [['name' => 'Yes', 'target' => '.petYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
@@ -226,8 +234,6 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="wizard-step">
             <div class="form-group">
               @php 
                 $creditScores = [
@@ -250,14 +256,10 @@
                 @endforeach
               </select>
             </div>
-          </div>
-          <div class="wizard-step">
             <div class="form-group">
               <label class="fw-bold" for="">What is the household monthly net income of the tenant? </label>
               <input type="text" name="monthlyIncome" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
             </div>
-          </div>
-          <div class="wizard-step">
             <div class="form-group">
               @php 
                 $evictions = [
@@ -279,11 +281,9 @@
               </select>
               <div class="form-group evictionsYes d-none">
                 <label class="fw-bold" for="">Explain when and what for:</label>
-                <input type="text" name="evictionsYes" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="evictionsYes" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
-          </div>
-          <div class="wizard-step">
             <div class="form-group">
               @php 
                 $convicted = [
@@ -305,11 +305,9 @@
               </select>
               <div class="form-group convictedYes d-none">
                 <label class="fw-bold" for="">Explain when and what for:</label>
-                <input type="text" name="convictedYes" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="convictedYes" class="form-control has-icon" data-icon="fa-regular fa-circle-check">
               </div>
             </div>
-          </div>
-          <div class="wizard-step">
             <div class="form-group">
               @php 
                 $violations = [
@@ -330,11 +328,9 @@
               </select>
               <div class="form-group violationsYes d-none">
                 <label class="fw-bold" for="">Explain when and what for:</label>
-                <input type="text" name="violationsYes" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="violationsYes" class="form-control has-icon" data-icon="fa-regular fa-circle-check">
               </div>
             </div>
-          </div>
-          <div class="wizard-step">
             <div class="form-group">
               @php 
                 $outstanding = [
@@ -355,14 +351,144 @@
               </select>
               <div class="form-group outstandingYes d-none">
                 <label class="fw-bold" for="">Explain when, why, and how much the tenant owes any previous landlords:</label>
-                <input type="text" name="outstandingYes" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="outstandingYes" class="form-control has-icon" data-icon="fa-regular fa-circle-check">
               </div>
             </div>
-          </div>
-          <div class="wizard-step">
+
+            <div class="form-group">
+              @php 
+                $tenantRepresented = [
+                  ["name" => "Yes", "target" => ".representedYes",'icon'=>'fa-regular fa-circle-check'],
+                  ["name" => "No", "target" => "",'icon'=>'fa-regular fa-circle-xmark'],
+                ];  
+              @endphp
+              <label class="fw-bold" for="">Is the tenant represented by a real estate agent?</label>
+              <select class="grid-picker" name="tenant_represented" id="represented" style="justify-content: flex-start;" required>
+                <option value="">Select</option>
+                @foreach ($tenantRepresented as $item)
+                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{$item['icon']}}"></i>'>
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+              <div class="form-group representedYes d-none">
+                @php 
+                $agent_accept_compensation = [
+                  ["name" => "Yes", "target" => "",'icon'=>'fa-regular fa-circle-check'],
+                  ["name" => "No", "target" => "",'icon'=>'fa-regular fa-circle-xmark'],
+                  ["name" => "Negotiable", "target" => "",'icon'=>'fa-regular fa-circle-check'],
+                  ["name" => "No compensation was offered", "target" => "",'icon'=>'fa-regular fa-circle-xmark'],
+                ];  
+                @endphp
+                <label class="fw-bold" for="">Will the tenant's agent accept the compensation currently offered?</label>
+                <select class="grid-picker" name="agent_accept_compensation" id="agent_accept_compensation" style="justify-content: flex-start;" required>
+                  <option value="">Select</option>
+                  @foreach ($agent_accept_compensation as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{$item['icon']}}"></i>'>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+
+                <div class="form-group agentCompensation d-none">
+                  @php 
+                  $tenant_requests_commission = [
+                    ["name" => "Yes", "target" => ".tenantRequests",'icon'=>'fa-regular fa-circle-check'],
+                    ["name" => "No", "target" => "",'icon'=>'fa-regular fa-circle-xmark'],
+                  ];  
+                  @endphp
+                  <label class="fw-bold" for="">Does the tenant request that the landlord pay the tenant's agent's commission?</label>
+                  <select class="grid-picker" name="tenant_requests_commission" id="tenant_requests_commission" style="justify-content: flex-start;" required>
+                    <option value="">Select</option>
+                    @foreach ($tenant_requests_commission as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                        style="width:calc(33.3% - 10px);" data-icon='<i class="{{$item['icon']}}"></i>'>
+                        {{ $item['name'] }}
+                      </option>
+                    @endforeach
+                  </select>
+
+                  <div class="form-group tenantRequests d-none">
+                    @php 
+                    $tenant_requests_commission_amount = [
+                      ["name" => "1 month's rent", "target" => "",'icon'=>'fa-regular fa-circle-check'],
+                      ["name" => "50% of one month's rent", "target" => "",'icon'=>'fa-regular fa-circle-check'],
+                      ["name" => "10% of the gross value of the lease", "target" => "",'icon'=>'fa-regular fa-circle-check'],
+                      ["name" => "6% of the gross value of the lease", "target" => "",'icon'=>'fa-regular fa-circle-check'],
+                      ["name" => "Negotiable", "target" => "",'icon'=>'fa-regular fa-circle-check'],
+                      ["name" => "Other", "target" => ".tenantRequestsAmountOther",'icon'=>'fa-regular fa-circle-check'],
+                    ];  
+                    @endphp
+                    <label class="fw-bold" for="">How much is the tenant requesting that the landlord pay in commission to the tenant's real estate agent?</label>
+                    <select class="grid-picker" name="tenant_requests_commission_amount" id="tenant_requests_commission_amount" style="justify-content: flex-start;" required>
+                      <option value="">Select</option>
+                      @foreach ($tenant_requests_commission_amount as $item)
+                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                          style="width:calc(33.3% - 10px);" data-icon='<i class="{{$item['icon']}}"></i>'>
+                          {{ $item['name'] }}
+                        </option>
+                      @endforeach
+                    </select>
+                    <div class="form-group tenantRequestsAmountOther d-none">
+                      <label class="fw-bold" for="">How much is the tenant requesting that the landlord pay in commission to the tenant's real estate agent?</label>
+                      <input type="text" name="tenant_requests_commission_amount_other" class="form-control has-icon" data-icon="fa-regular fa-circle-check">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            @if ($auction->get->auction_type == 'Traditional Listing')
+              <div class="form-group">
+                <label class="fw-bold" for="">When will the offer expire?</label>
+                 <input type="datetime-local" name="offer_expiry" class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
+              </div>
+            @endif
+
+            @if ($auction->get->auction_type == 'Auction Listing')
+              @php 
+              $escalation_clause = [
+                ["name" => "Yes", "target" => ".escalationClauseYes", 'icon'=>'fa-regular fa-circle-check'],
+                ["name" => "No", "target" => "", 'icon'=>'fa-regular fa-circle-xmark'],
+              ];  
+              @endphp
+              <label class="fw-bold mt-4" for="">Would the tenant like to set an escalation clause to automatically increase their
+                bid price and terms up to a maximum amount specified by the tenant in the event of
+                multiple offers?</label>
+              <select class="grid-picker" name="escalation_clause" id="escalation_clause" style="justify-content: flex-start;" required>
+                <option value="">Select</option>
+                @foreach ($escalation_clause as $item)
+                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{$item['icon']}}"></i>'>
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+
+              <div class="form-group escalationClauseYes d-none">
+                <div class="form-group">
+                  <label class="fw-bold" for="">Autobid Price:</label>
+                  <input type="number" name="autobid_price" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
+                  <span>(The Autobid price will increase by $50 over the highest offer, up to the Autobid price.)</span>
+                </div>
+                <div class="form-group">
+                  <label class="fw-bold" for="">Autobid Days Until the Lease Start Date:</label>
+                  <input type="number" name="autobid_days_start_date" class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
+                  <span>(The Autobid days until the lease start date will decrease by 5 days per bid over the lowest bid until it reaches the limit set by the tenant.)</span>
+                </div>
+                <div class="form-group">
+                  <label class="fw-bold" for="">Autobid Lease Length in Months:</label>
+                  <input type="number" name="autobid_lease_length" class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
+                  <span>(The Autobid lease length in months will increase by 1 month per bid over the highest bid until it reaches the limit set by the tenant.)</span>
+                </div>
+              </div>
+            @endif
+
             <div class="form-group">
               <label class="fw-bold" for="">Please provide any additional information that the tenant would like to include.</label>
-              <textarea type="text" name="additionalInfo" class="form-control" rows="8">{{ old('additionalInfo') }}</textarea>
+              <textarea type="text" name="additionalInfo" class="form-control has-icon" data-icon="fa-regular fa-circle-check" rows="8">{{ old('additionalInfo') }}</textarea>
             </div>
           </div>
           <div class="wizard-step">
@@ -370,13 +496,13 @@
               <div class="form-group col-6">
                 <label class="fw-bold" for="first_name">First Name:</label>
                 <input type="text" name="first_name" placeholder="John" id="first_name"
-                  class="form-control has-icon hide_arrow" data-icon="fa-solid fa-user-tie"
+                  class="form-control has-icon hide_arrow" data-icon="fa-solid fa-user"
                   value="{{ Auth::user()->first_name }}">
               </div>
               <div class="form-group col-6">
                 <label class="fw-bold" for="last_name">Last Name:</label>
                 <input type="text" name="last_name" placeholder="Smith" id="last_name"
-                  class="form-control has-icon hide_arrow" data-icon="fa-solid fa-user-tie"
+                  class="form-control has-icon hide_arrow" data-icon="fa-solid fa-user"
                   value="{{ Auth::user()->last_name }}">
               </div>
             </div>
@@ -394,28 +520,30 @@
                   value="{{ Auth::user()->email }}">
               </div>
             </div>
-            <div class="row">
-              <div class="form-group col-6">
-                <label class="fw-bold" for="agent_brokerage">Brokerage:</label>
-                <input type="text" name="agent_brokerage" placeholder="" id="agent_brokerage"
-                  class="form-control has-icon hide_arrow" data-icon="fa-solid fa-circle-dollar-to-slot"
-                  value="{{ Auth::user()->brokerage }}">
+            @if (auth()->user()->user_type == 'agent')
+              <div class="row">
+                <div class="form-group col-6">
+                  <label class="fw-bold" for="agent_brokerage">Brokerage:</label>
+                  <input type="text" name="agent_brokerage" placeholder="" id="agent_brokerage"
+                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-handshake"
+                    value="{{ Auth::user()->brokerage }}">
+                </div>
+                <div class="form-group col-6">
+                  <label class="fw-bold" for="agent_license_no">Real Estate License #:</label>
+                  <input type="text" name="agent_license_no" placeholder="" id="agent_license_no"
+                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-id-card"
+                    value="{{ Auth::user()->license_no }}">
+                </div>
               </div>
-              <div class="form-group col-6">
-                <label class="fw-bold" for="agent_license_no">Real Estate License #:</label>
-                <input type="text" name="agent_license_no" placeholder="" id="agent_license_no"
-                  class="form-control has-icon hide_arrow" data-icon="fa-solid fa-id-card"
-                  value="{{ Auth::user()->license_no }}">
+              <div class="row">
+                <div class="form-group col-6">
+                  <label class="fw-bold" for="agent_mls_id">NAR Member ID (NRDS ID): </label>
+                  <input type="text" name="agent_mls_id" placeholder="" id="agent_mls_id"
+                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-id-card-clip"
+                    value="{{ Auth::user()->mls_id }}">
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-6">
-                <label class="fw-bold" for="agent_mls_id">NAR Member ID (NRDS ID): </label>
-                <input type="text" name="agent_mls_id" placeholder="" id="agent_mls_id"
-                  class="form-control has-icon hide_arrow" data-icon="fa-solid fa-id-card-clip"
-                  value="{{ Auth::user()->mls_id }}">
-              </div>
-            </div>
+            @endif
           </div>
           <div class="d-flex justify-content-between form-group mt-4">
             <div>
@@ -740,6 +868,14 @@
 
     }
     roomFtn();
+
+    $('#agent_accept_compensation').change(function(){
+      if($(this).val() == 'Negotiable' || $(this).val() == 'No compensation was offered' || $(this).val() == 'No'){
+        $('.agentCompensation').removeClass('d-none');
+      }else{
+        $('.agentCompensation').addClass('d-none');
+      }
+    })
   </script>
   <script
     src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_PLACES_API_KEY') }}&libraries=places&callback=initialize">
