@@ -3228,7 +3228,7 @@
                         @endphp
                         <div class="form-group residential_and_income_hide">
                             <label class="fw-bold">Front Exposure:</label>
-                            <select class="grid-picker" name="  " id="front_exposure"
+                            <select class="grid-picker" name="front_exposure" id="front_exposure"
                                 style="justify-content: flex-start;">
                                 <option value="">Select</option>
                                 @foreach ($front_exposures as $item)
@@ -3798,9 +3798,7 @@
                     </div>
                     <div class="wizard-step" data-step='42'>
                         <div class="form-group">
-                            <label class="fw-bold">Does the property have an HOA, condo association, master
-                                association,
-                                and/or community fee? </label>
+                            <label class="fw-bold">Does the property have an HOA, condo association, master association, and/or community fee? </label>
                             <select class="grid-picker" name="has_hoa" id="has_hoa"
                                 style="justify-content: flex-start;" required>
                                 <option value="">Select</option>
@@ -4180,7 +4178,7 @@
                                       <div class="js--image-preview"></div>
                                       <div class="upload-options">
                                         <label>
-                                          <input type="file" name="photo" class="image-upload" accept="image/*" multiple />
+                                          <input type="file" name="photo[]" class="image-upload" accept="image/*" multiple />
                                         </label>
                                       </div>
                                     </div>
