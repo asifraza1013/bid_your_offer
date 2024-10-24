@@ -70,7 +70,7 @@
                 <a href="{{ route('password.request') }}" rel="nofollow"><u>Lost password?</u></a>
               </div>
             </div>
-            <div class="d-flex justify-content-center align-items-center">
+            {{-- <div class="d-flex justify-content-center align-items-center">
               <span>OR</span>
             </div>
             <div class="row justify-content-center mt-4">
@@ -84,7 +84,7 @@
                   <i class="fa fa-google"></i>
                 </a>
               </div>
-            </div>
+            </div> --}}
         </form>
           </div>
         </div>
