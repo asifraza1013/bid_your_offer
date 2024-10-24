@@ -3832,6 +3832,9 @@
     </div>
     {{-- Modal --}}
   @endforeach
+  @php
+    $bidId = isset($bid) ? $bid->id : null;
+  @endphp
 @endsection
 
 @push('scripts')
@@ -3887,7 +3890,7 @@
 
 
   <script>
-    let bid_id = @json($bid->id);
+    let bid_id = @json($bidId);
     $("#chatForm").submit(function(e) {
 
       e.preventDefault(); // avoid to execute the actual submit of the form.

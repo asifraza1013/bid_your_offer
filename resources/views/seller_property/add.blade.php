@@ -3515,7 +3515,7 @@
               <select class="grid-picker" name="dock_maintenance_fee_frequency" id="dock_maintenance_fee_frequency"
                 style="justify-content: flex-start;" required>
                 <option value="">Select</option>
-                @foreach ($dock as $item)
+                @foreach ($feeFrequency as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
                     style="width:calc(33.3% - 10px);">
@@ -6099,7 +6099,7 @@
               <select class="grid-picker" name="dock_maintenance_fee_frequency" id="dock_maintenance_fee_frequency"
                 style="justify-content: flex-start;" required>
                 <option value="">Select</option>
-                @foreach ($dock as $item)
+                @foreach ($feeFrequency as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
                     style="width:calc(33.3% - 10px);">
@@ -7445,7 +7445,7 @@
               <select class="grid-picker" name="dock_maintenance_fee_frequency" id="dock_maintenance_fee_frequency"
                 style="justify-content: flex-start;" required>
                 <option value="">Select</option>
-                @foreach ($dock as $item)
+                @foreach ($feeFrequency as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
                     style="width:calc(33.3% - 10px);">
