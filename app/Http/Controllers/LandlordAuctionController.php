@@ -72,10 +72,16 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("buildingFeatures",json_encode($request->buildingFeatures)); 
             $landlord_auction->saveMeta("buildingFeaturesOther",$request->buildingFeaturesOther); 
             $landlord_auction->saveMeta("frequency",json_encode($request->frequency)); 
+            $landlord_auction->saveMeta("tenant_pays",json_encode($request->tenant_pays)); 
+            $landlord_auction->saveMeta("tenantPaysOther", $request->tenantPaysOther); 
+            $landlord_auction->saveMeta("ownerPays",json_encode($request->ownerPays)); 
+            $landlord_auction->saveMeta("landlordPaysOther", $request->landlordPaysOther); 
             $landlord_auction->saveMeta("rent",json_encode($request->rent)); 
             $landlord_auction->saveMeta("rentOther",$request->rentOther); 
             $landlord_auction->saveMeta("required_at_move_in",$request->required_at_move_in);
             $landlord_auction->saveMeta("leaseTermOther",$request->leaseTermOther); 
+            $landlord_auction->saveMeta("required_move_in",$request->required_move_in); 
+            $landlord_auction->saveMeta("required_move_in_amount",$request->required_move_in_amount); 
             $landlord_auction->saveMeta("firstMonthDeposit",$request->firstMonthDeposit); 
             $landlord_auction->saveMeta("lastMonthDeposit",$request->lastMonthDeposit); 
             $landlord_auction->saveMeta("securityDeposit",$request->securityDeposit); 
@@ -510,7 +516,7 @@ class LandlordAuctionController extends Controller
         // dd($request->post());
         try {
             DB::beginTransaction();
-            $landlord_auction = new LandlordAuction();
+            $landlord_auction = LandlordAuction::find($id);
             $landlord_auction->user_id = Auth::user()->id;
             $landlord_auction->address = $request->address;
             $landlord_auction->city = $request->city;
@@ -553,6 +559,10 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("buildingFeatures",json_encode($request->buildingFeatures)); 
             $landlord_auction->saveMeta("buildingFeaturesOther",$request->buildingFeaturesOther); 
             $landlord_auction->saveMeta("frequency",json_encode($request->frequency)); 
+            $landlord_auction->saveMeta("tenant_pays",json_encode($request->tenant_pays)); 
+            $landlord_auction->saveMeta("tenantPaysOther", $request->tenantPaysOther); 
+            $landlord_auction->saveMeta("ownerPays",json_encode($request->ownerPays)); 
+            $landlord_auction->saveMeta("landlordPaysOther", $request->landlordPaysOther); 
             $landlord_auction->saveMeta("rent",json_encode($request->rent)); 
             $landlord_auction->saveMeta("rentOther",$request->rentOther); 
             $landlord_auction->saveMeta("required_at_move_in",$request->required_at_move_in);
@@ -747,6 +757,7 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("agent_mls_id",$request->agent_mls_id);
             $landlord_auction->saveMeta("realEstate",$request->realEstate);
             $landlord_auction->saveMeta("three_d_tour",$request->three_d_tour);
+
             $allowedPhotos = ['jpg', 'png', 'jpeg', 'gif', 'svg'];
             $allowedVideos = ['mp4', 'mov', 'avi', 'mkv', 'wmv', 'flv', 'webm', 'm4v'];
 

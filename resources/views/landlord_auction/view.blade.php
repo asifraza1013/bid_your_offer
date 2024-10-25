@@ -785,6 +785,34 @@
                       @endforeach
                   </div>
               @endif
+              @if(isset($auction->get->buildingFeatures) && gettype(json_decode(@$auction->get->buildingFeatures)) == 'array')
+                  <div class="col-md-12 fw-bold"><i class="far fa-check-square"></i> Building Features:
+                      @foreach (json_decode(@$auction->get->buildingFeatures) as $item)
+                          <span class="removeBold badge bg-secondary">
+                              @if($item !='Other')
+                              {{ $item }} 
+                              @endif
+                              @if($item == 'Other')
+                                  {{ $auction->get->buildingFeaturesOther }}
+                              @endif
+                          </span>
+                      @endforeach
+                  </div>
+              @endif
+              @if(isset($auction->get->road_frontage) && gettype(json_decode(@$auction->get->road_frontage)) == 'array')
+                  <div class="col-md-12 fw-bold"><i class="far fa-check-square"></i> Road Frontage:
+                      @foreach (json_decode(@$auction->get->road_frontage) as $item)
+                          <span class="removeBold badge bg-secondary">
+                              @if($item !='Other')
+                              {{ $item }} 
+                              @endif
+                              @if($item == 'Other')
+                                  {{ $auction->get->roadFrontageOther }}
+                              @endif
+                          </span>
+                      @endforeach
+                  </div>
+              @endif
               @if(gettype(json_decode(@$auction->get->exterior_feature)) == 'array')
                   <div class="col-md-12 fw-bold"><i class="far fa-check-square"></i> Exterior Features:
                       @foreach (json_decode(@$auction->get->exterior_feature) as $item)
