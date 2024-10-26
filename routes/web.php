@@ -229,6 +229,8 @@ Route::get("/landlord/auctions/search", [LandlordAuctionController::class, 'sear
 Route::get("/landlord/auction/view/{id}", [LandlordAuctionController::class, 'view'])->name('agent.landlord.auction');
 
 
+
+
 // Only logged in user can access these routes
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -417,11 +419,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::any('/edit-counter-terms/{id}', [AgentCounteredTermsController::class, 'edit'])->name('edit-counter-terms');
             Route::any('/update-counter-terms/{id}', [AgentCounteredTermsController::class, 'update'])->name('update-counter-terms');
 
+         
+
             // Route::get('/referral/auction/add', [ReferralAuctionController::class, 'index'])->name('referral.auction.add');
         });
         // Counter Bid Routes
         Route::post('hire/agent/seller/bid/accept', [SellerAgentAuctionController::class, 'acceptSABid'])->name('acceptSABid');
         Route::post('hire/agent/seller/destroy/counter/{id}', [SellerCounterBidController::class, 'destroyCounter'])->name('destroySellerCounter');
+
+        Route::get('/landlord/auction/counter/bid/{bid_id}', [LandlordAuctionController::class, 'addCounterBid'])->name('landlord.add.counter-bid');
+        Route::post('/landlord/auction/counter/bid/{bid_id}', [LandlordAuctionController::class, 'saveCounterBid'])->name('landlord.save.counter-bid');
         // Counter Bid Routes
         // Seller's agent routes
         Route::get('/add-listing', [PropertyAuctionController::class, 'addListing'])->name('add-listing');

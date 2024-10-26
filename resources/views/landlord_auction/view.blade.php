@@ -1238,7 +1238,7 @@
             @endif
             <div class="accordion" id="accordionExample">
               <div class="accordion-item border-0">
-                @foreach (@$auction->bids as $bid)
+                @foreach ($bids as $bid)
                   <!-- Item loop -->
                   <div class="accordion" type="button" data-bs-toggle="collapse"
                     data-bs-target="#item{{ $bid->id }}" aria-expanded="true"
@@ -1397,6 +1397,105 @@
                               </form>
                             @endif
                           @endif
+
+                          @auth
+                                @if (auth()->user()->id == $bid->user->id || (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin'))
+                                  <div class="form-group biddingOperations">
+                                    @if (!$auction->sold)
+                                      <form action="{{ route('landlord.add.counter-bid', $bid->id) }}" method="get">
+                                        <div class="d-flex gap-1">
+                                          <button type="submit" class="btn btn-primary">Counter Bid</button>
+                                        </div>
+                                      </form>
+                                    @endif
+                                    @php
+                                      $allBids = App\Models\LandlordAuctionBid::where('counter_id', $bid->id)->with('meta')
+                                          ->orderByDesc('created_at')
+                                          ->get();
+                                    @endphp
+                                    <div class="form-group">
+                                      @foreach ($allBids as $key => $countBid)
+                                        <form action="{{ route('agent.landlord.auction.bid.accept', $bid->id) }}" method="post">
+                                          @csrf
+                                          <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
+                                          <input type="hidden" name="bid_id" value="{{ $bid->id }}">
+                                        </form>
+                                      @endforeach
+                                    </div>
+                                    <div class="form-group">
+                                      @if (!$auction->sold)
+                                        @foreach ($allBids as $key => $countBid)
+                                          @if(isset($countBid->get->first_name))
+                                            <p class="d-flex justify-content-between small fw-bold">First Name:
+                                              <span
+                                                class="removeBold">{{ $countBid->get->first_name }}</span>
+                                            </p>
+                                          @endif
+                                          @if ($countBid->get->offered_price)
+                                            <p class="d-flex justify-content-between small fw-bold">Offered Price:
+                                              <span class="removeBold">{{ $countBid->get->offered_price }}</span>
+                                            </p>
+                                          @endif
+
+                                          @if (isset($countBid->get->lease_terms))
+                                            @php
+                                              $data = json_decode($countBid->get->lease_terms, true);
+                                            @endphp
+                                            <p class="d-flex justify-content-between small fw-bold">Offered Lease Length:
+                                              @if (isset($data) && is_array($data) && count($data) > 0)
+                                                @foreach ($data as $item)
+                                                  <span class="removeBold">{{ $item !== 'Other' ? $item :  $countBid->get->price }}</span>
+                                                @endforeach
+                                              @endif
+                                            </p>
+                                          @endif
+
+                                          @if ($countBid->get->start_date)
+                                          <p class="d-flex justify-content-between small fw-bold">Offered Lease Start Date:
+                                            <span class="removeBold">{{ $countBid->get->start_date }}</span>
+                                          </p>
+                                          @endif
+
+                                          @if(isset($countBid->get->days_until_start_date))
+                                          <p class="d-flex justify-content-between small fw-bold">Offered Days Until the Lease Start Date:
+                                            <span class="removeBold">{{ $countBid->get->days_until_start_date }}</span>
+                                          </p>
+                                          @endif
+                                          @if (isset($countBid->get->tenant_requests_commission_amount))
+                                            <p class="d-flex justify-content-between small fw-bold">Real Estate Commission Offered:
+                                              <span class="removeBold">{{ $countBid->get->tenant_requests_commission_amount !== 'Other' ? $countBid->get->tenant_requests_commission_amount : $countBid->get->tenant_requests_commission_amount_other }}</span>
+                                            </p>
+                                          @endif
+                                          @if (isset($countBid->get->offer_expiry))
+                                            <p class="d-flex justify-content-between small fw-bold">Offer Expires:
+                                              <span class="removeBold">{{ $countBid->get->offer_expiry }}</span>
+                                            </p>
+                                          @endif
+                                          @if (isset($countBid->get->additionalInfo))
+                                            <p class="d-flex justify-content-between small fw-bold">Additional Details or Countered Terms:
+                                              <span class="removeBold">{{ $countBid->get->additionalInfo }}</span>
+                                            </p>
+                                          @endif
+                                      @if (@$auction->user_id == $auth_id)
+                                        @if (!@$auction->is_sold)
+                                          <div class="d-flex justify-content-between align-items-center">
+                                            <form action="{{ route('agent.landlord.auction.bid.accept', $bid->id) }}" method="post">
+                                              @csrf
+                                              <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
+                                              <input type="hidden" name="bid_id" value="{{ $bid->id }}">
+                                              @if (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin')
+                                                <button type="submit" class="badge bg-success p-2 borderless">Accept</button>
+                                              @endif
+                                            </form>
+                                          </div>
+                                        @endif
+                                      @endif
+                                        @endforeach
+                                      @endif
+                                    </div>
+                                  </div>
+                                  @endif
+                                @endauth
                         </div>
                       </div>
                     </div>

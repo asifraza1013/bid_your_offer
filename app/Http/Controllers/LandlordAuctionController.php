@@ -498,6 +498,7 @@ class LandlordAuctionController extends Controller
         // dd($data->get);
         $page_data['auction'] = $auction = LandlordAuction::find($id);
         $page_data['title'] = @$auction->address;
+        $page_data['bids'] = $bids = LandlordAuctionBid::with('meta')->where('landlord_auction_id', $id)->whereNull('counter_id')->get();
         if ($auction) {
             return view('landlord_auction.view', $page_data);
         }
@@ -895,7 +896,6 @@ class LandlordAuctionController extends Controller
 
     public function add_bid(Request $request, $id)
     {
-
         $page_data['auction'] = $auction = LandlordAuction::find($id);
         $page_data['title'] = "Add Bid on Auction for Landlord - {$auction->address}";
         return view('landlord_auction.add-bid', $page_data);
@@ -982,6 +982,70 @@ class LandlordAuctionController extends Controller
             return $e->getMessage();
             return redirect()->to(route('agent.landlord.auction', $auction->id))->with('error', $e->getMessage());
         }
+    }
+
+    public function addCounterBid(Request $request, $bid_id)
+    {
+        // dd($bid_id);
+        $auction_bid = LandlordAuctionBid::find($bid_id);
+        $page_data['auction'] = $auction = LandlordAuction::find($auction_bid->landlord_auction_id);
+        $page_data['title'] = "Add Counter Bid for Seller's Landlord - {$auction->address}";
+        $page_data['bid'] = $auction_bid;
+        return view('landlord_auction.add-counter-bid', $page_data);
+    }
+
+    public function saveCounterBid(Request $request, $bid_id)
+    {
+        $auctionBid = LandlordAuctionBid::with('meta')->find($bid_id);
+        $bid = new LandlordAuctionBid();
+
+        $bid->user_id = Auth::user()->id;
+        $bid->counter_id = $bid_id;
+        $bid->landlord_auction_id = $auctionBid->landlord_auction_id;
+        $bid->save();
+        $bid->saveMeta('offered_price', $request->offered_price);
+        $bid->saveMeta('lease_terms', json_encode($request->lease_terms));
+        $bid->saveMeta('price', $request->price);
+        $bid->saveMeta('start_date', $request->start_date);
+        $bid->saveMeta('days_until_start_date', $request->days_until_start_date);
+        $bid->saveMeta('end_date', $request->end_date);
+        $bid->saveMeta('securityDeposit', $request->securityDeposit);
+        $bid->saveMeta('offered_price', $request->offered_price);
+        $bid->saveMeta('setPrice', $request->setPrice);
+        $bid->saveMeta('autobidPrice', $request->autobidPrice);
+        $bid->saveMeta('highestOffer', $request->highestOffer);
+        $bid->saveMeta('bestTerms', $request->bestTerms);
+        $bid->saveMeta('occupants', $request->occupants);
+        $bid->saveMeta('petOpt', $request->petOpt);
+        $bid->saveMeta('pets', $request->pets);
+        $bid->saveMeta('petTypes', $request->petTypes);
+        $bid->saveMeta('petWeight', $request->petWeight);
+        $bid->saveMeta('scoreRating', $request->scoreRating);
+        $bid->saveMeta('monthlyIncome', $request->monthlyIncome);
+        $bid->saveMeta('evictions', $request->evictions);
+        $bid->saveMeta('convicted', $request->convicted);
+        $bid->saveMeta('violations', $request->violations);
+        $bid->saveMeta('outstanding', $request->outstanding);
+        $bid->saveMeta('tenant_represented', $request->tenant_represented);
+        $bid->saveMeta('agent_accept_compensation', $request->agent_accept_compensation);
+        $bid->saveMeta('tenant_requests_commission', $request->tenant_requests_commission);
+        $bid->saveMeta('tenant_requests_commission_amount', $request->tenant_requests_commission_amount);
+        $bid->saveMeta('tenant_requests_commission_amount_other', $request->tenant_requests_commission_amount_other);
+        $bid->saveMeta('offer_expiry', $request->offer_expiry);
+        $bid->saveMeta('escalation_clause', $request->escalation_clause);
+        $bid->saveMeta('autobid_price', $request->autobid_price);
+        $bid->saveMeta('autobid_days_start_date', $request->autobid_days_start_date);
+        $bid->saveMeta('autobid_lease_length', $request->autobid_lease_length);
+        $bid->saveMeta('additionalInfo', $request->additionalInfo);
+        $bid->saveMeta('first_name', $request->first_name);
+        $bid->saveMeta('last_name', $request->last_name);
+        $bid->saveMeta('agent_phone', $request->agent_phone);
+        $bid->saveMeta('agent_email', $request->agent_email);
+        $bid->saveMeta('agent_brokerage', $request->agent_brokerage);
+        $bid->saveMeta('agent_license_no', $request->agent_license_no);
+        $bid->saveMeta('agent_mls_id', $request->agent_mls_id);
+
+        return redirect()->route('agent.landlord.auction', $auctionBid->landlord_auction_id)->with("success", "Counter Bid placed successfully!");
     }
 
     public function accept_bid($id, Request $request)
