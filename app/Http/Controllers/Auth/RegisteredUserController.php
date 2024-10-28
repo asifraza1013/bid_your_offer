@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -74,6 +75,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'user_type' => $request->user_type,
             'mls_id' => $request->mls_id,
+            'email_verified_at' => Carbon::now(),
         ]);
         $user->saveMeta("name", $fullName);
         $user->saveMeta("first_name", $request->first_name);
@@ -100,7 +102,7 @@ class RegisteredUserController extends Controller
         $user->saveMeta("county", $request->county);
         $user->saveMeta("state", $request->state);
         // dd($user);
-        event(new Registered($user));
+        // event(new Registered($user));
         Auth::login($user);
         return redirect(RouteServiceProvider::HOME);
     }

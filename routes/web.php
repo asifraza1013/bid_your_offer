@@ -519,14 +519,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('landlord/auctions', [LandlordAuctionController::class, 'admin_list'])->name('landlord.auctions');
         Route::get('landlord/auction/approve/{id}', [LandlordAuctionController::class, 'approve'])->name('landlord.auction.approve');
     });
-
-
-
-    Route::get('logout', function () {
-        Auth::logout();
-        return redirect()->to(route('login'));
-    });
 });
+
+Route::get('logout', function () {
+    Auth::logout();
+    return redirect()->to(route('login'));
+})->middleware('auth');
 
 // AI Chat Routes
 Route::get('/chat/{id}', [ChatController::class, 'index'])->name('chat');
