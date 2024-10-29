@@ -64,7 +64,7 @@
                                                 <td><a
                                                         href="{{ route('view-pl', @$auction->id) }}">{{ @$auction->address }}</a>
                                                 </td>
-                                                <td>{{ mb_strimwidth(@$auction->description, 0, 90, '...') }}</td>
+                                                <td>{{ @$auction->description }}</td>
                                                 <td>{{ Carbon\Carbon::parse(@$auction->created_at)->format('M d, Y') }}
                                                 </td>
                                                 <td class="text-center">{{ @$auction->bids->count() }}</td>
