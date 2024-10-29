@@ -28,10 +28,10 @@ class CounterBidController extends Controller
         $page_data['property_types'] = PropertyType::orderBy('sort', 'ASC')->get();
         return view('seller_property.add', $page_data);
     }
+
+
     public function store(Request $request, $bid_id)
     {
-
-
         $dataa = PropertyAuctionBid::with('meta')->find($bid_id);
         $bid = new PropertyAuctionBid();
         // $bidDetails = PropertyAuctionBid::where('property_auction_id', $request->auction_id)->max('price');
