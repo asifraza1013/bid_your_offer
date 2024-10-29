@@ -28,6 +28,7 @@ class DashboardController extends Controller
 {
     public function dashboard()
     {
+        dd('dashboard');
         $page_data['title'] = 'Dashboard';
         return view('dashboard', $page_data);
     }
