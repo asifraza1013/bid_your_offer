@@ -67,9 +67,6 @@
 </style>
 
 <body>
-    <!-- Header  -->
-    @include('layouts.partials.header')
-    <!-- End  -->
     <!-- BEGIN LOADER -->
     <div id="load_screen"> 
         <div class="loader"> 
@@ -81,6 +78,10 @@
         </div>
     </div>
     <!--  END LOADER -->
+    <!-- Header  -->
+    @include('layouts.partials.header')
+    <!-- End  -->
+    
 
 
 

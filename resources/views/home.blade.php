@@ -12,8 +12,6 @@
     <div class="curved"></div>
     <div class="contentDetails">
         <div class="container">
-
-
             <div class="selectionRoom row">
                 <div class="col-sm-12 col-md-3 col-lg-3">
                     <div class="mb-3">
