@@ -10,6 +10,8 @@
     <!-- //Global css  -->
     <link rel="stylesheet" href="{{ asset('assets/css/global.css') }}" />
     @stack('styles')
+    <!-- loader css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/loader.css') }}" />
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,12 +52,35 @@
   display: block;
 }
 
+.loader .loader-content .loader-img{
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+}
+
+.loader .loader-content .loader-img img{
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+}
+
 </style>
 
 <body>
     <!-- Header  -->
     @include('layouts.partials.header')
     <!-- End  -->
+    <!-- BEGIN LOADER -->
+    <div id="load_screen"> 
+        <div class="loader"> 
+            <div class="loader-content">
+                <div class="loader-img align-self-center">
+                    <img src="{{ asset(get_setting('logo')) }}" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  END LOADER -->
 
 
 
@@ -126,6 +151,7 @@
 
     <script src="https://kit.fontawesome.com/d7dd5c0801.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/bootstrap-5.2.2/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/js/loader.js') }}"></script>
 
 
     @stack('scripts')
