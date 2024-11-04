@@ -98,6 +98,12 @@
     <div class="container listingDescription">
         <div class="row">
             <div class="col-sm-12 col-md-8 col-lg-8 leftCol">
+                @if ($auction->user_id == auth()->user()->id)
+                    <div class="d-flex justify-content-end align-content-center">
+                        <a href="{{route('landlord.hire.agent.auction.edit', $auction->id)}}" class="btn btn-success btn-sm px-3 mb-3 me-2"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Listing</a>
+                        {{-- <a href="javascript:void(0)" class="btn btn-success btn-sm px-3 mb-3"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Auction Status</a> --}}
+                    </div>
+                @endif
                 @if (gettype(@$auction->get->photos) == 'array')
                     <div class="d-flex flex-wrap justify-content-start">
                         @foreach (@$auction->get->photos as $image)
@@ -841,6 +847,21 @@
                 @endif
                 <!-- Highest Bider   -->
                 <div class="card higestBider">
+                    @if($auction->user_id == auth()->user()->id && $auction->bids->count() > 0)
+                    <div class="d-flex align-items-baseline justify-content-center">
+                      @if ($auction->display_bids == 0)
+                        <form action="{{ route('landlord.agent.auction.bids.visibility', ['id' => $auction->id, 'vis' => 'show']) }}"  method="post">
+                          @csrf
+                          <button class="btn bg-success btn-sm px-3 mb-3 mt-0">Show Bids</button>
+                        </form>
+                      @else
+                        <form action="{{ route('landlord.agent.auction.bids.visibility', ['id' => $auction->id, 'vis' => 'hide']) }}" method="post">
+                          @csrf
+                          <button class="btn bg-danger btn-sm px-3 mb-3 mt-0">Hide Bids</button>
+                        </form>
+                      @endif
+                    </div>
+                    @endif
                     <div class="card-body">
                         @if (@$auction->bids->count() > 0)
                         @else
@@ -848,64 +869,66 @@
                         @endif
                         <div class="accordion" id="accordionExample">
                             <div class="accordion-item border-0">
-                                @foreach (@$auction->bids as $bid)
-                                    <!-- Item loop -->
-                                    <div class="accordion" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#item{{ @$bid->id }}" aria-expanded="true"
-                                        aria-controls="item{{ @$bid->id }}">
-                                        <div class="d-flex small accordion mr-0 text-center">
-                                            <div class="col-1">
-                                                <span class="badge">{{ $loop->iteration }}</span>
-                                            </div>
-                                            <div class="col-4">
-                                                {{ @$bid->user->name }}
-                                            </div>
-                                            <div class="col-4 text-right">
-                                                ${{ @$bid->get->offering_price }}
-                                            </div>
-                                            <div class="col-2">
-                                                Terms↓
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="item{{ @$bid->id }}" class="accordion-collapse collapse"
-                                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <div id="bidding_history_data">
-                                                <div>
-                                                    <p class="d-flex justify-content-between small">First Name:
-                                                        <span>{{ @$bid->get->first_name }}</span>
-                                                    </p>
-                                                    <p class="d-flex justify-content-between small">Landlord Agency
-                                                        Agreement Timeframe:
-                                                        <span>{{ @$bid->get->listing_terms }}</span>
-                                                    </p>
-                                                    <p class="d-flex justify-content-between small">Commission Offered:
-                                                        <span>{{ @$bid->get->offering_price }}</span>
-                                                    </p>
-                                                    @if (@$bid->get->services)
-                                                        <div>
-                                                            <label>Services Offered by the Agent:</label>
-                                                            <ul class="services">
-                                                                @foreach (@$bid->get->services as $service)
-                                                                    @if ($service == 'Other')
-                                                                        @continue
-                                                                    @endif
-                                                                    <li style="font-size: 16px; margin-top:15px;">
-                                                                        {{ $service }}</li>
-                                                                @endforeach
-                                                                @if (@$bid->get->other_services != '' && @$bid->get->other_services != 'null')
-                                                                    <li style="font-size: 16px; margin-top:15px;">
-                                                                        {{ @$bid->get->other_services }}</li>
-                                                                @endif
-                                                            </ul>
-                                                        </div>
-                                                    @endif
+                                @if ($auction->display_bids == 1)
+                                    @foreach (@$auction->bids as $bid)
+                                        <!-- Item loop -->
+                                        <div class="accordion" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#item{{ @$bid->id }}" aria-expanded="true"
+                                            aria-controls="item{{ @$bid->id }}">
+                                            <div class="d-flex small accordion mr-0 text-center">
+                                                <div class="col-1">
+                                                    <span class="badge">{{ $loop->iteration }}</span>
+                                                </div>
+                                                <div class="col-4">
+                                                    {{ @$bid->user->name }}
+                                                </div>
+                                                <div class="col-4 text-right">
+                                                    ${{ @$bid->get->offering_price }}
+                                                </div>
+                                                <div class="col-2">
+                                                    Terms↓
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                @endforeach
+                                        <div id="item{{ @$bid->id }}" class="accordion-collapse collapse"
+                                            aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div id="bidding_history_data">
+                                                    <div>
+                                                        <p class="d-flex justify-content-between small">First Name:
+                                                            <span>{{ @$bid->get->first_name }}</span>
+                                                        </p>
+                                                        <p class="d-flex justify-content-between small">Landlord Agency
+                                                            Agreement Timeframe:
+                                                            <span>{{ @$bid->get->listing_terms }}</span>
+                                                        </p>
+                                                        <p class="d-flex justify-content-between small">Commission Offered:
+                                                            <span>{{ @$bid->get->offering_price }}</span>
+                                                        </p>
+                                                        @if (@$bid->get->services)
+                                                            <div>
+                                                                <label>Services Offered by the Agent:</label>
+                                                                <ul class="services">
+                                                                    @foreach (@$bid->get->services as $service)
+                                                                        @if ($service == 'Other')
+                                                                            @continue
+                                                                        @endif
+                                                                        <li style="font-size: 16px; margin-top:15px;">
+                                                                            {{ $service }}</li>
+                                                                    @endforeach
+                                                                    @if (@$bid->get->other_services != '' && @$bid->get->other_services != 'null')
+                                                                        <li style="font-size: 16px; margin-top:15px;">
+                                                                            {{ @$bid->get->other_services }}</li>
+                                                                    @endif
+                                                                </ul>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
                             </div>
                         </div>
                     </div>

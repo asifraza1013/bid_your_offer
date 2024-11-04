@@ -229,14 +229,40 @@
             $(this).addClass('active');
             let type = $(this).data('type');
             let elem = $(this).closest('.form-group').find('.input-icon').children();
+            let inputElem  = $(this).closest('.form-group').find('input');
+            console.log('elemVal', inputElem.val())
             if (type == 'percent') {
                 elem.removeClass("fa-solid fa-dollar-sign");
                 elem.addClass("fa-solid fa-percent");
                 elem.attr('data-symbol', 'percent');
+                if(inputElem.val() !== ''){
+                    const firstCharacter = inputElem.val().charAt(0);
+                    if(firstCharacter == '$' || firstCharacter == '%'){
+                        let inputVal = inputElem.val().substring(1);
+                        inputElem.val(inputVal + '' + '%');
+                    }else{
+                        let inputVal = inputElem.val();
+                        inputElem.val(inputVal + '' + '%');
+                    }
+                }else{
+                    inputElem.val('%');
+                }
             } else {
                 elem.removeClass("fa-solid fa-percent");
                 elem.addClass("fa-solid fa-dollar-sign");
                 elem.attr('data-symbol', 'amount');
+                if(inputElem.val() !== ''){
+                    const firstCharacter = inputElem.val().charAt(inputElem.val().length - 1);
+                    if(firstCharacter == '$' || firstCharacter == '%'){
+                        let inputVal = inputElem.val().slice(0, -1);;
+                        inputElem.val('$' + '' + inputVal);
+                    }else{
+                        let inputVal = inputElem.val();
+                        inputElem.val('$' + '' + inputVal);
+                    }
+                }else{
+                    inputElem.val('$');
+                }
             }
         })
     </script>

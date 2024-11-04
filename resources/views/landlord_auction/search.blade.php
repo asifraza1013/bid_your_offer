@@ -163,9 +163,7 @@
                     <span class="d-inline-flex justify-content-center align-items-center gap-1"><img
                         src="{{ asset('assets/fontawesome/svgs/thin/ruler-triangle.svg') }}" alt="bed icon"
                         width="15"><b>
-                          @if (is_float($pa->get->heated_sqft))
-                        {{ $pa->get->heated_sqft ? number_format($pa->get->heated_sqft, 0, '', ','):'' }}
-                        @endif
+                        {{ $pa->get->heated_sqft }}
                       </b>Sq Ft</span>
                   </span>
                 </div>
@@ -174,10 +172,10 @@
                 @endphp
                 <p class="card-text mb-1 d-flex justify-content-between">
                   <span class="badge bg-secondary ml-auto">{{ @$pa->get->property_type }}</span>
-                  <span class="mr-auto">
+                  {{-- <span class="mr-auto">
                     <span><b>MLS ID</b></span>
                     <span>#{{ @$pa->get->agent_mls_id }}</span>
-                  </span>
+                  </span> --}}
                 </p>
               </div>
               <div class="card-footer bg-light">

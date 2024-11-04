@@ -278,6 +278,19 @@ class BuyerCriteriaAuctionController extends Controller
         return view('buyer_criteria.view', $page_data);
     }
 
+    public function bidsVisibility($id, $vis){
+        $auction = BuyerCriteriaAuction::where('id', $id)->first();
+        if($vis == 'show'){
+            $auction->display_bids = 1;
+            $auction->save();
+            return redirect()->back()->with('success', 'Bids list is now visible');
+        }else{
+            $auction->display_bids = 0;
+            $auction->save();
+            return redirect()->back()->with('success', 'Bids list is now hidden');
+        }
+    }
+
     public function edit($id)
     {
         $page_data['title'] = 'Edit Buyer Criteria';

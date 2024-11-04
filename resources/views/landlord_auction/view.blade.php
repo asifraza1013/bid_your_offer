@@ -112,7 +112,12 @@
   <div class="container listingDescription">
     <div class="row">
       <div class="col-sm-12 col-md-8 col-lg-8 leftCol">
-
+        @if ($auction->user_id == auth()->user()->id)
+          <div class="d-flex justify-content-end align-content-center">
+            <a href="{{route('agent.landlord.auction.edit', $auction->id)}}" class="btn btn-success btn-sm px-3 mb-3 me-2"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Listing</a>
+            {{-- <a href="javascript:void(0)" class="btn btn-success btn-sm px-3 mb-3"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Auction Status</a> --}}
+          </div>
+        @endif
         <!-- Description Box  -->
         <div class="card description">
           <div class="col-md-12 col-12 fw-bold image">
@@ -524,7 +529,10 @@
                 @endphp
                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Amenities or Property Features:
                   @foreach ($amenities as $item)
-                    <span class="removeBold"> {{ $item }}</span>
+                    @if ($item !== 'Other')
+                      <span class="removeBold"> {{ $item }}</span>
+                    @endif
+                    
                     @if ($item == 'Other' && isset($auction->get->otherAmenities))
                       <span class="d-inline-block removeBold  badge bg-secondary"> {{ $auction->get->otherAmenities }}</span>
                     @endif
@@ -727,9 +735,11 @@
               @if(gettype(json_decode(@$auction->get->roomPrimary)) == 'array')
                   <div class="col-md-12 fw-bold"><i class="far fa-check-square"></i> Room Primary Covering:
                       @foreach (json_decode(@$auction->get->roomPrimary) as $item)
+                        @if ($item !== 'Other')
                           <span class="removeBold badge bg-secondary">
-                              {{ $item }} 
-                          </span>
+                            {{ $item }} 
+                        </span>
+                        @endif
                       @endforeach
                   </div>
               @endif
@@ -896,9 +906,11 @@
                 @if(gettype(json_decode(@$auction->get->water_access)) == 'array')
                   <div class="col-md-12 fw-bold"><i class="far fa-check-square"></i> Water Access:
                       @foreach (json_decode(@$auction->get->water_access) as $item)
-                          <span class="removeBold badge bg-secondary">
-                              {{ $item }} 
-                          </span>
+                        @if ($item !== 'Other')
+                        <span class="removeBold badge bg-secondary">
+                          {{ $item }} 
+                        </span>
+                        @endif
                       @endforeach
                   </div>
                 @endif
@@ -906,7 +918,9 @@
                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Water View:
                   @if (@$auction->info('water_view') != '' && @$auction->info('water_view') != 'null')
                     @foreach (json_decode(@$auction->info('water_view')) as $water_view)
-                      <span class="badge bg-secondary removeBold">{{ $water_view }}</span>
+                      @if ($item !== 'Other')
+                        <span class="badge bg-secondary removeBold">{{ $water_view }}</span>
+                      @endif
                     @endforeach
                   @endif
                 </div>
@@ -915,7 +929,9 @@
                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Water Extras:
                   @if (@$auction->info('water_extras') != '' && @$auction->info('water_extras') != 'null')
                     @foreach (json_decode(@$auction->info('water_extras')) as $water_extras)
-                      <span class="badge bg-secondary removeBold">{{ $water_extras }}</span>
+                      @if ($item !== 'Other')
+                        <span class="badge bg-secondary removeBold">{{ $water_extras }}</span>
+                      @endif
                     @endforeach
                   @endif
                 </div>
@@ -1230,6 +1246,21 @@
         @endif
         <!-- Highest Bider -->
         <div class="card higestBider">
+          @if($auction->user_id == auth()->user()->id && $bids->count() > 0)
+            <div class="d-flex align-items-baseline justify-content-center">
+              @if ($auction->display_bids == 0)
+                <form action="{{ route('landlord.auction.bids.visibility', ['id' => $auction->id, 'vis' => 'show']) }}"  method="post">
+                  @csrf
+                  <button class="btn bg-success btn-sm px-3 mb-3 mt-0">Show Bids</button>
+                </form>
+              @else
+                <form action="{{ route('landlord.auction.bids.visibility', ['id' => $auction->id, 'vis' => 'hide']) }}" method="post">
+                  @csrf
+                  <button class="btn bg-danger btn-sm px-3 mb-3 mt-0">Hide Bids</button>
+                </form>
+              @endif
+            </div>
+          @endif
           <div class="card-body">
             @if ($lowest_bidder)
               <p><b>{{ $lowest_bidder->user->name ?? '' }}</b> is the lowest bidder.</p>
@@ -1238,273 +1269,273 @@
             @endif
             <div class="accordion" id="accordionExample">
               <div class="accordion-item border-0">
-                @foreach ($bids as $bid)
-                  <!-- Item loop -->
-                  <div class="accordion" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#item{{ $bid->id }}" aria-expanded="true"
-                    aria-controls="item{{ $bid->id }}">
-                    <div class="d-flex small accordion mr-0 text-center">
-                      <div class="col-1">
-                        <span class="badge">{{ $loop->iteration }}</span>
-                      </div>
-                      <div class="col-4">
-                        {{ $bid->user->name }} </div>
-                      <div class="col-4 text-right">
-                        ${{ $bid->get->offered_price }} </div>
-                      <div class="col-2">
-                        Terms↓
-                      </div>
-                    </div>
-                  </div>
-                  <div id="item{{ $bid->id }}" class="accordion-collapse collapse" aria-labelledby="headingOne"
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                      <div id="bidding_history_data">
-                        <div>
-                          <table class="table table-bordered">
-                            {{-- <thead>
-                              <tr>
-                                <th colspan="2">Tenant/Tenant’s Agent Info</th>
-                              </tr>
-                            </thead> --}}
-                            <tbody>
-                              <tr>
-                                <th class="small">First Name</th>
-                                <td class="small">{{ $bid->get->first_name }}</td>
-                              </tr>
-                              <tr>
-                                <th class="small">Offered Price:</th>
-                                <td class="small">${{ $bid->get->offered_price }}</td>
-                              </tr>
-                              <tr>
-                                <th class="small">Offered Lease Length:</th>
-                                @if (isset($bid->get->lease_terms))
-                                  @php
-                                    $data = json_decode($bid->get->lease_terms, true);
-                                  @endphp
-                                  @if (isset($data) && is_array($data) && count($data) > 0)
-                                    @foreach ($data as $item)
-                                      <td class="small">{{ $item !== 'Other' ? $item :  $bid->get->price}}</td>
-                                    @endforeach
-                                  @endif
-                                @endif
-                              </tr>
-                              <tr>
-                                <th class="small">Offered Lease Start Date:</th>
-                                <td class="small">{{ $bid->get->start_date }}</td>
-                              </tr>
-                              <tr>
-                                <th class="small">Offered Days Until the Lease Start Date:</th>
-                                <td class="small">{{ $bid->get->days_until_start_date }}</td>
-                              </tr>
-                              <tr>
-                                <th class="small">Acceptable Real Estate Agent Commission:</th>
-                                <td class="small">{{ $bid->get->tenant_requests_commission_amount !== 'Other' ? $bid->get->tenant_requests_commission_amount : $bid->get->tenant_requests_commission_amount_other }}</td>
-                              </tr>
-                              @if ($auction->get->auction_type == 'Traditional Listing')
-                                <tr>
-                                  <th class="small">Offer Expires</th>
-                                  <td class="small">{{ $bid->get->offer_expiry }}</td>
-                                </tr>
-                              @endif
-                              <tr>
-                                <th class="small">Additional Details or Countered Terms:</th>
-                                <td class="small">{{ $bid->get->additionalInfo}}</td>
-                              </tr>
-                            </tbody>
-                          </table>
-
-                          {{-- <table class="table table-bordered">
-                            <thead>
-                              <tr>
-                                <th colspan="2">Terms offered by the tenant</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <th class="small">Lease Terms</th>
-                                @if (is_string($bid->get->lease_terms))
-                                  @php
-                                    $leaseTermsArray = json_decode($bid->get->lease_terms, true);
-                                  @endphp
-                                  @if ($leaseTermsArray)
-                                    <td class="small">
-                                      {{ implode(', ', array_map('rtrim', $leaseTermsArray, [','])) }}
-                                    </td>
-                                  @endif
-                                @else
-                                @endif
-                              </tr>
-                              <tr>
-                                <th class="small">Security Deposit</th>
-                                <td class="small">
-                                  ${{ $bid->get->securityDeposit }}</td>
-                              </tr>
-                              <tr>
-                                <th class="small">How many occupants?</th>
-                                <td class="small">
-                                  @if ($bid->get->occupants != '' && $bid->get->occupants != 'null')
-                                    <span class="badge bg-secondary">{{ $bid->get->occupants }}</span>
-                                  @endif
-                                </td>
-                              </tr>
-                              <tr>
-                                <th class="small">Does tenant have a pet?</th>
-                                <td class="small">
-                                  @if ($bid->get->petOpt != '' && $bid->get->petOpt != 'null')
-                                    <span class="badge bg-secondary">{{ $bid->get->petOpt }}</span>
-                                  @endif
-                                </td>
-                              </tr>
-                              <tr>
-                                <th class="small">How many pets does the tenant have</th>
-                                <td class="small">{{ $bid->get->pets }}
-                                </td>
-                              </tr>
-                              <tr>
-                                <th class="small">Credit Score Rating:</th>
-                                <td class="small">
-                                  {{ $bid->get->scoreRating }}</td>
-                              </tr>
-                              <tr>
-                                <th class="small">Household Net Income:</th>
-                                <td class="small">${{ $bid->get->monthlyIncome }}
-                                </td>
-                              </tr>
-                              <tr>
-                                <th class="small">Has tenant had any prior evictions?</th>
-                                <td class="small">{{ $bid->get->evictions }}
-                                </td>
-                              </tr>
-                              <tr>
-                                <th class="small">Has tenant been convicted of a felony?
-                                </th>
-                                <td class="small">{{ $bid->get->convicted }}
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table> --}}
-
-                          @if (@$auction->user_id == $auth_id)
-                            @if (!@$auction->is_sold)
-                              <form action="{{ route('agent.landlord.auction.bid.accept', $bid->id) }}" method="post">
-                                @csrf
-                                <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
-                                <input type="hidden" name="bid_id" value="{{ $bid->id }}">
-                                <div style="text-align: right;">
-                                  <button type="submit" class="btn btn-success btn-sm">Accept</button>
-                                </div>
-                              </form>
-                            @endif
-                          @endif
-
-                          @auth
-                                @if (auth()->user()->id == $bid->user->id || (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin'))
-                                  <div class="form-group biddingOperations">
-                                    @if (!$auction->sold)
-                                      <form action="{{ route('landlord.add.counter-bid', $bid->id) }}" method="get">
-                                        <div class="d-flex gap-1">
-                                          <button type="submit" class="btn btn-primary">Counter Bid</button>
-                                        </div>
-                                      </form>
-                                    @endif
-                                    @php
-                                      $allBids = App\Models\LandlordAuctionBid::where('counter_id', $bid->id)->with('meta')
-                                          ->orderByDesc('created_at')
-                                          ->get();
-                                    @endphp
-                                    <div class="form-group">
-                                      @foreach ($allBids as $key => $countBid)
-                                        <form action="{{ route('agent.landlord.auction.bid.accept', $bid->id) }}" method="post">
-                                          @csrf
-                                          <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
-                                          <input type="hidden" name="bid_id" value="{{ $bid->id }}">
-                                        </form>
-                                      @endforeach
-                                    </div>
-                                    <div class="form-group">
-                                      @if (!$auction->sold)
-                                        @foreach ($allBids as $key => $countBid)
-                                          @if(isset($countBid->get->first_name))
-                                            <p class="d-flex justify-content-between small fw-bold">First Name:
-                                              <span
-                                                class="removeBold">{{ $countBid->get->first_name }}</span>
-                                            </p>
-                                          @endif
-                                          @if ($countBid->get->offered_price)
-                                            <p class="d-flex justify-content-between small fw-bold">Offered Price:
-                                              <span class="removeBold">{{ $countBid->get->offered_price }}</span>
-                                            </p>
-                                          @endif
-
-                                          @if (isset($countBid->get->lease_terms))
-                                            @php
-                                              $data = json_decode($countBid->get->lease_terms, true);
-                                            @endphp
-                                            <p class="d-flex justify-content-between small fw-bold">Offered Lease Length:
-                                              @if (isset($data) && is_array($data) && count($data) > 0)
-                                                @foreach ($data as $item)
-                                                  <span class="removeBold">{{ $item !== 'Other' ? $item :  $countBid->get->price }}</span>
-                                                @endforeach
-                                              @endif
-                                            </p>
-                                          @endif
-
-                                          @if ($countBid->get->start_date)
-                                          <p class="d-flex justify-content-between small fw-bold">Offered Lease Start Date:
-                                            <span class="removeBold">{{ $countBid->get->start_date }}</span>
-                                          </p>
-                                          @endif
-
-                                          @if(isset($countBid->get->days_until_start_date))
-                                          <p class="d-flex justify-content-between small fw-bold">Offered Days Until the Lease Start Date:
-                                            <span class="removeBold">{{ $countBid->get->days_until_start_date }}</span>
-                                          </p>
-                                          @endif
-                                          @if (isset($countBid->get->tenant_requests_commission_amount))
-                                            <p class="d-flex justify-content-between small fw-bold">Real Estate Commission Offered:
-                                              <span class="removeBold">{{ $countBid->get->tenant_requests_commission_amount !== 'Other' ? $countBid->get->tenant_requests_commission_amount : $countBid->get->tenant_requests_commission_amount_other }}</span>
-                                            </p>
-                                          @endif
-                                          @if (isset($countBid->get->offer_expiry))
-                                            <p class="d-flex justify-content-between small fw-bold">Offer Expires:
-                                              <span class="removeBold">{{ $countBid->get->offer_expiry }}</span>
-                                            </p>
-                                          @endif
-                                          @if (isset($countBid->get->additionalInfo))
-                                            <p class="d-flex justify-content-between small fw-bold">Additional Details or Countered Terms:
-                                              <span class="removeBold">{{ $countBid->get->additionalInfo }}</span>
-                                            </p>
-                                          @endif
-                                      @if (@$auction->user_id == $auth_id)
-                                        @if (!@$auction->is_sold)
-                                          <div class="d-flex justify-content-between align-items-center">
-                                            <form action="{{ route('agent.landlord.auction.bid.accept', $bid->id) }}" method="post">
-                                              @csrf
-                                              <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
-                                              <input type="hidden" name="bid_id" value="{{ $bid->id }}">
-                                              @if (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin')
-                                                <button type="submit" class="badge bg-success p-2 borderless">Accept</button>
-                                              @endif
-                                            </form>
-                                          </div>
-                                        @endif
-                                      @endif
-                                        @endforeach
-                                      @endif
-                                    </div>
-                                  </div>
-                                  @endif
-                                @endauth
+                @if ($auction->display_bids == 1)
+                  @foreach ($bids as $bid)
+                    <!-- Item loop -->
+                    <div class="accordion" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#item{{ $bid->id }}" aria-expanded="true"
+                      aria-controls="item{{ $bid->id }}">
+                      <div class="d-flex small accordion mr-0 text-center">
+                        <div class="col-1">
+                          <span class="badge">{{ $loop->iteration }}</span>
+                        </div>
+                        <div class="col-4">
+                          {{ $bid->user->name }} </div>
+                        <div class="col-4 text-right">
+                          ${{ $bid->get->offered_price }} </div>
+                        <div class="col-2">
+                          Terms↓
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <!-- End  -->
-                @endforeach
+                    <div id="item{{ $bid->id }}" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                      data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                        <div id="bidding_history_data">
+                          <div>
+                            <table class="table table-bordered">
+                              {{-- <thead>
+                                <tr>
+                                  <th colspan="2">Tenant/Tenant’s Agent Info</th>
+                                </tr>
+                              </thead> --}}
+                              <tbody>
+                                <tr>
+                                  <th class="small">First Name</th>
+                                  <td class="small">{{ $bid->get->first_name }}</td>
+                                </tr>
+                                <tr>
+                                  <th class="small">Offered Price:</th>
+                                  <td class="small">${{ $bid->get->offered_price }}</td>
+                                </tr>
+                                <tr>
+                                  <th class="small">Offered Lease Length:</th>
+                                  @if (isset($bid->get->lease_terms))
+                                    @php
+                                      $data = json_decode($bid->get->lease_terms, true);
+                                    @endphp
+                                    @if (isset($data) && is_array($data) && count($data) > 0)
+                                      @foreach ($data as $item)
+                                        <td class="small">{{ $item !== 'Other' ? $item :  $bid->get->price}}</td>
+                                      @endforeach
+                                    @endif
+                                  @endif
+                                </tr>
+                                <tr>
+                                  <th class="small">Offered Lease Start Date:</th>
+                                  <td class="small">{{ $bid->get->start_date }}</td>
+                                </tr>
+                                <tr>
+                                  <th class="small">Offered Days Until the Lease Start Date:</th>
+                                  <td class="small">{{ $bid->get->days_until_start_date }}</td>
+                                </tr>
+                                <tr>
+                                  <th class="small">Acceptable Real Estate Agent Commission:</th>
+                                  <td class="small">{{ $bid->get->tenant_requests_commission_amount !== 'Other' ? $bid->get->tenant_requests_commission_amount : $bid->get->tenant_requests_commission_amount_other }}</td>
+                                </tr>
+                                @if ($auction->get->auction_type == 'Traditional Listing')
+                                  <tr>
+                                    <th class="small">Offer Expires</th>
+                                    <td class="small">{{ $bid->get->offer_expiry }}</td>
+                                  </tr>
+                                @endif
+                                <tr>
+                                  <th class="small">Additional Details or Countered Terms:</th>
+                                  <td class="small">{{ $bid->get->additionalInfo}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
 
+                            {{-- <table class="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th colspan="2">Terms offered by the tenant</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <th class="small">Lease Terms</th>
+                                  @if (is_string($bid->get->lease_terms))
+                                    @php
+                                      $leaseTermsArray = json_decode($bid->get->lease_terms, true);
+                                    @endphp
+                                    @if ($leaseTermsArray)
+                                      <td class="small">
+                                        {{ implode(', ', array_map('rtrim', $leaseTermsArray, [','])) }}
+                                      </td>
+                                    @endif
+                                  @else
+                                  @endif
+                                </tr>
+                                <tr>
+                                  <th class="small">Security Deposit</th>
+                                  <td class="small">
+                                    ${{ $bid->get->securityDeposit }}</td>
+                                </tr>
+                                <tr>
+                                  <th class="small">How many occupants?</th>
+                                  <td class="small">
+                                    @if ($bid->get->occupants != '' && $bid->get->occupants != 'null')
+                                      <span class="badge bg-secondary">{{ $bid->get->occupants }}</span>
+                                    @endif
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th class="small">Does tenant have a pet?</th>
+                                  <td class="small">
+                                    @if ($bid->get->petOpt != '' && $bid->get->petOpt != 'null')
+                                      <span class="badge bg-secondary">{{ $bid->get->petOpt }}</span>
+                                    @endif
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th class="small">How many pets does the tenant have</th>
+                                  <td class="small">{{ $bid->get->pets }}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th class="small">Credit Score Rating:</th>
+                                  <td class="small">
+                                    {{ $bid->get->scoreRating }}</td>
+                                </tr>
+                                <tr>
+                                  <th class="small">Household Net Income:</th>
+                                  <td class="small">${{ $bid->get->monthlyIncome }}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th class="small">Has tenant had any prior evictions?</th>
+                                  <td class="small">{{ $bid->get->evictions }}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <th class="small">Has tenant been convicted of a felony?
+                                  </th>
+                                  <td class="small">{{ $bid->get->convicted }}
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table> --}}
+
+                            @if (@$auction->user_id == $auth_id)
+                              @if (!@$auction->is_sold)
+                                <form action="{{ route('agent.landlord.auction.bid.accept', $bid->id) }}" method="post">
+                                  @csrf
+                                  <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
+                                  <input type="hidden" name="bid_id" value="{{ $bid->id }}">
+                                  <div style="text-align: right;">
+                                    <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                  </div>
+                                </form>
+                              @endif
+                            @endif
+
+                            @auth
+                                  @if (auth()->user()->id == $bid->user->id || (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin'))
+                                    <div class="form-group biddingOperations">
+                                      @if (!$auction->sold)
+                                        <form action="{{ route('landlord.add.counter-bid', $bid->id) }}" method="get">
+                                          <div class="d-flex gap-1">
+                                            <button type="submit" class="btn btn-primary">Counter Bid</button>
+                                          </div>
+                                        </form>
+                                      @endif
+                                      @php
+                                        $allBids = App\Models\LandlordAuctionBid::where('counter_id', $bid->id)->with('meta')
+                                            ->orderByDesc('created_at')
+                                            ->get();
+                                      @endphp
+                                      <div class="form-group">
+                                        @foreach ($allBids as $key => $countBid)
+                                          <form action="{{ route('agent.landlord.auction.bid.accept', $bid->id) }}" method="post">
+                                            @csrf
+                                            <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
+                                            <input type="hidden" name="bid_id" value="{{ $bid->id }}">
+                                          </form>
+                                        @endforeach
+                                      </div>
+                                      <div class="form-group">
+                                        @if (!$auction->sold)
+                                          @foreach ($allBids as $key => $countBid)
+                                            @if(isset($countBid->get->first_name))
+                                              <p class="d-flex justify-content-between small fw-bold">First Name:
+                                                <span
+                                                  class="removeBold">{{ $countBid->get->first_name }}</span>
+                                              </p>
+                                            @endif
+                                            @if ($countBid->get->offered_price)
+                                              <p class="d-flex justify-content-between small fw-bold">Offered Price:
+                                                <span class="removeBold">{{ $countBid->get->offered_price }}</span>
+                                              </p>
+                                            @endif
+
+                                            @if (isset($countBid->get->lease_terms))
+                                              @php
+                                                $data = json_decode($countBid->get->lease_terms, true);
+                                              @endphp
+                                              <p class="d-flex justify-content-between small fw-bold">Offered Lease Length:
+                                                @if (isset($data) && is_array($data) && count($data) > 0)
+                                                  @foreach ($data as $item)
+                                                    <span class="removeBold">{{ $item !== 'Other' ? $item :  $countBid->get->price }}</span>
+                                                  @endforeach
+                                                @endif
+                                              </p>
+                                            @endif
+
+                                            @if ($countBid->get->start_date)
+                                            <p class="d-flex justify-content-between small fw-bold">Offered Lease Start Date:
+                                              <span class="removeBold">{{ $countBid->get->start_date }}</span>
+                                            </p>
+                                            @endif
+
+                                            @if(isset($countBid->get->days_until_start_date))
+                                            <p class="d-flex justify-content-between small fw-bold">Offered Days Until the Lease Start Date:
+                                              <span class="removeBold">{{ $countBid->get->days_until_start_date }}</span>
+                                            </p>
+                                            @endif
+                                            @if (isset($countBid->get->tenant_requests_commission_amount))
+                                              <p class="d-flex justify-content-between small fw-bold">Real Estate Commission Offered:
+                                                <span class="removeBold">{{ $countBid->get->tenant_requests_commission_amount !== 'Other' ? $countBid->get->tenant_requests_commission_amount : $countBid->get->tenant_requests_commission_amount_other }}</span>
+                                              </p>
+                                            @endif
+                                            @if (isset($countBid->get->offer_expiry))
+                                              <p class="d-flex justify-content-between small fw-bold">Offer Expires:
+                                                <span class="removeBold">{{ $countBid->get->offer_expiry }}</span>
+                                              </p>
+                                            @endif
+                                            @if (isset($countBid->get->additionalInfo))
+                                              <p class="d-flex justify-content-between small fw-bold">Additional Details or Countered Terms:
+                                                <span class="removeBold">{{ $countBid->get->additionalInfo }}</span>
+                                              </p>
+                                            @endif
+                                        @if (@$auction->user_id == $auth_id)
+                                          @if (!@$auction->is_sold)
+                                            <div class="d-flex justify-content-between align-items-center">
+                                              <form action="{{ route('agent.landlord.auction.bid.accept', $bid->id) }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
+                                                <input type="hidden" name="bid_id" value="{{ $bid->id }}">
+                                                @if (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin')
+                                                  <button type="submit" class="badge bg-success p-2 borderless">Accept</button>
+                                                @endif
+                                              </form>
+                                            </div>
+                                          @endif
+                                        @endif
+                                          @endforeach
+                                        @endif
+                                      </div>
+                                    </div>
+                                    @endif
+                                  @endauth
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End  -->
+                  @endforeach
+                @endif
               </div>
-
             </div>
           </div>
         </div>

@@ -898,7 +898,12 @@
   <div class="container listingDescription">
     <div class="row">
       <div class="col-sm-12 col-md-8 col-lg-8 leftCol">
-        
+        @if ($auction->user_id == auth()->user()->id)
+          <div class="d-flex justify-content-end align-content-center">
+            <a href="{{route('edit-seller-property-listing', $auction->id)}}" class="btn btn-success btn-sm px-3 mb-3 me-2"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Listing</a>
+            {{-- <a href="javascript:void(0)" class="btn btn-success btn-sm px-3 mb-3"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Auction Status</a> --}}
+          </div>
+        @endif
         <!-- Modal -->
         @if (@$auction->get->photos)
           <div class="modal fade" id="lightbox" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -945,6 +950,7 @@
         <div class="card description">
           <div class="card-body">
             <h4>Marketing Materials:</h4>
+            <hr>
             <!-- Galery Start Here  -->
             <div class="row" style="flex-wrap: wrap;">
               <div class="col-md-12 col-12 fw-bold mt-1 mb-1" data-toggle="modal" data-target="#lightbox">
@@ -1606,10 +1612,12 @@
                       <span class="removeBold"> {{ @$auction->get->furnishings_include ?: $auction->get->furnishings_include_com }}</span> 
                   @endif
                   @if ($auction->get->has_additional_fees != null || $auction->get->has_additional_fees_com != null)
+                    <br>
                     <i class="fa-regular fa-check-square"></i> 
                     Additional Fees or Included in the Purchase Price?
                     <span class="removeBold"> {{ @$auction->get->has_additional_fees ?: $auction->get->has_additional_fees_com }}</span> 
                     @if (($auction->get->has_additional_fees != 'Additional Fees' || $auction->get->has_additional_fees_com != 'Additional Fees') && ($auction->get->listed_furniture_price != null || $auction->get->listed_furniture_price_com != null))
+                      <br>
                       <i class="fa-regular fa-check-square"></i> 
                       How much is the furniture listed?
                       <span class="removeBold"> {{ $auction->get->listed_furniture_price ?: $auction->get->listed_furniture_price_com }}</span> 
@@ -1661,10 +1669,10 @@
                   Additional Rooms: 
                   @if (is_array($auction->get->additionalRooms))
                     @foreach (@$auction->get->additionalRooms as $item)
-                      <span class="removeBold"> {{ $item }}</span> 
+                      <span class="removeBold badge bg-secondary"> {{ $item }}</span> 
                     @endforeach
                   @else
-                    <span class="removeBold"> {{  $auction->get->additionalRooms }}</span>
+                    <span class="removeBold badge bg-secondary"> {{  $auction->get->additionalRooms }}</span>
                   @endif
                 </div>
               @endif
@@ -3216,6 +3224,21 @@
         @endif
         <!-- Highest Bider   -->
         <div class="card higestBider">
+          @if($auction->user_id == auth()->user()->id && $bids->count() > 0)
+            <div class="d-flex align-items-baseline justify-content-center">
+              @if ($auction->display_bids == 0)
+                <form action="{{ route('property.bids.visibility', ['id' => $auction->id, 'vis' => 'show']) }}"  method="post">
+                  @csrf
+                  <button class="btn bg-success btn-sm px-3 mb-3 mt-0">Show Bids</button>
+                </form>
+              @else
+                <form action="{{ route('property.bids.visibility', ['id' => $auction->id, 'vis' => 'hide']) }}" method="post">
+                  @csrf
+                  <button class="btn bg-danger btn-sm px-3 mb-3 mt-0">Hide Bids</button>
+                </form>
+              @endif
+            </div>
+          @endif
           <div class="card-body">
             @if ($highest_bidder)
               <p><b>{{ $highest_bidder->user->name ?? '' }}</b> is the highest bidder.</p>
@@ -3228,303 +3251,304 @@
                 $counterBid = App\Models\PropertyAuctionBid::all();
               @endphp
               {{-- @dd($bids); --}}
-              @foreach ($bids as $key => $bid)
-                {{-- @if ($loop->last)
-                  @dd($bid->get->financing)
-                @endif --}}
-                @if ($bid->counter_id == null)
-                  <div class="accordion-item border-0">
-                    <div class="accordion" type="button" data-bs-toggle="collapse"
-                      data-bs-target="#item{{ $key + 1 }}" aria-expanded="false"
-                      aria-controls="item{{ $key + 1 }}">
-                      <div class="d-flex small accordion mr-0 text-center">
-                        <div class="col-1">
-                          <span class="badge">{{ $loop->iteration }}</span>
-                        </div>
-                        <div class="col-4">
-                          {{ $bid->user->name ?? '' }}
-                        </div>
-                        @if ($bid->accepted == 'rejected')
-                          <div class="col-4 text-right position-relative">
-                            ${{ number_format($bid->price, 2, '.', ',') }}
-                            <span
-                              style="position: absolute; width:65px; margin-left: 54px; right: 0; top: 50%; transform: translateY(-50%); border-top: 2px solid red; z-index: 1;"></span>
+              @if ($auction->display_bids == 1)
+                @foreach ($bids as $key => $bid)
+                  {{-- @if ($loop->last)
+                    @dd($bid->get->financing)
+                  @endif --}}
+                  @if ($bid->counter_id == null)
+                    <div class="accordion-item border-0">
+                      <div class="accordion" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#item{{ $key + 1 }}" aria-expanded="false"
+                        aria-controls="item{{ $key + 1 }}">
+                        <div class="d-flex small accordion mr-0 text-center">
+                          <div class="col-1">
+                            <span class="badge">{{ $loop->iteration }}</span>
                           </div>
-                          <div class="col-2 position-relative">
-                            <span
-                              style="position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); border-top: 2px solid red; z-index: 1;"></span>
-                            <span style="position: relative; z-index: 2;">Terms↓</span>
+                          <div class="col-4">
+                            {{ $bid->user->name ?? '' }}
                           </div>
-                        @else
-                          <div class="col-4 text-right">
-                            ${{ number_format($bid->price, 2, '.', ',') }}
-                          </div>
-                          <div class="col-2">
-                            Terms↓
-                          </div>
-                        @endif
+                          @if ($bid->accepted == 'rejected')
+                            <div class="col-4 text-right position-relative">
+                              ${{ number_format($bid->price, 2, '.', ',') }}
+                              <span
+                                style="position: absolute; width:65px; margin-left: 54px; right: 0; top: 50%; transform: translateY(-50%); border-top: 2px solid red; z-index: 1;"></span>
+                            </div>
+                            <div class="col-2 position-relative">
+                              <span
+                                style="position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); border-top: 2px solid red; z-index: 1;"></span>
+                              <span style="position: relative; z-index: 2;">Terms↓</span>
+                            </div>
+                          @else
+                            <div class="col-4 text-right">
+                              ${{ number_format($bid->price, 2, '.', ',') }}
+                            </div>
+                            <div class="col-2">
+                              Terms↓
+                            </div>
+                          @endif
 
+                        </div>
                       </div>
-                    </div>
-                    <div id="item{{ $key + 1 }}" class="accordion-collapse collapse"
-                      aria-labelledby="heading{{ $key + 1 }}" data-bs-parent="#accordionExample">
-                      <div class="accordion-body">
-                        <div id="bidding_history_data">
-                          <div>
-                            @if (isset($bid->get->first_name))
-                              <p class="d-flex justify-content-between small fw-bold">First Name:
-                                <span class="removeBold">{{ $bid->get->first_name }}</span>
+                      <div id="item{{ $key + 1 }}" class="accordion-collapse collapse"
+                        aria-labelledby="heading{{ $key + 1 }}" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                          <div id="bidding_history_data">
+                            <div>
+                              @if (isset($bid->get->first_name))
+                                <p class="d-flex justify-content-between small fw-bold">First Name:
+                                  <span class="removeBold">{{ $bid->get->first_name }}</span>
+                                </p>
+                              @endif
+                              @if ($bid->price)
+                                <p class="d-flex justify-content-between small fw-bold">Offered Price:
+                                  <span class="removeBold">{{ $bid->price }}</span>
+                                </p>
+                              @endif
+                              @if ($bid->escrow_amount)
+                                <p class="d-flex justify-content-between small fw-bold">Offered Escrow Deposit:
+                                  <span class="removeBold">{{ $bid->escrow_amount }}</span>
+                                </p>
+                              @endif
+                              @if ($bid->get->contingencies != null)
+                              <p class="d-flex justify-content-between small fw-bold">Offered Contingencies:
+                                <span
+                                  class="removeBold">{{ $bid->get->custom_contingencies }}</span>
                               </p>
-                            @endif
-                            @if ($bid->price)
-                              <p class="d-flex justify-content-between small fw-bold">Offered Price:
-                                <span class="removeBold">{{ $bid->price }}</span>
+                              @endif
+                              @php
+                                $counterView = App\Models\PropertyAuctionBid::with('meta')->latest('id')->first();
+                              @endphp
+                              @if(isset($bid->get->term_financings))
+                              <p class="d-flex justify-content-between small fw-bold">Currency/Financing:
+                                <span
+                                  class="removeBold">{{ $bid->get->term_financings }}</span>
                               </p>
-                            @endif
-                            @if ($bid->escrow_amount)
-                              <p class="d-flex justify-content-between small fw-bold">Offered Escrow Deposit:
-                                <span class="removeBold">{{ $bid->escrow_amount }}</span>
+                              @endif
+                              @if (isset($bid->get->closing_days))
+                                <p class="d-flex justify-content-between small fw-bold">Offered Closing Date:
+                                  <span class="removeBold">{{ $bid->get->closing_days }}</span>
+                                </p>
+                              @endif
+                              @if (isset($bid->get->desired_days))
+                                <p class="d-flex justify-content-between small fw-bold">Offered Closing Days:
+                                  <span class="removeBold">{{ $bid->get->desired_days }}</span>
+                                </p>
+                              @endif
+                              @if(isset($bid->inspection_period))
+                              <p class="d-flex justify-content-between small fw-bold">Inspection Period:
+                                <span
+                                  class="removeBold">{{ $bid->inspection_period ?? ($counterView->get->inspection_period ?? '') }}</span>
                               </p>
-                            @endif
-                            @if ($bid->get->contingencies != null)
-                            <p class="d-flex justify-content-between small fw-bold">Offered Contingencies:
-                              <span
-                                class="removeBold">{{ $bid->get->custom_contingencies }}</span>
-                            </p>
-                            @endif
-                            @php
-                              $counterView = App\Models\PropertyAuctionBid::with('meta')->latest('id')->first();
-                            @endphp
-                            @if(isset($bid->get->term_financings))
-                            <p class="d-flex justify-content-between small fw-bold">Currency/Financing:
-                              <span
-                                class="removeBold">{{ $bid->get->term_financings }}</span>
-                            </p>
-                            @endif
-                            @if (isset($bid->get->closing_days))
-                              <p class="d-flex justify-content-between small fw-bold">Offered Closing Date:
-                                <span class="removeBold">{{ $bid->get->closing_days }}</span>
-                              </p>
-                            @endif
-                            @if (isset($bid->get->desired_days))
-                              <p class="d-flex justify-content-between small fw-bold">Offered Closing Days:
-                                <span class="removeBold">{{ $bid->get->desired_days }}</span>
-                              </p>
-                            @endif
-                            @if(isset($bid->inspection_period))
-                            <p class="d-flex justify-content-between small fw-bold">Inspection Period:
-                              <span
-                                class="removeBold">{{ $bid->inspection_period ?? ($counterView->get->inspection_period ?? '') }}</span>
-                            </p>
-                            @endif
-                            @if ($bid->seller_premium)
-                              <p class="d-flex justify-content-between small fw-bold">Seller Premium:
-                                <span class="removeBold">{{ $bid->seller_premium }}</span>
-                              </p>
-                            @endif
-
-                            @if ($bid->buyer_premium)
-                              <p class="d-flex justify-content-between small fw-bold">Buyer Premium:
-                                <span class="removeBold">{{ $bid->buyer_premium }}</span>
-                              </p>
-                            @endif
-
-                            @if ($auction->user_id == $auth_id)
-                              @if (optional($bid->get)->video_url)
-                                <p>
-                                  <a href="{{ $bid->video_url ?? ($counterView->get->video_url ?? '') }}"
-                                    class="btn btn-sm btn-primary" target="_blank">View
-                                    Video</a>
+                              @endif
+                              @if ($bid->seller_premium)
+                                <p class="d-flex justify-content-between small fw-bold">Seller Premium:
+                                  <span class="removeBold">{{ $bid->seller_premium }}</span>
                                 </p>
                               @endif
 
-                              @if (optional($bid->get)->note)
-                                <p>
-                                  <a href="{{ url($bid->get->note) }}" class="btn btn-sm btn-primary"
-                                    target="_blank">Proof
-                                    of funds/pre-approval letter</a>
-                                </p>
-                              @endif
-                              @if (optional($bid->get)->card)
-                                <p>
-                                  <a href="{{ asset($bid->get->card) }}" target="_blank">
-                                    <img src="{{ asset($bid->get->card) }}" alt="" style="width: 150px;">
-                                  </a>
+                              @if ($bid->buyer_premium)
+                                <p class="d-flex justify-content-between small fw-bold">Buyer Premium:
+                                  <span class="removeBold">{{ $bid->buyer_premium }}</span>
                                 </p>
                               @endif
 
-                              @if (optional($bid->get)->audio)
-                                <p>
-                                  <audio class="audio-fluid" controls style="width: 100%;">
-                                    <source src="{{ asset($bid->get->audio) }}" type="audio/mp3">
-                                    Your browser does not support the audio tag.
-                                  </audio>
-                                </p>
-                              @endif
-                            @endif
-                            @if ($bid->accepted == 'rejected')
-                              <div class="bg-danger p-2 borderless row justify-content-center text-white rounded">
-                                Rejected</div>
-                            @elseif ($bid->accepted != 'rejected')
-                              <div class="form-group d-flex justify-content-space gap-1">
-                                <div style="flex-grow: 1;">
-                                  @if ($auction->user_id == $auth_id && !$auction->sold)
-                                    <form action="{{ route('acceptPABid') }}" method="post">
-                                      @csrf
-                                      <input type="hidden" name="auction_id" value="{{ $auction->id }}">
-                                      <input type="hidden" name="bid_id" value="{{ $bid->id }}">
-                                      <input type="hidden" name="counterPrice" value="{{ $bid->price }}">
-                                      <button type="submit" class="btn btn-success">Accept</button>
-                                    </form>
-                                  @endif
-                                </div>
-                                <div>
-                                  @if ($auction->user_id == $auth_id && !$auction->sold)
-                                    <form id="deleteForm" method="post" action="{{ route('rejectPABid') }}">
-                                      @csrf
-                                      <input type="hidden" name="auction_id" value="{{ $auction->id }}">
-                                      <input type="hidden" name="bid_id" value="{{ $bid->id }}">
-                                      <button type="button" style="background-color:#da2a43" class="btn btn-danger"
-                                        onclick="showToast()">Reject</button>
-                                    </form>
-                                  @endif
-                                </div>
-                              </div>
+                              @if ($auction->user_id == $auth_id)
+                                @if (optional($bid->get)->video_url)
+                                  <p>
+                                    <a href="{{ $bid->video_url ?? ($counterView->get->video_url ?? '') }}"
+                                      class="btn btn-sm btn-primary" target="_blank">View
+                                      Video</a>
+                                  </p>
+                                @endif
 
-                              {{-- @dd($auction); --}}
-                              {{-- @if (auth()->user()->id == $bid->user->id || (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin'))
-                              @auth --}}
-                              @auth
-                                @if (auth()->user()->id == $bid->user->id ||
-                                        (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin'))
-                                  <div class="form-group biddingOperations">
-                                    @if (!$auction->sold)
-                                      <form action="{{ route('add-counterBiding', ['bid_id' => $bid->id, 'auction_id' => $auction->id]) }}" method="get">
+                                @if (optional($bid->get)->note)
+                                  <p>
+                                    <a href="{{ url($bid->get->note) }}" class="btn btn-sm btn-primary"
+                                      target="_blank">Proof
+                                      of funds/pre-approval letter</a>
+                                  </p>
+                                @endif
+                                @if (optional($bid->get)->card)
+                                  <p>
+                                    <a href="{{ asset($bid->get->card) }}" target="_blank">
+                                      <img src="{{ asset($bid->get->card) }}" alt="" style="width: 150px;">
+                                    </a>
+                                  </p>
+                                @endif
+
+                                @if (optional($bid->get)->audio)
+                                  <p>
+                                    <audio class="audio-fluid" controls style="width: 100%;">
+                                      <source src="{{ asset($bid->get->audio) }}" type="audio/mp3">
+                                      Your browser does not support the audio tag.
+                                    </audio>
+                                  </p>
+                                @endif
+                              @endif
+                              @if ($bid->accepted == 'rejected')
+                                <div class="bg-danger p-2 borderless row justify-content-center text-white rounded">
+                                  Rejected</div>
+                              @elseif ($bid->accepted != 'rejected')
+                                <div class="form-group d-flex justify-content-space gap-1">
+                                  <div style="flex-grow: 1;">
+                                    @if ($auction->user_id == $auth_id && !$auction->sold)
+                                      <form action="{{ route('acceptPABid') }}" method="post">
                                         @csrf
                                         <input type="hidden" name="auction_id" value="{{ $auction->id }}">
                                         <input type="hidden" name="bid_id" value="{{ $bid->id }}">
-                                        {{-- <input type="number" name="counterAmount" class="form-control" required> --}}
-                                        <div class="d-flex gap-1">
-                                          <button type="submit" class="btn btn-primary">
-                                            Counter Bid
-                                          </button>
-                                          {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal-{{ isset($bid->id) ? $bid->id : '' }}">
-                                            Counter Terms
-                                          </button> --}}
-                                        </div>
+                                        <input type="hidden" name="counterPrice" value="{{ $bid->price }}">
+                                        <button type="submit" class="btn btn-success">Accept</button>
                                       </form>
                                     @endif
-                                    @php
-                                      $allBids = App\Models\PropertyAuctionBid::where('counter_id', $bid->id)->with('meta')
-                                          ->orderByDesc('created_at')
-                                          ->get();
-                                    @endphp
-                                    <div class="form-group">
-                                      @foreach ($allBids as $key => $countBid)
-                                        <form action="{{ route('acceptPABid') }}" method="post">
+                                  </div>
+                                  <div>
+                                    @if ($auction->user_id == $auth_id && !$auction->sold)
+                                      <form id="deleteForm" method="post" action="{{ route('rejectPABid') }}">
+                                        @csrf
+                                        <input type="hidden" name="auction_id" value="{{ $auction->id }}">
+                                        <input type="hidden" name="bid_id" value="{{ $bid->id }}">
+                                        <button type="button" style="background-color:#da2a43" class="btn btn-danger"
+                                          onclick="showToast()">Reject</button>
+                                      </form>
+                                    @endif
+                                  </div>
+                                </div>
+
+                                {{-- @dd($auction); --}}
+                                {{-- @if (auth()->user()->id == $bid->user->id || (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin'))
+                                @auth --}}
+                                @auth
+                                  @if (auth()->user()->id == $bid->user->id ||
+                                          (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin'))
+                                    <div class="form-group biddingOperations">
+                                      @if (!$auction->sold)
+                                        <form action="{{ route('add-counterBiding', ['bid_id' => $bid->id, 'auction_id' => $auction->id]) }}" method="get">
                                           @csrf
                                           <input type="hidden" name="auction_id" value="{{ $auction->id }}">
                                           <input type="hidden" name="bid_id" value="{{ $bid->id }}">
-                                        </form>
-                                      @endforeach
-                                    </div>
-                                    <div class="form-group">
-                                      @if (!$auction->sold)
-                                        @foreach ($allBids as $key => $countBid)
-                                          @if(isset($countBid->get->first_name))
-                                            <p class="d-flex justify-content-between small fw-bold">First Name:
-                                              <span
-                                                class="removeBold">{{ $countBid->get->first_name }}</span>
-                                            </p>
-                                          @endif
-                                          @if ($countBid->price)
-                                            <p class="d-flex justify-content-between small fw-bold">Offered Price:
-                                              <span class="removeBold">{{ $countBid->price }}</span>
-                                            </p>
-                                          @endif
-                                          @if ($countBid->escrow_amount)
-                                            <p class="d-flex justify-content-between small fw-bold">Offered Escrow Deposit:
-                                              <span class="removeBold">{{ $countBid->escrow_amount }}</span>
-                                            </p>
-                                          @endif
-                                          @if ($countBid->get->contingencies != null)
-                                          <p class="d-flex justify-content-between small fw-bold">Offered Contingencies:
-                                            <span
-                                              class="removeBold">{{ $countBid->get->custom_contingencies }}</span>
-                                          </p>
-                                          @endif
-                                          @php
-                                            $counterView = App\Models\PropertyAuctionBid::with('meta')->latest('id')->first();
-                                          @endphp
-                                          @if(isset($countBid->get->term_financings))
-                                          <p class="d-flex justify-content-between small fw-bold">Currency/Financing:
-                                            <span
-                                              class="removeBold">{{ $countBid->get->term_financings }}</span>
-                                          </p>
-                                          @endif
-                                          @if (isset($countBid->get->closing_days))
-                                            <p class="d-flex justify-content-between small fw-bold">Offered Closing Date:
-                                              <span class="removeBold">{{ $countBid->get->closing_days }}</span>
-                                            </p>
-                                          @endif
-                                          @if (isset($countBid->get->desired_days))
-                                            <p class="d-flex justify-content-between small fw-bold">Offered Closing Days:
-                                              <span class="removeBold">{{ $countBid->get->desired_days }}</span>
-                                            </p>
-                                          @endif
-                                          @if (isset($countBid->get->agent_commission))
-                                            <p class="d-flex justify-content-between small fw-bold">Acceptable Real Estate Agent Commission:
-                                              <span class="removeBold">{{ $countBid->get->agent_commission }}</span>
-                                            </p>
-                                          @endif
-                                          @if (isset($countBid->get->offer_expiry))
-                                            <p class="d-flex justify-content-between small fw-bold">Offer Expires:
-                                              <span class="removeBold">{{ $countBid->get->offer_expiry }}</span>
-                                            </p>
-                                          @endif
-                                          @if (isset($countBid->get->additional_details_counter_terms))
-                                            <p class="d-flex justify-content-between small fw-bold">Additional Details or Countered Terms:
-                                              <span class="removeBold">{{ $countBid->get->additional_details_counter_terms }}</span>
-                                            </p>
-                                          @endif
-                                          <div class="d-flex justify-content-between align-items-center">
-                                            <form action="{{ route('acceptPABid') }}" method="post">
-                                              @csrf
-                                              <input type="hidden" name="auction_id"
-                                                value="{{ $auction->id }}">
-                                              <input type="hidden" name="bid_id" value="{{ $bid->id }}">
-                                              <input type="hidden" name="counterPrice"
-                                                value="{{ $countBid->price }}">
-                                              @if (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin')
-                                                <button type="submit"
-                                                  class="badge bg-success p-2 borderless">Accept</button>
-                                              @endif
-                                            </form>
-                                            <form action="{{ route('destroyCounter', $countBid->id) }}"
-                                              method="post">
-                                              @csrf
-                                              @if (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin')
-                                                <button type="submit"
-                                                  class="badge bg-danger p-2 borderless">Reject</button>
-                                              @endif
-                                            </form>
+                                          {{-- <input type="number" name="counterAmount" class="form-control" required> --}}
+                                          <div class="d-flex gap-1">
+                                            <button type="submit" class="btn btn-primary">
+                                              Counter Bid
+                                            </button>
+                                            {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                              data-bs-target="#exampleModal-{{ isset($bid->id) ? $bid->id : '' }}">
+                                              Counter Terms
+                                            </button> --}}
                                           </div>
-                                        @endforeach
+                                        </form>
                                       @endif
+                                      @php
+                                        $allBids = App\Models\PropertyAuctionBid::where('counter_id', $bid->id)->with('meta')
+                                            ->orderByDesc('created_at')
+                                            ->get();
+                                      @endphp
+                                      <div class="form-group">
+                                        @foreach ($allBids as $key => $countBid)
+                                          <form action="{{ route('acceptPABid') }}" method="post">
+                                            @csrf
+                                            <input type="hidden" name="auction_id" value="{{ $auction->id }}">
+                                            <input type="hidden" name="bid_id" value="{{ $bid->id }}">
+                                          </form>
+                                        @endforeach
+                                      </div>
+                                      <div class="form-group">
+                                        @if (!$auction->sold)
+                                          @foreach ($allBids as $key => $countBid)
+                                            @if(isset($countBid->get->first_name))
+                                              <p class="d-flex justify-content-between small fw-bold">First Name:
+                                                <span
+                                                  class="removeBold">{{ $countBid->get->first_name }}</span>
+                                              </p>
+                                            @endif
+                                            @if ($countBid->price)
+                                              <p class="d-flex justify-content-between small fw-bold">Offered Price:
+                                                <span class="removeBold">{{ $countBid->price }}</span>
+                                              </p>
+                                            @endif
+                                            @if ($countBid->escrow_amount)
+                                              <p class="d-flex justify-content-between small fw-bold">Offered Escrow Deposit:
+                                                <span class="removeBold">{{ $countBid->escrow_amount }}</span>
+                                              </p>
+                                            @endif
+                                            @if ($countBid->get->contingencies != null)
+                                            <p class="d-flex justify-content-between small fw-bold">Offered Contingencies:
+                                              <span
+                                                class="removeBold">{{ $countBid->get->custom_contingencies }}</span>
+                                            </p>
+                                            @endif
+                                            @php
+                                              $counterView = App\Models\PropertyAuctionBid::with('meta')->latest('id')->first();
+                                            @endphp
+                                            @if(isset($countBid->get->term_financings))
+                                            <p class="d-flex justify-content-between small fw-bold">Currency/Financing:
+                                              <span
+                                                class="removeBold">{{ $countBid->get->term_financings }}</span>
+                                            </p>
+                                            @endif
+                                            @if (isset($countBid->get->closing_days))
+                                              <p class="d-flex justify-content-between small fw-bold">Offered Closing Date:
+                                                <span class="removeBold">{{ $countBid->get->closing_days }}</span>
+                                              </p>
+                                            @endif
+                                            @if (isset($countBid->get->desired_days))
+                                              <p class="d-flex justify-content-between small fw-bold">Offered Closing Days:
+                                                <span class="removeBold">{{ $countBid->get->desired_days }}</span>
+                                              </p>
+                                            @endif
+                                            @if (isset($countBid->get->agent_commission))
+                                              <p class="d-flex justify-content-between small fw-bold">Acceptable Real Estate Agent Commission:
+                                                <span class="removeBold">{{ $countBid->get->agent_commission }}</span>
+                                              </p>
+                                            @endif
+                                            @if (isset($countBid->get->offer_expiry))
+                                              <p class="d-flex justify-content-between small fw-bold">Offer Expires:
+                                                <span class="removeBold">{{ $countBid->get->offer_expiry }}</span>
+                                              </p>
+                                            @endif
+                                            @if (isset($countBid->get->additional_details_counter_terms))
+                                              <p class="d-flex justify-content-between small fw-bold">Additional Details or Countered Terms:
+                                                <span class="removeBold">{{ $countBid->get->additional_details_counter_terms }}</span>
+                                              </p>
+                                            @endif
+                                            <div class="d-flex justify-content-between align-items-center">
+                                              <form action="{{ route('acceptPABid') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="auction_id"
+                                                  value="{{ $auction->id }}">
+                                                <input type="hidden" name="bid_id" value="{{ $bid->id }}">
+                                                <input type="hidden" name="counterPrice"
+                                                  value="{{ $countBid->price }}">
+                                                @if (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin')
+                                                  <button type="submit"
+                                                    class="badge bg-success p-2 borderless">Accept</button>
+                                                @endif
+                                              </form>
+                                              <form action="{{ route('destroyCounter', $countBid->id) }}"
+                                                method="post">
+                                                @csrf
+                                                @if (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin')
+                                                  <button type="submit"
+                                                    class="badge bg-danger p-2 borderless">Reject</button>
+                                                @endif
+                                              </form>
+                                            </div>
+                                          @endforeach
+                                        @endif
+                                      </div>
                                     </div>
-                                  </div>
-                                @endauth
+                                  @endauth
+                                @endif
                               @endif
-                            @endif
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                @endif
-              @endforeach
-
+                  @endif
+                @endforeach
+              @endif
             </div>
           </div>
 

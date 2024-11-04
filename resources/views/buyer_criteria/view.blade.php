@@ -48,6 +48,12 @@
     <div class="container listingDescription">
         <div class="row">
             <div class="col-sm-12 col-md-8 col-lg-8 leftCol">
+                @if ($auction->user_id == auth()->user()->id)
+                    <div class="d-flex justify-content-end align-content-center">
+                        <a href="{{route('buyer_agent.auction.edit', $auction->id)}}" class="btn btn-success btn-sm px-3 mb-3 me-2"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Listing</a>
+                        {{-- <a href="javascript:void(0)" class="btn btn-success btn-sm px-3 mb-3"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Auction Status</a> --}}
+                    </div>
+                @endif
                 <!-- Description Box  -->
                 <div class="card description">
                     {{-- {{dd(@$auction)}} --}}
@@ -209,7 +215,7 @@
                                                         class="d-inline-block bg-secondary removeBold text-white  px-2 rounded my-1">
                                                         {{ $auction->get->contingenciesOpt }}
                                                     </span>                                                
-                                                @elseif ($auction->get->contingenciesOptRes !== null)
+                                                @elseif (isset($auction->get->contingenciesOptRes) && $auction->get->contingenciesOptRes !== null)
                                                     <span
                                                         class="d-inline-block bg-secondary removeBold text-white  px-2 rounded my-1">
                                                         {{ $auction->get->contingenciesOptRes }}
@@ -781,7 +787,7 @@
                         </div>
                         <div class="row align-items-center Buyer’s Agent Representation mt-4">
                             <h5>Buyer’s Agent Representation:</h5>
-                            @if (($auction->get->buyerHaveAgentRepresentation || $auction->get->buyerHaveAgentRepresentationRes || $auction->get->buyerHaveAgentRepresentationCom) !== null)
+                            @if (isset($auction->get->buyerHaveAgentRepresentation) || isset($auction->get->buyerHaveAgentRepresentationRes) || isset($auction->get->buyerHaveAgentRepresentationCom))
                                 <div class="row">
                                     <div class="col-md-12">
                                         <i class="fa-regular fa-check-square"></i>
@@ -868,7 +874,7 @@
                             @endif
                         </div>
                         <div class="row align-items-center buyer_currently_selling mt-4">
-                            @if (($auction->get->BuyerSellingProperty || $auction->get->BuyerSellingPropertyRes || $auction->get->BuyerSellingPropertyCom) != null)
+                            @if (isset($auction->get->BuyerSellingProperty) || isset($auction->get->BuyerSellingPropertyRes) || isset($auction->get->BuyerSellingPropertyCom))
                                 <h5>Is the buyer currently selling a property?</h5>
                                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Is the
                                     buyer currently selling a property?
@@ -1180,7 +1186,7 @@
                                         <span class="removeBold"> {{ @$auction->get->agent_last_name }}</span>
                                     </div>
                                 @endif
-                                @if (($auction->get->agent_phone || $auction->get->agent_phoneRes || $auction->get->agent_phoneCom) != null)
+                                @if (isset($auction->get->agent_phone) || isset($auction->get->agent_phoneRes) || isset($auction->get->agent_phoneCom))
                                     <div class="col-md-12 col-12 fw-bold"> <i class="fa-regular fa-check-square"></i>
                                         Phone:
                                         @if ($auction->get->agent_phone != null)
@@ -1198,7 +1204,7 @@
                                         <span class="removeBold"> {{ @$auction->get->agent_email }}</span>
                                     </div>
                                 @endif
-                                @if (($auction->get->agent_brokerage || $auction->get->agent_brokerageRes || $auction->get->agent_brokerageCom) != null)
+                                @if (isset($auction->get->agent_brokerage) || isset($auction->get->agent_brokerageRes) || isset($auction->get->agent_brokerageCom))
                                     <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i>
                                         Brokerage:
                                         @if ($auction->get->agent_brokerage != null)
@@ -1339,6 +1345,21 @@
                 @endif
                 <!-- Highest Bider -->
                 <div class="card higestBider">
+                    @if($auction->user_id == auth()->user()->id && $auction->bids->count() > 0)
+                    <div class="d-flex align-items-baseline justify-content-center">
+                      @if ($auction->display_bids == 0)
+                        <form action="{{ route('criteria.auction.bids.visibility', ['id' => $auction->id, 'vis' => 'show']) }}"  method="post">
+                          @csrf
+                          <button class="btn bg-success btn-sm px-3 mb-3 mt-0">Show Bids</button>
+                        </form>
+                      @else
+                        <form action="{{ route('criteria.auction.bids.visibility', ['id' => $auction->id, 'vis' => 'hide']) }}" method="post">
+                          @csrf
+                          <button class="btn bg-danger btn-sm px-3 mb-3 mt-0">Hide Bids</button>
+                        </form>
+                      @endif
+                    </div>
+                  @endif
                     <div class="card-body">
                         @if ($lowest_bidder)
                             <p><b>{{ $lowest_bidder->user->name ?? '' }}</b> is the lowest bidder.</p>
@@ -1347,281 +1368,282 @@
                         @endif
                         <div class="accordion" id="accordionExample">
                             <div class="accordion-item border-0">
-                                @foreach (@$auction->bids as $bid)
-                                    <!-- Item loop -->
-                                    <div class="accordion" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#item{{ $bid->id }}" aria-expanded="true"
-                                        aria-controls="item{{ $bid->id }}">
-                                        <div class="d-flex small accordion mr-0 text-center">
-                                            <div class="col-1">
-                                                <span class="badge">{{ $loop->iteration }}</span>
-                                            </div>
-                                            <div class="col-4">
-                                                {{ $bid->user->name }} </div>
-                                            <div class="col-4 text-right">
-                                                {{ $bid->get->max_price }} </div>
-                                            <div class="col-2">
-                                                Terms↓
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="item{{ $bid->id }}" class="accordion-collapse collapse"
-                                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-
-                                        <div class="accordion-body">
-                                            <div id="bidding_history_data">
-                                                <div>
-                                                    {{-- <p class="d-flex justify-content-between small">Cash or Financing Type:
-                                                        <span>{{ $bid->financing->name }}</span>
-                                                    </p> --}}
-                                                    @if (isset($bid->get->max_price) && $bid->get->max_price != '')
-                                                        <p class="d-flex justify-content-between small">Price:
-                                                            <span>{{ $bid->get->max_price }}</span>
-                                                        </p>
-                                                    @endif
-                                                    @if (isset($bid->get->term_financings) && $bid->get->term_financings != '')
-                                                        <p class="d-flex justify-content-between align-items-center small">
-                                                            Acceptable Currency/Financing:
-                                                            <span class="badge bg-secondary">{{ $bid->get->term_financings }}</span>
-                                                        </p>
-                                                    @endif
-                                                    @if (isset($bid->get->property_type) && $bid->get->property_type != '')
-                                                        <p class="d-flex justify-content-between small">Property Type:
-                                                            <span>{{ $bid->get->property_type }}</span>
-                                                        </p>
-                                                    @endif
-
-                                                    @if (isset($bid->get->prop_condition) && $bid->get->prop_condition != '')
-                                                        <p class="d-flex justify-content-between align-items-center small">
-                                                            Property Condition:
-                                                            <span class="badge bg-secondary">{{ $bid->get->prop_condition }}</span>
-                                                        </p>
-                                                    @endif
-
-                                                    @if (isset($bid->get->special_sale) && $bid->get->special_sale != '')
-                                                        <p class="d-flex justify-content-between align-items-center small">
-                                                            Special Sale Provision:
-                                                            <span class="badge bg-secondary">{{ $bid->get->special_sale }}</span>
-                                                        </p>
-                                                    @endif
-                                                    @if (isset($bid->get->bedrooms) && $bid->get->bedrooms != '')
-                                                        <p class="d-flex justify-content-between small">Bedrooms:
-                                                            <span>{{ $bid->get->custom_bedrooms == '' ? $bid->get->bedrooms : $bid->get->custom_bedrooms }}</span>
-                                                        </p>
-                                                    @endif
-                                                    @if (isset($bid->get->bathrooms) && $bid->get->bathrooms != '')
-                                                        <p class="d-flex justify-content-between small">Bathrooms:
-                                                            <span>{{ $bid->get->custom_bathrooms == '' ? $bid->get->bathrooms : $bid->get->custom_bathrooms }}</span>
-                                                        </p>
-                                                    @endif
-                                                    @if (isset($bid->get->county) && $bid->get->county != '')
-                                                        <p class="d-flex justify-content-between small">County:
-                                                            <span>{{ $bid->get->county }}</span>
-                                                        </p>
-                                                    @endif
-                                                    @if (isset($bid->get->total_sqft) && $bid->get->total_sqft != '')
-                                                        <p class="d-flex justify-content-between small">Heated Sqft:
-                                                            <span>{{ $bid->get->total_sqft }}</span>
-                                                        </p>
-                                                    @endif
-                                                    {{-- @if ($bid->get->escrow_amount_percent != '')
-                            <p class="d-flex justify-content-between small">Escrow Amount:$ or
-                              %
-                              <span>{{ $bid->get->escrow_amount_percent }}</span>
-                            </p>
-                          @endif --}}
-                                                    {{-- @dd($bid->get) --}}
-                                                    @if (isset($bid->get->inspection) && $bid->get->inspection != '')
-                                                        <p class="d-flex justify-content-between small">Inspection Period
-                                                            Offered:
-                                                            <span>{{ $bid->get->inspection }}</span>
-                                                        </p>
-                                                    @endif
-
-                                                    @if (isset($bid->get->contigencies_accepted_by_seller) && $bid->get->contigencies_accepted_by_seller != '')
-                                                        <p class="d-flex justify-content-between small">Contingencies:
-                                                            <span>{{ $bid->get->contigencies_accepted_by_seller }}</span>
-                                                        </p>
-                                                    @endif
-
-                                                    {{-- @if ($bid->get->request_seller_premium != '')
-                            <p class="d-flex justify-content-between small">Requested Seller's
-                              Credit:
-                              <span>{{ $bid->get->request_seller_premium }}</span>
-                            </p>
-                          @endif --}}
-
-                                                    {{-- @if ($bid->get->request_buyer_premium != '')
-                            <p class="d-flex justify-content-between small">Offered Buyer’s
-                              Credit:
-                              <span>{{ $bid->get->request_buyer_premium }}</span>
-                            </p>
-                          @endif --}}
-
-                                                    @if (isset($bid->get->description) && $bid->get->description != '')
-                                                        <p class="d-flex justify-content-between small">Description and
-                                                            additional details:
-                                                            <span>{{ $bid->get->description }}</span>
-                                                        </p>
-                                                    @endif
-
-                                                    @if (isset($bid->get->lot_size) && $bid->get->lot_size != '')
-                                                        <p class="d-flex justify-content-between small">Lot Size:
-                                                            <span>{{ $bid->get->lot_size }}</span>
-                                                        </p>
-                                                    @endif
-
-                                                    @if (isset($bid->get->flood_insurance) && $bid->get->flood_insurance != '')
-                                                        <p class="d-flex justify-content-between small">Is flood insurance
-                                                            required?
-                                                            <span>{{ $bid->get->flood_insurance }}</span>
-                                                        </p>
-                                                    @endif
-
-                                                    @if (isset($bid->get->agent_commission) && $bid->get->agent_commission != '')
-                                                        <p class="d-flex justify-content-between small">Commission Offered
-                                                            to Buyer's Agent: %
-                                                            <span>{{ $bid->get->agent_commission }}</span>
-                                                        </p>
-                                                    @endif
-
-
-                                                    {{-- @if ($bid->get->is_commercial == 'Yes')
-                            <h5>Commercial Property Information:</h5>
-                            @if ($bid->get->total_units != '')
-                                <p class="d-flex justify-content-between small">Total Number of
-                                    Units:
-                                    <span>{{ $bid->get->total_units }}</span>
-                                </p>
-                            @endif
-
-                            @if ($bid->get->unit_sizes != '')
-                                <p class="d-flex justify-content-between small">Unit sizes:
-                                    <span>{{ $bid->get->unit_sizes }}</span>
-                                </p>
-                            @endif
-
-                            @if ($bid->get->annual_income != '')
-                                <p class="d-flex justify-content-between small">Annual Net
-                                    Income:
-                                    <span>{{ $bid->get->annual_income }}</span>
-                                </p>
-                            @endif
-
-                            @if ($bid->get->cap_rate != '')
-                                <p class="d-flex justify-content-between small">Cap Rate:
-                                    <span>{{ $bid->get->cap_rate }}</span>
-                                </p>
-                            @endif
-
-                            @if ($bid->get->known_repairs != '')
-                                <p class="d-flex justify-content-between small">Known Repairs
-                                    that
-                                    need to be done:
-                                    <span>{{ $bid->get->known_repairs }}</span>
-                                </p>
-                            @endif
-
-                            @if ($bid->get->arv != '')
-                                <p class="d-flex justify-content-between small">ARV:
-                                    <span>{{ $bid->get->arv }}</span>
-                                </p>
-                            @endif
-
-                            @if ($bid->get->tenant_pays != '')
-                                <p class="d-flex justify-content-between small">
-                                    Tenant Pays:
-                                    @if (gettype($bid->get->tenant_pays) == 'array')
-                                        <div>
-                                            @foreach ($bid->get->tenant_pays as $item)
-                                                <span
-                                                    class="badge bg-secondary">{{ $item }}</span>
-                                            @endforeach
-                                        </div>
-                                    @endif
-                                </p>
-                            @endif
-
-                            @if ($bid->get->landlord_pays != '')
-                                <p class="d-flex justify-content-between small">
-                                    Landlord Pays:
-                                    @if (gettype($bid->get->landlord_pays) == 'array')
-                                        <div>
-                                            @foreach ($bid->get->landlord_pays as $item)
-                                                <span
-                                                    class="badge bg-secondary">{{ $item }}</span>
-                                            @endforeach
-                                        </div>
-                                    @endif
-                                </p>
-                            @endif
-
-                            <hr>
-                        @endif --}}
-
-
-
-                                                    @if (@$auction->user_id == $auth_id)
-                                                        @if (@$bid->get->video_url !== null && @$bid->get->video_url != '')
-                                                            <p>
-                                                                <a href="{{ @$bid->get->video_url }}"
-                                                                    class="btn btn-sm btn-primary" target="_blank">View
-                                                                    Video</a>
-                                                            </p>
-                                                        @endif
-
-                                                        @if (@$bid->get->note !== null && @$bid->get->note != '')
-                                                            <p>
-                                                                <a href="{{ url(@$bid->get->note) }}"
-                                                                    class="btn btn-sm btn-primary" target="_blank">Proof
-                                                                    of funds/pre-approval letter</a>
-                                                            </p>
-                                                        @endif
-
-                                                        @if (@$bid->get->card !== null && @$bid->get->card != '')
-                                                            <p>
-                                                                <a href="{{ asset(@$bid->get->card) }}" target="_blank">
-                                                                    <img src="{{ asset(@$bid->get->card) }}"
-                                                                        alt="" style="width: 150px;"></a>
-                                                            </p>
-                                                        @endif
-
-                                                        @if (@$bid->get->audio !== null && @$bid->get->audio != '')
-                                                            <p>
-                                                                <audio class="audio-fluid" controls style="width: 100%;">
-                                                                    <source src="{{ asset(@$bid->get->audio) }}"
-                                                                        type="audio/mp3">
-                                                                    Your browser does not support the audio tag.
-                                                                </audio>
-                                                            </p>
-                                                        @endif
-                                                    @endif
-
-
-
-
-                                                    @if (@$auction->user_id == $auth_id)
-                                                        @if (!@$auction->is_sold)
-                                                            <form action="{{ route('acceptBCABid') }}" method="post">
-                                                                @csrf
-                                                                <input type="hidden" name="auction_id"
-                                                                    value="{{ @$auction->id }}">
-                                                                <input type="hidden" name="bid_id"
-                                                                    value="{{ $bid->id }}">
-                                                                <div style="text-align: right;">
-                                                                    <button type="submit"
-                                                                        class="btn btn-success btn-sm">Accept</button>
-                                                                </div>
-                                                            </form>
-                                                        @endif
-                                                    @endif
+                                @if ($auction->display_bids == 1)
+                                    @foreach (@$auction->bids as $bid)
+                                        <!-- Item loop -->
+                                        <div class="accordion" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#item{{ $bid->id }}" aria-expanded="true"
+                                            aria-controls="item{{ $bid->id }}">
+                                            <div class="d-flex small accordion mr-0 text-center">
+                                                <div class="col-1">
+                                                    <span class="badge">{{ $loop->iteration }}</span>
+                                                </div>
+                                                <div class="col-4">
+                                                    {{ $bid->user->name }} </div>
+                                                <div class="col-4 text-right">
+                                                    {{ $bid->get->max_price }} </div>
+                                                <div class="col-2">
+                                                    Terms↓
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- End  -->
-                                @endforeach
+                                        <div id="item{{ $bid->id }}" class="accordion-collapse collapse"
+                                            aria-labelledby="headingOne" data-bs-parent="#accordionExample">
 
+                                            <div class="accordion-body">
+                                                <div id="bidding_history_data">
+                                                    <div>
+                                                        {{-- <p class="d-flex justify-content-between small">Cash or Financing Type:
+                                                            <span>{{ $bid->financing->name }}</span>
+                                                        </p> --}}
+                                                        @if (isset($bid->get->max_price) && $bid->get->max_price != '')
+                                                            <p class="d-flex justify-content-between small">Price:
+                                                                <span>{{ $bid->get->max_price }}</span>
+                                                            </p>
+                                                        @endif
+                                                        @if (isset($bid->get->term_financings) && $bid->get->term_financings != '')
+                                                            <p class="d-flex justify-content-between align-items-center small">
+                                                                Acceptable Currency/Financing:
+                                                                <span class="badge bg-secondary">{{ $bid->get->term_financings }}</span>
+                                                            </p>
+                                                        @endif
+                                                        @if (isset($bid->get->property_type) && $bid->get->property_type != '')
+                                                            <p class="d-flex justify-content-between small">Property Type:
+                                                                <span>{{ $bid->get->property_type }}</span>
+                                                            </p>
+                                                        @endif
+
+                                                        @if (isset($bid->get->prop_condition) && $bid->get->prop_condition != '')
+                                                            <p class="d-flex justify-content-between align-items-center small">
+                                                                Property Condition:
+                                                                <span class="badge bg-secondary">{{ $bid->get->prop_condition }}</span>
+                                                            </p>
+                                                        @endif
+
+                                                        @if (isset($bid->get->special_sale) && $bid->get->special_sale != '')
+                                                            <p class="d-flex justify-content-between align-items-center small">
+                                                                Special Sale Provision:
+                                                                <span class="badge bg-secondary">{{ $bid->get->special_sale }}</span>
+                                                            </p>
+                                                        @endif
+                                                        @if (isset($bid->get->bedrooms) && $bid->get->bedrooms != '')
+                                                            <p class="d-flex justify-content-between small">Bedrooms:
+                                                                <span>{{ $bid->get->custom_bedrooms == '' ? $bid->get->bedrooms : $bid->get->custom_bedrooms }}</span>
+                                                            </p>
+                                                        @endif
+                                                        @if (isset($bid->get->bathrooms) && $bid->get->bathrooms != '')
+                                                            <p class="d-flex justify-content-between small">Bathrooms:
+                                                                <span>{{ $bid->get->custom_bathrooms == '' ? $bid->get->bathrooms : $bid->get->custom_bathrooms }}</span>
+                                                            </p>
+                                                        @endif
+                                                        @if (isset($bid->get->county) && $bid->get->county != '')
+                                                            <p class="d-flex justify-content-between small">County:
+                                                                <span>{{ $bid->get->county }}</span>
+                                                            </p>
+                                                        @endif
+                                                        @if (isset($bid->get->total_sqft) && $bid->get->total_sqft != '')
+                                                            <p class="d-flex justify-content-between small">Heated Sqft:
+                                                                <span>{{ $bid->get->total_sqft }}</span>
+                                                            </p>
+                                                        @endif
+                                                        {{-- @if ($bid->get->escrow_amount_percent != '')
+                                                            <p class="d-flex justify-content-between small">Escrow Amount:$ or
+                                                            %
+                                                            <span>{{ $bid->get->escrow_amount_percent }}</span>
+                                                            </p>
+                                                        @endif --}}
+                                                        {{-- @dd($bid->get) --}}
+                                                        @if (isset($bid->get->inspection) && $bid->get->inspection != '')
+                                                            <p class="d-flex justify-content-between small">Inspection Period
+                                                                Offered:
+                                                                <span>{{ $bid->get->inspection }}</span>
+                                                            </p>
+                                                        @endif
+
+                                                        @if (isset($bid->get->contigencies_accepted_by_seller) && $bid->get->contigencies_accepted_by_seller != '')
+                                                            <p class="d-flex justify-content-between small">Contingencies:
+                                                                <span>{{ $bid->get->contigencies_accepted_by_seller }}</span>
+                                                            </p>
+                                                        @endif
+
+                                                        {{-- @if ($bid->get->request_seller_premium != '')
+                                                                <p class="d-flex justify-content-between small">Requested Seller's
+                                                                Credit:
+                                                                <span>{{ $bid->get->request_seller_premium }}</span>
+                                                                </p>
+                                                            @endif --}}
+
+                                                                                        {{-- @if ($bid->get->request_buyer_premium != '')
+                                                                <p class="d-flex justify-content-between small">Offered Buyer’s
+                                                                Credit:
+                                                                <span>{{ $bid->get->request_buyer_premium }}</span>
+                                                                </p>
+                                                            @endif --}}
+
+                                                        @if (isset($bid->get->description) && $bid->get->description != '')
+                                                            <p class="d-flex justify-content-between small">Description and
+                                                                additional details:
+                                                                <span>{{ $bid->get->description }}</span>
+                                                            </p>
+                                                        @endif
+
+                                                        @if (isset($bid->get->lot_size) && $bid->get->lot_size != '')
+                                                            <p class="d-flex justify-content-between small">Lot Size:
+                                                                <span>{{ $bid->get->lot_size }}</span>
+                                                            </p>
+                                                        @endif
+
+                                                        @if (isset($bid->get->flood_insurance) && $bid->get->flood_insurance != '')
+                                                            <p class="d-flex justify-content-between small">Is flood insurance
+                                                                required?
+                                                                <span>{{ $bid->get->flood_insurance }}</span>
+                                                            </p>
+                                                        @endif
+
+                                                        @if (isset($bid->get->agent_commission) && $bid->get->agent_commission != '')
+                                                            <p class="d-flex justify-content-between small">Commission Offered
+                                                                to Buyer's Agent: %
+                                                                <span>{{ $bid->get->agent_commission }}</span>
+                                                            </p>
+                                                        @endif
+
+
+                                                        {{-- @if ($bid->get->is_commercial == 'Yes')
+                                                            <h5>Commercial Property Information:</h5>
+                                                            @if ($bid->get->total_units != '')
+                                                                <p class="d-flex justify-content-between small">Total Number of
+                                                                    Units:
+                                                                    <span>{{ $bid->get->total_units }}</span>
+                                                                </p>
+                                                            @endif
+
+                                                            @if ($bid->get->unit_sizes != '')
+                                                                <p class="d-flex justify-content-between small">Unit sizes:
+                                                                    <span>{{ $bid->get->unit_sizes }}</span>
+                                                                </p>
+                                                            @endif
+
+                                                            @if ($bid->get->annual_income != '')
+                                                                <p class="d-flex justify-content-between small">Annual Net
+                                                                    Income:
+                                                                    <span>{{ $bid->get->annual_income }}</span>
+                                                                </p>
+                                                            @endif
+
+                                                            @if ($bid->get->cap_rate != '')
+                                                                <p class="d-flex justify-content-between small">Cap Rate:
+                                                                    <span>{{ $bid->get->cap_rate }}</span>
+                                                                </p>
+                                                            @endif
+
+                                                            @if ($bid->get->known_repairs != '')
+                                                                <p class="d-flex justify-content-between small">Known Repairs
+                                                                    that
+                                                                    need to be done:
+                                                                    <span>{{ $bid->get->known_repairs }}</span>
+                                                                </p>
+                                                            @endif
+
+                                                            @if ($bid->get->arv != '')
+                                                                <p class="d-flex justify-content-between small">ARV:
+                                                                    <span>{{ $bid->get->arv }}</span>
+                                                                </p>
+                                                            @endif
+
+                                                            @if ($bid->get->tenant_pays != '')
+                                                                <p class="d-flex justify-content-between small">
+                                                                    Tenant Pays:
+                                                                    @if (gettype($bid->get->tenant_pays) == 'array')
+                                                                        <div>
+                                                                            @foreach ($bid->get->tenant_pays as $item)
+                                                                                <span
+                                                                                    class="badge bg-secondary">{{ $item }}</span>
+                                                                            @endforeach
+                                                                        </div>
+                                                                    @endif
+                                                                </p>
+                                                            @endif
+
+                                                            @if ($bid->get->landlord_pays != '')
+                                                                <p class="d-flex justify-content-between small">
+                                                                    Landlord Pays:
+                                                                    @if (gettype($bid->get->landlord_pays) == 'array')
+                                                                        <div>
+                                                                            @foreach ($bid->get->landlord_pays as $item)
+                                                                                <span
+                                                                                    class="badge bg-secondary">{{ $item }}</span>
+                                                                            @endforeach
+                                                                        </div>
+                                                                    @endif
+                                                                </p>
+                                                            @endif
+
+                                                            <hr>
+                                                        @endif --}}
+
+
+
+                                                        @if (@$auction->user_id == $auth_id)
+                                                            @if (@$bid->get->video_url !== null && @$bid->get->video_url != '')
+                                                                <p>
+                                                                    <a href="{{ @$bid->get->video_url }}"
+                                                                        class="btn btn-sm btn-primary" target="_blank">View
+                                                                        Video</a>
+                                                                </p>
+                                                            @endif
+
+                                                            @if (@$bid->get->note !== null && @$bid->get->note != '')
+                                                                <p>
+                                                                    <a href="{{ url(@$bid->get->note) }}"
+                                                                        class="btn btn-sm btn-primary" target="_blank">Proof
+                                                                        of funds/pre-approval letter</a>
+                                                                </p>
+                                                            @endif
+
+                                                            @if (@$bid->get->card !== null && @$bid->get->card != '')
+                                                                <p>
+                                                                    <a href="{{ asset(@$bid->get->card) }}" target="_blank">
+                                                                        <img src="{{ asset(@$bid->get->card) }}"
+                                                                            alt="" style="width: 150px;"></a>
+                                                                </p>
+                                                            @endif
+
+                                                            @if (@$bid->get->audio !== null && @$bid->get->audio != '')
+                                                                <p>
+                                                                    <audio class="audio-fluid" controls style="width: 100%;">
+                                                                        <source src="{{ asset(@$bid->get->audio) }}"
+                                                                            type="audio/mp3">
+                                                                        Your browser does not support the audio tag.
+                                                                    </audio>
+                                                                </p>
+                                                            @endif
+                                                        @endif
+
+
+
+
+                                                        @if (@$auction->user_id == $auth_id)
+                                                            @if (!@$auction->is_sold)
+                                                                <form action="{{ route('acceptBCABid') }}" method="post">
+                                                                    @csrf
+                                                                    <input type="hidden" name="auction_id"
+                                                                        value="{{ @$auction->id }}">
+                                                                    <input type="hidden" name="bid_id"
+                                                                        value="{{ $bid->id }}">
+                                                                    <div style="text-align: right;">
+                                                                        <button type="submit"
+                                                                            class="btn btn-success btn-sm">Accept</button>
+                                                                    </div>
+                                                                </form>
+                                                            @endif
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End  -->
+                                    @endforeach
+                                @endif
                             </div>
 
                         </div>

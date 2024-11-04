@@ -504,6 +504,19 @@ class LandlordAuctionController extends Controller
         }
     }
 
+    public function bidsVisibility($id, $vis){
+        $auction = landlordAuction::where('id', $id)->first();
+        if($vis == 'show'){
+            $auction->display_bids = 1;
+            $auction->save();
+            return redirect()->back()->with('success', 'Bids list is now visible');
+        }else{
+            $auction->display_bids = 0;
+            $auction->save();
+            return redirect()->back()->with('success', 'Bids list is now hidden');
+        }
+    }
+
     public function edit($id, Request $request)
     {
         $page_data['auction'] = $auction = LandlordAuction::find($id);
@@ -886,7 +899,7 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta('video_url', $request->video_url);
 
             DB::commit();
-            return redirect()->back()->with('success', "Auction for landlord has been Updated successfully");
+            return redirect()->route('agent.landlord.auction', $id)->with('success', "Auction for landlord has been updated successfully");
         } catch (Exception $e) {
             //throw $th;
             DB::rollBack();
