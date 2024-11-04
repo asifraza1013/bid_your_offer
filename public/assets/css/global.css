@@ -217,7 +217,54 @@ footer i {
 }
 footer a:hover {
   color: #ffffff!important;
- }
+}
+
+.box {
+  position: relative;
+  padding: 20px;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+  background-color: #f9f9f9;
+}
+
+.upload-options {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.thumbnails-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: left;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+.thumbnails-container img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.thumbnails-container img:hover {
+  transform: scale(1.05);
+  border-color: #007bff;
+}
+
+.hidden-inputs-container {
+  display: none;
+}
+
+
+
   @media screen and (max-width:991px) {
     .subHeader {
       display: none!important;

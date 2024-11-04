@@ -178,6 +178,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
     <script src="https://cdn.datatables.net/v/bs5/dt-1.13.2/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
 
     <script>
         $(function() {
@@ -218,52 +219,151 @@
         });
     </script>
     <script>
-        $(function () {
-            $('.data-table').dataTable({
-                //
+        $(document).ready(function () {
+            $(function () {
+                $('.data-table').dataTable({
+                    //
+                });
             });
-        });
 
-        $('.select-btn').click(function() {
-            $(this).closest('.icon-select-btn-div').find('.select-btn').removeClass('active');
-            $(this).addClass('active');
-            let type = $(this).data('type');
-            let elem = $(this).closest('.form-group').find('.input-icon').children();
-            let inputElem  = $(this).closest('.form-group').find('input');
-            console.log('elemVal', inputElem.val())
-            if (type == 'percent') {
-                elem.removeClass("fa-solid fa-dollar-sign");
-                elem.addClass("fa-solid fa-percent");
-                elem.attr('data-symbol', 'percent');
-                if(inputElem.val() !== ''){
-                    const firstCharacter = inputElem.val().charAt(0);
-                    if(firstCharacter == '$' || firstCharacter == '%'){
-                        let inputVal = inputElem.val().substring(1);
-                        inputElem.val(inputVal + '' + '%');
+            $('.select-btn').click(function() {
+                $(this).closest('.icon-select-btn-div').find('.select-btn').removeClass('active');
+                $(this).addClass('active');
+                let type = $(this).data('type');
+                let elem = $(this).closest('.form-group').find('.input-icon').children();
+                let inputElem  = $(this).closest('.form-group').find('input');
+                console.log('elemVal', inputElem.val())
+                if (type == 'percent') {
+                    elem.removeClass("fa-solid fa-dollar-sign");
+                    elem.addClass("fa-solid fa-percent");
+                    elem.attr('data-symbol', 'percent');
+                    if(inputElem.val() !== ''){
+                        const firstCharacter = inputElem.val().charAt(0);
+                        if(firstCharacter == '$' || firstCharacter == '%'){
+                            let inputVal = inputElem.val().substring(1);
+                            inputElem.val(inputVal + '' + '%');
+                        }else{
+                            let inputVal = inputElem.val();
+                            inputElem.val(inputVal + '' + '%');
+                        }
                     }else{
-                        let inputVal = inputElem.val();
-                        inputElem.val(inputVal + '' + '%');
+                        inputElem.val('%');
                     }
-                }else{
-                    inputElem.val('%');
-                }
-            } else {
-                elem.removeClass("fa-solid fa-percent");
-                elem.addClass("fa-solid fa-dollar-sign");
-                elem.attr('data-symbol', 'amount');
-                if(inputElem.val() !== ''){
-                    const firstCharacter = inputElem.val().charAt(inputElem.val().length - 1);
-                    if(firstCharacter == '$' || firstCharacter == '%'){
-                        let inputVal = inputElem.val().slice(0, -1);;
-                        inputElem.val('$' + '' + inputVal);
+                } else {
+                    elem.removeClass("fa-solid fa-percent");
+                    elem.addClass("fa-solid fa-dollar-sign");
+                    elem.attr('data-symbol', 'amount');
+                    if(inputElem.val() !== ''){
+                        const firstCharacter = inputElem.val().charAt(inputElem.val().length - 1);
+                        if(firstCharacter == '$' || firstCharacter == '%'){
+                            let inputVal = inputElem.val().slice(0, -1);;
+                            inputElem.val('$' + '' + inputVal);
+                        }else{
+                            let inputVal = inputElem.val();
+                            inputElem.val('$' + '' + inputVal);
+                        }
                     }else{
-                        let inputVal = inputElem.val();
-                        inputElem.val('$' + '' + inputVal);
+                        inputElem.val('$');
                     }
-                }else{
-                    inputElem.val('$');
                 }
+            })
+
+            //remove disabled attr, trigger click
+            $('.image-input-label').click(function(event) {
+                //event.preventDefault(); // Prevent default label behavior
+
+                const fileInput = $(this).find('.image-input');
+                fileInput.prop('disabled', false);
+                //fileInput.click(); // Directly trigger if it's already enabled
+            });
+
+
+
+            // $('.image-input').on('click', function () {
+            //     $(this).prop('disabled', false);
+            // })
+
+
+           /*******************Functions to sort and submit the reordered photos*************************/
+           const MAX_FILES = 5;
+           // Handle file selection and display thumbnails for each input
+            $('.image-input').on('change', function (event) {
+                const box = $(this).closest('.box');
+                const filesArray = Array.from(event.target.files);
+
+                if (filesArray.length > MAX_FILES) {
+                    alert(`You can only select up to ${MAX_FILES} images.`);
+                    $(this).val(''); // Clear the input if the limit is exceeded
+                    $(box).find('.thumbnails-container').empty();
+                    return;
+                }
+
+                box.data('filesArray', filesArray);  // Store filesArray in the .box element
+
+                displayThumbnails(filesArray, box);
+                updateHiddenInputs(box);  // Initial load of hidden inputs
+
+                // Disable the original input to avoid duplicate submission
+                // $(this).prop('disabled', true);
+            });
+
+            // Function to display thumbnails
+            function displayThumbnails(files, box) {
+                const container = box.find('.thumbnails-container');
+                container.empty();
+
+                files.forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const img = $('<img>')
+                            .attr('src', e.target.result)
+                            .attr('draggable', false)
+                            .data('index', index);
+                        container.append(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                initSortable(container, box);
             }
+
+            // Initialize SortableJS for drag-and-drop reordering
+            function initSortable(container, box) {
+                new Sortable(container[0], {
+                    animation: 150,
+                    onEnd: function () {
+                        const reorderedImages = [];
+                        container.find('img').each(function () {
+                            const filesArray = box.data('filesArray');
+                            reorderedImages.push(filesArray[$(this).data('index')]);
+                        });
+                        box.data('filesArray', reorderedImages);  // Update stored filesArray
+                        updateHiddenInputs(box);  // Update hidden inputs on every reorder
+                    }
+                });
+            }
+
+           // Function to update hidden inputs based on reordered files
+            function updateHiddenInputs(box) {
+                const container = box.find('.hidden-inputs-container');
+                container.empty();
+
+                const filesArray = box.data('filesArray');
+                filesArray.forEach((file, index) => {
+                    const fileInput = $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'photoNames[]')
+                        .val(file.name);
+
+                    // Use DataTransfer to attach the file for submission
+                    // const dataTransfer = new DataTransfer();
+                    // dataTransfer.items.add(file);
+                    // fileInput[0].files = dataTransfer.files;
+
+                    container.append(fileInput);
+                });
+            }
+
         })
     </script>
     @stack('scripts')

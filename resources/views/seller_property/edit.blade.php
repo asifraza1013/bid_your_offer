@@ -142,8 +142,8 @@
     }
     .box {
       display: block;
-      width: 200px;
-      height: 160px;
+      width: 400px;
+      height: auto;
       background-color: white;
       border-radius: 5px;
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -204,7 +204,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 198px;
+          width: 100%;
           height: 50px;
           font-size: 28px;
           color: #e6e6e6;
@@ -4942,10 +4942,12 @@
                           <div class="box">
                             <div class="js--image-preview"></div>
                             <div class="upload-options">
-                              <label>
-                                <input type="file" name="photo[]" class="image-upload" accept="image/*" multiple />
+                              <label class="image-input-label">
+                                <input type="file" name="photo[]" class="image-input" accept="image/*" multiple />
                               </label>
                             </div>
+                            <div class="thumbnails-container"></div>
+                            <div class="hidden-inputs-container"></div>
                           </div>
                         </div>
                     </div>
@@ -6897,10 +6899,12 @@
                           <div class="box">
                             <div class="js--image-preview"></div>
                             <div class="upload-options">
-                              <label>
-                                <input type="file" name="photo[]" class="image-upload" accept="image/*" required />
+                              <label class="image-input-label">
+                                <input type="file" name="photo[]" class="image-input" accept="image/*" multiple />
                               </label>
                             </div>
+                            <div class="thumbnails-container"></div>
+                            <div class="hidden-inputs-container"></div>
                           </div>
                         </div>
                     </div>
@@ -8362,10 +8366,12 @@
                           <div class="box">
                             <div class="js--image-preview"></div>
                             <div class="upload-options">
-                              <label>
-                                <input type="file" name="photo[]" class="image-upload" accept="image/*" multiple />
+                              <label class="image-input-label">
+                                <input type="file" name="photo[]" class="image-input" accept="image/*" multiple />
                               </label>
                             </div>
+                            <div class="thumbnails-container"></div>
+                            <div class="hidden-inputs-container"></div>
                           </div>
                         </div>
                     </div>

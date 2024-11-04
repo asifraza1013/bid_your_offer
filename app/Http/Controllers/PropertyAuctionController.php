@@ -49,7 +49,7 @@ class PropertyAuctionController extends Controller
     }
     public function store(Request $request)
     {
-        // dd($request);
+        // dd($request->all());
         try {
             DB::beginTransaction();
 
@@ -544,10 +544,30 @@ class PropertyAuctionController extends Controller
             //     }
             // }
 
-            if ($request->hasFile('photo')) {
+            if ($request->hasFile('photo') && $request->has('photoNames')) {
                 $photos = $request->file('photo'); // Get the array of uploaded files
+                $photosNames = $request->photoNames;
+
+                $arrangedPhotoArr = [];
+               
+                // Loop through each name to arrange the photos accordingly
+                foreach ($photosNames as $photoName) {
+                    // Filter to find the matching photo
+                    $filteredPhotos = array_filter($photos, function($photo) use ($photoName) {
+                        return $photo->getClientOriginalName() === $photoName; // Get original name correctly
+                    });
+
+                    // If any photos are found, get the first one
+                    if (!empty($filteredPhotos)) {
+                        // Directly get the first matched file
+                        $arrangedPhotoArr[] = reset($filteredPhotos); // This extracts the first matched file from the filtered array
+                    }
+                }
+
+                // dd($arrangedPhotoArr);
+
                 $photoLinks = []; // Array to hold photo links
-                foreach ($photos as $photo)  {
+                foreach ( $arrangedPhotoArr as $photo)  {
                     $extension = $photo->getClientOriginalExtension();
                     $check = in_array($extension, $allowedFiles);
                     
@@ -1119,10 +1139,50 @@ class PropertyAuctionController extends Controller
             //     }
             // }
 
-            if ($request->hasFile('photo')) {
+            // if ($request->hasFile('photo')) {
+            //     $photos = $request->file('photo'); // Get the array of uploaded files
+            //     $photoLinks = []; // Array to hold photo links
+            //     foreach ($photos as $photo)  {
+            //         $extension = $photo->getClientOriginalExtension();
+            //         $check = in_array($extension, $allowedFiles);
+                    
+            //         if ($check) {
+            //             $uuid = (string) Str::uuid();
+            //             $photoName = $uuid . '.' . $extension;
+            //             $photo->move(public_path('auction/images'), $photoName);
+            //             $photoLinks[] = 'auction/images/' . $photoName; // Store each link
+            //         }
+            //     }
+            //     // dd($photoLinks);
+
+            //     // Save all links as JSON or a comma-separated string
+            //     $auction->saveMeta('photos', json_encode($photoLinks));
+            // }
+
+            if ($request->hasFile('photo') && $request->has('photoNames')) {
                 $photos = $request->file('photo'); // Get the array of uploaded files
+                $photosNames = $request->photoNames;
+
+                $arrangedPhotoArr = [];
+               
+                // Loop through each name to arrange the photos accordingly
+                foreach ($photosNames as $photoName) {
+                    // Filter to find the matching photo
+                    $filteredPhotos = array_filter($photos, function($photo) use ($photoName) {
+                        return $photo->getClientOriginalName() === $photoName; // Get original name correctly
+                    });
+
+                    // If any photos are found, get the first one
+                    if (!empty($filteredPhotos)) {
+                        // Directly get the first matched file
+                        $arrangedPhotoArr[] = reset($filteredPhotos); // This extracts the first matched file from the filtered array
+                    }
+                }
+
+                // dd($arrangedPhotoArr);
+
                 $photoLinks = []; // Array to hold photo links
-                foreach ($photos as $photo)  {
+                foreach ( $arrangedPhotoArr as $photo)  {
                     $extension = $photo->getClientOriginalExtension();
                     $check = in_array($extension, $allowedFiles);
                     
