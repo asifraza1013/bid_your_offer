@@ -318,7 +318,8 @@
                         const img = $('<img>')
                             .attr('src', e.target.result)
                             .attr('draggable', false)
-                            .data('index', index);
+                            .attr('index', index)
+                            .attr('name',  file.name);
                         container.append(img);
                     };
                     reader.readAsDataURL(file);
@@ -329,14 +330,23 @@
 
             // Initialize SortableJS for drag-and-drop reordering
             function initSortable(container, box) {
+                const filesArray = box.data('filesArray');
                 new Sortable(container[0], {
                     animation: 150,
                     onEnd: function () {
                         const reorderedImages = [];
-                        container.find('img').each(function () {
-                            const filesArray = box.data('filesArray');
-                            reorderedImages.push(filesArray[$(this).data('index')]);
+                        container.find('img').each(function (i, img) {
+                            $(img).attr('index',  i);
+
+                            // Find the corresponding file from filesArray
+                            const file = filesArray.find(file => file.name === $(img).attr('name'));
+
+                            // Add the file to the reordered array if it exists
+                            if (file) {
+                                reorderedImages.push(file);
+                            }
                         });
+                        // console.log('reorderedImages', reorderedImages);
                         box.data('filesArray', reorderedImages);  // Update stored filesArray
                         updateHiddenInputs(box);  // Update hidden inputs on every reorder
                     }
@@ -352,7 +362,7 @@
                 filesArray.forEach((file, index) => {
                     const fileInput = $('<input>')
                         .attr('type', 'hidden')
-                        .attr('name', 'photoNames[]')
+                        .attr('name', `photoNames[${index}]`)
                         .val(file.name);
 
                     // Use DataTransfer to attach the file for submission

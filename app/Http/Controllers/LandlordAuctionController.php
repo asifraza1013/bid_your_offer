@@ -26,6 +26,7 @@ class LandlordAuctionController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
 
         try {
             DB::beginTransaction();
@@ -340,7 +341,7 @@ class LandlordAuctionController extends Controller
                 }
 
                 $photoLinks = []; // Array to hold photo links
-                foreach ($photos as $photo)  {
+                foreach ($arrangedPhotoArr as $photo)  {
                     $extension = $photo->getClientOriginalExtension();
                     $check = in_array($extension, $allowedFiles);
                     
@@ -928,7 +929,7 @@ class LandlordAuctionController extends Controller
                 }
 
                 $photoLinks = []; // Array to hold photo links
-                foreach ($photos as $photo)  {
+                foreach ($arrangedPhotoArr as $photo)  {
                     $extension = $photo->getClientOriginalExtension();
                     $check = in_array($extension, $allowedFiles);
                     

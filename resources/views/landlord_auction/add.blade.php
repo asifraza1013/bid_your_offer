@@ -4696,7 +4696,14 @@
                                 'Commercial Property') {
                                 StepWizard.nextStep = 15;
                                 StepWizard.backStep = 13;
-                            } else if (StepWizard.currentStep == 10 && property_type ==
+                            }
+                            
+                            // else if (StepWizard.currentStep == 1 ){
+                            //     StepWizard.nextStep = 45;
+                            //     StepWizard.backStep = 1;
+                            // }
+                            
+                            else if (StepWizard.currentStep == 10 && property_type ==
                                 'Commercial Property') {
                                 StepWizard.nextStep = 12;
                                 StepWizard.backStep = 10;
