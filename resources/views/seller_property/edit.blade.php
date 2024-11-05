@@ -4917,24 +4917,55 @@
             </div>
             <div class="form-group">
               <label class="fw-bold">Addendums/Disclosures:</label>
-              <input type="file" name="disclosures[]" id="upload_file" placeholder="" class="form-control"
+              <input type="file" name="disclosures[]" id="upload_file" placeholder="" class="form-control documents-input"
               multiple>
             </div>
             <span class="resFields">
               <div class="row">
-                <div class="col-6">
-                  <div class="videoBox form-group">
-                      <label class="fw-bold mt-1">Property Video:</label>
-                      <div class="video bgImg"></div>
-                      <div class="videoDiv">
-                        <input type="file" class="fileuploader" name="video" style="display: none;"
-                          accept="video/*">
-                        <label for="fileuploader" class="fileuploader-btn">
-                          <span class="upload-button">+</span>
-                        </label>
+                <div class="col-6 video_div">
+                  <input type="hidden" name="video_type" class="video_type" value="video_upload">
+                  <div class="video_type_select d-flex align-items-center justify-content-left">
+                      <div class="form-check me-2">
+                          <label class="form-check-label">
+                              <input type="checkbox" class="video_upload form-check-input video_type_check" name="video_upload" >
+                              Video Upload
+                          </label>
+                      </div>
+                      <div class="form-check me-2">
+                          <label class="form-check-label">
+                              <input type="checkbox" class="youtube_video form-check-input video_type_check" name="youtube_video">
+                              Youtube Video
+                          </label>
+                      </div>
+                      <div class="form-check">
+                          <label class="form-check-label">
+                              <input type="checkbox" class="vimeo_video form-check-input video_type_check" name="vimeo_video">
+                              Vimeo Video
+                          </label>
                       </div>
                   </div>
-                </div>
+                  <div class="video-upload video-type-element">
+                      <label class="fw-bold mt-1"> Property Video:</label>
+                      <div class="videoBox ">
+                          <div class="video bgImg"></div>
+                          <div class="form-group videoDiv">
+                          <input type="file" class="fileuploader" name="video" style="display: none;"
+                              accept="video/*">
+                          <label for="fileuploader" class="fileuploader-btn">
+                              <span class="upload-button">+</span>
+                          </label>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="youtube-video video-type-element form-group d-none">
+                      <label class="fw-bold mt-1"> Youtube Video:</label>
+                      <input type="text" name="youtube_video_link" class="form-control" placeholder="Youtube video link i.e. https://youtube.com/embed/videoId">
+                  </div>
+                  <div class="vimeo-video video-type-element form-group d-none">
+                      <label class="fw-bold mt-1">Vimeo Video:</label>
+                      <input type="text" name="vimeo_video_link" class="form-control" placeholder="Vimeo video link i.e. https://player.vimeo.com/video/videoId">
+                  </div>
+              </div>
                 <div class="col-6">
                     <div class="upload form-group">
                         <label class="fw-bold">Property Photos:</label>
@@ -6875,23 +6906,54 @@
               <div class="form-group">
                 <label class="fw-bold">Addendums/Disclosures:</label>
                 <input type="file" name="visible_upload_file[]" id="upload_file" placeholder=""
-                class="form-control" multiple>
+                class="form-control documents-input" multiple>
               </div>
               <span class="commercialFields">
               <div class="row">
-                <div class="col-6">
-                  <div class="videoBox form-group">
-                      <label class="fw-bold mt-1">Property Video:</label>
-                      <div class="video bgImg"></div>
-                      <div class="videoDiv">
-                        <input type="file" class="fileuploader" name="video" style="display: none;"
-                          accept="video/*">
-                        <label for="fileuploader" class="fileuploader-btn">
-                          <span class="upload-button">+</span>
-                        </label>
+                <div class="col-6 video_div">
+                  <input type="hidden" name="video_type" class="video_type" value="video_upload">
+                  <div class="video_type_select d-flex align-items-center justify-content-left">
+                      <div class="form-check me-2">
+                          <label class="form-check-label">
+                              <input type="checkbox" class="video_upload form-check-input video_type_check" name="video_upload" >
+                              Video Upload
+                          </label>
+                      </div>
+                      <div class="form-check me-2">
+                          <label class="form-check-label">
+                              <input type="checkbox" class="youtube_video form-check-input video_type_check" name="youtube_video">
+                              Youtube Video
+                          </label>
+                      </div>
+                      <div class="form-check">
+                          <label class="form-check-label">
+                              <input type="checkbox" class="vimeo_video form-check-input video_type_check" name="vimeo_video">
+                              Vimeo Video
+                          </label>
                       </div>
                   </div>
-                </div>
+                  <div class="video-upload video-type-element">
+                      <label class="fw-bold mt-1"> Property Video:</label>
+                      <div class="videoBox ">
+                          <div class="video bgImg"></div>
+                          <div class="form-group videoDiv">
+                          <input type="file" class="fileuploader" name="video" style="display: none;"
+                              accept="video/*">
+                          <label for="fileuploader" class="fileuploader-btn">
+                              <span class="upload-button">+</span>
+                          </label>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="youtube-video video-type-element form-group d-none">
+                      <label class="fw-bold mt-1"> Youtube Video:</label>
+                      <input type="text" name="youtube_video_link" class="form-control" placeholder="Youtube video link i.e. https://youtube.com/embed/videoId">
+                  </div>
+                  <div class="vimeo-video video-type-element form-group d-none">
+                      <label class="fw-bold mt-1">Vimeo Video:</label>
+                      <input type="text" name="vimeo_video_link" class="form-control" placeholder="Vimeo video link i.e. https://player.vimeo.com/video/videoId">
+                  </div>
+              </div>
                 <div class="col-6">
                     <div class="upload form-group">
                         <label class="fw-bold">Property Photos:</label>
@@ -8341,24 +8403,55 @@
               </div>
               <div class="form-group">
                 <label class="fw-bold">Addendums/Disclosures:</label>
-                <input type="file" name="disclosures[]" id="upload_file" placeholder="" class="form-control"
+                <input type="file" name="disclosures[]" id="upload_file" placeholder="" class="form-control documents-input"
                 multiple>
               </div>
               <span class="vacantFields">
               <div class="row">
-                <div class="col-6">
-                  <div class="videoBox form-group">
-                      <label class="fw-bold mt-1">Property Video:</label>
-                      <div class="video bgImg"></div>
-                      <div class="videoDiv">
-                        <input type="file" class="fileuploader" name="video" style="display: none;"
-                          accept="video/*">
-                        <label for="fileuploader" class="fileuploader-btn">
-                          <span class="upload-button">+</span>
-                        </label>
+                <div class="col-6 video_div">
+                  <input type="hidden" name="video_type" class="video_type" value="video_upload">
+                  <div class="video_type_select d-flex align-items-center justify-content-left">
+                      <div class="form-check me-2">
+                          <label class="form-check-label">
+                              <input type="checkbox" class="video_upload form-check-input video_type_check" name="video_upload" >
+                              Video Upload
+                          </label>
+                      </div>
+                      <div class="form-check me-2">
+                          <label class="form-check-label">
+                              <input type="checkbox" class="youtube_video form-check-input video_type_check" name="youtube_video">
+                              Youtube Video
+                          </label>
+                      </div>
+                      <div class="form-check">
+                          <label class="form-check-label">
+                              <input type="checkbox" class="vimeo_video form-check-input video_type_check" name="vimeo_video">
+                              Vimeo Video
+                          </label>
                       </div>
                   </div>
-                </div>
+                  <div class="video-upload video-type-element">
+                      <label class="fw-bold mt-1"> Property Video:</label>
+                      <div class="videoBox ">
+                          <div class="video bgImg"></div>
+                          <div class="form-group videoDiv">
+                          <input type="file" class="fileuploader" name="video" style="display: none;"
+                              accept="video/*">
+                          <label for="fileuploader" class="fileuploader-btn">
+                              <span class="upload-button">+</span>
+                          </label>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="youtube-video video-type-element form-group d-none">
+                      <label class="fw-bold mt-1"> Youtube Video:</label>
+                      <input type="text" name="youtube_video_link" class="form-control" placeholder="Youtube video link i.e. https://youtube.com/embed/videoId">
+                  </div>
+                  <div class="vimeo-video video-type-element form-group d-none">
+                      <label class="fw-bold mt-1">Vimeo Video:</label>
+                      <input type="text" name="vimeo_video_link" class="form-control" placeholder="Vimeo video link i.e. https://player.vimeo.com/video/videoId">
+                  </div>
+              </div>
                 <div class="col-6">
                     <div class="upload form-group">
                         <label class="fw-bold">Property Photos:</label>

@@ -364,6 +364,44 @@
                 });
             }
 
+            //select default video type
+            $('.video_type_check[name="video_upload"]').trigger('click');
+
+            //check only clicked checkbox and uncheck others
+            $('.video_type_check').click(function(){
+                $('.video_type_check').prop('checked', false);
+                $(this).prop('checked', true);
+
+                displayVideoTypeElement($(this));
+            })
+
+            //display the appropriate video type element
+            function displayVideoTypeElement(check){
+                var videoType = check.attr('name');
+                let parent = $(check).closest('.video_div');
+                $(parent).find('.video_type').val(videoType);
+                console.log('videoType', videoType);
+                if(videoType === 'video_upload'){
+                    $(parent).find('.video-type-element').addClass('d-none');
+                    $(parent).find('.video-upload').removeClass('d-none');
+                }else if(videoType === 'youtube_video'){
+                    $(parent).find('.video-type-element').addClass('d-none');
+                    $(parent).find('.youtube-video').removeClass('d-none');
+                }else if(videoType === 'vimeo_video'){
+                    $(parent).find('.video-type-element').addClass('d-none');
+                    $(parent).find('.vimeo-video').removeClass('d-none');
+                }
+            }
+
+            //limit the documents selected by disclosure element
+            $('.documents-input').change(function(event){
+                const filesArray = Array.from(event.target.files);
+                if (filesArray.length > 5) {
+                    alert(`You can only select up to ${MAX_FILES} images.`);
+                    $(this).val(''); // Clear the input if the limit is exceeded
+                    return;
+                }
+            })
         })
     </script>
     @stack('scripts')

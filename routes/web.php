@@ -437,10 +437,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/edit-seller-property-listing/{id}', [PropertyAuctionController::class, 'edit'])->name('edit-seller-property-listing');
         Route::post('/edit-seller-property-listing/{id}', [PropertyAuctionController::class, 'update'])->name('update-seller-property-listing');
 
-        Route::post('bids-visibility/{id}/{vis}', [PropertyAuctionController::class, 'bidsVisibility'])->name('property.bids.visibility');
-        Route::post('bids-visibility/{id}/{vis}', [LandlordAuctionController::class, 'bidsVisibility'])->name('landlord.auction.bids.visibility');
-        Route::post('bids-visibility/{id}/{vis}', [BuyerCriteriaAuctionController::class, 'bidsVisibility'])->name('criteria.auction.bids.visibility');
-        Route::post('bids-visibility/{id}/{vis}', [LandlordAgentAuctionController::class, 'bidsVisibility'])->name('landlord.agent.auction.bids.visibility');
+        Route::post('property/auction/bids-visibility/{id}/{vis}', [PropertyAuctionController::class, 'bidsVisibility'])->name('property.bids.visibility');
+        Route::post('landlord/auction/bids-visibility/{id}/{vis}', [LandlordAuctionController::class, 'bidsVisibility'])->name('landlord.auction.bids.visibility');
+        Route::post('criteria/auction/bids-visibility/{id}/{vis}', [BuyerCriteriaAuctionController::class, 'bidsVisibility'])->name('criteria.auction.bids.visibility');
+        Route::post('landlord/agent/auction/bids-visibility/{id}/{vis}', [LandlordAgentAuctionController::class, 'bidsVisibility'])->name('landlord.agent.auction.bids.visibility');
 
         Route::post('/property/listing/step/1', [PropertyAuctionController::class, 'step1'])->name('save-pl-step1');
         Route::post('/property/listing/step/2', [PropertyAuctionController::class, 'step2'])->name('save-pl-step2');

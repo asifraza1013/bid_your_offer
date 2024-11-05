@@ -272,6 +272,9 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("agent_mls_id",$request->agent_mls_id);
             $landlord_auction->saveMeta("realEstate",$request->realEstate);
             $landlord_auction->saveMeta("three_d_tour",$request->three_d_tour);
+            $landlord_auction->saveMeta('video_type', $request->video_type);
+            $landlord_auction->saveMeta('youtube_video_link', $request->youtube_video_link);
+            $landlord_auction->saveMeta('vimeo_video_link', $request->vimeo_video_link);
 
             $allowedPhotos = ['jpg', 'png', 'jpeg', 'gif', 'svg'];
 
@@ -809,6 +812,9 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("agent_mls_id",$request->agent_mls_id);
             $landlord_auction->saveMeta("realEstate",$request->realEstate);
             $landlord_auction->saveMeta("three_d_tour",$request->three_d_tour);
+            $landlord_auction->saveMeta('video_type', $request->video_type);
+            $landlord_auction->saveMeta('youtube_video_link', $request->youtube_video_link);
+            $landlord_auction->saveMeta('vimeo_video_link', $request->vimeo_video_link);
 
             $allowedPhotos = ['jpg', 'png', 'jpeg', 'gif', 'svg'];
             $allowedVideos = ['mp4', 'mov', 'avi', 'mkv', 'wmv', 'flv', 'webm', 'm4v'];

@@ -112,12 +112,25 @@
   <div class="container listingDescription">
     <div class="row">
       <div class="col-sm-12 col-md-8 col-lg-8 leftCol">
-        @if ($auction->user_id == auth()->user()->id)
-          <div class="d-flex justify-content-end align-content-center">
-            <a href="{{route('agent.landlord.auction.edit', $auction->id)}}" class="btn btn-success btn-sm px-3 mb-3 me-2"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Listing</a>
-            {{-- <a href="javascript:void(0)" class="btn btn-success btn-sm px-3 mb-3"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Auction Status</a> --}}
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center justify-content-left">
+            @if ($auction->is_approved == 1)
+              <span class="badge bg-primary me-2">Active</span>
+            @endif
+            @if ($auction->is_approved == 0)
+              <span class="badge bg-warning me-2">Pending</span>
+            @endif
+            @if ($auction->is_sold == 1)
+              <span class="badge bg-success">Sold</span>
+            @endif
           </div>
-        @endif
+          @if ($auction->user_id == auth()->user()->id)
+            <div class="d-flex justify-content-end align-content-center">
+              <a href="{{route('agent.landlord.auction.edit', $auction->id)}}" class="btn btn-success btn-sm px-3 mb-3 me-2"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Listing</a>
+              {{-- <a href="javascript:void(0)" class="btn btn-success btn-sm px-3 mb-3"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Auction Status</a> --}}
+            </div>
+          @endif
+        </div>
         <!-- Description Box  -->
         <div class="card description">
           <div class="col-md-12 col-12 fw-bold image">
@@ -174,14 +187,33 @@
                   </div>
                 </div>
               </div>
-              @if (isset($auction->get->video) && $auction->get->video !== null)
-                <div class="col-md-12 col-12 fw-bold mt-2 mb-1">
-                  Property Video:
-                  <span class="removeBold">
-                    <video src="{{ asset($auction->get->video) }}" style="width:100%;height:29vh;"
-                        controls autoplay></video>
-                  </span>
-                </div>
+              @if (isset($auction->get->video_type) && $auction->get->video_type == 'video_upload')
+                @if (isset($auction->get->video) && $auction->get->video !== null)
+                  <div class="col-md-12 col-12 fw-bold mt-2 mb-1">
+                    Property Video:
+                    <span class="removeBold">
+                      <video src="{{ asset($auction->get->video) }}" style="width:100%;height:29vh;"
+                          controls autoplay></video>
+                    </span>
+                  </div>
+                @endif
+              @elseif (isset($auction->get->video_type) && $auction->get->video_type == 'youtube_video')
+                @if (isset($auction->get->youtube_video_link) && $auction->get->youtube_video_link !== null)
+                  <div class="col-md-12 col-12 fw-bold mt-2 mb-1">
+                    Property Video:
+                    <iframe width="560" height="315" src="{{$auction->get->youtube_video_link}}" 
+                      title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                    </iframe>
+                  </div>
+                @endif
+              @else 
+                @if (isset($auction->get->vimeo_video_link) && $auction->get->vimeo_video_link !== null)
+                  <div class="col-md-12 col-12 fw-bold mt-2 mb-1">
+                    Property Video:
+                    <iframe src="{{$auction->get->vimeo_video_link}}" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                  </div>
+                @endif
               @endif
               @if (isset($auction->get->note) && $auction->get->note !== null)
                 <div class="col-md-12 col-12 fw-bold mt-2 mb-1">
@@ -194,7 +226,11 @@
                 </div>
               @endif
               @php
-                $disclosure = json_decode($auction->get->disclosures);
+                if (isset($auction->get->disclosures)) {
+                    $disclosure = json_decode($auction->get->disclosures) ?? null;
+                } else {
+                    $disclosure = null;
+                }
               @endphp
               @if (isset($disclosure) && $disclosure !== null && is_array($disclosure))
                 <div class="col-md-12 col-12 fw-bold mt-2 mb-1">
@@ -244,11 +280,11 @@
                 <span class="removeBold">{{ @$auction->get->startingPrice }}</span>
               </div>
               @endif
-              @if(isset($auction->get->reservePrice) && $auction->get->reservePrice != null)
+              {{-- @if(isset($auction->get->reservePrice) && $auction->get->reservePrice != null)
               <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Reserve Price:
                 <span class="removeBold">{{ @$auction->get->reservePrice }}</span>
               </div>
-              @endif
+              @endif --}}
               @if(isset($auction->get->leaseDate) && $auction->get->leaseDate != null)
                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Lease Availability Date:
                   <span class="removeBold">{{ @$auction->get->leaseDate }}</span>
@@ -373,15 +409,15 @@
               <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Address: 
                 <span class="removeBold"> {{ @$auction->address }}</span>
               </div>
-              <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> City: 
+              {{-- <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> City: 
                 <span class="removeBold">{{ @$auction->city }}</span>
-              </div>
+              </div> --}}
               <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> County: 
                 <span class="removeBold">{{ @$auction->county }}</span>
               </div>
-              <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> State: 
+              {{-- <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> State: 
                 <span class="removeBold">{{ @$auction->state }}</span>
-              </div>
+              </div> --}}
               <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Listing Date:
                 <span class="removeBold">{{ Carbon\Carbon::parse(@$auction->listing_date)->format('M d, Y') }}</span>
               </div>

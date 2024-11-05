@@ -509,6 +509,9 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("agent_mls_id_vac",$request->agent_mls_id_vac);
             $auction->saveMeta("realEstateAgent",$request->realEstateAgent);
             $auction->saveMeta("three_d_tour",$request->three_d_tour);
+            $auction->saveMeta('video_type', $request->video_type);
+            $auction->saveMeta('youtube_video_link', $request->youtube_video_link);
+            $auction->saveMeta('vimeo_video_link', $request->vimeo_video_link);
 
             // Pictures and Video Upload
             $allowedPhotos = ['jpg', 'png', 'jpeg', 'gif', 'svg'];
@@ -1101,6 +1104,9 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("agent_mls_id_vac",$request->agent_mls_id_vac);
             $auction->saveMeta("realEstateAgent",$request->realEstateAgent);
             $auction->saveMeta("three_d_tour",$request->three_d_tour);
+            $auction->saveMeta('video_type', $request->video_type);
+            $auction->saveMeta('youtube_video_link', $request->youtube_video_link);
+            $auction->saveMeta('vimeo_video_link', $request->vimeo_video_link);
 
             // Pictures and Video Upload
 
