@@ -79,6 +79,7 @@ class PropertyAuctionController extends Controller
             $auction->listing_date = $listing_date;
             $auction->expiration_date = $expiration_date;
             $auction->save();
+            $auction->saveMeta("unit_number",$request->unit_number);
             $auction->saveMeta("address",$request->address);
             $auction->saveMeta("city",$request->city);
             $auction->saveMeta("county",$request->county);
@@ -674,6 +675,7 @@ class PropertyAuctionController extends Controller
             $auction->listing_date = $listing_date;
             $auction->expiration_date = $expiration_date;
             $auction->update();
+            $auction->saveMeta("unit_number",$request->unit_number);
             $auction->saveMeta("address",$request->address);
             $auction->saveMeta("city",$request->city);
             $auction->saveMeta("county",$request->county);

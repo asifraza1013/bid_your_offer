@@ -39,6 +39,7 @@ class LandlordAuctionController extends Controller
             $landlord_auction->listing_date = $request->listing_date;
             $landlord_auction->expiration_date = $request->expiration_date;
             $landlord_auction->save();
+            $landlord_auction->saveMeta("unit_number",$request->unit_number);
             $landlord_auction->saveMeta('address',$request->address);
             $landlord_auction->saveMeta("city",$request->city);
             $landlord_auction->saveMeta("county",$request->county);
@@ -581,6 +582,7 @@ class LandlordAuctionController extends Controller
             $landlord_auction->listing_date = $request->listing_date;
             $landlord_auction->expiration_date = $request->expiration_date;
             $landlord_auction->save();
+            $landlord_auction->saveMeta("unit_number",$request->unit_number);
             $landlord_auction->saveMeta('address',$request->address);
             $landlord_auction->saveMeta("city",$request->city);
             $landlord_auction->saveMeta("county",$request->county);

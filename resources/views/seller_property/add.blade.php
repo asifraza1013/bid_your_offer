@@ -341,6 +341,11 @@
           <div class="wizard-step" id="after_this" data-step="1">
             <h4>Please provide the property's complete address, along with the city, county, and state, pertaining to the real estate asset that the seller intends to place on the market.</h4>
             <div class="form-group">
+              <label class="fw-bold" for="unit_number">Unit Number:</label>
+              <input type="text" name="unit_number" data-type="unit_number" placeholder="" id="unit_number"
+                class="form-control has-icon search_places" data-icon="fa-solid fa-location-dot" required>
+            </div>
+            <div class="form-group">
               <label class="fw-bold" for="address">Address:</label>
               <input type="text" name="address" data-type="address" placeholder="" id="address"
                 class="form-control has-icon search_places" data-icon="fa-solid fa-location-dot" required>

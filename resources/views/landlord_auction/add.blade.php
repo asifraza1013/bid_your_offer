@@ -333,6 +333,11 @@
                             state, pertaining to the real estate asset that the landlord intends to place on the market:
                         </h4>
                         <div class="form-group">
+                            <label class="fw-bold" for="unit_number">Unit Number:</label>
+                            <input type="text" name="unit_number" data-type="unit_number" placeholder="" id="unit_number"
+                              class="form-control has-icon search_places" data-icon="fa-solid fa-location-dot" required>
+                        </div>
+                        <div class="form-group">
                             <label for="address" class="fw-bold">Address:</label>
                             <input type="text" name="address" data-type="address" placeholder="" id="address"
                                 class="form-control has-icon search_places" data-icon="fa-solid fa-location-dot" required>
