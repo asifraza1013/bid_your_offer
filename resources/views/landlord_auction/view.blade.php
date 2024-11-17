@@ -121,7 +121,7 @@
               <span class="badge bg-warning me-2">Pending</span>
             @endif
             @if ($auction->is_sold == 1)
-              <span class="badge bg-success">Sold</span>
+              <span class="badge bg-success">Leased</span>
             @endif
           </div>
           @if ($auction->user_id == auth()->user()->id)
@@ -244,6 +244,12 @@
                     @endforeach
                   </div>
                   @endif
+                </div>
+              @endif
+              @if (isset($auction->get->three_d_tour))
+                <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                  3D Tour: <a href="{{ @$auction->get->three_d_tour }}" target="_blank"
+                    rel="noopener noreferrer"><span class="removeBold"> {{ @$auction->get->three_d_tour }}</span></a>
                 </div>
               @endif
             </div>

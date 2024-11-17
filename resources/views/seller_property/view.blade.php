@@ -1054,6 +1054,12 @@
                   @endif
                 </div>
               @endif
+              @if (isset($auction->get->three_d_tour))
+                <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
+                  3D Tour: <a href="{{ @$auction->get->three_d_tour }}" target="_blank"
+                    rel="noopener noreferrer"><span class="removeBold"> {{ @$auction->get->three_d_tour }}</span></a>
+                </div>
+              @endif
             </div>
             <hr />
             <h4>Description:</h4>
@@ -1697,7 +1703,7 @@
                   @endif
                 </div>
               @endif
-              @if (@$auction->get->additionalRooms != null)
+              @if (isset($auction->get->additionalRooms))
                 <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i> 
                   Additional Rooms: 
                   @if (is_array($auction->get->additionalRooms))
@@ -1749,7 +1755,7 @@
                   @endforeach
                 </div>
               @endif
-              @if (@$auction->get->sewer != null && is_array($auction->get->sewer))
+              @if (isset($auction->get->sewer) && is_array($auction->get->sewer))
                 <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
                   Sewer: 
                   @foreach ($auction->get->sewer as $item)
@@ -1996,7 +2002,7 @@
               {{-- Exterior Features end --}}
               <hr>
               {{-- Water and Dock Information start --}}
-              <h4>Water and Dock Information</h4>
+              <h4>Water and Dock Information:</h4>
               @if (isset($auction->get->has_water_access) || isset($auction->get->has_water_access_com) || isset($auction->get->has_water_access_vac))
                 <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
                   Water View: 
@@ -2070,7 +2076,7 @@
               {{-- Water and Dock Information end --}}
               <hr>
               {{-- Land and Tax Information start --}}
-              <h4>Land and Tax Information</h4>
+              <h4>Land and Tax Information:</h4>
               @if (isset($auction->get->tax_id) || isset($auction->get->tax_id_com) || isset($auction->get->tax_id_vac))
                 <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
                   Tax ID (Parcel Number):<span class="removeBold"> {{ @$auction->get->tax_id ?? $auction->get->tax_id_com ?? $auction->get->tax_id_vac ?? '' }}</span>
@@ -2738,7 +2744,7 @@
               @endif
               {{-- Is the Seller actively seeking to purchase another property? --}}
               {{-- Title Company Information --}}
-              <h4>Title Company Information</h4>
+              <h4>Title Company Information:</h4>
               @if (isset($auction->get->title_company_name) || isset($auction->get->title_company_name_com) || isset($auction->get->title_company_name_vac))
                 <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
                   Name:
@@ -3078,12 +3084,6 @@
                 <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
                   Property Video: <a href="{{ @$auction->get->video_url }}" target="_blank"
                     rel="noopener noreferrer"><span class="removeBold"> {{ @$auction->get->video_url }}</span></a>
-                </div>
-              @endif
-              @if (@$auction->get->three_d_tour != '')
-                <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
-                  3D Tour: <a href="{{ @$auction->get->three_d_tour }}" target="_blank"
-                    rel="noopener noreferrer"><span class="removeBold"> {{ @$auction->get->three_d_tour }}</span></a>
                 </div>
               @endif
               @if (@$auction->get->explaining_video != '')
