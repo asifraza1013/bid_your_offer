@@ -1706,7 +1706,7 @@
               @if (isset($auction->get->additionalRooms))
                 <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i> 
                   Additional Rooms: 
-                  @if (is_array($auction->get->additionalRooms))
+                  @if (is_array($auction->get->additionalRooms) && count($auction->get->additionalRooms) > 0)
                     @foreach (@$auction->get->additionalRooms as $item)
                       <span class="removeBold badge bg-secondary"> {{ $item }}</span> 
                     @endforeach
@@ -1755,7 +1755,7 @@
                   @endforeach
                 </div>
               @endif
-              @if (isset($auction->get->sewer) && is_array($auction->get->sewer))
+              @if (isset($auction->get->sewer) && is_array($auction->get->sewer) && count($auction->get->sewer) > 0)
                 <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
                   Sewer: 
                   @foreach ($auction->get->sewer as $item)
@@ -1989,14 +1989,12 @@
                   Pool: <span class="removeBold"> {{ @$auction->get->pool_type }}</span> 
                 </div>
               @endif
-              @if (isset($auction->get->view))
+              @if (isset($auction->get->view) && is_array($auction->get->view) && count($auction->get->view) > 0)
                 <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
                   View:
-                    @if (gettype(@$auction->get->view) == 'array')
-                      @foreach (@$auction->get->view as $item)
-                        <span class="badge bg-secondary removeBold"> {{ $item !='Other'? $item : $auction->get->otherView}}</span>
-                      @endforeach
-                    @endif
+                    @foreach (@$auction->get->view as $item)
+                      <span class="badge bg-secondary removeBold"> {{ $item !='Other'? $item : $auction->get->otherView}}</span>
+                    @endforeach
                 </div>
               @endif
               {{-- Exterior Features end --}}
