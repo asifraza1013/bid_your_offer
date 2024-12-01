@@ -80,6 +80,9 @@ class TenantCriteriaAuctionController extends Controller
             $auction->saveMeta("waterFrontage",json_encode($request->waterFrontage));
             $auction->saveMeta("waterAccessOpt",$request->waterAccessOpt);
             $auction->saveMeta("water_access",json_encode($request->water_access));
+            $auction->saveMeta("has_dock",$request->has_dock);
+            $auction->saveMeta("dock",json_encode($request->dock));
+            $auction->saveMeta("dockDescription",$request->dockDescription);
             $auction->saveMeta("viewOpt",$request->viewOpt);
             $auction->saveMeta("viewReference",json_encode($request->viewReference));
             $auction->saveMeta("viewReferenceOther",$request->viewReferenceOther);

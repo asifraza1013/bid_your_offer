@@ -474,7 +474,7 @@
             <div class="form-group">
               <label class="fw-bold">Title of Listing:</label>
               <input type="text" name="titleListing" id="" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined" required>
+                data-icon="fa-solid fa-hotel" required>
             </div>
           </div>
           <div class="wizard-step" data-step="5">
@@ -501,7 +501,7 @@
                 @php
                   $property_items = [
                       ['name' => 'Single Family Residence', 'class' => 'residential-length'],
-                      ['name' => 'Apartments', 'class' => 'residential-length'],
+                      ['name' => 'Apartment', 'class' => 'residential-length'],
                       ['name' => 'Townhouse', 'class' => 'residential-length'],
                       ['name' => 'Villa', 'class' => 'residential-length'],
                       ['name' => 'Condominium', 'class' => 'residential-length'],
@@ -599,7 +599,7 @@
                 <option value="">Select</option>
                 @foreach ($propsRes as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card"
-                    style="width:calc(33.33% - 10px );" data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                    style="width:calc(33.33% - 10px );" data-icon='<i class="fa-solid fa-hotel"></i>'>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -657,7 +657,7 @@
               <div class="form-group other_prop_conditionRes d-none">
                 <label class="fw-bold">Acceptable Property Conditions: </label>
                 <input type="text" name="propsOther" id="propsOther" class="form-control has-icon  "
-                  data-icon="fa-solid fa-ruler-combined" data-msg-required="Property Condition" placeholder="">
+                  data-icon="fa-regular fa-circle-check" data-msg-required="Property Condition" placeholder="">
               </div>
             </span>
           </div>
@@ -700,11 +700,11 @@
               <div class="form-group leaseOtherRes d-none">
                 <label class="fw-bold">Offered Lease Length: </label>
                 <input type="text" name="leaseOther" id="propsOther" class="form-control has-icon  "
-                  data-icon="fa-solid fa-ruler-combined" data-msg-required="Property Condition" placeholder="" required>
+                  data-icon="fa-regular fa-calendar-days" data-msg-required="Property Condition" placeholder="" required>
               </div>
             </span>
             <div class="form-group">
-              <label class="fw-bold">Offered Lease Date: </label>
+              <label class="fw-bold">Offered Lease Start Date:</label>
               <input type="date" name="idealDate" id="propsOther" class="form-control has-icon  "
                 data-icon="fa-regular fa-calendar-days" data-msg-required="Property Condition" placeholder="" required>
             </div>
@@ -741,7 +741,7 @@
             </div>
             <div class="form-group custom_bedrooms d-none">
               <label class="fw-bold">Minimum Bedrooms Needed:</label>
-              <input type="text" name="custom_bedrooms" id="custom_bedrooms" class="form-control has-icon"
+              <input type="number" name="custom_bedrooms" id="custom_bedrooms" class="form-control has-icon"
                 data-icon="fa-solid fa-bed" required>
             </div>
             {{-- </span> --}}
@@ -785,7 +785,7 @@
             </div>
             <div class="form-group custom_bathrooms d-none">
               <label class="fw-bold">Minimum Bathrooms Needed: </label>
-              <input type="text" name="custom_bathrooms" id="custom_bathrooms" class="form-control has-icon"
+              <input type="number" name="custom_bathrooms" id="custom_bathrooms" class="form-control has-icon"
                 data-icon="fa-solid fa-bath" required>
             </div>
           </div>
@@ -793,7 +793,7 @@
             <span class="resFieldss">
               <div class="form-group">
                 <label class="fw-bold">Minimum Heated Sqft Needed:</label>
-                <input type="text" name="minimum_sqft_needed" id="minimum_sqft_needed"
+                <input type="number" name="minimum_sqft_needed" id="minimum_sqft_needed"
                   class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
               </div>
             </span>
@@ -915,7 +915,7 @@
                 ];
               @endphp
               <div class="form-group carport_opt">
-                <label class="fw-bold">Carport Spaces Needed::</label>
+                <label class="fw-bold">Carport Spaces Needed:</label>
                 <select class="grid-picker" name="carport_opt" id="carport_opt" style="justify-content: flex-start;"
                   required>
                   <option value="">Select</option>
@@ -929,7 +929,7 @@
               </div>
               <div class="form-group custom_carport d-none">
                 <label class="fw-bold">Carport Spaces Needed:</label>
-                <input type="text" name="custom_carport" id="custom_carport" class="form-control has-icon"
+                <input type="number" name="custom_carport" id="custom_carport" class="form-control has-icon"
                   data-icon="fa-solid fa-warehouse" required>
               </div>
               <div class="form-group">
@@ -975,7 +975,7 @@
               </div>
               <div class="form-group custom_garage d-none">
                 <label class="fw-bold">Garage Spaces Needed:</label>
-                <input type="text" name="custom_garage" id="custom_garage" class="form-control has-icon"
+                <input type="number" name="custom_garage" id="custom_garage" class="form-control has-icon"
                   data-icon="fa-solid fa-warehouse" required>
               </div>
             </div>
@@ -1070,18 +1070,6 @@
                       ['name' => 'Bridges - Fixed', 'target' => ''],
                       ['name' => 'Bridges - No Fixed Bridges', 'target' => ''],
                       ['name' => 'Davits', 'target' => ''],
-                      ['name' => 'Dock - Composite', 'target' => ''],
-                      ['name' => 'Dock - Concrete', 'target' => ''],
-                      ['name' => 'Dock - Covered', 'target' => ''],
-                      ['name' => 'Dock - Open', 'target' => ''],
-                      ['name' => 'Dock - Slip 1st Come', 'target' => ''],
-                      ['name' => 'Dock - Slip Deeded Off-Site', 'target' => ''],
-                      ['name' => 'Dock - Slip Deeded On-Site', 'target' => ''],
-                      ['name' => 'Dock - Wood', 'target' => ''],
-                      ['name' => 'Dock w/Electric', 'target' => ''],
-                      ['name' => 'Dock w/o Electric', 'target' => ''],
-                      ['name' => 'Dock w/o Water Supply', 'target' => ''],
-                      ['name' => 'Dock w/Water Supply', 'target' => ''],
                       ['name' => 'Fishing Pier', 'target' => ''],
                       ['name' => 'Lift', 'target' => ''],
                       ['name' => 'Lift - Covered', 'target' => ''],
@@ -1144,6 +1132,7 @@
                       ['name' => 'Canal - Brackish', 'target' => ''],
                       ['name' => 'Canal - Freshwater', 'target' => ''],
                       ['name' => 'Canal - Saltwater', 'target' => ''],
+                      ['name' => 'Canal Front', 'target' => ''],
                       ['name' => 'Creek', 'target' => ''],
                       ['name' => 'Freshwater Canal w/Lift to Saltwater Canal', 'target' => ''],
                       ['name' => 'Gulf/Ocean', 'target' => ''],
@@ -1154,6 +1143,7 @@
                       ['name' => 'Lake - Chain of Lakes', 'target' => ''],
                       ['name' => 'Marina', 'target' => ''],
                       ['name' => 'Pond', 'target' => ''],
+                      ['name' => 'Riparian Rights', 'target' => ''],
                       ['name' => 'River', 'target' => ''],
                   ];
 
@@ -1233,59 +1223,83 @@
               </div>
               <div class="form-group ">
                 @php
-                  $viewOptRes = [
-                      ['name' => 'Yes', 'target' => '.viewOptYes', 'icon' => 'fa-regular fa-circle-check'],
-                      ['name' => 'No', 'target' => '.viewOptNo', 'icon' => 'fa-regular fa-circle-xmark'],
-                      ['name' => 'Optional', 'target' => '.viewOptional', 'icon' => 'fa-regular fa-circle-question'],
-                  ];
-                @endphp
-                <div class="form-group">
-                  <label class="fw-bold">View Preference Needed:</label>
-                  <select class="grid-picker" name="viewOpt" id="viewRes" style="justify-content: flex-start;">
-                    <option value="">Select</option>
-                    @foreach ($viewOptRes as $item)
-                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon="<i class='{{ $item['icon'] }}'></i>">
-                        {{ $item['name'] }}
-                      </option>
-                    @endforeach
-                  </select>
-                </div>
-                <div class="form-group" id="viewOptRes" style="display:none;">
-                  @php
-                    $viewReferenceRes = [
-                        ['name' => 'City', 'target' => ''],
-                        ['name' => 'Garden', 'target' => ''],
-                        ['name' => 'Golf Course', 'target' => ''],
-                        ['name' => 'Greenbelt', 'target' => ''],
-                        ['name' => 'Mountain(s)', 'target' => ''],
-                        ['name' => 'Park', 'target' => ''],
-                        ['name' => 'Pool', 'target' => ''],
-                        ['name' => 'Tennis Court', 'target' => ''],
-                        ['name' => 'Trees/Woods', 'target' => ''],
-                        ['name' => 'Water', 'target' => ''],
-                        ['name' => 'Other', 'target' => '.viewReferenceResOther'],
+                    $dockRes = [
+                        [
+                            'name' => 'Yes',
+                            'target' => '.dockRes',
+                            'icon' => 'fa-regular fa-circle-check',
+                        ],
+                        ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark'],
+                        [
+                            'name' => 'Optional',
+                            'target' => '.dockRes',
+                            'icon' => 'fa-regular fa-circle-question',
+                        ],
                     ];
-                  @endphp
-                  <label class="fw-bold">View Preference Needed:</label>
-                  <select class="grid-picker" name="viewReference[]" id=""
-                    style="justify-content: flex-start;" multiple required>
+                @endphp
+                <label class="fw-bold">Dock Needed:</label>
+                <select class="grid-picker" name="has_dock" id="hasDock"
+                    style="justify-content: flex-start;">
                     <option value="">Select</option>
-                    @foreach ($viewReferenceRes as $item)
-                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                        data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                        style="width:calc(33.3% - 10px);">
-                        {{ $item['name'] }}
-                      </option>
+                    @foreach ($dockRes as $item)
+                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                            class="card flex-row" style="width:calc(33.3% - 10px);"
+                            data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                            {{ $item['name'] }}
+                        </option>
                     @endforeach
-                  </select>
-                  <div class="form-group viewReferenceResOther d-none">
-                    <label class="fw-bold">View Preference Needed:</label>
-                    <input type="text" name="viewReferenceOther" class="form-control has-icon"
-                      data-icon="fa-solid fa-ruler-combined" required>
-                  </div>
+                </select>
+                <div class="form-group" id="dockRes" style="display: none">
+                    @php
+                        $dockRes = [
+                            ['name' => '2 Point Moorage', 'target' => ''],
+                            ['name' => '3 Point Moorage', 'target' => ''],
+                            ['name' => '4 Point Moorage', 'target' => ''],
+                            ['name' => 'CATV', 'target' => ''],
+                            ['name' => 'Clubhouse', 'target' => ''],
+                            ['name' => 'Dock - Composite', 'target' => ''],
+                            ['name' => 'Dock - Concrete', 'target' => ''],
+                            ['name' => 'Dock - Covered', 'target' => ''],
+                            ['name' => 'Dock - Open', 'target' => ''],
+                            ['name' => 'Dock - Slip 1st Come', 'target' => ''],
+                            ['name' => 'Dock - Slip Deeded Off-Site', 'target' => ''],
+                            ['name' => 'Dock - Slip Deeded On-Site', 'target' => ''],
+                            ['name' => 'Dock - Wood', 'target' => ''],
+                            ['name' => 'Dock w/Electric', 'target' => ''],
+                            ['name' => 'Dock w/o Electric', 'target' => ''],
+                            ['name' => 'Dock w/Water Supply', 'target' => ''],
+                            ['name' => 'Dock w/o Water Supply', 'target' => ''],
+                            ['name' => 'Dry Dock', 'target' => ''],
+                            ['name' => 'Fish Cleaning Station', 'target' => ''],
+                            ['name' => 'Floating Dock', 'target' => ''],
+                            ['name' => 'Harbormaster', 'target' => ''],
+                            ['name' => 'Internet', 'target' => ''],
+                            ['name' => 'Lift', 'target' => ''],
+                            ['name' => 'Restroom/Shower', 'target' => ''],
+                            ['name' => 'Wet Dock', 'target' => ''],
+                            ['name' => 'None', 'target' => ''],
+                            ['name' => 'Other', 'target' => '.dock_res_other_opt'],
+                        ];
+                    @endphp
+                    <select class="grid-picker" name="dock[]" id="dock"
+                        style="justify-content: flex-start;" multiple>
+                        <option value="">Select</option>
+                        @foreach ($dockRes as $item)
+                            <option value="{{ $item['name'] }}"
+                                data-icon="<i class='fa-regular fa-circle-check'></i>"
+                                data-target="{{ $item['target'] }}" class="card flex-row"
+                                style="width:calc(33.3% - 10px);">
+                                {{ $item['name'] }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
-              </div>
+                <div class="form-group dock_res_other_opt d-none">
+                    <label class="fw-bold">Dock Description Needed:</label>
+                    <input type="text" name="dockDescription" id=""
+                        class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                </div>
+            </div>
             </span>
             <span class="commercialFieldss">
               <div class="form-group ">
@@ -1683,7 +1697,7 @@
                     ['name' => 'Community', 'target' => '', 'icon' => 'fa-regular fa-circle-check'],
                 ];
               @endphp
-              <label class="fw-bold">Pool Needed: </label>
+              <label class="fw-bold">Pool Type Needed:</label>
               <select class="grid-picker" name="poolNeededOpt" id="pool" style="justify-content: flex-start;"
                 required>
                 <option value="">Select</option>
@@ -1694,6 +1708,62 @@
                   </option>
                 @endforeach
               </select>
+            </div>
+            <div class="form-group ">
+              @php
+                $viewOptRes = [
+                    ['name' => 'Yes', 'target' => '.viewOptYes', 'icon' => 'fa-regular fa-circle-check'],
+                    ['name' => 'No', 'target' => '.viewOptNo', 'icon' => 'fa-regular fa-circle-xmark'],
+                    ['name' => 'Optional', 'target' => '.viewOptional', 'icon' => 'fa-regular fa-circle-question'],
+                ];
+              @endphp
+              <div class="form-group">
+                <label class="fw-bold">View Preference Needed:</label>
+                <select class="grid-picker" name="viewOpt" id="viewRes" style="justify-content: flex-start;">
+                  <option value="">Select</option>
+                  @foreach ($viewOptRes as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                      style="width:calc(33.3% - 10px);" data-icon="<i class='{{ $item['icon'] }}'></i>">
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="form-group" id="viewOptRes" style="display:none;">
+                @php
+                  $viewReferenceRes = [
+                      ['name' => 'City', 'target' => ''],
+                      ['name' => 'Garden', 'target' => ''],
+                      ['name' => 'Golf Course', 'target' => ''],
+                      ['name' => 'Greenbelt', 'target' => ''],
+                      ['name' => 'Mountain(s)', 'target' => ''],
+                      ['name' => 'Park', 'target' => ''],
+                      ['name' => 'Pool', 'target' => ''],
+                      ['name' => 'Tennis Court', 'target' => ''],
+                      ['name' => 'Trees/Woods', 'target' => ''],
+                      ['name' => 'Water', 'target' => ''],
+                      ['name' => 'Beach', 'target' => ''],
+                      ['name' => 'Other', 'target' => '.viewReferenceResOther'],
+                  ];
+                @endphp
+                <label class="fw-bold">View Preference Needed:</label>
+                <select class="grid-picker" name="viewReference[]" id=""
+                  style="justify-content: flex-start;" multiple required>
+                  <option value="">Select</option>
+                  @foreach ($viewReferenceRes as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                      data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
+                      style="width:calc(33.3% - 10px);">
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+                <div class="form-group viewReferenceResOther d-none">
+                  <label class="fw-bold">View Preference Needed:</label>
+                  <input type="text" name="viewReferenceOther" class="form-control has-icon"
+                    data-icon="fa-regular fa-circle-check" required>
+                </div>
+              </div>
             </div>
           </div>
           <div class="wizard-step" data-step="17">
