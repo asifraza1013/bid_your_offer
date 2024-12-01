@@ -7,7 +7,8 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-    protected $commands = [\App\Console\Commands\AutoBid::class,];
+    // protected $commands = [\App\Console\Commands\AutoBid::class,];
+    protected $commands = [\App\Console\Commands\SellerAutocounter::class, \App\Console\Commands\BuyerAutocounter::class];
     /**
      * Define the application's command schedule.
      *
@@ -17,9 +18,13 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command('autoBid')->everyMinute();
-        $schedule->command('expirationDate')->everyMinute();
+        // $schedule->command('autoBid')->everyMinute();
+        // $schedule->command('expirationDate')->everyMinute();
         // $schedule->command('autoBid')->everyThirtyMinutes();
+        
+        $schedule->command('seller:autocounter')->everyMinute();
+        $schedule->command('buyer:autocounter')->everyMinute();
+
     }
 
     /**
