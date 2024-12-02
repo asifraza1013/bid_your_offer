@@ -95,6 +95,13 @@ class TenantCriteriaAuctionController extends Controller
             $auction->saveMeta("petType",$request->petType);
             $auction->saveMeta("petBreed",$request->petBreed);
             $auction->saveMeta("petWeight",$request->petWeight);
+            $auction->saveMeta("represented",$request->represented);
+            $auction->saveMeta("agentCommissionRequested",$request->agentCommissionRequested);
+            $auction->saveMeta("agentCompensationAmountReq",$request->agentCompensationAmountReq);
+            $auction->saveMeta("agentCompensationAmountReqOther",$request->agentCompensationAmountReqOther);
+            $auction->saveMeta("tenantPaysTheAgent",$request->tenantPaysTheAgent);
+            $auction->saveMeta("tenantPaysAmount",$request->tenantPaysAmount);
+            $auction->saveMeta("tenantPaysAmountOther",$request->tenantPaysAmountOther);
             $auction->saveMeta("is_tenant_eligible",$request->is_tenant_eligible);
             $auction->saveMeta("description_buyer_specific",$request->description_buyer_specific);
             $auction->saveMeta("any_non_negotiable_factors",$request->any_non_negotiable_factors);

@@ -604,7 +604,7 @@
                   </option>
                 @endforeach
               </select>
-              <div class="form-group singleRoomRes d-none">
+              <div class="form-group main singleRoomRes d-none">
                 <label class="fw-bold">What is the desired size of the room for the tenant?</label>
                 <input type="text" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"
                   name="leasePropOther" required>
@@ -654,7 +654,7 @@
                   @endforeach
                 </select>
               </div>
-              <div class="form-group other_prop_conditionRes d-none">
+              <div class="form-group main other_prop_conditionRes d-none">
                 <label class="fw-bold">Acceptable Property Conditions: </label>
                 <input type="text" name="propsOther" id="propsOther" class="form-control has-icon  "
                   data-icon="fa-regular fa-circle-check" data-msg-required="Property Condition" placeholder="">
@@ -697,7 +697,7 @@
                   @endforeach
                 </select>
               </div>
-              <div class="form-group leaseOtherRes d-none">
+              <div class="form-group main leaseOtherRes d-none">
                 <label class="fw-bold">Offered Lease Length: </label>
                 <input type="text" name="leaseOther" id="propsOther" class="form-control has-icon  "
                   data-icon="fa-regular fa-calendar-days" data-msg-required="Property Condition" placeholder="" required>
@@ -739,7 +739,7 @@
                 @endforeach
               </select>
             </div>
-            <div class="form-group custom_bedrooms d-none">
+            <div class="form-group main custom_bedrooms d-none">
               <label class="fw-bold">Minimum Bedrooms Needed:</label>
               <input type="number" name="custom_bedrooms" id="custom_bedrooms" class="form-control has-icon"
                 data-icon="fa-solid fa-bed" required>
@@ -783,7 +783,7 @@
                 @endforeach
               </select>
             </div>
-            <div class="form-group custom_bathrooms d-none">
+            <div class="form-group main custom_bathrooms d-none">
               <label class="fw-bold">Minimum Bathrooms Needed: </label>
               <input type="number" name="custom_bathrooms" id="custom_bathrooms" class="form-control has-icon"
                 data-icon="fa-solid fa-bath" required>
@@ -800,12 +800,47 @@
             <span class="commercialFieldss">
               <div class="form-group ">
                 <label class="fw-bold">Minimum Net Leaseable Sqft Needed: </label>
-                <input type="text" name="minimum_sqft_needed" id="minimum_sqft_needed"
+                <input type="number" name="minimum_sqft_needed" id="minimum_sqft_needed"
                   class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
               </div>
             </span>
           </div>
           <div class="wizard-step" data-step="12">
+            <span class="commercialFieldss">
+              @php
+                $acreageRes = [
+                    ['name' => '0 to less than 1/4', 'target' => ''],
+                    ['name' => '1/4 to less than 1/2', 'target' => ''],
+                    ['name' => '1/2 to less than 1', 'target' => ''],
+                    ['name' => '1 to less than 2', 'target' => ''],
+                    ['name' => '2 to less than 5', 'target' => ''],
+                    ['name' => '5 to less than 10', 'target' => ''],
+                    ['name' => '10 to less than 20', 'target' => ''],
+                    ['name' => '20 to less than 50', 'target' => ''],
+                    ['name' => '50 to less than 100', 'target' => ''],
+                    ['name' => '100 to less than 200', 'target' => ''],
+                    ['name' => '200 to less than 500', 'target' => ''],
+                    ['name' => '500+ acres', 'target' => ''],
+                    ['name' => 'Non-Applicable', 'target' => ''],
+                ];
+              @endphp
+              <div class="form-group ">
+                <label class="fw-bold"> Minimum Total Acreage Needed:</label>
+                <select class="grid-picker" name="total_acreage" id="total_acreage"
+                  style="justify-content: flex-start;" required>
+                  <option value="">Select</option>
+                  @foreach ($acreageRes as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                      class="card flex-column" style="width:calc(25% - 10px);"
+                      data-icon='<i class="fa-solid fa-ruler-combined"></i>'>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+            </span>
+          </div>
+          <div class="wizard-step" data-step="13">
             <div class="row commercial_show">
               @php
 
@@ -854,7 +889,7 @@
                         ['target' => '.garageOther', 'name' => 'Other', 'icon' => ''],
                     ];
                   @endphp
-                  <label class="fw-bold">Garage/Parking Featured Needed:</label>
+                  <label class="fw-bold">Garage/Parking Features Needed:</label>
                   <select class="grid-picker" name="parking_feature_garage[]" id="parking_feature_garage"
                     style="justify-content: flex-start;" required multiple>
                     <option value="">Select</option>
@@ -866,8 +901,8 @@
                       </option>
                     @endforeach
                   </select>
-                  <div class="form-group garageOther d-none">
-                    <label class="fw-bold">Garage/Parking Features: </label>
+                  <div class="form-group main garageOther d-none">
+                    <label class="fw-bold">Garage/Parking Features:</label>
                     <input type="text" name="garageOther" id="minimum_sqft_needed" class="form-control has-icon"
                       data-icon="fa-solid fa-warehouse" required>
                   </div>
@@ -927,7 +962,7 @@
                   @endforeach
                 </select>
               </div>
-              <div class="form-group custom_carport d-none">
+              <div class="form-group main custom_carport d-none">
                 <label class="fw-bold">Carport Spaces Needed:</label>
                 <input type="number" name="custom_carport" id="custom_carport" class="form-control has-icon"
                   data-icon="fa-solid fa-warehouse" required>
@@ -973,14 +1008,14 @@
                   @endforeach
                 </select>
               </div>
-              <div class="form-group custom_garage d-none">
+              <div class="form-group main custom_garage d-none">
                 <label class="fw-bold">Garage Spaces Needed:</label>
                 <input type="number" name="custom_garage" id="custom_garage" class="form-control has-icon"
                   data-icon="fa-solid fa-warehouse" required>
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="13">
+          <div class="wizard-step" data-step="14">
             <span class="resFieldss">
               <div class="form-group ">
                 @php
@@ -1221,85 +1256,6 @@
                   @endforeach
                 </select>
               </div>
-              <div class="form-group ">
-                @php
-                    $dockRes = [
-                        [
-                            'name' => 'Yes',
-                            'target' => '.dockRes',
-                            'icon' => 'fa-regular fa-circle-check',
-                        ],
-                        ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark'],
-                        [
-                            'name' => 'Optional',
-                            'target' => '.dockRes',
-                            'icon' => 'fa-regular fa-circle-question',
-                        ],
-                    ];
-                @endphp
-                <label class="fw-bold">Dock Needed:</label>
-                <select class="grid-picker" name="has_dock" id="hasDock"
-                    style="justify-content: flex-start;">
-                    <option value="">Select</option>
-                    @foreach ($dockRes as $item)
-                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                            class="card flex-row" style="width:calc(33.3% - 10px);"
-                            data-icon='<i class="{{ $item['icon'] }}"></i>'>
-                            {{ $item['name'] }}
-                        </option>
-                    @endforeach
-                </select>
-                <div class="form-group" id="dockRes" style="display: none">
-                    @php
-                        $dockRes = [
-                            ['name' => '2 Point Moorage', 'target' => ''],
-                            ['name' => '3 Point Moorage', 'target' => ''],
-                            ['name' => '4 Point Moorage', 'target' => ''],
-                            ['name' => 'CATV', 'target' => ''],
-                            ['name' => 'Clubhouse', 'target' => ''],
-                            ['name' => 'Dock - Composite', 'target' => ''],
-                            ['name' => 'Dock - Concrete', 'target' => ''],
-                            ['name' => 'Dock - Covered', 'target' => ''],
-                            ['name' => 'Dock - Open', 'target' => ''],
-                            ['name' => 'Dock - Slip 1st Come', 'target' => ''],
-                            ['name' => 'Dock - Slip Deeded Off-Site', 'target' => ''],
-                            ['name' => 'Dock - Slip Deeded On-Site', 'target' => ''],
-                            ['name' => 'Dock - Wood', 'target' => ''],
-                            ['name' => 'Dock w/Electric', 'target' => ''],
-                            ['name' => 'Dock w/o Electric', 'target' => ''],
-                            ['name' => 'Dock w/Water Supply', 'target' => ''],
-                            ['name' => 'Dock w/o Water Supply', 'target' => ''],
-                            ['name' => 'Dry Dock', 'target' => ''],
-                            ['name' => 'Fish Cleaning Station', 'target' => ''],
-                            ['name' => 'Floating Dock', 'target' => ''],
-                            ['name' => 'Harbormaster', 'target' => ''],
-                            ['name' => 'Internet', 'target' => ''],
-                            ['name' => 'Lift', 'target' => ''],
-                            ['name' => 'Restroom/Shower', 'target' => ''],
-                            ['name' => 'Wet Dock', 'target' => ''],
-                            ['name' => 'None', 'target' => ''],
-                            ['name' => 'Other', 'target' => '.dock_res_other_opt'],
-                        ];
-                    @endphp
-                    <select class="grid-picker" name="dock[]" id="dock"
-                        style="justify-content: flex-start;" multiple>
-                        <option value="">Select</option>
-                        @foreach ($dockRes as $item)
-                            <option value="{{ $item['name'] }}"
-                                data-icon="<i class='fa-regular fa-circle-check'></i>"
-                                data-target="{{ $item['target'] }}" class="card flex-row"
-                                style="width:calc(33.3% - 10px);">
-                                {{ $item['name'] }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group dock_res_other_opt d-none">
-                    <label class="fw-bold">Dock Description Needed:</label>
-                    <input type="text" name="dockDescription" id=""
-                        class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
-                </div>
-            </div>
             </span>
             <span class="commercialFieldss">
               <div class="form-group ">
@@ -1391,18 +1347,6 @@
                       ['name' => 'Bridges - Fixed', 'target' => ''],
                       ['name' => 'Bridges - No Fixed Bridges', 'target' => ''],
                       ['name' => 'Davits', 'target' => ''],
-                      ['name' => 'Dock - Composite', 'target' => ''],
-                      ['name' => 'Dock - Concrete', 'target' => ''],
-                      ['name' => 'Dock - Covered', 'target' => ''],
-                      ['name' => 'Dock - Open', 'target' => ''],
-                      ['name' => 'Dock - Slip 1st Come', 'target' => ''],
-                      ['name' => 'Dock - Slip Deeded Off-Site', 'target' => ''],
-                      ['name' => 'Dock - Slip Deeded On-Site', 'target' => ''],
-                      ['name' => 'Dock - Wood', 'target' => ''],
-                      ['name' => 'Dock w/Electric', 'target' => ''],
-                      ['name' => 'Dock w/o Electric', 'target' => ''],
-                      ['name' => 'Dock w/o Water Supply', 'target' => ''],
-                      ['name' => 'Dock w/Water Supply', 'target' => ''],
                       ['name' => 'Fishing Pier', 'target' => ''],
                       ['name' => 'Lift', 'target' => ''],
                       ['name' => 'Lift - Covered', 'target' => ''],
@@ -1546,9 +1490,91 @@
                   @endforeach
                 </select>
               </div>
+            </span>
+            <div class="form-group ">
+              @php
+                  $dockRes = [
+                      [
+                          'name' => 'Yes',
+                          'target' => '.dockRes',
+                          'icon' => 'fa-regular fa-circle-check',
+                      ],
+                      ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark'],
+                      [
+                          'name' => 'Optional',
+                          'target' => '.dockRes',
+                          'icon' => 'fa-regular fa-circle-question',
+                      ],
+                  ];
+              @endphp
+              <label class="fw-bold">Dock Needed:</label>
+              <select class="grid-picker" name="has_dock" id="hasDock"
+                  style="justify-content: flex-start;">
+                  <option value="">Select</option>
+                  @foreach ($dockRes as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                          class="card flex-row" style="width:calc(33.3% - 10px);"
+                          data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                          {{ $item['name'] }}
+                      </option>
+                  @endforeach
+              </select>
+              <div class="form-group" id="dockRes" style="display: none">
+                  @php
+                      $dockRes = [
+                          ['name' => '2 Point Moorage', 'target' => ''],
+                          ['name' => '3 Point Moorage', 'target' => ''],
+                          ['name' => '4 Point Moorage', 'target' => ''],
+                          ['name' => 'CATV', 'target' => ''],
+                          ['name' => 'Clubhouse', 'target' => ''],
+                          ['name' => 'Dock - Composite', 'target' => ''],
+                          ['name' => 'Dock - Concrete', 'target' => ''],
+                          ['name' => 'Dock - Covered', 'target' => ''],
+                          ['name' => 'Dock - Open', 'target' => ''],
+                          ['name' => 'Dock - Slip 1st Come', 'target' => ''],
+                          ['name' => 'Dock - Slip Deeded Off-Site', 'target' => ''],
+                          ['name' => 'Dock - Slip Deeded On-Site', 'target' => ''],
+                          ['name' => 'Dock - Wood', 'target' => ''],
+                          ['name' => 'Dock w/Electric', 'target' => ''],
+                          ['name' => 'Dock w/o Electric', 'target' => ''],
+                          ['name' => 'Dock w/Water Supply', 'target' => ''],
+                          ['name' => 'Dock w/o Water Supply', 'target' => ''],
+                          ['name' => 'Dry Dock', 'target' => ''],
+                          ['name' => 'Fish Cleaning Station', 'target' => ''],
+                          ['name' => 'Floating Dock', 'target' => ''],
+                          ['name' => 'Harbormaster', 'target' => ''],
+                          ['name' => 'Internet', 'target' => ''],
+                          ['name' => 'Lift', 'target' => ''],
+                          ['name' => 'Restroom/Shower', 'target' => ''],
+                          ['name' => 'Wet Dock', 'target' => ''],
+                          ['name' => 'None', 'target' => ''],
+                          ['name' => 'Other', 'target' => '.dock_res_other_opt'],
+                      ];
+                  @endphp
+                  <select class="grid-picker" name="dock[]" id="dock"
+                      style="justify-content: flex-start;" multiple>
+                      <option value="">Select</option>
+                      @foreach ($dockRes as $item)
+                          <option value="{{ $item['name'] }}"
+                              data-icon="<i class='fa-regular fa-circle-check'></i>"
+                              data-target="{{ $item['target'] }}" class="card flex-row"
+                              style="width:calc(33.3% - 10px);">
+                              {{ $item['name'] }}
+                          </option>
+                      @endforeach
+                  </select>
+              </div>
+              <div class="form-group main dock_res_other_opt d-none">
+                  <label class="fw-bold">Dock Description Needed:</label>
+                  <input type="text" name="dockDescription" id=""
+                      class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
+            </div>
+          </div>
+          <div class="wizard-step" data-step="15">
+            <div class="commercialFieldss">
               <div class="form-group ">
                 @php
-
                   $viewOptComm = [
                       ['name' => 'Yes', 'target' => '.viewOptYes', 'icon' => 'fa-regular fa-circle-check'],
                       ['name' => 'No', 'target' => '.viewOptNo', 'icon' => 'fa-regular fa-circle-xmark'],
@@ -1580,6 +1606,7 @@
                         ['name' => 'Tennis Court', 'target' => ''],
                         ['name' => 'Trees/Woods', 'target' => ''],
                         ['name' => 'Water', 'target' => ''],
+                        ['name' => 'Beach', 'target' => ''],
                         ['name' => 'Other', 'target' => '.viewReferenceCommercialOther']
                     ];
                   @endphp
@@ -1595,17 +1622,17 @@
                       </option>
                     @endforeach
                   </select>
-                  <div class="form-group viewReferenceCommercialOther d-none">
+                  <div class="form-group main viewReferenceCommercialOther d-none">
                     <label class="fw-bold">View Preference Needed:</label>
                     <input type="text" name="viewReferenceOther" class="form-control has-icon"
-                      data-icon="fa-solid fa-ruler-combined" required>
+                      data-icon="fa-regular fa-circle-check" required>
                   </div>
                 </div>
               </div>
-            </span>
+            </div>
           </div>
-          <div class="wizard-step" data-step="14">
-            <span class="resFields">
+          <div class="wizard-step" data-step="16">
+            <span class="resFieldss">
               @php
                 $acreageRes = [
                     ['name' => '0 to less than 1/4', 'target' => ''],
@@ -1639,7 +1666,7 @@
               </div>
             </span>
           </div>
-          <div class="wizard-step" data-step="15">
+          <div class="wizard-step" data-step="17">
             @php
               $Furnishings = [
                   ['name' => 'Furnished', 'target' => ''],
@@ -1663,7 +1690,7 @@
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="16">
+          <div class="wizard-step" data-step="18">
             @php
               $poolNeeded = [
                   [
@@ -1686,7 +1713,7 @@
                 @endforeach
               </select>
             </div>
-            <div class="form-group poolNeededYes d-none">
+            <div class="form-group main poolNeededYes d-none">
               @php
                 $poolNeededYes = [
                     [
@@ -1709,108 +1736,66 @@
                 @endforeach
               </select>
             </div>
-            <div class="form-group ">
-              @php
-                $viewOptRes = [
-                    ['name' => 'Yes', 'target' => '.viewOptYes', 'icon' => 'fa-regular fa-circle-check'],
-                    ['name' => 'No', 'target' => '.viewOptNo', 'icon' => 'fa-regular fa-circle-xmark'],
-                    ['name' => 'Optional', 'target' => '.viewOptional', 'icon' => 'fa-regular fa-circle-question'],
-                ];
-              @endphp
+            <div class="resFieldss">
               <div class="form-group">
-                <label class="fw-bold">View Preference Needed:</label>
-                <select class="grid-picker" name="viewOpt" id="viewRes" style="justify-content: flex-start;">
-                  <option value="">Select</option>
-                  @foreach ($viewOptRes as $item)
-                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon="<i class='{{ $item['icon'] }}'></i>">
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="form-group" id="viewOptRes" style="display:none;">
                 @php
-                  $viewReferenceRes = [
-                      ['name' => 'City', 'target' => ''],
-                      ['name' => 'Garden', 'target' => ''],
-                      ['name' => 'Golf Course', 'target' => ''],
-                      ['name' => 'Greenbelt', 'target' => ''],
-                      ['name' => 'Mountain(s)', 'target' => ''],
-                      ['name' => 'Park', 'target' => ''],
-                      ['name' => 'Pool', 'target' => ''],
-                      ['name' => 'Tennis Court', 'target' => ''],
-                      ['name' => 'Trees/Woods', 'target' => ''],
-                      ['name' => 'Water', 'target' => ''],
-                      ['name' => 'Beach', 'target' => ''],
-                      ['name' => 'Other', 'target' => '.viewReferenceResOther'],
+                  $viewOptRes = [
+                      ['name' => 'Yes', 'target' => '.viewOptYes', 'icon' => 'fa-regular fa-circle-check'],
+                      ['name' => 'No', 'target' => '.viewOptNo', 'icon' => 'fa-regular fa-circle-xmark'],
+                      ['name' => 'Optional', 'target' => '.viewOptional', 'icon' => 'fa-regular fa-circle-question'],
                   ];
                 @endphp
-                <label class="fw-bold">View Preference Needed:</label>
-                <select class="grid-picker" name="viewReference[]" id=""
-                  style="justify-content: flex-start;" multiple required>
-                  <option value="">Select</option>
-                  @foreach ($viewReferenceRes as $item)
-                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                      data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                      style="width:calc(33.3% - 10px);">
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-                <div class="form-group viewReferenceResOther d-none">
+                <div class="form-group">
                   <label class="fw-bold">View Preference Needed:</label>
-                  <input type="text" name="viewReferenceOther" class="form-control has-icon"
-                    data-icon="fa-regular fa-circle-check" required>
+                  <select class="grid-picker" name="viewOpt" id="viewRes" style="justify-content: flex-start;">
+                    <option value="">Select</option>
+                    @foreach ($viewOptRes as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                        style="width:calc(33.3% - 10px);" data-icon="<i class='{{ $item['icon'] }}'></i>">
+                        {{ $item['name'] }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="form-group" id="viewOptRes" style="display:none;">
+                  @php
+                    $viewReferenceRes = [
+                        ['name' => 'City', 'target' => ''],
+                        ['name' => 'Garden', 'target' => ''],
+                        ['name' => 'Golf Course', 'target' => ''],
+                        ['name' => 'Greenbelt', 'target' => ''],
+                        ['name' => 'Mountain(s)', 'target' => ''],
+                        ['name' => 'Park', 'target' => ''],
+                        ['name' => 'Pool', 'target' => ''],
+                        ['name' => 'Tennis Court', 'target' => ''],
+                        ['name' => 'Trees/Woods', 'target' => ''],
+                        ['name' => 'Water', 'target' => ''],
+                        ['name' => 'Beach', 'target' => ''],
+                        ['name' => 'Other', 'target' => '.viewReferenceResOther'],
+                    ];
+                  @endphp
+                  <label class="fw-bold">View Preference Needed:</label>
+                  <select class="grid-picker" name="viewReference[]" id=""
+                    style="justify-content: flex-start;" multiple required>
+                    <option value="">Select</option>
+                    @foreach ($viewReferenceRes as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                        data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
+                        style="width:calc(33.3% - 10px);">
+                        {{ $item['name'] }}
+                      </option>
+                    @endforeach
+                  </select>
+                  <div class="form-group main viewReferenceResOther d-none">
+                    <label class="fw-bold">View Preference Needed:</label>
+                    <input type="text" name="viewReferenceOther" class="form-control has-icon"
+                      data-icon="fa-regular fa-circle-check" required>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="17">
-            <div class="form-group">
-              <label class="fw-bold">Does the tenant have a pet?</label>
-              <select class="grid-picker" name="has_pets" id="has_pets" style="justify-content: flex-start;"
-                required>
-                <option value="">Select</option>
-                @foreach ($yes_or_nos as $item)
-                  @php
-                    if ($item['name'] == 'Yes') {
-                        $target = '.pets_info';
-                    } else {
-                        $target = '';
-                    }
-                  @endphp
-                  <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
-                    {{ $item['name'] }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-            <div class="pets_info d-none">
-              <div class="form-group">
-                <label class="fw-bold">How many pets does the tenant have?</label>
-                <input type="text" name="totalPets" id="type_of_pet" class="form-control has-icon"
-                  data-icon="fa-solid fa-dog" required>
-              </div>
-              <div class="form-group">
-                <label class="fw-bold">What type of pet(s) does the tenant have?</label>
-                <input type="text" name="petType" id="pets_bread" class="form-control has-icon"
-                  data-icon="fa-solid fa-dog" required>
-              </div>
-              <div class="form-group">
-                <label class="fw-bold">What breed(s) are the pet(s)?</label>
-                <input type="text" name="petBreed" id="total_pets" class="form-control has-icon"
-                  data-icon="fa-solid fa-dog" required>
-              </div>
-              <div class="form-group">
-                <label class="fw-bold">What is the weight of the pet(s)?</label>
-                <input type="text" name="petWeight" id="total_pets" class="form-control has-icon"
-                  data-icon="fa-solid fa-dog" required>
-              </div>
-            </div>
-          </div>
-          <div class="wizard-step" data-step="18">
+          <div class="wizard-step" data-step="19">
             <div class="form-group">
               <label class="fw-bold">Is the tenant eligible or interested in leasing a property in 55+ and over
                 communities?</label>
@@ -1826,7 +1811,7 @@
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="19">
+          <div class="wizard-step" data-step="20">
             <div class="form-group">
               <label class="fw-bold">Please provide a detailed description of the tenant’s specific requirements and
                 preferences for leasing a property:</label>
@@ -1834,7 +1819,7 @@
                 rows="5" required></textarea>
             </div>
           </div>
-          <div class="wizard-step" data-step="20">
+          <div class="wizard-step" data-step="21">
             <div class="form-group ">
               @php
                 $negotiableOpt = [
@@ -1859,80 +1844,180 @@
                   </option>
                 @endforeach
               </select>
-              <div class="form-group negotiableOptYesRes d-none">
-                @php
-                  $negotiableRes = [
-                      ['name' => 'Garage', 'target' => ''],
-                      ['name' => 'Carport', 'target' => ''],
-                      ['name' => 'Pool', 'target' => ''],
-                      ['name' => 'Waterfront', 'target' => ''],
-                      ['name' => 'In-Unit Laundry', 'target' => ''],
-                      ['name' => 'On-site Laundry', 'target' => ''],
-                      ['name' => 'Washer and Dryer Hookup', 'target' => ''],
-                      ['name' => 'Washer and Dryer', 'target' => ''],
-                      ['name' => 'Covered Carport', 'target' => ''],
-                      ['name' => 'First Floor Unit', 'target' => ''],
-                      ['name' => 'Elevator', 'target' => ''],
-                      ['name' => 'Pet Friendly', 'target' => ''],
-                      ['name' => 'Balcony/Patio', 'target' => ''],
-                      ['name' => 'Fitness Center/Gym', 'target' => ''],
-                      ['name' => 'Central Heating', 'target' => ''],
-                      ['name' => 'Central Air Conditioning', 'target' => ''],
-                      ['name' => 'Fireplace', 'target' => ''],
-                      ['name' => 'Walk-in Closet', 'target' => ''],
-                      ['name' => 'Hardwood Floors', 'target' => ''],
-                      ['name' => 'Tile Floors', 'target' => ''],
-                      ['name' => 'Carpet Floors', 'target' => ''],
-                      ['name' => 'Security System', 'target' => ''],
-                      ['name' => 'Gated Community', 'target' => ''],
-                      ['name' => 'HOA Community', 'target' => ''],
-                      ['name' => '55 and Over Community', 'target' => ''],
-                      ['name' => 'Specific School District', 'target' => ''],
-                      ['name' => 'Accessibility Features', 'target' => ''],
-                      ['name' => 'On-site Maintenance', 'target' => ''],
-                      ['name' => 'On-site Management', 'target' => ''],
-                      ['name' => 'Outdoor Space', 'target' => ''],
-                      ['name' => 'Playground', 'target' => ''],
-                      ['name' => 'Clubhouse', 'target' => ''],
-                      ['name' => 'Storage Space', 'target' => ''],
-                      ['name' => 'Study/Den/Office', 'target' => ''],
-                      ['name' => 'Updated Kitchen', 'target' => ''],
-                      ['name' => 'Updated Bathroom', 'target' => ''],
-                      ['name' => 'Other', 'target' => '.negotiableOtherRes'],
-                  ];
-                @endphp
-                <label class="fw-bold">What are the non-negotiable amenities or property features that the tenant will
-                  not accept for a property?</label>
-                <select class="grid-picker" name="negotiable[]" id="any_non_negotiable_factors"
-                  style="justify-content: flex-start;" multiple required>
-                  <option value="">Select</option>
-                  @foreach ($negotiableRes as $item)
-                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'>
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-                <div class="form-group negotiableOtherRes d-none">
+              <div class="form-group main negotiableOptYesRes d-none">
+                <div class="resFieldss">
+                  @php
+                    $negotiableRes = [
+                        ['name' => 'Garage', 'target' => ''],
+                        ['name' => 'Carport', 'target' => ''],
+                        ['name' => 'Pool', 'target' => ''],
+                        ['name' => 'Waterfront', 'target' => ''],
+                        ['name' => 'In-Unit Laundry', 'target' => ''],
+                        ['name' => 'On-site Laundry', 'target' => ''],
+                        ['name' => 'Washer and Dryer Hookup', 'target' => ''],
+                        ['name' => 'Washer and Dryer', 'target' => ''],
+                        ['name' => 'Covered Carport', 'target' => ''],
+                        ['name' => 'First Floor Unit', 'target' => ''],
+                        ['name' => 'Elevator', 'target' => ''],
+                        ['name' => 'Pet Friendly', 'target' => ''],
+                        ['name' => 'Balcony/Patio', 'target' => ''],
+                        ['name' => 'Fitness Center/Gym', 'target' => ''],
+                        ['name' => 'Central Heating', 'target' => ''],
+                        ['name' => 'Central Air Conditioning', 'target' => ''],
+                        ['name' => 'Fireplace', 'target' => ''],
+                        ['name' => 'Walk-in Closet', 'target' => ''],
+                        ['name' => 'Hardwood Floors', 'target' => ''],
+                        ['name' => 'Tile Floors', 'target' => ''],
+                        ['name' => 'Carpet Floors', 'target' => ''],
+                        ['name' => 'Security System', 'target' => ''],
+                        ['name' => 'Gated Community', 'target' => ''],
+                        ['name' => 'HOA Community', 'target' => ''],
+                        ['name' => '55 and Over Community', 'target' => ''],
+                        ['name' => 'Specific School District', 'target' => ''],
+                        ['name' => 'Accessibility Features', 'target' => ''],
+                        ['name' => 'On-site Maintenance', 'target' => ''],
+                        ['name' => 'On-site Management', 'target' => ''],
+                        ['name' => 'Outdoor Space', 'target' => ''],
+                        ['name' => 'Playground', 'target' => ''],
+                        ['name' => 'Clubhouse', 'target' => ''],
+                        ['name' => 'Storage Space', 'target' => ''],
+                        ['name' => 'Study/Den/Office', 'target' => ''],
+                        ['name' => 'Updated Kitchen', 'target' => ''],
+                        ['name' => 'Updated Bathroom', 'target' => ''],
+                        ['name' => 'Other', 'target' => '.negotiableOtherRes'],
+                    ];
+                  @endphp
                   <label class="fw-bold">What are the non-negotiable amenities or property features that the tenant will
                     not accept for a property?</label>
-                  <input type="text" name="negotiableOther" id="" class="form-control has-icon"
-                    data-icon="fa-solid fa-ruler-combined" required>
+                  <select class="grid-picker" name="negotiable[]" id="any_non_negotiable_factors"
+                    style="justify-content: flex-start;" multiple required>
+                    <option value="">Select</option>
+                    @foreach ($negotiableRes as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                        style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                        {{ $item['name'] }}
+                      </option>
+                    @endforeach
+                  </select>
+                  <div class="form-group main negotiableOtherRes d-none">
+                    <label class="fw-bold">What are the non-negotiable amenities or property features that the tenant will
+                      not accept for a property?</label>
+                    <input type="text" name="negotiableOther" id="" class="form-control has-icon"
+                      data-icon="fa-regular fa-circle-check" required>
+                  </div>
+                </div>
+                <div class="commercialFieldss">
+                  @php
+                    $negotiableCom = [
+                        ['name' => 'Parking Spaces', 'target' => ''],
+                        ['name' => 'Loading Dock', 'target' => ''],
+                        ['name' => 'Warehouse Space', 'target' => ''],
+                        ['name' => 'Office Space', 'target' => ''],
+                        ['name' => 'Conference Room', 'target' => ''],
+                        ['name' => 'Kitchenette/Break Room', 'target' => ''],
+                        ['name' => 'Restrooms', 'target' => ''],
+                        ['name' => 'Elevator', 'target' => ''],
+                        ['name' => 'Handicap Accessibility', 'target' => ''],
+                        ['name' => 'Security System', 'target' => ''],
+                        ['name' => 'On-site Maintenance', 'target' => ''],
+                        ['name' => 'On-site Management', 'target' => ''],
+                        ['name' => 'Outdoor Space/Garden', 'target' => ''],
+                        ['name' => 'Signage Opportunities', 'target' => ''],
+                        ['name' => 'High-Speed Internet', 'target' => ''],
+                        ['name' => 'Utilities Included', 'target' => ''],
+                        ['name' => 'HVAC System', 'target' => ''],
+                        ['name' => 'Natural Lighting', 'target' => ''],
+                        ['name' => 'Storage Space', 'target' => ''],
+                        ['name' => 'Open Floor Plan', 'target' => ''],
+                        ['name' => 'Retail Frontage', 'target' => ''],
+                        ['name' => 'Restaurant Space', 'target' => ''],
+                        ['name' => 'Industrial Features', 'target' => ''],
+                        ['name' => 'Flexibility for Renovations', 'target' => ''],
+                        ['name' => 'Common Areas', 'target' => ''],
+                        ['name' => 'Business Center', 'target' => ''],
+                        ['name' => 'Gym/Fitness Facilities', 'target' => ''],
+                        ['name' => 'Lounge Area', 'target' => ''],
+                        ['name' => 'Reception Area', 'target' => ''],
+                        ['name' => 'Security Guard', 'target' => ''],
+                        ['name' => 'Fire Safety Systems', 'target' => ''],
+                        ['name' => 'Energy-Efficient Features', 'target' => ''],
+                        ['name' => 'Green Building Certification', 'target' => ''],
+                        ['name' => 'Access to Public Transportation', 'target' => ''],
+                        ['name' => 'Proximity to Highways', 'target' => ''],
+                        ['name' => 'Visibility from Main Road', 'target' => ''],
+                        ['name' => 'Other', 'target' => '.negotiableOtherCom'],
+                    ];
+                  @endphp
+                  <label class="fw-bold">What are the non-negotiable amenities or property features that the tenant will
+                    not accept for a property?</label>
+                  <select class="grid-picker" name="negotiable[]" id="any_non_negotiable_factors"
+                    style="justify-content: flex-start;" multiple required>
+                    <option value="">Select</option>
+                    @foreach ($negotiableCom as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                        style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                        {{ $item['name'] }}
+                      </option>
+                    @endforeach
+                  </select>
+                  <div class="form-group main negotiableOtherCom d-none">
+                    <label class="fw-bold">What are the non-negotiable amenities or property features that the tenant will
+                      not accept for a property?</label>
+                    <input type="text" name="negotiableOther" id="" class="form-control has-icon"
+                      data-icon="fa-regular fa-circle-check" required>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="21">
+          <div class="wizard-step" data-step="22">
             <h4>Tenant’s Prescreening Criteria:</h4>
             <span class="resFieldss">
               <div class="form-group">
-                <label class="fw-bold">Offered Renter Terms: </label>
-                <input type="text" name="renterTerms" class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
+                <label class="fw-bold">Does the tenant have a pet?</label>
+                <select class="grid-picker" name="has_pets" id="has_pets" style="justify-content: flex-start;"
+                  required>
+                  <option value="">Select</option>
+                  @foreach ($yes_or_nos as $item)
+                    @php
+                      if ($item['name'] == 'Yes') {
+                          $target = '.pets_info';
+                      } else {
+                          $target = '';
+                      }
+                    @endphp
+                    <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="pets_info main d-none">
+                <div class="form-group">
+                  <label class="fw-bold">How many pets does the tenant have?</label>
+                  <input type="text" name="totalPets" id="type_of_pet" class="form-control has-icon"
+                    data-icon="fa-solid fa-dog" required>
+                </div>
+                <div class="form-group">
+                  <label class="fw-bold">What type of pet(s) does the tenant have?</label>
+                  <input type="text" name="petType" id="pets_bread" class="form-control has-icon"
+                    data-icon="fa-solid fa-dog" required>
+                </div>
+                <div class="form-group">
+                  <label class="fw-bold">What breed(s) are the pet(s)?</label>
+                  <input type="text" name="petBreed" id="total_pets" class="form-control has-icon"
+                    data-icon="fa-solid fa-dog" required>
+                </div>
+                <div class="form-group">
+                  <label class="fw-bold">What is the weight of the pet(s)?</label>
+                  <input type="text" name="petWeight" id="total_pets" class="form-control has-icon"
+                    data-icon="fa-solid fa-dog" required>
+                </div>
               </div>
               <div class="form-group">
                 <label class="fw-bold">How many people will be occupying the property:</label>
-                <input type="text" name="how_many_occupying" class="form-control has-icon"
+                <input type="number" name="how_many_occupying" class="form-control has-icon"
                   data-icon="fa-solid fa-users">
               </div>
               <div class="form-group">
@@ -1983,11 +2068,11 @@
                     </option>
                   @endforeach
                 </select>
-                <div class="form-group custom_convictedRes d-none">
+                <div class="form-group main custom_convictedRes d-none">
                   <label class="fw-bold" for="custom_convicted">Explain when and what for:</label>
                   <input type="text" name="custom_convicted" id="custom_convicted"
-                    placeholder="Explain when and what for" class="form-control has-icon"
-                    data-icon="fa-solid fa-ruler-combined" required>
+                    placeholder="" class="form-control has-icon"
+                    data-icon="fa-regular fa-circle-check" required>
                 </div>
               </div>
               <div class="form-group">
@@ -2010,13 +2095,13 @@
                     </option>
                   @endforeach
                 </select>
-                <div class="form-group custom_evictedRes d-none">
+                <div class="form-group main custom_evictedRes d-none">
                   <label class="fw-bold" for="custom_evicted_why">Explain when and why:</label>
-                  <input type="text" name="custom_evicted" id="custom_evicted" placeholder="Explain when and why"
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+                  <input type="text" name="custom_evicted" id="custom_evicted" placeholder=""
+                    class="form-control has-icon" data-icon="fa-regular fa-circle-check" required>
                 </div>
               </div>
-              <div class="form-group">
+              {{-- <div class="form-group">
                 <label class="fw-bold">
                   Has the tenant been involved in any prior lease violations
                 </label>
@@ -2043,7 +2128,7 @@
                     placeholder="Explain when and why" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"
                     required>
                 </div>
-              </div>
+              </div> --}}
               {{-- <div class="form-group">
                 <label class="fw-bold">
                   Does the tenant have any outstanding balances with previous landlords?
@@ -2072,16 +2157,12 @@
                     required>
                 </div>
               </div> --}}
+              
             </span>
             <span class="commercialFieldss">
               <div class="form-group">
-                <label class="fw-bold">Offered Renter Terms: </label>
-                <input type="text" name="renterTerms" class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined">
-              </div>
-              <div class="form-group">
                 <label class="fw-bold">How many people will be occupying the property:</label>
-                <input type="text" name="how_many_occupying" class="form-control has-icon"
+                <input type="number" name="how_many_occupying" class="form-control has-icon"
                   data-icon="fa-solid fa-users">
               </div>
               <div class="form-group">
@@ -2136,11 +2217,11 @@
                     </option>
                   @endforeach
                 </select>
-                <div class="form-group custom_convictedCommercial d-none">
+                <div class="form-group main custom_convictedCommercial d-none">
                   <label class="fw-bold" for="custom_convicted">Explain when and what for:</label>
                   <input type="text" name="custom_convicted" id="custom_convicted"
-                    placeholder="Explain when and what for" class="form-control has-icon"
-                    data-icon="fa-solid fa-ruler-combined" required>
+                    placeholder="" class="form-control has-icon"
+                    data-icon="fa-regular fa-circle-check" required>
                 </div>
               </div>
               <div class="form-group">
@@ -2167,47 +2248,16 @@
                     </option>
                   @endforeach
                 </select>
-                <div class="form-group custom_evictedCommercial d-none">
+                <div class="form-group main custom_evictedCommercial d-none">
                   <label class="fw-bold" for="custom_evicted_why">Explain when and why:</label>
-                  <input type="text" name="custom_evicted" id="custom_evicted" placeholder="Explain when and why"
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="fw-bold">
-                  Has the tenant been involved in any prior lease violations
-                </label>
-                @php
-                  $violationCommercial = [
-                      [
-                          'target' => '.custom_prior_leaseCommercial',
-                          'name' => 'Yes',
-                          'icon' => 'fa-regular fa-check-circle',
-                      ],
-                      ['target' => '', 'name' => 'No', 'icon' => 'fa-regular fa-circle-xmark'],
-                  ];
-                @endphp
-                <select name="lease_violations" id="lease_violations" class="grid-picker"
-                  style="justify-content: flex-start;">
-                  <option value=""></option>
-                  @foreach ($violationCommercial as $item)
-                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                      class="card flex-column" style="width:calc(33.3% - 10px);"
-                      data-icon='<i class="{{ $item['icon'] }}" style="font-size:24px;"></i>'>
-                      {{ $item['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-                <div class="form-group custom_prior_leaseCommercial d-none">
-                  <label class="fw-bold" for="custom_evicted">Explain when and why:</label>
-                  <input type="text" name="lease_violation_why" id="lease_violation_why"
-                    placeholder="Explain when and why" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"
-                    required>
+                  <input type="text" name="custom_evicted" id="custom_evicted" placeholder=""
+                    class="form-control has-icon" data-icon="fa-regular fa-circle-check" required>
                 </div>
               </div>
             </span>
           </div>
-          <div class="wizard-step" data-step="22">
+          <div class="wizard-step" data-step="23">
+            <h4>Tenant’s Agent Representation:</h4>
             <div class="form-group">
               <label class="fw-bold">
                 Would the tenant compensate an agent if they find them a property that meets their requirements?
@@ -2229,7 +2279,7 @@
                   </option>
                 @endforeach
               </select>
-              <div class="form-group compensate d-none">
+              <div class="form-group main compensate d-none">
                 <label class="fw-bold" for="custom_evicted">What is the finder's fee that the tenant is offering to
                   pay
                   an agent if they find a suitable property to lease?</label>
@@ -2254,7 +2304,7 @@
                     </option>
                   @endforeach
                 </select>
-                <div class="form-group compensateOther d-none">
+                <div class="form-group main compensateOther d-none">
                   <label class="fw-bold" for="custom_evicted">What is the finder's fee that the tenant is offering to
                     pay an agent if they find a suitable property to lease?</label>
                   <input type="text" name="compensateOther" class="form-control has-icon"
@@ -2262,8 +2312,145 @@
                 </div>
               </div>
             </div>
+            <div class="form-group">
+              <label class="fw-bold">
+                Does the tenant have a real estate agent representing them?
+              </label>
+              @php
+                $representedRes = [
+                    ['target' => '.represented', 'name' => 'Yes', 'icon' => 'fa-regular fa-check-circle'],
+                    ['target' => '', 'name' => 'No', 'icon' => 'fa-regular fa-circle-xmark'],
+                ];
+              @endphp
+              <select name="represented" id="represented" class="grid-picker"
+                style="justify-content: flex-start;">
+                <option value=""></option>
+                @foreach ($representedRes as $item)
+                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                    class="card flex-column" style="width:calc(33.3% - 10px);"
+                    data-icon='<i class="{{ $item['icon'] }}" ></i>'>
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+              <div class="form-group represented d-none">
+                <label class="fw-bold" for="custom_evicted">Does the tenant request that the landlord pay the tenant’s agent commission?</label>
+                @php
+                  // $representedOther = [
+                  //     ['name' => '1 month’s rent', 'target' => ''],
+                  //     ['name' => '50% of one month’s rent', 'target' => ''],
+                  //     ['name' => '10% of the value of the lease', 'target' => ''],
+                  //     ['name' => '6% of the value of the lease', 'target' => ''],
+                  //     ['name' => 'Negotiable', 'target' => ''],
+                  //     ['name' => 'Other', 'target' => '.compensateOther'],
+                  // ];
+                  $representedOther = [
+                    ['target' => '.representedYesOpt', 'name' => 'Yes', 'icon' => 'fa-regular fa-check-circle'],
+                    ['target' => '.representedNoOpt', 'name' => 'No', 'icon' => 'fa-regular fa-circle-xmark'],
+                  ];
+                @endphp
+                <select name="agentCommissionRequested" id="representedRes" class="grid-picker"
+                  style="justify-content: flex-start;">
+                  <option value=""></option>
+                  @foreach ($representedOther as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                      class="card flex-column" style="width:calc(33.3% - 10px);"
+                      data-icon='<i class="fa-regular fa-circle-check" ></i>'>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+                <div class="form-group representedYesOpt d-none">
+                  <label class="fw-bold" for="custom_evicted">What compensation is the tenant requesting the landlord to pay to the tenant’s agent?</label>
+                  @php
+                    $representedOtherOpt = [
+                        ['name' => '1 month’s rent', 'target' => ''],
+                        ['name' => '50% of one month’s rent', 'target' => ''],
+                        ['name' => '10% of the value of the lease', 'target' => ''],
+                        ['name' => '6% of the value of the lease', 'target' => ''],
+                        ['name' => 'Negotiable', 'target' => ''],
+                        ['name' => 'Other', 'target' => '.compensateReqOther'],
+                    ];
+                  @endphp
+                  <select name="agentCompensationAmountReq" id="representedResYes" class="grid-picker"
+                    style="justify-content: flex-start;">
+                    <option value=""></option>
+                    @foreach ($representedOtherOpt as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                        class="card flex-column" style="width:calc(33.3% - 10px);"
+                        data-icon='<i class="fa-regular fa-circle-check" ></i>'>
+                        {{ $item['name'] }}
+                      </option>
+                    @endforeach
+                  </select>
+                  <div class="form-group main compensateReqOther d-none">
+                    <label class="fw-bold" for="custom_evicted">What compensation is the tenant requesting the landlord to pay to the tenant’s agent?</label>
+                    <input type="text" name="agentCompensationAmountReqOther" class="form-control has-icon"
+                      data-icon="fa-regular fa-circle-check" required>
+                  </div>
+                </div>
+                <div class="form-group main representedNoOpt d-none">
+                  <label class="fw-bold" for="custom_evicted">Would the tenant be willing to pay an agent's commission if the landlord does not agree to
+                    cover it, for bringing a property to the tenant that they end up leasing?</label>
+                  @php
+                    // $representedOtherOpt = [
+                    //     ['name' => '1 month’s rent', 'target' => ''],
+                    //     ['name' => '50% of one month’s rent', 'target' => ''],
+                    //     ['name' => '10% of the value of the lease', 'target' => ''],
+                    //     ['name' => '6% of the value of the lease', 'target' => ''],
+                    //     ['name' => 'Negotiable', 'target' => ''],
+                    //     ['name' => 'Other', 'target' => '.compensateReqOther'],
+                    // ];
+                    $tenantPaysOther = [
+                      ['target' => '.tenantPaysYesOpt', 'name' => 'Yes', 'icon' => 'fa-regular fa-check-circle'],
+                      ['target' => '.tenantPaysNoOpt', 'name' => 'No', 'icon' => 'fa-regular fa-circle-xmark'],
+                    ];
+                  @endphp
+                  <select name="tenantPaysTheAgent" id="representedResYes" class="grid-picker"
+                    style="justify-content: flex-start;">
+                    <option value=""></option>
+                    @foreach ($tenantPaysOther as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                        class="card flex-column" style="width:calc(33.3% - 10px);"
+                        data-icon='<i class="fa-regular fa-circle-check" ></i>'>
+                        {{ $item['name'] }}
+                      </option>
+                    @endforeach
+                  </select>
+                  <div class="form-group main tenantPaysYesOpt d-none">
+                    <label class="fw-bold" for="custom_evicted">What compensation is the tenant requesting the landlord to pay to the tenant’s agent?</label>
+                    @php
+                      $tenantPaysOtherOpt = [
+                        ['name' => '1 month’s rent', 'target' => ''],
+                        ['name' => '50% of one month’s rent', 'target' => ''],
+                        ['name' => '10% of the value of the lease', 'target' => ''],
+                        ['name' => '6% of the value of the lease', 'target' => ''],
+                        ['name' => 'Negotiable', 'target' => ''],
+                        ['name' => 'Other', 'target' => '.tenantPayAmount'],
+                      ];
+                    @endphp
+                    <select name="tenantPaysAmount" id="representedResYes" class="grid-picker"
+                      style="justify-content: flex-start;">
+                      <option value=""></option>
+                      @foreach ($tenantPaysOtherOpt as $item)
+                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                          class="card flex-column" style="width:calc(33.3% - 10px);"
+                          data-icon='<i class="fa-regular fa-circle-check" ></i>'>
+                          {{ $item['name'] }}
+                        </option>
+                      @endforeach
+                    </select>
+                    <div class="form-group main tenantPayAmount d-none">
+                      <label class="fw-bold" for="custom_evicted">What compensation is the tenant willing to offer to an agent?</label>
+                      <input type="text" name="tenantPaysAmountOther" class="form-control has-icon"
+                        data-icon="fa-solid fa-ruler-combined" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="wizard-step" data-step="23">
+          <div class="wizard-step" data-step="24">
             <h4>Agent Info: </h4>
             <div class="form-group row">
               <div class="form-group col-md-6">
@@ -2293,6 +2480,7 @@
                   required>
               </div>
             </div>
+            @if(Auth::user()->user_type == 'agent')
             <div class="form-group row">
               <div class="form-group col-md-6">
                 <label class="fw-bold">Brokerage:</label>
@@ -2307,21 +2495,28 @@
                   value="{{ Auth::user()->license_no }}" required>
               </div>
             </div>
+            @endif
             <div class="form-group row">
+              @if(Auth::user()->user_type == 'agent')
               <div class="form-group col-md-6">
                 <label class="fw-bold">NAR Member ID (NRDS ID): </label>
                 <input type="text" name="agent_mls_id" id="agent_mls_id" placeholder=""
-                  class="form-control has-icon" data-icon="fa-solid fa-id-card" value="{{ Auth::user()->mls_id }}"
+                  class="form-control has-icon" data-icon="fa-solid fa-id-card-clip" value="{{ Auth::user()->mls_id }}"
                   required>
               </div>
+              @endif
               <div class="form-group col-md-6">
-                <label class="fw-bold">Listed By: Real Estate Agent: </label>
-                <input type="text" name="realStateAgent" id="" class="form-control has-icon"
-                  data-icon="fa-solid fa-ruler-combined" required>
+                @if (Auth::user()->user_type == 'agent')
+                  <label class="fw-bold">Listed By: Real Estate Agent</label>
+                @else
+                  <label class="fw-bold">Listed By: Tenant</label>
+                @endif
+                {{-- <input type="text" name="realStateAgent" id="" class="form-control has-icon"
+                  data-icon="fa-solid fa-ruler-combined" required> --}}
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="24">
+          <div class="wizard-step" data-step="25">
             <label class="fw-bold">For a more personalized listing, you can include a picture of yourself and/or include a video of yourself providing additional information about your background and criteria.</label>
             <div class="row">
               <div class="col-6  form-group">
@@ -2636,16 +2831,16 @@
               // $('.wizard-step.active').removeClass('active').next().addClass('active');
               $('.wizard-step.active').removeClass('active');
               console.log(StepWizard.currentStep)
-              if (StepWizard.currentStep == 14 && property_type ==
-                'Commercial Property'
-
-              ) {
-                StepWizard.nextStep = 19;
+              if(StepWizard.currentStep == 11 && property_type == 'Residential Property') {
+                StepWizard.nextStep = 13;
+                StepWizard.backStep = 11;
+              }else if(StepWizard.currentStep == 14 && property_type == 'Residential Property') {
+                StepWizard.nextStep = 16;
                 StepWizard.backStep = 14;
-              } else if (StepWizard.currentStep == 8 && property_type ==
-                'Commercial Property'
-
-              ) {
+              }else if (StepWizard.currentStep == 15 && property_type == 'Commercial Property') {
+                StepWizard.nextStep = 20;
+                StepWizard.backStep = 15;
+              } else if (StepWizard.currentStep == 8 && property_type == 'Commercial Property') {
                 StepWizard.nextStep = 10;
                 StepWizard.backStep = 8;
               } else {
@@ -2681,15 +2876,16 @@
             //   'Commercial Property') {
             //   StepWizard.backStep = 46;
             // }
-            if (StepWizard.currentStep == 19 && property_type ==
-              'Commercial Property'
-            ) {
+            if (StepWizard.currentStep == 13 && property_type == 'Residential Property') {
+              StepWizard.backStep = 11;
+              StepWizard.nextStep = 13;
+            }else if (StepWizard.currentStep == 16 && property_type == 'Residential Property') {
+              StepWizard.backStep = 14;
+              StepWizard.nextStep = 16;
+            }else if (StepWizard.currentStep == 19 && property_type == 'Commercial Property') {
               StepWizard.backStep = 14;
               StepWizard.nextStep = 19;
-            } else if (StepWizard.currentStep == 10 && property_type ==
-              'Commercial Property'
-
-            ) {
+            } else if (StepWizard.currentStep == 10 && property_type == 'Commercial Property') {
               StepWizard.nextStep = 10;
               StepWizard.backStep = 8;
             } else {
@@ -2772,12 +2968,12 @@
         var comp = 0;
         if (property_type === 'Residential Property') {
           // Calculate progress for income and residential property steps (9 to 41)
-          comp = 20 + (((StepWizard.currentStep - 7) / (24 - 7)) * 80);
+          comp = 20 + (((StepWizard.currentStep - 7) / (25 - 7)) * 80);
         } else if (property_type === 'Commercial Property') {
-          comp = 20 + (((StepWizard.currentStep - 7) / (24 - 7)) * 80);
+          comp = 20 + (((StepWizard.currentStep - 7) / (25 - 7)) * 80);
         } else if (property_type === 'Vacant Land (Current Use)') {
           // Calculate progress for vacant land steps (77 to 91)
-          comp = 20 + (((StepWizard.currentStep - 7) / (24 - 7)) * 80);
+          comp = 20 + (((StepWizard.currentStep - 7) / (25 - 7)) * 80);
         } else {
           comp = ((StepWizard.currentStep - 1) / 8) * 20;
         }
@@ -2959,6 +3155,24 @@
         $(targetClass).removeClass('d-none');
       }
     });
+    //dock-show/hide
+    var dockRes = $('#dockRes');
+    $('#hasDock').change(function() {
+      //Disply and hide a div
+      ($(this).val().includes('Yes') || $(this).val().includes('Optional')) ? dockRes.show():
+        dockRes.hide()
+      //   end
+      var selectedOption = $(this).find(':selected');
+      var targetClass = selectedOption.data('target');
+      // Hide all custom option fields first
+      $('.form-group[data-target^=".custom_"]').addClass('d-none');
+
+      // Show the specific custom option field based on the selected value
+      if (targetClass) {
+        $(targetClass).removeClass('d-none');
+      }
+    });
+
     var garageParkingComm = $('#garageParkingOpt');
     $('#garageParkingComm').change(function() {
       //Disply and hide a div
@@ -3226,6 +3440,20 @@
     $(function() {
       show_extra_water_views("");
     });
+  </script>
+  <script>
+    $(document).ready(function(){
+      $('div.main.d-none').find('input, select').prop('disabled', true);
+      $(document).click(function(){
+        $('div.main').each((i, item) => {
+          if ($(item).hasClass('d-none')) {
+            $(item).find('input, select').prop('disabled', true);
+          }else{
+            $(item).find('input, select').prop('disabled', false);
+          }
+        })
+      })
+    })
   </script>
   <script
     src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_PLACES_API_KEY') }}&libraries=places&callback=initialize">
