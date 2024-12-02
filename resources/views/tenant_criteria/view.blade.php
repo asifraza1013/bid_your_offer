@@ -35,7 +35,25 @@
   <div class="container listingDescription">
     <div class="row">
       <div class="col-sm-12 col-md-8 col-lg-8 leftCol">
-
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center justify-content-left">
+            @if ($auction->is_approved == 1)
+              <span class="badge bg-primary me-2">Active</span>
+            @endif
+            @if ($auction->is_approved == 0)
+              <span class="badge bg-warning me-2">Pending</span>
+            @endif
+            @if ($auction->is_sold == 1)
+              <span class="badge bg-success">Leased</span>
+            @endif
+          </div>
+          @if ($auction->user_id == auth()->user()->id)
+            <div class="d-flex justify-content-end align-content-center">
+              <a href="{{route('agent.tenant.criteria.auction.edit', $auction->id)}}" class="btn btn-success btn-sm px-3 mb-3 me-2"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Listing</a>
+              {{-- <a href="javascript:void(0)" class="btn btn-success btn-sm px-3 mb-3"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Auction Status</a> --}}
+            </div>
+          @endif
+        </div>
         <!-- Description Box  -->
         <div class="card description">
           @if (@$auction->get->description)
@@ -491,7 +509,7 @@
 
             </div>
           </div>
-        </div>
+        
         <div class="card review">
           <div class="card-body d-flex align-items-center">
             <div class="left d-flex align-items-center">
