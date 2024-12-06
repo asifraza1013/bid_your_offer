@@ -51,12 +51,20 @@
                                                         href="{{ route('tenant.criteria.auction.view', @$auction->id) }}">{{ @$auction->get->property_type }}</a>
                                                 </td>
                                                 <td>
-                                                    {{ @$auction->get->county }}
+                                                    @foreach ($auction->get->counties as $item)
+                                                        {{$item}}
+                                                    @endforeach
                                                 </td>
                                                 <td>
-                                                    {{ @$auction->get->city }}
+                                                    @foreach ($auction->get->cities as $item)
+                                                        {{$item}}
+                                                    @endforeach
                                                 </td>
-                                                <td>{{ @$auction->get->state }}</td>
+                                                <td> 
+                                                    @foreach ($auction->get->state as $item)
+                                                        {{$item}}
+                                                    @endforeach
+                                                </td>
                                                 <td>{{ Carbon\Carbon::parse(@$auction->created_at)->format('M d, Y') }}
                                                 </td>
                                                 <td class="text-center">{{ @$auction->bids->count() }}</td>
