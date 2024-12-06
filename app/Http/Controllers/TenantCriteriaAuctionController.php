@@ -72,6 +72,8 @@ class TenantCriteriaAuctionController extends Controller
             $auction->saveMeta("garage",$request->garage);
             $auction->saveMeta("garage_opt",$request->garage_opt);
             $auction->saveMeta("custom_garage",$request->custom_garage);
+            $auction->saveMeta("parking_feature_garage", json_encode($request->parking_feature_garage));
+            $auction->saveMeta("parkingGarageOther",$request->parkingGarageOther);
             $auction->saveMeta("has_water_view",$request->has_water_view);
             $auction->saveMeta("water_view",json_encode($request->water_view));
             $auction->saveMeta("has_water_extra",$request->has_water_extra);
@@ -226,6 +228,19 @@ class TenantCriteriaAuctionController extends Controller
             DB::rollBack();
             return $e->getMessage();
             return redirect()->back()->with('error', 'Unable to add auction');
+        }
+    }
+
+    public function bidsVisibility($id, $vis){
+        $auction = TenantCriteriaAuction::where('id', $id)->first();
+        if($vis == 'show'){
+            $auction->display_bids = 1;
+            $auction->save();
+            return redirect()->back()->with('success', 'Bids list is now visible');
+        }else{
+            $auction->display_bids = 0;
+            $auction->save();
+            return redirect()->back()->with('success', 'Bids list is now hidden');
         }
     }
 

@@ -1256,8 +1256,8 @@
         <hr>
         @inject('carbon', 'Carbon\Carbon')
         @php
-          $lowest_bid_price = $auction->bids->min('price');
-          $lowest_bidder = @$auction->bids->where('price', $lowest_bid_price)->first();
+          $highest_bid_price = $auction->bids->max('price');
+          $highest_bidder = @$auction->bids->where('price', $highest_bid_price)->first();
           $my_bid = ''; //@$auction->bids->where('user_id', $auth_id)->first();
         @endphp
         @if (@$auction->user_id != $auth_id)
@@ -1304,8 +1304,8 @@
             </div>
           @endif
           <div class="card-body">
-            @if ($lowest_bidder)
-              <p><b>{{ $lowest_bidder->user->name ?? '' }}</b> is the lowest bidder.</p>
+            @if ($highest_bidder)
+              <p><b>{{ $highest_bidder->user->name ?? '' }}</b> is the highest bidder.</p>
             @else
               <p>No one has bid on this auction.</p>
             @endif

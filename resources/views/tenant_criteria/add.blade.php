@@ -903,7 +903,7 @@
                   </select>
                   <div class="form-group main garageOther d-none">
                     <label class="fw-bold">Garage/Parking Features:</label>
-                    <input type="text" name="garageOther" id="minimum_sqft_needed" class="form-control has-icon"
+                    <input type="text" name="parkingGarageOther" id="minimum_sqft_needed" class="form-control has-icon"
                       data-icon="fa-solid fa-warehouse" required>
                   </div>
                 </div>

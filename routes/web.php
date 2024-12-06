@@ -77,6 +77,7 @@ use App\Http\Controllers\SellerServiceAuctionBidController;
 use App\Http\Controllers\TenantCounteredTermsController;
 use App\Http\Controllers\TenantCriteriaAuctionBidController;
 use App\Http\Controllers\SocialAuth;
+use App\Models\TenantCriteriaAuction;
 
 /*
 |--------------------------------------------------------------------------
@@ -439,6 +440,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::post('property/auction/bids-visibility/{id}/{vis}', [PropertyAuctionController::class, 'bidsVisibility'])->name('property.bids.visibility');
         Route::post('landlord/auction/bids-visibility/{id}/{vis}', [LandlordAuctionController::class, 'bidsVisibility'])->name('landlord.auction.bids.visibility');
+        Route::post('tenant/criteria/bids-visibility/{id}/{vis}', [TenantCriteriaAuctionController::class, 'bidsVisibility'])->name('tenant.criteria.bids.visibility');
         Route::post('criteria/auction/bids-visibility/{id}/{vis}', [BuyerCriteriaAuctionController::class, 'bidsVisibility'])->name('criteria.auction.bids.visibility');
         Route::post('landlord/agent/auction/bids-visibility/{id}/{vis}', [LandlordAgentAuctionController::class, 'bidsVisibility'])->name('landlord.agent.auction.bids.visibility');
 
