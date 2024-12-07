@@ -1241,36 +1241,6 @@
                                 class="form-control has-icon" required>
                         </div>
                       </div>
-                      {{-- <div class="form-group">
-                        <div class="form-group">
-                            @php
-                                $timeFrame = [
-                                    ['name' => '12 hours', 'target' => ''],
-                                    ['name' => '24 hours (1 day)', 'target' => ''],
-                                    ['name' => '36 hours', 'target' => ''],
-                                    ['name' => '48 hours (2 days)', 'target' => ''],
-                                    ['name' => '60 hours', 'target' => ''],
-                                    ['name' => '72 hours (3 days)', 'target' => ''],
-                                    ['name' => '96 hours (4 days)', 'target' => ''],
-                                    ['name' => '120 hours (5 days)', 'target' => ''],
-                                    ['name' => '144 hours (6 days)', 'target' => ''],
-                                    ['name' => '168 hours (7 days)', 'target' => ''],
-                                ];
-                            @endphp
-                            <label class="fw-bold">Time Frame Allocated to Respond Offers:</label>
-                            <select class="grid-picker" name="timeFrame" style="justify-content: flex-start;" required
-                                multiple>
-                                <option value="">Select</option>
-                                @foreach ($timeFrame as $item)
-                                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                                        class="card flex-row" style="width:calc(25% - 10px);"
-                                        data-icon='<i class="fa-regular fa-clock"></i>'>
-                                        {{ $item['name'] }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                      </div> --}}
                       <div class="form-group">
                         {{-- <div class="form-group">
                           @php
