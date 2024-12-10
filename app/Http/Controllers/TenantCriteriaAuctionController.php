@@ -236,11 +236,11 @@ class TenantCriteriaAuctionController extends Controller
         if($vis == 'show'){
             $auction->display_bids = 1;
             $auction->save();
-            return redirect()->back()->with('success', 'Bids list is now visible');
+            return redirect()->back()->with('success', 'Bids list is now visible for all users');
         }else{
             $auction->display_bids = 0;
             $auction->save();
-            return redirect()->back()->with('success', 'Bids list is now hidden');
+            return redirect()->back()->with('success', 'Bids list is now hidden for other users');
         }
     }
 

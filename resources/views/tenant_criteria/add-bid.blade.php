@@ -5315,6 +5315,10 @@
         $('#property_listed').on('change', function() {
           property_listed = $(this).val();
         });
+        property_type;
+                $('#property_type').on('change', function() {
+                    property_type = $(this).val();
+                });
         $('.wizard-step-next').click(function(e) {
           console.log(StepWizard.currentStep)
           if (v.form()) {
@@ -5330,13 +5334,69 @@
                 'No') {
                 StepWizard.nextStep = 6;
                 StepWizard.backStep = 2;
-              } 
-              //else if (StepWizard.currentStep == 17 && property_type ==
-              //   'Commercial Property') {
-              //   StepWizard.nextStep = 19;
-              //   StepWizard.backStep = 17;
-              // } 
-              else {
+              } else if (StepWizard.currentStep == 10 && (property_type == 'Commercial Property' || property_type == 'Residential Property')) {
+                    StepWizard.nextStep = 5;
+                    StepWizard.backStep = 10;
+
+                }else if (StepWizard.currentStep == 5 && (property_type == 'Commercial Property' || property_type == 'Residential Property')) {
+                    StepWizard.nextStep = 4;
+                    StepWizard.backStep = 5;
+
+                }else if (StepWizard.currentStep == 4 && (property_type == 'Commercial Property' || property_type == 'Residential Property')) {
+                    StepWizard.nextStep = 11;
+                    StepWizard.backStep = 4;
+
+                }
+              else if (StepWizard.currentStep == 15 && property_type ==
+                    'Commercial Property') {
+                    StepWizard.nextStep = 17;
+                    StepWizard.backStep = 15;
+
+                }else if (StepWizard.currentStep == 12 && property_type ==
+                    'Commercial Property') {
+                    StepWizard.nextStep = 14;
+                    StepWizard.backStep = 12;
+
+                } else if (StepWizard.currentStep == 19 && property_type ==
+                    'Commercial Property') {
+                    StepWizard.nextStep = 23;
+                    StepWizard.backStep = 19;
+
+                } else if (StepWizard.currentStep == 24 && property_type ==
+                    'Commercial Property') {
+                    StepWizard.nextStep = 26;
+                    StepWizard.backStep = 24;
+
+                } else if (StepWizard.currentStep == 28 && property_type ==
+                    'Commercial Property') {
+                    StepWizard.nextStep = 31;
+                    StepWizard.backStep = 28;
+
+                } else if (StepWizard.currentStep == 34 && property_type ==
+                    'Commercial Property') {
+                    StepWizard.nextStep = 37;
+                    StepWizard.backStep = 34;
+
+                } else if (StepWizard.currentStep == 43 && property_type ==
+                    'Commercial Property') {
+                    StepWizard.nextStep = 45;
+                    StepWizard.backStep = 43;
+
+                } else if (StepWizard.currentStep == 30 && property_type ==
+                    'Residential Property') {
+                    StepWizard.nextStep = 32;
+                    StepWizard.backStep = 30;
+                    
+                } else if (StepWizard.currentStep == 36 && property_type ==
+                    'Residential Property') {
+                    StepWizard.nextStep = 39;
+                    StepWizard.backStep = 36;
+                } 
+                else if (StepWizard.currentStep == 40 && property_type ==
+                    'Residential Property') {
+                    StepWizard.nextStep = 44;
+                    StepWizard.backStep = 40;
+                } else {
                 StepWizard.backStep = StepWizard.currentStep;
 
               }
@@ -5362,16 +5422,44 @@
             if (StepWizard.currentStep == 46 && property_listed ==
               'Yes') {
               StepWizard.backStep = 5;
-            } 
-            else if (StepWizard.currentStep == 6 && property_listed ==
+            } else if (StepWizard.currentStep == 6 && property_listed ==
               'No') {
               StepWizard.backStep = 2;
-            } 
-            //else if (StepWizard.currentStep == 19 && property_type ==
-            //   'Commercial Property') {
-            //   StepWizard.backStep = 17;
-            // } 
-            else {
+            } else if (StepWizard.currentStep == 5 && (property_type == 'Commercial Property' || property_type == 'Residential Property')) {
+                StepWizard.backStep = 10;
+            }else if (StepWizard.currentStep == 4 && (property_type == 'Commercial Property' || property_type == 'Residential Property')) {
+                StepWizard.backStep = 5;
+            }else if (StepWizard.currentStep == 17 && property_type ==
+                'Commercial Property') {
+                StepWizard.backStep = 15;
+            } else if (StepWizard.currentStep == 14 && property_type ==
+                'Commercial Property') {
+                StepWizard.backStep = 12;
+            } else if (StepWizard.currentStep == 23 && property_type ==
+                'Commercial Property') {
+                StepWizard.backStep = 19;
+            } else if (StepWizard.currentStep == 26 && property_type ==
+                'Commercial Property') {
+                StepWizard.backStep = 24;
+            } else if (StepWizard.currentStep == 31 && property_type ==
+                'Commercial Property') {
+                StepWizard.backStep = 28;
+            }else if (StepWizard.currentStep == 37 && property_type ==
+                'Commercial Property') {
+                StepWizard.backStep = 34;
+            } else if (StepWizard.currentStep == 45 && property_type ==
+                'Commercial Property') {
+                StepWizard.backStep = 43;
+            }  else if (StepWizard.currentStep == 32 && property_type ==
+                'Residential Property') {
+                StepWizard.backStep = 30;
+            } else if (StepWizard.currentStep == 39 && property_type ==
+                'Residential Property') {
+                StepWizard.backStep = 35;
+            } else if (StepWizard.currentStep == 44 && property_type ==
+                'Residential Property') {
+                StepWizard.backStep = 40;
+            } else {
               StepWizard.backStep = StepWizard.currentStep - 1;
             }
           }
