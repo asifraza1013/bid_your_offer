@@ -335,17 +335,52 @@
           <div class="steps-progress-percent"></div>
         </div>
 
-        <form class="p-4 pt-0 mainform" action="{{ route('tenant.criteria.auction.bid', @$auction->id) }}" method="POST"
+        <form class="p-4 pt-0 mainform" action="{{ route('tenant.criteria.save.counter-bid', @$auction->id) }}" method="POST"
           enctype="multipart/form-data">
           @csrf
-            <div class="wizard-step" data-step="1">
+            <div class="wizard-step" data-step='1'>
+              @php
+                $yes_or_nos = [
+                    ['name' => 'Yes', 'target' => '', 'icon' => 'fa-regular fa-circle-check'],
+                    ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark'],
+                ];
+              @endphp
+              <div class="form-group">
+                <label class="fw-bold" for="address">Address:</label>
+                <input type="text" name="address" placeholder="" data-type="address" id="address"
+                  class="form-control has-icon search_places" data-icon="fa-solid fa-location-dot"
+                    required>
+              </div>
+
+              <div class="form-group">
+                <label class="fw-bold" for="address">City:</label>
+                <input type="text" name="city" placeholder="" data-type="cities" id="city"
+                  class="form-control has-icon search_places" data-icon="fa-solid fa-city"
+                  required>
+              </div>
+
+              <div class="form-group">
+                <label class="fw-bold" for="address">County:</label>
+                <input type="text" name="county" placeholder="" id="county"
+                  class="form-control has-icon search_places" data-icon="fa-solid fa-tree-city"
+                  required>
+              </div>
+
+              <div class="form-group">
+                <label class="fw-bold" for="address">State:</label>
+                <input type="text" name="state" placeholder="" data-type="states" id="state"
+                  class="form-control has-icon search_places" data-icon="fa-solid fa-flag-usa"
+                  required>
+              </div>
+            </div>
+            <div class="wizard-step" data-step="2">
                 <div class="form-group">
-                    <label class="fw-bold" for="custom_terms">Price:</label>
+                    <label class="fw-bold" for="custom_terms">{{Auth::user()->user_type == 'tenant' ? "Acceptable Lease Price:" : "Offered Lease Price:"}}</label>
                     <input type="number" name="price" class="form-control has-icon"
                         data-icon="fa-solid fa-dollar-sign" required>
                 </div>
                 <div class="form-group">
-                    <label class="fw-bold" for="custom_terms">Lease Availability Date:</label>
+                    <label class="fw-bold" for="custom_terms">{{Auth::user()->user_type == 'tenant' ? "Acceptable Lease Start Date:" : "Offered Lease Start Date:"}}</label>
                     <input type="date" name="leaseDate" class="form-control has-icon"
                         data-icon="fa-regular fa-calendar-days" required>
                 </div>
@@ -363,7 +398,7 @@
                             ['name' => 'Other', 'target' => '.otherLeaseDurationNo'],
                         ];
                     @endphp
-                    <label class="fw-bold">Acceptable Lease Duration:</label>
+                    <label class="fw-bold">{{Auth::user()->user_type == 'tenant' ? "Acceptable Lease Length:" : "Offered Lease Length::"}}</label>
                     <select class="grid-picker" name="leaseTime[]" id="leaseTermRes"
                         style="justify-content: flex-start;" required multiple>
                         <option value="">Select</option>
@@ -384,7 +419,7 @@
                     </div>
                 </div>
             </div>
-            <div class="wizard-step" data-step="2">
+            <div class="wizard-step" data-step="3">
                 <div class="form-group">
                   <label class="fw-bold">
                     If the tenant is represented by an agent, will the landlord offer the agent a commission?
@@ -437,14 +472,14 @@
                   </div>
                 </div>
             </div>
-            <div class="wizard-step" data-step="3">
+            <div class="wizard-step" data-step="4">
                 <div class="form-group">
                 <label class="fw-bold">Offer Expires:</label>
                 <input type="datetime-local" name="offerExpires" class="form-control has-icon"
                     data-icon="fa-regular fa-calendar-days" required>
                 </div>
             </div>
-            <div class="wizard-step" data-step='4'>
+            <div class="wizard-step" data-step='5'>
                 <div class="form-group row">
                     <div class="form-group col-md-6">
                         <label class="fw-bold" for="first_name">First Name:</label>
@@ -644,14 +679,6 @@
           onfocusout: false,
         });
         StepWizard.setStep();
-        property_listed;
-        $('#property_listed').on('change', function() {
-          property_listed = $(this).val();
-        });
-        property_type;
-                $('#property_type').on('change', function() {
-                    property_type = $(this).val();
-                });
         $('.wizard-step-next').click(function(e) {
           console.log(StepWizard.currentStep)
           if (v.form()) {

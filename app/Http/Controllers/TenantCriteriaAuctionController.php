@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TenantCriteriaAuction;
+use App\Models\TenantCriteriaAuctionBid;
 
 class TenantCriteriaAuctionController extends Controller
 {
@@ -230,6 +231,18 @@ class TenantCriteriaAuctionController extends Controller
             return redirect()->back()->with('error', 'Unable to add auction');
         }
     }
+
+    public function addCounterBid(Request $request, $bid_id)
+    {
+        $auction_bid = TenantCriteriaAuctionBid::find($bid_id);
+        $page_data['auction'] = $auction = TenantCriteriaAuction::find($auction_bid->tenant_criteria_auction_id);
+        $page_data['title'] = "Add Counter Bid for Tenant Criteria" . ' ' . '-' . ' ' . $auction->get->titleListing;
+        $page_data['bid'] = $auction_bid;
+        return view('tenant_criteria.add-counter_bid', $page_data);
+    }
+
+    public function saveCounterBids()
+    {}
 
     public function bidsVisibility($id, $vis){
         $auction = TenantCriteriaAuction::where('id', $id)->first();

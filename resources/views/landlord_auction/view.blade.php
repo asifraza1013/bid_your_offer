@@ -1556,7 +1556,7 @@
                                               <form action="{{ route('agent.landlord.auction.bid.accept', $bid->id) }}" method="post">
                                                 @csrf
                                                 <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
-                                                <input type="hidden" name="bid_id" value="{{ $bid->id }}">
+                                                <input type="hidden" name="bid_id" value="{{ $countBid->id }}">
                                                 @if (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin')
                                                   <button type="submit" class="badge bg-success p-2 borderless">Accept</button>
                                                 @endif
@@ -1569,7 +1569,7 @@
                                       </div>
                                     </div>
                                     @endif
-                                  @endauth
+                            @endauth
                           </div>
                         </div>
                       </div>

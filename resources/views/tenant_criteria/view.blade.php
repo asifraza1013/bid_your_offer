@@ -752,8 +752,67 @@
                                   </div>
                                 </form>
                               @endif
+
+                              @auth
+                                  @if (auth()->user()->id == $bid->user->id || (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin'))
+                                    <div class="form-group biddingOperations">
+                                      @if (!$auction->sold)
+                                        <form action="{{ route('tenant.criteria.add.counter-bid', $bid->id) }}" method="get">
+                                          <div class="d-flex gap-1">
+                                            <button type="submit" class="btn btn-primary">Counter Bid</button>
+                                          </div>
+                                        </form>
+                                      @endif
+                                      @php
+                                        $allBids = App\Models\TenantCriteriaAuctionBid::where('counter_id', $bid->id)->with('meta')
+                                            ->orderByDesc('created_at')
+                                            ->get();
+                                      @endphp
+                                      <div class="form-group">
+                                        @foreach ($allBids as $key => $countBid)
+                                          <form action="{{ route('agent.tenant.criteria.auction.bid.accept') }}" method="post">
+                                            @csrf
+                                            <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
+                                            <input type="hidden" name="bid_id" value="{{ $bid->id }}">
+                                          </form>
+                                        @endforeach
+                                      </div>
+                                      <div class="form-group">
+                                        @if (!$auction->sold)
+                                          @foreach ($allBids as $key => $countBid)
+                                            <table class="table table-bordered">
+                                              <tbody>
+                                                @if (isset($countBid->get->first_name))
+                                                  <tr>
+                                                    <th class="small">First Name</th>
+                                                    <td class="small">{{ $bid->get->first_name }}</td>
+                                                  </tr>
+                                                @endif
+                                              </tbody>
+                                            </table>
+                                           
+                                            @if (@$auction->user_id == $auth_id)
+                                              @if (!@$auction->is_sold)
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                  <form action="{{ route('agent.landlord.auction.bid.accept') }}" method="post">
+                                                    @csrf
+                                                    <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
+                                                    <input type="hidden" name="bid_id" value="{{ $countBid->id }}">
+                                                    @if (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin')
+                                                      <button type="submit" class="badge bg-success p-2 borderless">Accept</button>
+                                                    @endif
+                                                  </form>
+                                                </div>
+                                              @endif
+                                            @endif
+                                          @endforeach
+                                        @endif
+                                      </div>
+                                    </div>
+                                  @endif
+                              @endauth
                             @endif
-                            <h5 style="text-decoration: underline">Additional Details or Countered Terms:</h5>
+                            {{-- <h5 style="text-decoration: underline">Additional Details or Countered Terms:</h5> --}}
                           </div>
                         </div>
                       </div>
