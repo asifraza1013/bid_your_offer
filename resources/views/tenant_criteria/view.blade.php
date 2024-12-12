@@ -783,7 +783,7 @@
                                                 @if (isset($countBid->get->first_name))
                                                   <tr>
                                                     <th class="small">First Name</th>
-                                                    <td class="small">{{ $bid->get->first_name }}</td>
+                                                    <td class="small">{{ $countBid->get->first_name }}</td>
                                                   </tr>
                                                 @endif
                                                 @if (isset($countBid->get->price))
