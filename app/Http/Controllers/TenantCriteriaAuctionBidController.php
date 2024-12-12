@@ -40,6 +40,8 @@ class TenantCriteriaAuctionBidController extends Controller
             $bid->saveMeta('commissionAmmountOffered', $request->commissionAmmountOffered);
             $bid->saveMeta('landlordPaysAmount', $request->landlordPaysAmount);
 
+            $bid->saveMeta('offerExpires', $request->offerExpires);
+
             $bid->saveMeta("listing_date",$request->listing_date);
             $bid->saveMeta("expiration_date",$request->expiration_date);
             $bid->saveMeta("listing_service_type",$request->listing_service_type);

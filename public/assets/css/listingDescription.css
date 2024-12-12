@@ -30,11 +30,13 @@
   }
   .listingDescription .right button, .listingDescription .rightCol button{
       border-radius: 5px;
-      background: #049399;
       color: #fff;
       padding: 6px 28px;
       width: 140px;
       margin-bottom: 4px;
+  }
+  .listingDescription .right button, .listingDescription .rightCol button:not(.btn-success){
+    background: #049399;
   }
   .listingDescription .rightCol button {
     padding: 6px 8px;

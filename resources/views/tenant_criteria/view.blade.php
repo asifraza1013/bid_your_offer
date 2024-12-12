@@ -643,7 +643,7 @@
               <div class="accordion-item border-0">
                 {{-- @dd(@$auction->bids) --}}
                 @if ($auction->display_bids == 1 || $auction->user_id == Auth::user()->id)
-                  @foreach (@$auction->bids as $bid)
+                  @foreach ($bids as $bid)
                     <!-- Item loop -->
                     <div class="accordion" type="button" data-bs-toggle="collapse"
                       data-bs-target="#item{{ $bid->id }}" aria-expanded="true"
@@ -667,8 +667,6 @@
                         <div id="bidding_history_data">
                           <div>
                             <table class="table table-bordered">
-                              <thead>
-                              </thead>
                               <tbody>
                                 @if ($bid->get->first_name)
                                   <tr>
@@ -738,80 +736,126 @@
                                     <td class="small">{{ $bid->get->commissionAmmountOffered !== 'Other' ?  $bid->get->commissionAmmountOffered : $bid->get->landlordPaysAmount }}</td>
                                   </tr>
                                 @endif
+                                <tr>
+                                  <th class="small">Additional Details or Countered Terms:</th>
+                                  <td class="small"></td>
+                                </tr>
                               </tbody>
                             </table>
                             
                             @if (@$auction->user_id == $auth_id)
                               @if (!@$auction->is_sold)
-                                <form action="{{ route('agent.tenant.criteria.auction.bid.accept') }}" method="post">
-                                  @csrf
-                                  <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
-                                  <input type="hidden" name="bid_id" value="{{ $bid->id }}">
-                                  <div style="text-align: right;">
-                                    <button type="submit" class="btn btn-success btn-sm">Accept</button>
-                                  </div>
-                                </form>
+                                <div class="d-flex justify-content-between align-items-center">
+                                  <form action="{{ route('agent.tenant.criteria.auction.bid.accept') }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
+                                    <input type="hidden" name="bid_id" value="{{ $bid->id }}">
+                                    <div style="text-align: right;">
+                                      <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                    </div>
+                                  </form>
+                                  <form action="{{ route('tenant.criteria.add.counter-bid', $bid->id) }}" method="get">
+                                    <div class="d-flex gap-1">
+                                      <button type="submit" class="btn btn-primary  btn-sm">Counter Bid</button>
+                                    </div>
+                                  </form>
+                                </div>
                               @endif
-
-                              @auth
-                                  @if (auth()->user()->id == $bid->user->id || (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin'))
-                                    <div class="form-group biddingOperations">
+                            @endif
+                            @auth
+                                @if (auth()->user()->id == $bid->user->id || (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin'))
+                                  <div class="form-group biddingOperations">
+                                    <h5 class="my-3 text-center"><u>Counter Bids</u></h5>
+                                    @php
+                                      $allBids = App\Models\TenantCriteriaAuctionBid::where('counter_id', $bid->id)->with('meta')
+                                          ->orderByDesc('created_at')
+                                          ->get();
+                                    @endphp
+                                    <div class="form-group">
                                       @if (!$auction->sold)
-                                        <form action="{{ route('tenant.criteria.add.counter-bid', $bid->id) }}" method="get">
-                                          <div class="d-flex gap-1">
-                                            <button type="submit" class="btn btn-primary">Counter Bid</button>
-                                          </div>
-                                        </form>
-                                      @endif
-                                      @php
-                                        $allBids = App\Models\TenantCriteriaAuctionBid::where('counter_id', $bid->id)->with('meta')
-                                            ->orderByDesc('created_at')
-                                            ->get();
-                                      @endphp
-                                      <div class="form-group">
-                                        @foreach ($allBids as $key => $countBid)
-                                          <form action="{{ route('agent.tenant.criteria.auction.bid.accept') }}" method="post">
-                                            @csrf
-                                            <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
-                                            <input type="hidden" name="bid_id" value="{{ $bid->id }}">
-                                          </form>
-                                        @endforeach
-                                      </div>
-                                      <div class="form-group">
-                                        @if (!$auction->sold)
+                                        @if (isset($allBids))
                                           @foreach ($allBids as $key => $countBid)
                                             <table class="table table-bordered">
                                               <tbody>
+                                                @php
+                                                  $user = \App\Models\User::findOrFail($countBid->user_id);
+                                                @endphp
                                                 @if (isset($countBid->get->first_name))
                                                   <tr>
                                                     <th class="small">First Name</th>
                                                     <td class="small">{{ $bid->get->first_name }}</td>
                                                   </tr>
                                                 @endif
+                                                @if (isset($countBid->get->price))
+                                                  <tr>
+                                                    <th class="small">{{$user->user_type == 'tenant' ? 'Acceptable Lease Price:' : 'Offered Lease Price:'}}</th>
+                                                    <td class="small">{{'$' . $countBid->get->price }}</td>
+                                                  </tr>
+                                                @endif
+                                                @if (isset($countBid->get->leaseTime) && is_array($countBid->get->leaseTime))
+                                                  <tr>
+                                                    <th class="small">{{$user->user_type == 'tenant' ? 'Acceptable Lease Length:' : 'Offered Lease Length:'}}</th>
+                                                    @foreach ($countBid->get->leaseTime as $item)
+                                                      <td class="small">{{ $item !== 'Other' ? $item : $countBid->get->other_lease_duration }}</td>
+                                                    @endforeach
+                                                  </tr>
+                                                @endif
+                                                @if (isset($countBid->get->leaseDate))
+                                                  <tr>
+                                                    <th class="small">{{$user->user_type == 'tenant' ? 'Acceptable Lease Start Date:' : 'Offered Lease Start Date:'}}</th>
+                                                    <td class="small">{{ $countBid->get->leaseDate }}</td>
+                                                  </tr>
+                                                @endif
+                                                @if (isset($countBid->get->landlordOfferCommission))
+                                                  <tr>
+                                                    <th class="small">{{$user->user_type == 'tenant' ? 'Tenant Requests Landlord to Pay Tenant’s Agent Commission:' : 'Offered Agent Commission:'}}</th>
+                                                    <td class="small">{{ $countBid->get->landlordOfferCommission }}</td>
+                                                  </tr>
+                                                @endif
+                                                @if (isset($countBid->get->commissionAmmountOffered))
+                                                  <tr>
+                                                    <th class="small">{{$user->user_type == 'tenant' ? 'Requested Amount for Landlord to Pay Tenant’s Agent Commission:' : 'Offered Agent Commission Amount:'}}</th>
+                                                    <td class="small">{{ $countBid->get->commissionAmmountOffered !== 'Other' ?  $countBid->get->commissionAmmountOffered : $countBid->get->landlordPaysAmount }}</td>
+                                                  </tr>
+                                                @endif
+                                                @if (isset($countBid->get->offerExpires))
+                                                  <tr>
+                                                    <th class="small">Offer Expires:</th>
+                                                    <td class="small">{{ $countBid->get->offerExpires }}</td>
+                                                  </tr>
+                                                @endif
+                                                <tr>
+                                                  <th class="small">Additional Details or Countered Terms:</th>
+                                                  <td class="small"></td>
+                                                </tr>
                                               </tbody>
                                             </table>
-                                           
+                                            
                                             @if (@$auction->user_id == $auth_id)
                                               @if (!@$auction->is_sold)
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                  <form action="{{ route('agent.landlord.auction.bid.accept') }}" method="post">
+                                                  <form action="{{ route('agent.tenant.criteria.auction.bid.accept') }}" method="post" class="w-100">
                                                     @csrf
                                                     <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
                                                     <input type="hidden" name="bid_id" value="{{ $countBid->id }}">
                                                     @if (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin')
-                                                      <button type="submit" class="badge bg-success p-2 borderless">Accept</button>
+                                                      <div class="d-flex justify-content-end">
+                                                        <button type="submit" class="btn bg-success btn-sm">Accept</button>
+                                                      </div>
                                                     @endif
                                                   </form>
                                                 </div>
                                               @endif
                                             @endif
                                           @endforeach
+                                        @else
+                                          <h6>No Counter Bid</h6>
                                         @endif
-                                      </div>
+                                      @endif
                                     </div>
-                                  @endif
-                              @endauth
-                            @endif
+                                  </div>
+                                @endif
+                            @endauth
                             {{-- <h5 style="text-decoration: underline">Additional Details or Countered Terms:</h5> --}}
                           </div>
                         </div>

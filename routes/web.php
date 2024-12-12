@@ -433,7 +433,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/landlord/auction/counter/bid/{bid_id}', [LandlordAuctionController::class, 'saveCounterBid'])->name('landlord.save.counter-bid');
 
         Route::get('tenant/criteria/auction/counter/bid/{bid_id}', [TenantCriteriaAuctionController::class, 'addCounterBid'])->name('tenant.criteria.add.counter-bid');
-        Route::post('ltenant/criteria/auction/counter/bid/{bid_id}', [TenantCriteriaAuctionController::class, 'saveCounterBid'])->name('tenant.criteria.save.counter-bid');
+        Route::post('tenant/criteria/auction/counter/bid/{bid_id}', [TenantCriteriaAuctionController::class, 'saveCounterBid'])->name('tenant.criteria.save.counter-bid');
         // Counter Bid Routes
         // Seller's agent routes
         Route::get('/add-listing', [PropertyAuctionController::class, 'addListing'])->name('add-listing');

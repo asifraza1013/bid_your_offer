@@ -241,8 +241,36 @@ class TenantCriteriaAuctionController extends Controller
         return view('tenant_criteria.add-counter_bid', $page_data);
     }
 
-    public function saveCounterBids()
-    {}
+    public function saveCounterBid(Request $request, $bid_id)
+    {
+        $auctionBid = TenantCriteriaAuctionBid::with('meta')->where('tenant_criteria_auction_id', $bid_id)->first();
+        $bid = new TenantCriteriaAuctionBid();
+        $bid->user_id = Auth::user()->id;
+        $bid->counter_id = $auctionBid->id;
+        $bid->tenant_criteria_auction_id = $auctionBid->tenant_criteria_auction_id;
+        $bid->save();
+        $bid->saveMeta('address', $request->address);
+        $bid->saveMeta('city', $request->city);
+        $bid->saveMeta('county', $request->county);
+        $bid->saveMeta('state', $request->state);
+        $bid->saveMeta('landlordOfferCommission', $request->landlordOfferCommission);
+        $bid->saveMeta('commissionAmmountOffered', $request->commissionAmmountOffered);
+        $bid->saveMeta('landlordPaysAmount', $request->landlordPaysAmount);
+        $bid->saveMeta("price",$request->price);
+        $bid->saveMeta("leaseDate",$request->leaseDate);
+        $bid->saveMeta("leaseTime",json_encode($request->leaseTime));
+        $bid->saveMeta("other_lease_duration",$request->other_lease_duration);
+        $bid->saveMeta('offerExpires', $request->offerExpires);
+        $bid->saveMeta("first_name",$request->first_name);
+        $bid->saveMeta("last_name",$request->last_name);
+        $bid->saveMeta("agent_phone",$request->agent_phone);
+        $bid->saveMeta("agent_email",$request->agent_email);
+        $bid->saveMeta("agent_brokerage",$request->agent_brokerage);
+        $bid->saveMeta("agent_license_no",$request->agent_license_no);
+        $bid->saveMeta("agent_mls_id",$request->agent_mls_id);
+
+        return redirect()->route('tenant.criteria.auction.view', $auctionBid->tenant_criteria_auction_id)->with("success", "Counter Bid placed successfully!");
+    }
 
     public function bidsVisibility($id, $vis){
         $auction = TenantCriteriaAuction::where('id', $id)->first();
@@ -536,6 +564,7 @@ class TenantCriteriaAuctionController extends Controller
         // $page_data['financings'] = Financing::orderBy('sort', 'ASC')->get();
         $page_data['title'] = 'Tenant Criteria';
         $page_data['id'] = $id;
+        $page_data['bids'] = TenantCriteriaAuctionBid::with('meta')->where('tenant_criteria_auction_id', $id)->whereNull('counter_id')->get();
         return view('tenant_criteria.view', $page_data);
     }
 

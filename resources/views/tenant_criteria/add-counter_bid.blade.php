@@ -335,7 +335,7 @@
           <div class="steps-progress-percent"></div>
         </div>
 
-        <form class="p-4 pt-0 mainform" action="{{ route('tenant.criteria.save.counter-bid', @$auction->id) }}" method="POST"
+        <form class="p-4 pt-0 mainform" action="{{ route('tenant.criteria.save.counter-bid', $auction->id) }}" method="POST"
           enctype="multipart/form-data">
           @csrf
             <div class="wizard-step" data-step='1'>
@@ -422,7 +422,7 @@
             <div class="wizard-step" data-step="3">
                 <div class="form-group">
                   <label class="fw-bold">
-                    If the tenant is represented by an agent, will the landlord offer the agent a commission?
+                    {{Auth::user()->user_type == 'tenant' ? 'Does the tenant request that the landlord pay the tenant’s agent commission?' : 'If the tenant is represented by an agent, will the landlord offer the agent a commission?'}}
                   </label>
                   @php
                     $representedRes = [
@@ -444,7 +444,7 @@
                   </select>
                 </div>
                 <div class="form-group main commission d-none">
-                  <label class="fw-bold" for="custom_evicted">What is the commission offered to the tenant’s agent?</label>
+                  <label class="fw-bold" for="custom_evicted">{{Auth::user()->user_type == 'tenant' ? 'What compensation is the tenant requesting the landlord to pay to the tenant’s agent?' : 'What is the commission offered to the tenant’s agent?'}}</label>
                   @php
                     $representedOtherOpt = [
                         ['name' => '1 month’s rent', 'target' => ''],
@@ -506,7 +506,7 @@
                         <input type="text" name="agent_email" class="form-control has-icon hide_arrow" data-icon="fa-solid fa-envelope" value="{{ Auth::user()->email }}">
                     </div>
                 </div>
-                @if (auth()->user()->user_type !== 'landlord')
+                @if (auth()->user()->user_type !== 'landlord' && auth()->user()->user_type !== 'tenant')
                     <div class="form-group row">
                         <div class="form-group col-md-6">
                             <label class="fw-bold" for="agent_brokerage">Brokerage:</label>
