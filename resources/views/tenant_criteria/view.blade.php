@@ -765,7 +765,7 @@
                             @auth
                                 @if (auth()->user()->id == $bid->user->id || (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin'))
                                   <div class="form-group biddingOperations">
-                                    <h5 class="my-3 text-center"><u>Counter Bids</u></h5>
+                                    <h5 class="my-3 text-center"><u>Countered Terms</u></h5>
                                     @php
                                       $allBids = App\Models\TenantCriteriaAuctionBid::where('counter_id', $bid->id)->with('meta')
                                           ->orderByDesc('created_at')
@@ -782,8 +782,26 @@
                                                 @endphp
                                                 @if (isset($countBid->get->first_name))
                                                   <tr>
-                                                    <th class="small">First Name</th>
+                                                    <th class="small">First Name:</th>
                                                     <td class="small">{{ $countBid->get->first_name }}</td>
+                                                  </tr>
+                                                @endif
+                                                @if (isset($countBid->get->city) && $user->user_type !== 'tenant')
+                                                  <tr>
+                                                    <th class="small">City:</th>
+                                                    <td class="small">{{ $countBid->get->city }}</td>
+                                                  </tr>
+                                                @endif
+                                                @if (isset($countBid->get->county) && $user->user_type !== 'tenant')
+                                                  <tr>
+                                                    <th class="small">County:</th>
+                                                    <td class="small">{{ $countBid->get->county }}</td>
+                                                  </tr>
+                                                @endif
+                                                @if (isset($countBid->get->state) && $user->user_type !== 'tenant')
+                                                  <tr>
+                                                    <th class="small">State:</th>
+                                                    <td class="small">{{ $countBid->get->state }}</td>
                                                   </tr>
                                                 @endif
                                                 @if (isset($countBid->get->price))
