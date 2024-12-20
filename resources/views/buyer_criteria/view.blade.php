@@ -1368,7 +1368,7 @@
                         @endif
                         <div class="accordion" id="accordionExample">
                             <div class="accordion-item border-0">
-                                @if ($auction->display_bids == 1)
+                                @if ($auction->display_bids == 1 || $auction->user_id == auth()->user()->id)
                                     @foreach (@$auction->bids as $bid)
                                         <!-- Item loop -->
                                         <div class="accordion" type="button" data-bs-toggle="collapse"

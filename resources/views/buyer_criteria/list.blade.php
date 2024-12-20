@@ -115,6 +115,23 @@
                                                                         </a>
                                                                     </li>
                                                                 @endif
+                                                                @if($auction->user_id == auth()->user()->id && $auction->bids->count() > 0)
+                                                                    @if ($auction->display_bids == 0)
+                                                                        <form action="{{ route('criteria.auction.bids.visibility', ['id' => $auction->id, 'vis' => 'show']) }}"  method="post">
+                                                                        @csrf
+                                                                        <li>
+                                                                            <button class="dropdown-item" style="background-color: transparent; color: #000"><span style="font-size:14px;">Show Bids</span></button>
+                                                                        </li>
+                                                                        </form>
+                                                                    @else
+                                                                        <form action="{{ route('criteria.auction.bids.visibility', ['id' => $auction->id, 'vis' => 'hide']) }}" method="post">
+                                                                        @csrf
+                                                                        <li>
+                                                                            <button class="dropdown-item" style="background-color: transparent; color: #000"><span style="font-size:14px;">Hide Bids</span></button>
+                                                                        </li>
+                                                                        </form>
+                                                                    @endif
+                                                                @endif
                                                                 <li>
                                                                     <a class="dropdown-item"
                                                                         href="{{ route('manage.bot.questions', ['buyer-criteria', $auction->id]) }}">
