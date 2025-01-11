@@ -16,7 +16,7 @@ class BuyerCriteriaAuctionBidController extends Controller
     {
         // dd($id);
         $page_data['auction'] = BuyerCriteriaAuction::find($id);
-        $page_data['title'] = "Add Bid for Buyer's Criteria Auction - ". $page_data['auction']->address;
+        $page_data['title'] = "Add Bid for Buyer's Criteria Auction - " . $page_data['auction']->address;
         $page_data['property_types'] = PropertyType::orderBy('sort', 'ASC')->get();
         // dd($page_data);
         return view('buyer_criteria.add-bid', $page_data);
@@ -252,6 +252,10 @@ class BuyerCriteriaAuctionBidController extends Controller
             $bid->saveMeta("brokerage", $request->brokerage);
             $bid->saveMeta("license", $request->license);
             $bid->saveMeta("member_id", $request->member_id);
+            $bid->saveMeta("three_d_tour", $request->three_d_tour);
+            $bid->saveMeta('video_type', $request->video_type);
+            $bid->saveMeta('youtube_video_link', $request->youtube_video_link);
+            $bid->saveMeta('vimeo_video_link', $request->vimeo_video_link);
 
             if ($request->audio != "") {
                 $extension = $request->audio->getClientOriginalExtension();
@@ -264,20 +268,77 @@ class BuyerCriteriaAuctionBidController extends Controller
                 }
             }
 
-            if ($request->hasFile('photo')) {
-                $photo = $request->file('photo');
-                $originalName = $photo->getClientOriginalName();
-                $extension = $photo->getClientOriginalExtension();
-                $imageSize = $photo->getSize();
-                $check = in_array($extension, $allowedPhotos);
+            // Disclosure Upload
+            $disclosures = [];
+            if ($request->hasFile('disclosures')) {
+                foreach ($request->file('disclosures') as $file) {
+                    $originalName = $file->getClientOriginalName();
+                    $extension = $file->getClientOriginalExtension();
+                    $fileSize = $file->getSize();
+                    $check = in_array($extension, $allowedFiles);
+                    if ($check) {
+                        $uuid = (string) Str::uuid();
+                        $fileName = $uuid . '.' . $extension;
+                        $file->move(public_path('auction/files'), $fileName);
+                        $disclosures[] = 'auction/files/' . $fileName;
+                    }
+                }
+                $bid->saveMeta('disclosures', json_encode($disclosures));
+            }
+
+            if ($request->hasFile('floor_plan')) {
+                $file = $request->floor_plan[0];
+                $extension = $file->getClientOriginalExtension();
+                $check = in_array($extension, $allowedFiles);
                 if ($check) {
                     $uuid = (string) Str::uuid();
-                    $imageName = $uuid . '.' . $extension;
-                    $photo->move(public_path('bid/images'), $imageName);
-                    $photo = 'bid/images/' . $imageName;
+                    $fileName = $uuid . '.' . $extension;
+                    $file->move(public_path('auction/files'), $fileName);
+                    $bid->saveMeta('floor_plan', 'auction/files/' . $fileName);
                 }
-                $bid->saveMeta('photo', $photo);
             }
+
+            if ($request->hasFile('photo') && $request->has('photoNames')) {
+                $photos = $request->file('photo'); // Get the array of uploaded files
+                $photosNames = $request->photoNames;
+
+                $arrangedPhotoArr = [];
+
+                // Loop through each name to arrange the photos accordingly
+                foreach ($photosNames as $photoName) {
+                    // Filter to find the matching photo
+                    $filteredPhotos = array_filter($photos, function ($photo) use ($photoName) {
+                        return $photo->getClientOriginalName() === $photoName; // Get original name correctly
+                    });
+
+                    // If any photos are found, get the first one
+                    if (!empty($filteredPhotos)) {
+                        // Directly get the first matched file
+                        $arrangedPhotoArr[] = reset($filteredPhotos); // This extracts the first matched file from the filtered array
+                    }
+                }
+
+                // dd($arrangedPhotoArr);
+
+                $photoLinks = []; // Array to hold photo links
+                foreach ($arrangedPhotoArr as $photo) {
+                    $extension = $photo->getClientOriginalExtension();
+                    $check = in_array($extension, $allowedFiles);
+
+                    if ($check) {
+                        $uuid = (string) Str::uuid();
+                        $photoName = $uuid . '.' . $extension;
+                        $photo->move(public_path('auction/images'), $photoName);
+                        $photoLinks[] = 'auction/images/' . $photoName; // Store each link
+                    }
+                }
+                // dd($photoLinks);
+
+                // Save all links as JSON or a comma-separated string
+                $bid->saveMeta('photo', json_encode($photoLinks));
+            }
+
+
             if ($request->hasFile('video')) {
                 $video = $request->file('video');
                 if ($video) {

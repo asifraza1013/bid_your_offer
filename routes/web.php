@@ -77,6 +77,7 @@ use App\Http\Controllers\SellerServiceAuctionBidController;
 use App\Http\Controllers\TenantCounteredTermsController;
 use App\Http\Controllers\TenantCriteriaAuctionBidController;
 use App\Http\Controllers\SocialAuth;
+use App\Models\BuyerCriteriaAuction;
 use App\Models\TenantCriteriaAuction;
 
 /*
@@ -402,7 +403,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get("/landlord/auction/edit/{id}", [LandlordAuctionController::class, 'edit'])->name('landlord.auction.edit');
             Route::post("/landlord/auction/update/{id}", [LandlordAuctionController::class, 'update'])->name('landlord.auction.update');
             Route::post("/landlord/auction/bid/accept/{id}", [LandlordAuctionController::class, 'accept_bid'])->name('landlord.auction.bid.accept');
-            
+
             Route::get("/buyer/agent/auction/bid/{id}", [BuyerAgentAuctionBidController::class, 'add_bid'])->name('buyer.agent.auction.bid');
             Route::get("/tenant/agent/auction/bid/{id}", [TenantAgentAuctionBidController::class, 'add_bid'])->name('tenant.agent.auction.bid');
             Route::post('/tenant/agent/auction/bid/store', [TenantAgentAuctionBidController::class, 'save_bid'])->name('tenant.agent.auction.bid.save');
@@ -421,7 +422,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::any('/edit-counter-terms/{id}', [AgentCounteredTermsController::class, 'edit'])->name('edit-counter-terms');
             Route::any('/update-counter-terms/{id}', [AgentCounteredTermsController::class, 'update'])->name('update-counter-terms');
 
-         
+
 
             // Route::get('/referral/auction/add', [ReferralAuctionController::class, 'index'])->name('referral.auction.add');
         });
@@ -434,6 +435,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('tenant/criteria/auction/counter/bid/{bid_id}', [TenantCriteriaAuctionController::class, 'addCounterBid'])->name('tenant.criteria.add.counter-bid');
         Route::post('tenant/criteria/auction/counter/bid/{bid_id}', [TenantCriteriaAuctionController::class, 'saveCounterBid'])->name('tenant.criteria.save.counter-bid');
+
+        Route::get('buyer-criteria/auction/counter/bid/{bid_id}', [BuyerCriteriaAuctionController::class, 'addCounterBid'])->name('buyer-criteria.add.counter-bid');
+
         // Counter Bid Routes
         // Seller's agent routes
         Route::get('/add-listing', [PropertyAuctionController::class, 'addListing'])->name('add-listing');

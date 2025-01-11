@@ -9,6 +9,7 @@ use App\Models\BCWaterExtra;
 use App\Models\BCWaterView;
 use App\Models\Bedroom;
 use App\Models\BuyerCriteriaAuction;
+use App\Models\BuyerCriteriaAuctionBid;
 use App\Models\City;
 use App\Models\County;
 use App\Models\Financing;
@@ -261,6 +262,16 @@ class BuyerCriteriaAuctionController extends Controller
             return $e->getMessage();
             return redirect()->back()->with('error', 'Unable to add buyer criteria auction.');
         }
+    }
+
+    public function addCounterBid(Request $request, $bid_id)
+    {
+        // dd($bid_id);
+        $criteria_bid = BuyerCriteriaAuctionBid::find($bid_id);
+        $page_data['auction'] = $auction = BuyerCriteriaAuction::find($criteria_bid->buyer_criteria_auction_id);
+        $page_data['title'] = "Add Counter Bid for Buyer's Criteria Auction - {$auction->address}";
+        $page_data['bid'] = $criteria_bid;
+        return view('buyer_criteria.add-counter-bid', $page_data);
     }
 
     public function view($id)
