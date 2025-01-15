@@ -333,21 +333,21 @@
                             state, pertaining to the real estate asset that the landlord intends to place on the market:
                         </h4>
                         <div class="form-group">
-                            <label class="fw-bold" for="unit_number">Unit Number:</label>
-                            <input type="text" name="unit_number" data-type="unit_number" placeholder="" id="unit_number"
-                              class="form-control has-icon search_places" data-icon="fa-solid fa-location-dot" required>
-                        </div>
-                        <div class="form-group">
                             <label for="address" class="fw-bold">Address:</label>
                             <input type="text" name="address" data-type="address" placeholder="" id="address"
                                 class="form-control has-icon search_places" data-icon="fa-solid fa-location-dot" required>
                         </div>
                         <div class="form-group">
+                            <label class="fw-bold" for="unit_number">Unit Number:</label>
+                            <input type="text" name="unit_number" data-type="unit_number" placeholder="" id="unit_number"
+                              class="form-control has-icon search_places" data-icon="fa-solid fa-location-dot">
+                        </div>
+                        {{-- <div class="form-group">
                             <label class="fw-bold">City:</label>
                             <input type="text" name="city" data-type="cities" id="cities"
                                 class="form-control has-icon search_places" data-icon="fa-solid fa-city" placeholder=""
                                 required>
-                        </div>
+                        </div> --}}
 
                         <div class="form-group">
                             <label class="fw-bold">County:</label>
@@ -357,12 +357,12 @@
                         </div>
 
                         {{-- nisar changing --}}
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label class="fw-bold">State:</label>
                             <input type="text" name="state" data-type="states" id="state"
                                 class="form-control has-icon search_places" data-icon="fa-solid fa-flag-usa"
                                 placeholder="" required>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="wizard-step" data-step="2">
                         <div class="form-group">
@@ -389,7 +389,7 @@
                                 ],
                             ];
                         @endphp
-                        <div class="form-group" id="pool">
+                        {{-- <div class="form-group" id="pool">
                             <label class="fw-bold">Listing Service Type:</label>
                             <select class="grid-picker" name="listing_service_type" id="listing_service_type"
                                 style="justify-content: flex-start;" required>
@@ -402,7 +402,7 @@
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             @php
                                 $representationRes = [
@@ -521,22 +521,23 @@
                             <div>
                                 @php
                                     $property_items = [
-                                        ['name' => 'Single Family Residence', 'class' => 'residential-length'],
-                                        ['name' => 'Apartment', 'class' => 'residential-length'],
-                                        ['name' => 'Townhouse', 'class' => 'residential-length'],
-                                        ['name' => 'Villa', 'class' => 'residential-length'],
-                                        ['name' => 'Condominium', 'class' => 'residential-length'],
-                                        ['name' => 'Condo-Hotel', 'class' => 'residential-length'],
-                                        ['name' => '½ Duplex', 'class' => 'residential-length'],
                                         ['name' => '1/3 Triplex', 'class' => 'residential-length'],
                                         ['name' => '1/4 Quadplex', 'class' => 'residential-length'],
+                                        ['name' => '½ Duplex', 'class' => 'residential-length'],
+                                        ['name' => 'Apartment', 'class' => 'residential-length'],
+                                        ['name' => 'Condominium', 'class' => 'residential-length'],
+                                        ['name' => 'Condo-Hotel', 'class' => 'residential-length'],
                                         ['name' => 'Dock-Rackominium', 'class' => 'residential-length'],
                                         ['name' => 'Farm', 'class' => 'residential-length'],
                                         ['name' => 'Garage Condo', 'class' => 'residential-length'],
                                         ['name' => 'Manufactured Home- Post 1977', 'class' => 'residential-length'],
                                         ['name' => 'Mobile Home- Pre 1976', 'class' => 'residential-length'],
-                                        ['name' => 'Unimproved Land', 'class' => 'residential-length'],
                                         ['name' => 'Modular Home', 'class' => 'residential-length'],
+                                        ['name' => 'Single Family Residence', 'class' => 'residential-length'],
+                                        ['name' => 'Townhouse', 'class' => 'residential-length'],
+                                        ['name' => 'Unimproved Land', 'class' => 'residential-length'],
+                                        ['name' => 'Villa', 'class' => 'residential-length'],
+
                                         ['name' => 'Duplex', 'class' => 'income-length'],
                                         ['name' => 'Triplex', 'class' => 'income-length'],
                                         ['name' => 'Quadplex', 'class' => 'income-length'],
@@ -591,32 +592,32 @@
                             </select>
                             <span class="resFields">
                                 <div class="form-group singleRoomRes d-none">
-                                    <label class="fw-bold">What is the size of the room the landlord intends to lease?</label>
-                                    <input class="form-control has-icon" type="text" name="singleRoom[]"
-                                        data-icon="fa-solid fa-question">
-                                    <label class="fw-bold">Is there a private bathroom, or is it shared?</label>
-                                    <input class="form-control has-icon" type="text" name="singleRoom[]"
-                                        data-icon="fa-solid fa-question">
-                                    <label class="fw-bold">How much storage space is available?</label>
-                                    <input class="form-control has-icon" type="text" name="singleRoom[]"
-                                        data-icon="fa-solid fa-question">
-                                    <label class="fw-bold">Can tenants use common areas like the kitchen, living room, or
-                                        backyard?</label>
-                                    <input class="form-control has-icon" type="text" name="singleRoom[]"
-                                        data-icon="fa-solid fa-question">
-                                    <label class="fw-bold">How is cleaning and maintenance of common areas managed?</label>
-                                    <input class="form-control has-icon" type="text" name="singleRoom[]"
-                                        data-icon="fa-solid fa-question">
                                     <label class="fw-bold">Are tenants allowed to have guests, and if so, are there any
                                         restrictions?</label>
                                     <input class="form-control has-icon" type="text" name="singleRoom[]"
-                                        data-icon="fa-solid fa-question">
+                                        data-icon="fa-regular fa-check-circle">
+                                    <label class="fw-bold">Can tenants use common areas like the kitchen, living room, or
+                                        backyard?</label>
+                                    <input class="form-control has-icon" type="text" name="singleRoom[]"
+                                        data-icon="fa-regular fa-check-circle">
                                     <label class="fw-bold">How are maintenance issues handled?</label>
                                     <input class="form-control has-icon" type="text" name="singleRoom[]"
-                                        data-icon="fa-solid fa-question">
+                                        data-icon="fa-regular fa-check-circle">
                                     <label class="fw-bold">How are the utilities split?</label>
                                     <input class="form-control has-icon" type="text" name="singleRoom[]"
-                                        data-icon="fa-solid fa-question">
+                                        data-icon="fa-regular fa-check-circle">
+                                    <label class="fw-bold">How is cleaning and maintenance of common areas managed?</label>
+                                    <input class="form-control has-icon" type="text" name="singleRoom[]"
+                                        data-icon="fa-regular fa-check-circle">
+                                    <label class="fw-bold">How much storage space is available?</label>
+                                    <input class="form-control has-icon" type="text" name="singleRoom[]"
+                                        data-icon="fa-regular fa-check-circle">
+                                    <label class="fw-bold">Is there a private bathroom, or is it shared?</label>
+                                    <input class="form-control has-icon" type="text" name="singleRoom[]"
+                                        data-icon="fa-regular fa-check-circle">
+                                    <label class="fw-bold">What is the size of the room the landlord intends to lease?</label>
+                                    <input class="form-control has-icon" type="text" name="singleRoom[]"
+                                        data-icon="fa-regular fa-check-circle"> 
                                 </div>
                             </span>
                             <span class="commercialFields">
@@ -651,10 +652,10 @@
                         <div class="form-group">
                             @php
                                 $propConditions = [
-                                    ['name' => 'New Construction', 'target' => ''],
                                     ['name' => 'Completely Updated: No updates needed', 'target' => ''],
-                                    ['name' => 'Semi-Updated: Needs minor updates', 'target' => ''],
+                                    ['name' => 'New Construction', 'target' => ''],
                                     ['name' => 'Not Updated: Requires a complete update', 'target' => ''],
+                                    ['name' => 'Semi-Updated: Needs minor updates', 'target' => ''],
                                     ['name' => 'Other', 'target' => '.propOtherRes'],
                                 ];
                             @endphp
@@ -678,6 +679,7 @@
                         </div>
                     </div>
                     <div class="wizard-step" data-step="8">
+                        <h4>Price and Terms:</h4>
                       <span class="timerAuction">
                         <div class="form-group">
                           <label class="fw-bold" for="custom_terms">Rent Now Price:</label>
@@ -908,7 +910,8 @@
                                     ['name' => 'Annually', 'target' => ''],
                                     ['name' => 'Daily', 'target' => ''],
                                     ['name' => 'Monthly', 'target' => ''],
-                                    ['name' => 'Seasonally', 'target' => ''],
+                                    ['name' => 'Seasonally', 'target' => '.season_runs'],
+                                    ['name' => 'Weekly', 'target' => ''],
                                 ];
                             @endphp
                             <label class="fw-bold">Select the frequency in which the Lease Amount is paid: </label>
@@ -923,6 +926,16 @@
                                     </option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="season_runs d-none">
+                            <div class="form-group">
+                                <label class="fw-bold">Season runs from:</label>
+                                <input type="date" name="season_runs_from" id="season_runs_from" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" min="{{ date('Y-m-d') }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="fw-bold">Season runs to:</label>
+                                <input type="date" name="season_runs_to" id="season_runs_to" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" min="{{ date('Y-m-d') }}" required>
+                            </div>
                         </div>
                       </span>
                       <span class="resFields">
@@ -1076,7 +1089,7 @@
                         </div>
                         <div class="form-group">
                             <label class="fw-bold">Application Link: </label>
-                            <input type="number" name="applicationLinkSecond" data-type="cities" id="cities"
+                            <input type="text" name="applicationLinkSecond" data-type="cities" id="cities"
                                 class="form-control has-icon search_places" data-icon="fa-solid fa-link" placeholder=""
                                 required>
                         </div>
@@ -1378,7 +1391,7 @@
                             <div class="form-group custom_occupants d-none">
                                 <label class="fw-bold" for="custom_occupants">How many occupants will the landlord
                                     accept?</label>
-                                <input type="text" name="custom_occupants" placeholder="" id="custom_occupants"
+                                <input type="number" name="custom_occupants" placeholder="" id="custom_occupants"
                                     class="form-control has-icon hide_arrow" data-icon="fa-regular fa-check-circle">
                             </div>
                         </div>
@@ -1530,7 +1543,7 @@
                     <div class="wizard-step" data-step='12'>
                         <div class="form-group">
                             <label for="heated_sqft" class="fw-bold">Heated Sqft:</label>
-                            <input type="text" name="heated_sqft" id="heated_sqft"
+                            <input type="number" name="heated_sqft" id="heated_sqft"
                                 class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
                         </div>
                         <div class="form-group commercial_show">
@@ -1540,7 +1553,7 @@
                         </div>
                         <div class="form-group">
                             <label for="sqft_total" class="fw-bold"> Total Sqft:</label>
-                            <input type="text" name="sqft_total" id="sqft_total"
+                            <input type="number" name="sqft_total" id="sqft_total"
                                 class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
                         </div>
                         @php
@@ -1610,7 +1623,7 @@
                         </div>
                         <div class="form-group">
                             <label class="fw-bold">Year Built:</label>
-                            <input type="text" name="yearBuilt" class="form-control has-icon"
+                            <input type="number" name="yearBuilt" class="form-control has-icon"
                                 data-icon="fa-regular fa-calendar-days">
                         </div>
                         <div class="form-group">
@@ -1621,17 +1634,17 @@
                         <div class="form-group">
                             <label class="fw-bold">Legal Subdivision Name:</label>
                             <input type="text" name="legarName" class="form-control has-icon"
-                                data-icon="fa-solid fa-ruler-combined" required>
+                                data-icon="fa-solid fa-tag" required>
                         </div>
                         <div class="form-group">
-                            <label class="fw-bold">Tax ID (Parcel Number) :</label>
+                            <label class="fw-bold">Tax ID (Parcel Number):</label>
                             <input type="text" name="taxId" class="form-control has-icon"
                                 data-icon="fa-solid fa-ruler-combined"  required>
                         </div>
                         <div class="form-group">
                             <label class="fw-bold">Flood Zone Code:</label>
                             <input type="text" name="zoneCode" class="form-control has-icon"
-                                data-icon="fa-solid fa-ruler-combined"  required>
+                                data-icon="fa-solid fa-tag"  required>
                         </div>
                         <span class="commercialFields">
                             <div class="form-group">
@@ -1806,52 +1819,53 @@
                             </label>
                             @php
                               $amenitiesFeatureRes = [
-                                  ['target' => '', 'name' => 'Garage'],
-                                  ['target' => '', 'name' => 'Carport'],
-                                  ['target' => '', 'name' => 'Pool'],
-                                  ['target' => '', 'name' => 'Waterfront'],
-                                  ['target' => '', 'name' => 'In-Unit Laundry'],
-                                  ['target' => '', 'name' => 'On-site Laundry'],
-                                  ['target' => '', 'name' => 'Washer and Dryer Hookup'],
-                                  ['target' => '', 'name' => 'Washer and Dryer'],
-                                  ['target' => '', 'name' => 'Covered Carport'],
-                                  ['target' => '', 'name' => 'First Floor Unit'],
-                                  ['target' => '', 'name' => 'Elevator'],
-                                  ['target' => '', 'name' => 'Pet Friendly'],
-                                  ['target' => '', 'name' => 'Balcony/Patio'],
-                                  ['target' => '', 'name' => 'Fitness Center/Gym'],
-                                  ['target' => '', 'name' => 'Central Heating'],
-                                  ['target' => '', 'name' => 'Central Air Conditioning'],
-                                  ['target' => '', 'name' => 'Fireplace'],
-                                  ['target' => '', 'name' => 'Walk-in Closet'],
-                                  ['target' => '', 'name' => 'Hardwood Floors'],
-                                  ['target' => '', 'name' => 'Tile Floors'],
-                                  ['target' => '', 'name' => 'Carpet Floors '],
-                                  ['target' => '', 'name' => 'Security System'],
-                                  ['target' => '', 'name' => 'Gated Community'],
-                                  ['target' => '', 'name' => 'HOA Community'],
-                                  ['target' => '', 'name' => '55 and Over Community'],
-                                  ['target' => '', 'name' => 'Specific School District'],
-                                  ['target' => '', 'name' => 'Accessibility Features'],
-                                  ['target' => '', 'name' => 'On-site Maintenance'],
-                                  ['target' => '', 'name' => 'On-site Management'],
-                                  ['target' => '', 'name' => 'Outdoor Space'],
-                                  ['target' => '', 'name' => 'Playground'],
-                                  ['target' => '', 'name' => 'Clubhouse'],
-                                  ['target' => '', 'name' => 'Storage Space'],
-                                  ['target' => '', 'name' => 'Study/Den/Office'],
-                                  ['target' => '', 'name' => 'Updated Kitchen'],
-                                  ['target' => '', 'name' => 'Updated Bathroom'],
-                                  ['target' => '.otherAmenitiesFeatureRes', 'name' => 'Other'],
-                              ];
+                                    ['target' => '', 'name' => '55 and Over Community'],
+                                    ['target' => '', 'name' => 'Accessibility Features'],
+                                    ['target' => '', 'name' => 'Balcony/Patio'],
+                                    ['target' => '', 'name' => 'Carpet Floors '],
+                                    ['target' => '', 'name' => 'Carport'],
+                                    ['target' => '', 'name' => 'Central Air Conditioning'],
+                                    ['target' => '', 'name' => 'Central Heating'],
+                                    ['target' => '', 'name' => 'Clubhouse'],
+                                    ['target' => '', 'name' => 'Covered Carport'],
+                                    ['target' => '', 'name' => 'Elevator'],
+                                    ['target' => '', 'name' => 'Fireplace'],
+                                    ['target' => '', 'name' => 'Fitness Center/Gym'],
+                                    ['target' => '', 'name' => 'First Floor Unit'],
+                                    ['target' => '', 'name' => 'Garage'],
+                                    ['target' => '', 'name' => 'Gated Community'],
+                                    ['target' => '', 'name' => 'Hardwood Floors'],
+                                    ['target' => '', 'name' => 'HOA Community'],
+                                    ['target' => '', 'name' => 'In-Unit Laundry'],
+                                    ['target' => '', 'name' => 'On-site Laundry'],
+                                    ['target' => '', 'name' => 'On-site Maintenance'],
+                                    ['target' => '', 'name' => 'On-site Management'],
+                                    ['target' => '', 'name' => 'Outdoor Space'],
+                                    ['target' => '', 'name' => 'Pet Friendly'],
+                                    ['target' => '', 'name' => 'Playground'],
+                                    ['target' => '', 'name' => 'Pool'],
+                                    ['target' => '', 'name' => 'Security System'],
+                                    ['target' => '', 'name' => 'Specific School District'],
+                                    ['target' => '', 'name' => 'Storage Space'],
+                                    ['target' => '', 'name' => 'Study/Den/Office'],
+                                    ['target' => '', 'name' => 'Tile Floors'],
+                                    ['target' => '', 'name' => 'Updated Bathroom'],
+                                    ['target' => '', 'name' => 'Updated Kitchen'],
+                                    ['target' => '', 'name' => 'Walk-in Closet'],
+                                    ['target' => '', 'name' => 'Waterfront'],
+                                    ['target' => '', 'name' => 'Washer and Dryer'],
+                                    ['target' => '', 'name' => 'Washer and Dryer Hookup'],
+                                    ['target' => '.otherAmenitiesFeatureRes', 'name' => 'Other'],
+                                ]
+
                             @endphp
                             <select name="amenities[]" id="negotiable_terms" class="grid-picker"
                               style="justify-content: flex-start;" multiple required>
                               <option value=""></option>
                               @foreach ($amenitiesFeatureRes as $item)
                                 <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                                  class="card flex-column" style="width:calc(20% - 10px);"
-                                  data-icon='<i class="fa-regular fa-check-circle" style="font-size:24px;"></i>'>
+                                  class="card flex-row" style="width:calc(33.3% - 10px);"
+                                  data-icon='<i class="fa-regular fa-check-circle"></i>'>
                                   {{ $item['name'] }}
                                 </option>
                               @endforeach
@@ -1959,7 +1973,7 @@
                         <div class="form-group">
                             <label class="fw-bold">Accessibility Features:</label>
                             <select class="grid-picker" name="features[]" multiple
-                                style="justify-content: flex-start;" required>
+                                style="justify-content: flex-start;">
                                 <option value="">Select</option>
                                 @foreach ($accessibilityFeaturesRes as $item)
                                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
@@ -1994,10 +2008,10 @@
                                 ['name' => 'Kitchen/Family Room Combo', 'target' => ''],
                                 ['name' => 'L Dining', 'target' => ''],
                                 ['name' => 'Living Room/Dining Room Combo', 'target' => ''],
-                                ['name' => 'Primary Bedroom Main Floor', 'target' => ''],
-                                ['name' => 'Primary Bedroom Upstairs', 'target' => ''],
                                 ['name' => 'Open Floorplan', 'target' => ''],
                                 ['name' => 'Pest Guard System', 'target' => ''],
+                                ['name' => 'Primary Bedroom Main Floor', 'target' => ''],
+                                ['name' => 'Primary Bedroom Upstairs', 'target' => ''],
                                 ['name' => 'Sauna', 'target' => ''],
                                 ['name' => 'Skylight(s)', 'target' => ''],
                                 ['name' => 'Smart Home', 'target' => ''],
@@ -2088,16 +2102,16 @@
                                 ['name' => 'Corridor Access', 'target' => ''],
                                 ['name' => 'Electric Dryer Hookup', 'target' => ''],
                                 ['name' => 'Gas Dryer Hookup', 'target' => ''],
+                                ['name' => 'In Garage', 'target' => ''],
+                                ['name' => 'In Kitchen', 'target' => ''],
+                                ['name' => 'Inside', 'target' => ''],
+                                ['name' => 'Laundry Chute', 'target' => ''],
+                                ['name' => 'Laundry Closet', 'target' => ''],
+                                ['name' => 'Laundry Room', 'target' => ''],
                                 ['name' => 'Outside', 'target' => ''],
                                 ['name' => 'Same Floor As Condo Unit', 'target' => ''],
                                 ['name' => 'Upper Floor', 'target' => ''],
                                 ['name' => 'Washer Hookup', 'target' => ''],
-                                ['name' => 'Inside', 'target' => ''],
-                                ['name' => 'In Garage', 'target' => ''],
-                                ['name' => 'In Kitchen', 'target' => ''],
-                                ['name' => 'Laundry Chute', 'target' => ''],
-                                ['name' => 'Laundry Closet', 'target' => ''],
-                                ['name' => 'Laundry Room', 'target' => ''],
                                 ['name' => 'None', 'target' => ''],
                                 ['name' => 'Other', 'target' => '.laundryOtherRes'],
                             ];
@@ -2125,18 +2139,18 @@
                     <div class="wizard-step" data-step='21'>
                         <div class="form-group">
                             <label class="fw-bold">How many floors are in the property? </label>
-                            <input type="text" name="propFloors" id="number_of_buildings" placeholder=""
+                            <input type="number" name="propFloors" id="number_of_buildings" placeholder=""
                                 class="form-control has-icon" data-icon="fa-solid fa-hotel">
                         </div>
                         <div class="form-group">
                             <label class="fw-bold">What floor number is the property on?</label>
-                            <input type="text" name="floorNumber" id="floors_in_unit" placeholder=""
+                            <input type="number" name="floorNumber" id="floors_in_unit" placeholder=""
                                 class="form-control has-icon" data-icon="fa-solid fa-hotel">
                         </div>
 
                         <div class="form-group">
                             <label class="fw-bold">How many floors are in the entire building? </label>
-                            <input type="text" name="totalFloors" id="total_floors" placeholder=""
+                            <input type="number" name="totalFloors" id="total_floors" placeholder=""
                                 class="form-control has-icon" data-icon="fa-solid fa-hotel">
                         </div>
                         <span class="commercialFields">
@@ -2154,7 +2168,7 @@
                                 @foreach ($yes_or_nos as $item)
                                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                                         class="card flex-row" style="width:calc(33.3% - 10px);"
-                                        data-icon='<i class="fa-solid fa-hotel"></i>'>
+                                        data-icon='<i class="fa-solid fa-building"></i>'>
                                         {{ $item['name'] }}
                                     </option>
                                 @endforeach
@@ -2231,15 +2245,15 @@
                                 ['name' => 'Bedroom 5', 'target' => ''],
                                 ['name' => 'Bonus Room', 'target' => ''],
                                 ['name' => 'Breezeway', 'target' => ''],
-                                ['name' => 'Dining Room', 'target' => ''],
                                 ['name' => 'Dinette', 'target' => ''],
-                                ['name' => 'Garage Room', 'target' => ''],
-                                ['name' => 'Garage Apartment,', 'target' => ''],
+                                ['name' => 'Dining Room', 'target' => ''],
                                 ['name' => 'Double Primary Bedroom', 'target' => ''],
                                 ['name' => 'Family Room', 'target' => ''],
                                 ['name' => 'Florida Room', 'target' => ''],
                                 ['name' => 'Foyer', 'target' => ''],
                                 ['name' => 'Game Room', 'target' => ''],
+                                ['name' => 'Garage Room', 'target' => ''],
+                                ['name' => 'Garage Apartment', 'target' => ''],
                                 ['name' => 'Great Room', 'target' => ''],
                                 ['name' => 'Gym', 'target' => ''],
                                 ['name' => 'Inside Utility', 'target' => ''],
@@ -2249,10 +2263,10 @@
                                 ['name' => 'Library', 'target' => ''],
                                 ['name' => 'Living Room', 'target' => ''],
                                 ['name' => 'Loft', 'target' => ''],
-                                ['name' => 'Primary Bathroom', 'target' => ''],
-                                ['name' => 'Primary Bedroom', 'target' => ''],
                                 ['name' => 'Media Room', 'target' => ''],
                                 ['name' => 'Office', 'target' => ''],
+                                ['name' => 'Primary Bathroom', 'target' => ''],
+                                ['name' => 'Primary Bedroom', 'target' => ''],
                                 ['name' => 'Sauna', 'target' => ''],
                                 ['name' => 'Studio', 'target' => ''],
                                 ['name' => 'Study/Den', 'target' => ''],
@@ -2283,11 +2297,11 @@
                         </div>
                         @php
                             $room_levels = [
-                                ['name' => 'Upper', 'target' => ''],
                                 ['name' => 'Basement', 'target' => ''],
                                 ['name' => 'First', 'target' => ''],
                                 ['name' => 'Second', 'target' => ''],
                                 ['name' => 'Third', 'target' => ''],
+                                ['name' => 'Upper', 'target' => ''],
                             ];
                         @endphp
                         <div class="form-group roomDet">
@@ -2356,7 +2370,7 @@
                                 ['name' => 'Travertine', 'target' => ''],
                                 ['name' => 'Vinyl', 'target' => ''],
                                 ['name' => 'Wood', 'target' => ''],
-                                ['name' => 'Other', 'target' => ''],
+                                ['name' => 'Other', 'target' => '.floor_covering_other'],
                             ];
                         @endphp
                         <div class="form-group roomDet ">
@@ -2373,11 +2387,17 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="floor_covering_other d-none">
+                            <div class="form-group">
+                                <label class="fw-bold">Room Primary Floor Covering:</label>
+                                <input type="text" name="roomPrimaryOther" id="roomPrimaryOther" placeholder=""
+                                    class="form-control has-icon" data-icon="fa-regular fa-circle-check">
+                        </div>
                         @php
                             $room_features = [
                                 ['name' => 'Bar', 'target' => ''],
                                 ['name' => 'Bath with Spa/Hydro Massage Tub', 'target' => ''],
-                                ['name' => 'Bath With Whirlpoo', 'target' => ''],
+                                ['name' => 'Bath With Whirlpool', 'target' => ''],
                                 ['name' => 'Bidet', 'target' => ''],
                                 ['name' => 'Breakfast Bar', 'target' => ''],
                                 ['name' => 'Built-In Shelving', 'target' => ''],
@@ -2396,10 +2416,8 @@
                                 ['name' => 'Heated Floors', 'target' => ''],
                                 ['name' => 'Island', 'target' => ''],
                                 ['name' => 'Jack and Jill Bathroom', 'target' => ''],
-                                ['name' => 'Linen Closet Bath', 'target' => ''],
                                 ['name' => 'Makeup/Vanity Space', 'target' => ''],
                                 ['name' => 'Multiple Shower Heads', 'target' => ''],
-                                ['name' => 'Wet Bar', 'target' => ''],
                                 ['name' => 'Pantry', 'target' => ''],
                                 ['name' => 'Rain Shower Head', 'target' => ''],
                                 ['name' => 'Sauna', 'target' => ''],
@@ -2418,6 +2436,7 @@
                                 ['name' => 'Walk-In Pantry', 'target' => ''],
                                 ['name' => 'Walk-In Tub', 'target' => ''],
                                 ['name' => 'Water Closet/Priv Toliet', 'target' => ''],
+                                ['name' => 'Wet Bar', 'target' => ''],
                                 ['name' => 'Window/Skylight in Bath', 'target' => ''],
                                 ['name' => 'Other', 'target' => '.roomFeatureOther'],
                             ];
@@ -2457,7 +2476,7 @@
                             @endphp
                             <label class="fw-bold">Water Access:</label>
                             <select class="grid-picker" name="waterAccessOpt" id="water_access"
-                                style="justify-content: flex-start;" >
+                                style="justify-content: flex-start;" multiple>
                                 <option value="">Select</option>
                                 @foreach ($waterAccessOption as $item)
                                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
@@ -2725,6 +2744,7 @@
                                         ['name' => 'Dock w/o Electric', 'target' => ''],
                                         ['name' => 'Dock w/o Water Supply', 'target' => ''],
                                         ['name' => 'Dock w/Water Supply', 'target' => ''],
+                                        ['name' => 'Dry Dock', 'target' => ''],
                                         ['name' => 'Fish Cleaning Station', 'target' => ''],
                                         ['name' => 'Floating Dock', 'target' => ''],
                                         ['name' => 'Harbormaster', 'target' => ''],
@@ -2733,7 +2753,7 @@
                                         ['name' => 'Restroom/Shower', 'target' => ''],
                                         ['name' => 'Wet Dock', 'target' => ''],
                                         ['name' => 'None', 'target' => ''],
-                                        ['name' => 'Other', 'target' => '.therDock']
+                                        ['name' => 'Other', 'target' => '.otherDock']
                                     ];
                                 @endphp
                                 <label class="fw-bold">Dock: </label>
@@ -2760,18 +2780,18 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="fw-bold">Dock Year Built:</label>
-                                    <input type="text" name="dockYearBuilt" class="form-control has-icon"
-                                        data-icon="fa-regular fa-check-circle">
+                                    <input type="number" name="dockYearBuilt" class="form-control has-icon"
+                                        data-icon="fa-regular fa-calendar-days">
                                 </div>
                                 <div class="form-group">
                                     <label class="fw-bold">Dock Dimension:</label>
                                     <input type="text" name="dockDimension" class="form-control has-icon"
-                                        data-icon="fa-regular fa-check-circle">
+                                        data-icon="fa-solid fa-ruler-combined">
                                 </div>
                                 <div class="form-group">
                                     <label class="fw-bold">Dock Maintenance Fee:</label>
-                                    <input type="text" name="dockMaintenanceFee" class="form-control has-icon"
-                                        data-icon="fa-regular fa-check-circle">
+                                    <input type="number" name="dockMaintenanceFee" class="form-control has-icon"
+                                        data-icon="fa-solid fa-dollar-sign">
                                 </div>
                                 @php
                                     $dock = [
