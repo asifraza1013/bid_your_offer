@@ -2868,35 +2868,7 @@
                                 <input type="text" class="form-control has-icon" data-icon="fa-regular fa-check-circle" name="otherUtilities">
                             </div>
                         </div>
-                        @php
-                            $waters = [
-                                ['name' => 'Canal/Lake For Irrigation', 'target' => ''],
-                                ['name' => 'Private', 'target' => ''],
-                                ['name' => 'Public', 'target' => ''],
-                                ['name' => 'Well', 'target' => ''],
-                                ['name' => 'None', 'target' => ''],
-                                ['name' => 'Other', 'target' => '.otherWaterRes'],
-                            ];
-                        @endphp
-                        <div class="form-group">
-                            <label class="fw-bold">Water:</label>
-                            <select class="grid-picker" name="water[]" id="water12"
-                                style="justify-content: flex-start;" multiple required>
-                                <option value="">Select</option>
-                                @foreach ($waters as $water)
-                                    <option value="{{ $water['name'] }}" data-target="{{ $water['target'] }}"
-                                        class="card flex-row" style="width:calc(33.3% - 10px);"
-                                        data-icon="<i class='fa-regular fa-circle-check'></i>">
-                                        {{ $water['name'] }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <div class="form-group otherWaterRes d-none">
-                                <label for="" class="fw-bold">Water: </label>
-                                <input type="text" class="form-control has-icon" data-icon="fa-regular fa-check-circle" name="otherWater">
-                            </div>
-                        </div>
-
+                        
                         @php
                             $sewers1 = [
                                 ['name' => 'Aerobic Septic', 'target' => ''],
@@ -2924,6 +2896,35 @@
                             <div class="form-group otherSewerRes d-none">
                                 <label for="" class="fw-bold">Sewer: </label>
                                 <input type="text" class="form-control has-icon" data-icon="fa-regular fa-check-circle" name="otherSewer">
+                            </div>
+                        </div>
+
+                        @php
+                            $waters = [
+                                ['name' => 'Canal/Lake For Irrigation', 'target' => ''],
+                                ['name' => 'Private', 'target' => ''],
+                                ['name' => 'Public', 'target' => ''],
+                                ['name' => 'Well', 'target' => ''],
+                                ['name' => 'None', 'target' => ''],
+                                ['name' => 'Other', 'target' => '.otherWaterRes'],
+                            ];
+                        @endphp
+                        <div class="form-group">
+                            <label class="fw-bold">Water:</label>
+                            <select class="grid-picker" name="water[]" id="water12"
+                                style="justify-content: flex-start;" multiple required>
+                                <option value="">Select</option>
+                                @foreach ($waters as $water)
+                                    <option value="{{ $water['name'] }}" data-target="{{ $water['target'] }}"
+                                        class="card flex-row" style="width:calc(33.3% - 10px);"
+                                        data-icon="<i class='fa-regular fa-circle-check'></i>">
+                                        {{ $water['name'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div class="form-group otherWaterRes d-none">
+                                <label for="" class="fw-bold">Water: </label>
+                                <input type="text" class="form-control has-icon" data-icon="fa-regular fa-check-circle" name="otherWater">
                             </div>
                         </div>
                     </div>
@@ -2964,6 +2965,7 @@
                                     ['name' => 'Central', 'target' => ''],
                                     ['name' => 'Electric', 'target' => ''],
                                     ['name' => 'Exhaust Fans', 'target' => ''],
+                                    ['name' => 'Gas', 'target' => ''],
                                     ['name' => 'Heat Pump', 'target' => ''],
                                     ['name' => 'Heat Recovery Unit', 'target' => ''],
                                     ['name' => 'Natural Gas', 'target' => ''],
@@ -3123,6 +3125,7 @@
                                 <div class="form-group viewYes d-none">
                                     @php
                                         $view = [
+                                            ['name' => 'Beach', 'target' => ''],
                                             ['name' => 'City', 'target' => ''],
                                             ['name' => 'Garden', 'target' => ''],
                                             ['name' => 'Golf Course', 'target' => ''],
@@ -3133,7 +3136,6 @@
                                             ['name' => 'Tennis Court', 'target' => ''],
                                             ['name' => 'Trees/Woods', 'target' => ''],
                                             ['name' => 'Water', 'target' => ''],
-                                            ['name' => 'Beach', 'target' => ''],
                                             ['name' => 'Other', 'target' => '.viewOther'],
                                         ];
                                     @endphp
@@ -3210,15 +3212,14 @@
                     <div class="wizard-step" data-step='30'>
                         @php
                             $front_exposures = [
-                                ['name' => 'North', 'target' => ''],
                                 ['name' => 'East', 'target' => ''],
-                                ['name' => 'South', 'target' => ''],
-                                ['name' => 'West', 'target' => ''],
-                                ['name' => 'Southeast', 'target' => ''],
+                                ['name' => 'North', 'target' => ''],
                                 ['name' => 'Northeast', 'target' => ''],
-                                ['name' => 'Southwest', 'target' => ''],
                                 ['name' => 'Northwest', 'target' => ''],
-                                ['name' => 'Undetermined', 'target' => ''],
+                                ['name' => 'South', 'target' => ''],
+                                ['name' => 'Southeast', 'target' => ''],
+                                ['name' => 'Southwest', 'target' => ''],
+                                ['name' => 'West', 'target' => ''],
                             ];
                         @endphp
                         <div class="form-group residential_and_income_hide">
@@ -3951,10 +3952,6 @@
                                     ['name' => 'Buyer Approval Required', 'target' => ''],
                                     ['name' => 'Clubhouse', 'target' => ''],
                                     ['name' => 'Dog Park', 'target' => ''],
-                                    ['name' => 'Community Boat Ramp', 'target' => ''],
-                                    ['name' => 'Community Mailbox', 'target' => ''],
-                                    ['name' => 'Deed Restrictions', 'target' => ''],
-                                    ['name' => 'Fishing', 'target' => ''],
                                     ['name' => 'Fitness Center', 'target' => ''],
                                     ['name' => 'Gated Community - Guard', 'target' => ''],
                                     ['name' => 'Gated Community- Not Guard ', 'target' => ''],
@@ -3965,20 +3962,16 @@
                                     ['name' => 'Horses Allowed', 'target' => ''],
                                     ['name' => 'Irrigation-Reclaimed Water', 'target' => ''],
                                     ['name' => 'No Truck/RV/Motorcycle Parking', 'target' => ''],
-                                    ['name' => 'Lake', 'target' => ''],
                                     ['name' => 'No Truck/RV/Motorcycle Parking', 'target' => ''],
                                     ['name' => 'Park', 'target' => ''],
                                     ['name' => 'Playground', 'target' => ''],
                                     ['name' => 'Pool', 'target' => ''],
-                                    ['name' => 'Public Boat Ramp', 'target' => ''],
                                     ['name' => 'Racquetball', 'target' => ''],
                                     ['name' => 'Restaurant', 'target' => ''],
                                     ['name' => 'Sidewalk', 'target' => ''],
                                     ['name' => 'Special Community Restrictions', 'target' => ''],
                                     ['name' => 'Stream Seasonal', 'target' => ''],
                                     ['name' => 'Tennis Courts', 'target' => ''],
-                                    ['name' => ' Water Access', 'target' => ''],
-                                    ['name' => 'Waterfront', 'target' => ''],
                                     ['name' => 'Wheelchair Access', 'target' => ''],
                                     ['name' => 'None', 'target' => ''],
                                     ['name'=> 'Other', 'target' => '.otherCommunity']
@@ -3999,7 +3992,7 @@
                             </select>
                             <div class="form-group otherCommunity d-none">
                                 <label class="fw-bold">Community Features:</label>
-                                <input type="email" name="communityOther" class="form-control has-icon"
+                                <input type="text" name="communityOther" class="form-control has-icon"
                                     data-icon="fa-regular fa-check-circle">
                             </div>
                         </div>
@@ -4009,10 +4002,8 @@
                                 $association_amenities = [
                                     ['name' => 'Airport/Runway', 'target' => ''],
                                     ['name' => 'Basketball Court', 'target' => ''],
-                                    ['name' => 'Boat Slip', 'target' => ''],
                                     ['name' => 'Cable', 'target' => ''],
                                     ['name' => 'Clubhouse', 'target' => ''],
-                                    ['name' => 'Dock', 'target' => ''],
                                     ['name' => 'Elevators', 'target' => ''],
                                     ['name' => 'Fence Restrictions', 'target' => ''],
                                     ['name' => 'Fitness Center', 'target' => ''],
@@ -4023,13 +4014,11 @@
                                     ['name' => 'Laundry', 'target' => ''],
                                     ['name' => 'Lobby Key Required', 'target' => ''],
                                     ['name' => 'Maintenance', 'target' => ''],
-                                    ['name' => 'Marina', 'target' => ''],
                                     ['name' => 'Optional Additional Fees', 'target' => ''],
                                     ['name' => 'Park', 'target' => ''],
                                     ['name' => 'Pickleball Court(s)', 'target' => ''],
                                     ['name' => 'Playground', 'target' => ''],
                                     ['name' => 'Pool', 'target' => ''],
-                                    ['name' => 'Private Boat Ramp', 'target' => ''],
                                     ['name' => 'Racquet Ball', 'target' => ''],
                                     ['name' => 'Recreation Facilities', 'target' => ''],
                                     ['name' => 'Sauna', 'target' => ''],
@@ -4058,7 +4047,7 @@
                                 @endforeach
                             </select>
                             <div class="form-group otherAmenitiesRes d-none">
-                                <label class="fw-bold"> Association Amenities: :</label>
+                                <label class="fw-bold"> Association Amenities:</label>
                                 <input name="otherAmenities" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                             </div>
                         </div>
@@ -4070,13 +4059,13 @@
                         </div>
                         <div class="form-group">
                             <label class="fw-bold">Legal Disclaimers:</label>
-                            <textarea name="disclaimer" id="description" class="form-control" cols="30" rows="6" required></textarea>
+                            <textarea name="disclaimer" id="description" class="form-control has-icon" data-icon="fa-solid fa-tag" cols="30" rows="6" required></textarea>
                         </div>
                         <div class="form-group">
                             <label class="fw-bold">Driving Directions:</label>
                             <input type="text" name="driving_directions" class="form-control has-icon" data-icon="fa-solid fa-car" >
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             @php
                                 $compensationYesRes = [
                                     ['name' => 'Yes', 'target' => '.agentCompensationYesRes','icon'=>'<i class="fa-regular fa-circle-check"></i>'],
@@ -4100,13 +4089,59 @@
                                 <label class="fw-bold">Tenant’s Agent Compensation: $ </label>
                                 <input type="text" name="compensationYes" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
                             </div>
+                        </div> --}}
+                    </div>
+                    <div class="wizard-step" data-step="44">
+                        <h4>Tenant’s Agent Compensation:</h4>
+                        <div class="form-group">
+                            @php
+                                $agent_compensation = [
+                                    ['name' => "The listing broker will compensate the tenant's broker from the listing broker's commission, if applicable.", 'target' => ''],
+                                    ['name' => "The owner will pay the tenant's broker separately, if applicable.", 'target' => ''],
+                                    ['name' => "There is no compensation offered to the tenant's broker.", 'target' => ''],
+                                ];
+                            @endphp
+                            <label class="fw-bold">What is the compensation structure for the tenant's broker?</label>
+                            <select class="grid-picker" name="compensation_structure" id="compensation_structure"
+                                style="justify-content: flex-start;" multiple>
+                                <option value="">Select</option>
+                                @foreach ($agent_compensation as $item)
+                                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                                        class="card flex-row" style="width:calc(33.3% - 10px);"
+                                        data-icon="<i class='fa-regular fa-circle-check'></i>">
+                                        {{ $item['name'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div class="form-group compensationYes d-none">
+                                @php
+                                    $agent_compensation_yes = [
+                                        ['name' => "___% of the gross lease value", 'target' => ''],
+                                        ['name' => "____% of the first month’s rent", 'target' => ''],
+                                        ['name' => 'Fixed amount : $____', 'target' => ''],
+                                        ['name' => 'Negotiable', 'target' => ''],
+                                    ];
+                                @endphp
+                                <label class="fw-bold">What compensation is being offered to the tenant's broker?</label>
+                                <select class="grid-picker" name="compensation_structure_yes" id="compensation_structure_yes"
+                                    style="justify-content: flex-start;" multiple>
+                                    <option value="">Select</option>
+                                    @foreach ($agent_compensation_yes as $item)
+                                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                                            class="card flex-row" style="width:calc(33.3% - 10px);"
+                                            data-icon="<i class='fa-regular fa-circle-check'></i>">
+                                            {{ $item['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="wizard-step" data-step='44'>
+                    <div class="wizard-step" data-step='45'>
                         @if (auth()->user()->user_type == 'landlord')
                             <h4>Landlord’s Info:</h4>
                         @else
-                            <h4>Landlord’s Agent Info:</h4>
+                            <h4>Listing Agent’s Info:</h4>
                         @endif
                         
 
@@ -4163,11 +4198,11 @@
                             </div>
                         @endif
                     </div>
-                    <div class="wizard-step" data-step='45'>
+                    <div class="wizard-step" data-step='46'>
                         <div class="row">
                             <div class="col-6">
                                 <div class="upload form-group">
-                                  <label class="fw-bold">Property Photo:</label>
+                                  <label class="fw-bold">Property Photos:</label>
                                   <div class="wrapper">
                                     <div class="box">
                                         <div class="js--image-preview"></div>
@@ -4280,7 +4315,7 @@
       // Once something is selected the change function will run
       $('.fileuploader').change(function() {
           $('#errorDiv').remove();
-        if (this.files[0].size > 50000000) {
+        if (this.files[0].size > 55000000) {
           $(this).parent().after('<span id="errorDiv" style="color: red;">Please upload a file less than 50MB. Thanks!!</span>');
           $(this).val('');
           $('#saveBtn').prop('disabled', true);
@@ -4569,7 +4604,18 @@
             changePropertyType("");
         });
     </script>
-
+    <script>
+        $(document).ready(function() {
+            $('.compensation_structure').change(function(){
+                let selected = $(this).val();
+                if(selected === "There is no compensation offered to the tenant's broker."){
+                    $('compensationYes').removeClass('d-none');
+                }else{
+                    $('compensationYes').addClass('d-none');
+                }
+            })
+        })
+    </script>
     <script>
         $(function() {
             $('.has-icon').each(function(i) {

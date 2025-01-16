@@ -268,6 +268,8 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("driving_directions", $request->driving_directions);
             $landlord_auction->saveMeta("tenant_agent_compensation", $request->tenant_agent_compensation);
             $landlord_auction->saveMeta("compensationYes", $request->compensationYes);
+            $landlord_auction->saveMeta("compensation_structure", $request->compensation_structure);
+            $landlord_auction->saveMeta("compensation_structure_yes", $request->compensation_structure_yes);
             $landlord_auction->saveMeta("first_name", $request->first_name);
             $landlord_auction->saveMeta("last_name", $request->last_name);
             $landlord_auction->saveMeta("agent_phone", $request->agent_phone);
@@ -813,6 +815,8 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("driving_directions", $request->driving_directions);
             $landlord_auction->saveMeta("tenant_agent_compensation", $request->tenant_agent_compensation);
             $landlord_auction->saveMeta("compensationYes", $request->compensationYes);
+            $landlord_auction->saveMeta("compensation_structure", $request->compensation_structure);
+            $landlord_auction->saveMeta("compensation_structure_yes", $request->compensation_structure_yes);
             $landlord_auction->saveMeta("first_name", $request->first_name);
             $landlord_auction->saveMeta("last_name", $request->last_name);
             $landlord_auction->saveMeta("agent_phone", $request->agent_phone);
