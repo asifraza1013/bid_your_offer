@@ -622,27 +622,37 @@
                             </span>
                             <span class="commercialFields">
                                 <div class="form-group singleRoomRes d-none">
-                                    <label class="fw-bold">What is the size of the room the landlord intends to lease?</label>
-                                    <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
-                                    <label class="fw-bold">Is there a designated reception area?</label>
-                                    <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
-                                    <label class="fw-bold">How is the layout of the commercial space configured?</label>
-                                    <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
-                                    <label class="fw-bold">Are there specific zoning restrictions or permitted uses for the space?</label>
-                                    <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
-                                    <label class="fw-bold">How much storage space is available?</label>
-                                    <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
                                     <label class="fw-bold">Are there any shared amenities, such as conference rooms or parking facilities?</label>
                                     <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
-                                    <label class="fw-bold">How is cleaning and maintenance of common areas managed?</label>
-                                    <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
+
                                     <label class="fw-bold">Are there specific hours of operation for the building, and is 24/7 access available?</label>
                                     <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
+
+                                    <label class="fw-bold">Are there specific zoning restrictions or permitted uses for the space?</label>
+                                    <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
+
                                     <label class="fw-bold">How are maintenance issues and repairs handled for the commercial space?</label>
                                     <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
+
                                     <label class="fw-bold">How are the utilities split?</label>
                                     <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
+
+                                    <label class="fw-bold">How is cleaning and maintenance of common areas managed?</label>
+                                    <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
+
+                                    <label class="fw-bold">How is the layout of the commercial space configured?</label>
+                                    <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
+
+                                    <label class="fw-bold">How much storage space is available?</label>
+                                    <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
+
+                                    <label class="fw-bold">What is the size of the room the landlord intends to lease?</label>
+                                    <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
+
                                     <label class="fw-bold">What types of businesses are neighboring tenants in the building or surrounding area?</label>
+                                    <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
+
+                                    <label class="fw-bold">Is there a designated reception area?</label>
                                     <input class="form-control has-icon" type="text" name="singleRoom[]" data-icon="fa-solid fa-question">
                                 </div>
                             </span>
@@ -826,9 +836,9 @@
                                         ['name' => 'Gas', 'target' => ''],
                                         ['name' => 'Liability Insurance', 'target' => ''],
                                         ['name' => 'Parking Fee', 'target' => ''],
-                                        ['name' => 'Pro-rated', 'target' => ''],
                                         ['name' => 'Property Insurance', 'target' => ''],
                                         ['name' => 'Property Taxes', 'target' => ''],
+                                        ['name' => 'Pro-Rated', 'target' => ''],
                                         ['name' => 'Reserves', 'target' => ''],
                                         ['name' => 'Sewer', 'target' => ''],
                                         ['name' => 'Trash Collection', 'target' => ''],
@@ -856,7 +866,7 @@
                                 <div class="form-group tenantPaysOther d-none">
                                     <label class="fw-bold">Tenant Pays:</label>
                                     <input type="text" name="tenantPaysOther" class="form-control has-icon"
-                                        data-icon="fa-solid fa-ruler-combined">
+                                        data-icon="fa-regular fa-circle-check">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -1548,7 +1558,7 @@
                         </div>
                         <div class="form-group commercial_show">
                             <label for="heated_sqft" class="fw-bold"> Net Leasable Sqft:</label>
-                            <input type="text" name="net_leasable_sqft" id="net_leasable_sqft"
+                            <input type="number" name="net_leasable_sqft" id="net_leasable_sqft"
                                 class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
                         </div>
                         <div class="form-group">
@@ -1654,12 +1664,12 @@
                             </div>
                             <div class="form-group">
                                 <label class="fw-bold">Tax Year:</label>
-                                <input type="text" name="tax_year" class="form-control has-icon"
+                                <input type="number" name="tax_year" class="form-control has-icon"
                                     data-icon="fa-regular fa-check-circle"  required>
                             </div>
                             <div class="form-group">
                                 <label class="fw-bold">Taxes (Annual Amount):</label>
-                                <input type="text" name="taxes_annual" class="form-control has-icon"
+                                <input type="number" name="taxes_annual" class="form-control has-icon"
                                     data-icon="fa-solid fa-dollar-sign"  required>
                             </div>
                             <div class="form-group">
@@ -1813,133 +1823,134 @@
                     </div>
                     <div class="wizard-step" data-step='16'>
                         <span class="resFields">
-                        <div class="form-group">
-                            <label class="fw-bold">
-                              Amenities and Property Features:
-                            </label>
-                            @php
-                              $amenitiesFeatureRes = [
-                                    ['target' => '', 'name' => '55 and Over Community'],
-                                    ['target' => '', 'name' => 'Accessibility Features'],
-                                    ['target' => '', 'name' => 'Balcony/Patio'],
-                                    ['target' => '', 'name' => 'Carpet Floors '],
-                                    ['target' => '', 'name' => 'Carport'],
-                                    ['target' => '', 'name' => 'Central Air Conditioning'],
-                                    ['target' => '', 'name' => 'Central Heating'],
-                                    ['target' => '', 'name' => 'Clubhouse'],
-                                    ['target' => '', 'name' => 'Covered Carport'],
-                                    ['target' => '', 'name' => 'Elevator'],
-                                    ['target' => '', 'name' => 'Fireplace'],
-                                    ['target' => '', 'name' => 'Fitness Center/Gym'],
-                                    ['target' => '', 'name' => 'First Floor Unit'],
-                                    ['target' => '', 'name' => 'Garage'],
-                                    ['target' => '', 'name' => 'Gated Community'],
-                                    ['target' => '', 'name' => 'Hardwood Floors'],
-                                    ['target' => '', 'name' => 'HOA Community'],
-                                    ['target' => '', 'name' => 'In-Unit Laundry'],
-                                    ['target' => '', 'name' => 'On-site Laundry'],
-                                    ['target' => '', 'name' => 'On-site Maintenance'],
-                                    ['target' => '', 'name' => 'On-site Management'],
-                                    ['target' => '', 'name' => 'Outdoor Space'],
-                                    ['target' => '', 'name' => 'Pet Friendly'],
-                                    ['target' => '', 'name' => 'Playground'],
-                                    ['target' => '', 'name' => 'Pool'],
-                                    ['target' => '', 'name' => 'Security System'],
-                                    ['target' => '', 'name' => 'Specific School District'],
-                                    ['target' => '', 'name' => 'Storage Space'],
-                                    ['target' => '', 'name' => 'Study/Den/Office'],
-                                    ['target' => '', 'name' => 'Tile Floors'],
-                                    ['target' => '', 'name' => 'Updated Bathroom'],
-                                    ['target' => '', 'name' => 'Updated Kitchen'],
-                                    ['target' => '', 'name' => 'Walk-in Closet'],
-                                    ['target' => '', 'name' => 'Waterfront'],
-                                    ['target' => '', 'name' => 'Washer and Dryer'],
-                                    ['target' => '', 'name' => 'Washer and Dryer Hookup'],
-                                    ['target' => '.otherAmenitiesFeatureRes', 'name' => 'Other'],
-                                ]
-
-                            @endphp
-                            <select name="amenities[]" id="negotiable_terms" class="grid-picker"
-                              style="justify-content: flex-start;" multiple required>
-                              <option value=""></option>
-                              @foreach ($amenitiesFeatureRes as $item)
-                                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                                  class="card flex-row" style="width:calc(33.3% - 10px);"
-                                  data-icon='<i class="fa-regular fa-check-circle"></i>'>
-                                  {{ $item['name'] }}
-                                </option>
-                              @endforeach
-                            </select>
-                          </div>
-                          <div class="form-group otherAmenitiesFeatureRes d-none">
-                            <label class="fw-bold" for="custom_negotiable_terms"> Amenities and Property Features:
-                            </label>
-                            <input type="text" name="otherAmenities" id="custom_negotiable_terms" placeholder=""
-                              class="form-control has-icon" data-icon="fa-regular fa-circle-check" required>
-                          </div>
-                          </span>
-                          <span class="commercialFields">
-                            @php
-                              $amenitiesCommercial = [
-                                  ['name' => 'Parking Spaces', 'target' => ''],
-                                  ['name' => 'Loading Dock', 'target' => ''],
-                                  ['name' => 'Warehouse Space', 'target' => ''],
-                                  ['name' => 'Office Space', 'target' => ''],
-                                  ['name' => 'Conference Room', 'target' => ''],
-                                  ['name' => 'Kitchenette/Break Room', 'target' => ''],
-                                  ['name' => 'Restrooms', 'target' => ''],
-                                  ['name' => 'Elevator', 'target' => ''],
-                                  ['name' => 'Handicap Accessibility ', 'target' => ''],
-                                  ['name' => 'Security System ', 'target' => ''],
-                                  ['name' => 'On-site Maintenance ', 'target' => ''],
-                                  ['name' => 'On-site Management ', 'target' => ''],
-                                  ['name' => 'Outdoor Space/Garden ', 'target' => ''],
-                                  ['name' => 'Signage Opportunities ', 'target' => ''],
-                                  ['name' => 'High-Speed Internet ', 'target' => ''],
-                                  ['name' => 'Utilities Included ', 'target' => ''],
-                                  ['name' => 'HVAC System ', 'target' => ''],
-                                  ['name' => 'Natural Lighting ', 'target' => ''],
-                                  ['name' => 'Storage Space ', 'target' => ''],
-                                  ['name' => 'Open Floor Plan ', 'target' => ''],
-                                  ['name' => 'Retail Frontage ', 'target' => ''],
-                                  ['name' => 'Restaurant Space ', 'target' => ''],
-                                  ['name' => 'Industrial Features ', 'target' => ''],
-                                  ['name' => 'Flexibility for Renovations ', 'target' => ''],
-                                  ['name' => 'Common Areas ', 'target' => ''],
-                                  ['name' => 'Business Center ', 'target' => ''],
-                                  ['name' => 'Gym/Fitness Facilities ', 'target' => ''],
-                                  ['name' => 'Lounge Area ', 'target' => ''],
-                                  ['name' => 'Reception Area ', 'target' => ''],
-                                  ['name' => 'Security Guard ', 'target' => ''],
-                                  ['name' => 'Fire Safety Systems ', 'target' => ''],
-                                  ['name' => 'Energy-Efficient Features ', 'target' => ''],
-                                  ['name' => 'Green Building Certification ', 'target' => ''],
-                                  ['name' => 'Access to Public Transportation ', 'target' => ''],
-                                  ['name' => 'Proximity to Highways ', 'target' => ''],
-                                  ['name' => 'Visibility from Main Road ', 'target' => ''],
-                                  ['name' => 'Other ', 'target' => '.otherAmenitiesCommercial'],
-                              ];
-                            @endphp
                             <div class="form-group">
-                              <label class="fw-bold">Amenities and Property Features:</label>
-                              <select class="grid-picker" name="amenities[]" id="appliances"
+                                <label class="fw-bold">
+                                Amenities and Property Features:
+                                </label>
+                                @php
+                                $amenitiesFeatureRes = [
+                                        ['target' => '', 'name' => '55 and Over Community'],
+                                        ['target' => '', 'name' => 'Accessibility Features'],
+                                        ['target' => '', 'name' => 'Balcony/Patio'],
+                                        ['target' => '', 'name' => 'Carpet Floors '],
+                                        ['target' => '', 'name' => 'Carport'],
+                                        ['target' => '', 'name' => 'Central Air Conditioning'],
+                                        ['target' => '', 'name' => 'Central Heating'],
+                                        ['target' => '', 'name' => 'Clubhouse'],
+                                        ['target' => '', 'name' => 'Covered Carport'],
+                                        ['target' => '', 'name' => 'Elevator'],
+                                        ['target' => '', 'name' => 'Fireplace'],
+                                        ['target' => '', 'name' => 'Fitness Center/Gym'],
+                                        ['target' => '', 'name' => 'First Floor Unit'],
+                                        ['target' => '', 'name' => 'Garage'],
+                                        ['target' => '', 'name' => 'Gated Community'],
+                                        ['target' => '', 'name' => 'Hardwood Floors'],
+                                        ['target' => '', 'name' => 'HOA Community'],
+                                        ['target' => '', 'name' => 'In-Unit Laundry'],
+                                        ['target' => '', 'name' => 'On-site Laundry'],
+                                        ['target' => '', 'name' => 'On-site Maintenance'],
+                                        ['target' => '', 'name' => 'On-site Management'],
+                                        ['target' => '', 'name' => 'Outdoor Space'],
+                                        ['target' => '', 'name' => 'Pet Friendly'],
+                                        ['target' => '', 'name' => 'Playground'],
+                                        ['target' => '', 'name' => 'Pool'],
+                                        ['target' => '', 'name' => 'Security System'],
+                                        ['target' => '', 'name' => 'Specific School District'],
+                                        ['target' => '', 'name' => 'Storage Space'],
+                                        ['target' => '', 'name' => 'Study/Den/Office'],
+                                        ['target' => '', 'name' => 'Tile Floors'],
+                                        ['target' => '', 'name' => 'Updated Bathroom'],
+                                        ['target' => '', 'name' => 'Updated Kitchen'],
+                                        ['target' => '', 'name' => 'Walk-in Closet'],
+                                        ['target' => '', 'name' => 'Waterfront'],
+                                        ['target' => '', 'name' => 'Washer and Dryer'],
+                                        ['target' => '', 'name' => 'Washer and Dryer Hookup'],
+                                        ['target' => '.otherAmenitiesFeatureRes', 'name' => 'Other'],
+                                    ]
+
+                                @endphp
+                                <select name="amenities[]" id="negotiable_terms" class="grid-picker"
                                 style="justify-content: flex-start;" multiple required>
-                                <option value="">Select</option>
-                                @foreach ($amenitiesCommercial as $item)
-                                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                                    data-icon='<i class="fa-regular fa-check-circle"></i>' class="card flex-row"
-                                    style="width:calc(33.3% - 10px);">
+                                <option value=""></option>
+                                @foreach ($amenitiesFeatureRes as $item)
+                                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                                    class="card flex-row" style="width:calc(33.3% - 10px);"
+                                    data-icon='<i class="fa-regular fa-check-circle"></i>'>
                                     {{ $item['name'] }}
-                                  </option>
+                                    </option>
                                 @endforeach
-                              </select>
-                              <div class="form-group otherAmenitiesCommercial d-none">
-                                <label class="fw-bold">Amenities and Property Features:</label>
-                                <input type="text" class="form-control has-icon" name="otherAmenities"
-                                  data-icon="fa-regular fa-check-circle" required />
-                              </div>
+                                </select>
                             </div>
-                          </span>
+                            <div class="form-group otherAmenitiesFeatureRes d-none">
+                                <label class="fw-bold" for="custom_negotiable_terms"> Amenities and Property Features:
+                                </label>
+                                <input type="text" name="otherAmenities" id="custom_negotiable_terms" placeholder=""
+                                class="form-control has-icon" data-icon="fa-regular fa-circle-check" required>
+                            </div>
+                        </span>
+                        <span class="commercialFields">
+                        @php
+                            $amenitiesCommercial = [
+                                ['name' => 'Access to Public Transportation ', 'target' => ''],
+                                ['name' => 'Business Center ', 'target' => ''],
+                                ['name' => 'Common Areas ', 'target' => ''],
+                                ['name' => 'Conference Room', 'target' => ''],
+                                ['name' => 'Elevator', 'target' => ''],
+                                ['name' => 'Energy-Efficient Features ', 'target' => ''],
+                                ['name' => 'Flexibility for Renovations ', 'target' => ''],
+                                ['name' => 'Fire Safety Systems ', 'target' => ''],
+                                ['name' => 'Green Building Certification ', 'target' => ''],
+                                ['name' => 'Gym/Fitness Facilities ', 'target' => ''],
+                                ['name' => 'Handicap Accessibility ', 'target' => ''],
+                                ['name' => 'High-Speed Internet ', 'target' => ''],
+                                ['name' => 'HVAC System ', 'target' => ''],
+                                ['name' => 'Industrial Features ', 'target' => ''],
+                                ['name' => 'Kitchenette/Break Room', 'target' => ''],
+                                ['name' => 'Loading Dock', 'target' => ''],
+                                ['name' => 'Lounge Area ', 'target' => ''],
+                                ['name' => 'Natural Lighting ', 'target' => ''],
+                                ['name' => 'Office Space', 'target' => ''],
+                                ['name' => 'On-site Maintenance ', 'target' => ''],
+                                ['name' => 'On-site Management ', 'target' => ''],
+                                ['name' => 'Open Floor Plan ', 'target' => ''],
+                                ['name' => 'Other ', 'target' => '.otherAmenitiesCommercial'],
+                                ['name' => 'Outdoor Space/Garden ', 'target' => ''],
+                                ['name' => 'Parking Spaces', 'target' => ''],
+                                ['name' => 'Proximity to Highways ', 'target' => ''],
+                                ['name' => 'Reception Area ', 'target' => ''],
+                                ['name' => 'Restrooms', 'target' => ''],
+                                ['name' => 'Restaurant Space ', 'target' => ''],
+                                ['name' => 'Retail Frontage ', 'target' => ''],
+                                ['name' => 'Security Guard ', 'target' => ''],
+                                ['name' => 'Security System ', 'target' => ''],
+                                ['name' => 'Signage Opportunities ', 'target' => ''],
+                                ['name' => 'Storage Space ', 'target' => ''],
+                                ['name' => 'Utilities Included ', 'target' => ''],
+                                ['name' => 'Visibility from Main Road ', 'target' => ''],
+                                ['name' => 'Warehouse Space', 'target' => ''],
+                            ];
+
+                        @endphp
+                        <div class="form-group">
+                            <label class="fw-bold">Amenities and Property Features:</label>
+                            <select class="grid-picker" name="amenities[]" id="appliances"
+                            style="justify-content: flex-start;" multiple required>
+                            <option value="">Select</option>
+                            @foreach ($amenitiesCommercial as $item)
+                                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                                data-icon='<i class="fa-regular fa-check-circle"></i>' class="card flex-row"
+                                style="width:calc(33.3% - 10px);">
+                                {{ $item['name'] }}
+                                </option>
+                            @endforeach
+                            </select>
+                            <div class="form-group otherAmenitiesCommercial d-none">
+                            <label class="fw-bold">Amenities and Property Features:</label>
+                            <input type="text" class="form-control has-icon" name="otherAmenities"
+                                data-icon="fa-regular fa-check-circle" required />
+                            </div>
+                        </div>
+                        </span>
                     </div>
                     <div class="wizard-step" data-step='17'>
                         @php
@@ -2905,6 +2916,7 @@
                                 ['name' => 'Private', 'target' => ''],
                                 ['name' => 'Public', 'target' => ''],
                                 ['name' => 'Well', 'target' => ''],
+                                ['name' => 'Well Required', 'target' => ''],
                                 ['name' => 'None', 'target' => ''],
                                 ['name' => 'Other', 'target' => '.otherWaterRes'],
                             ];
@@ -2932,6 +2944,7 @@
                         <div class="form-group ">
                             @php
                                 $airConditioning = [
+                                    ['name' => 'A/C - Office Only', 'target' => ''],
                                     ['name' => 'Central Air', 'target' => ''],
                                     ['name' => 'Humidity Control', 'target' => ''],
                                     ['name' => 'Mini-Split Unit(s)', 'target' => ''],
@@ -2963,6 +2976,8 @@
                                 $heatingFuel = [
                                     ['name' => 'Baseboard', 'target' => ''],
                                     ['name' => 'Central', 'target' => ''],
+                                    ['name' => 'Central Building ', 'target' => ''],
+                                    ['name' => 'Central Individual', 'target' => ''],
                                     ['name' => 'Electric', 'target' => ''],
                                     ['name' => 'Exhaust Fans', 'target' => ''],
                                     ['name' => 'Gas', 'target' => ''],
@@ -3172,15 +3187,11 @@
                                 ['target' => '', 'name' => 'Common', 'icon' => 'fa-solid fa-warehouse'],
                                 ['target' => '', 'name' => 'Curb Parking', 'icon' => 'fa-solid fa-warehouse'],
                                 ['target' => '', 'name' => 'Deeded', 'icon' => 'fa-solid fa-warehouse'],
-                                [
-                                    'target' => '',
-                                    'name' => 'Electric Vehicle Charging Station(s)',
-                                    'icon' => 'fa-solid fa-warehouse',
-                                ],
+                                ['target' => '', 'name' => 'Electric Vehicle Charging Station(s)', 'icon' => 'fa-solid fa-warehouse',],
                                 ['target' => '', 'name' => 'Ground Level', 'icon' => 'fa-solid fa-warehouse'],
                                 ['target' => '', 'name' => 'Lighted', 'icon' => 'fa-solid fa-warehouse'],
-                                ['target' => '', 'name' => 'None', 'icon' => 'fa-solid fa-warehouse'],
                                 ['target' => '', 'name' => 'Over 30 Spaces', 'icon' => 'fa-solid fa-warehouse'],
+                                ['target' => '', 'name' => 'RV Parking', 'icon' => 'fa-solid fa-warehouse'],
                                 ['target' => '', 'name' => 'Secured', 'icon' => 'fa-solid fa-warehouse'],
                                 ['target' => '', 'name' => 'Under Building', 'icon' => 'fa-solid fa-warehouse'],
                                 ['target' => '', 'name' => 'Underground', 'icon' => 'fa-solid fa-warehouse'],
@@ -3452,7 +3463,7 @@
                             ];
                         @endphp
                         <div class="form-group ">
-                            <label class="fw-bold">Building Features :</label>
+                            <label class="fw-bold">Building Features:</label>
                             <select class="grid-picker" name="buildingFeatures[]" style="justify-content: flex-start;"
                                 multiple>
                                 <option value="">Select</option>
@@ -3736,7 +3747,7 @@
                             </div>
                             <div class="form-group  ">
                                 <label class="fw-bold">Condo Fee:</label>
-                                <input type="text" name="condo_fee" id="condo_fee" class="form-control has-icon"
+                                <input type="number" name="condo_fee" id="condo_fee" class="form-control has-icon"
                                     data-icon="fa-solid fa-dollar-sign">
                             </div>
                         </div>
@@ -4743,11 +4754,10 @@
                             //     StepWizard.nextStep = 45;
                             //     StepWizard.backStep = 1;
                             // }
-                            
-                            else if (StepWizard.currentStep == 10 && property_type ==
+                            else if (StepWizard.currentStep == 9 && property_type ==
                                 'Commercial Property') {
-                                StepWizard.nextStep = 12;
-                                StepWizard.backStep = 10;
+                                StepWizard.nextStep = 11;
+                                StepWizard.backStep = 9;
                             } else if (StepWizard.currentStep == 17 && property_type ==
                                 'Commercial Property') {
                                 StepWizard.nextStep = 21;
@@ -4817,9 +4827,9 @@
                         if (StepWizard.currentStep == 15 && property_type ==
                             'Commercial Property') {
                             StepWizard.backStep = 13;
-                        } else if (StepWizard.currentStep == 12 && property_type ==
+                        } else if (StepWizard.currentStep == 11 && property_type ==
                             'Commercial Property') {
-                            StepWizard.backStep = 10;
+                            StepWizard.backStep = 9;
                         } else if (StepWizard.currentStep == 21 && property_type ==
                             'Commercial Property') {
                             StepWizard.backStep = 17;
