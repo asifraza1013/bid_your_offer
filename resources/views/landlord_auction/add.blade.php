@@ -364,7 +364,7 @@
                                 placeholder="" required>
                         </div> --}}
                     </div>
-                    <div class="wizard-step" data-step="2">
+                    {{-- <div class="wizard-step" data-step="2">
                         <div class="form-group">
                             <label for="address" class="fw-bold">Listing Date:</label>
                             <input type="date" name="listing_date" id="listing_date" class="form-control has-icon "
@@ -376,8 +376,8 @@
                                 class="form-control has-icon" data-icon="fa-regular fa-calendar-days"
                                 min="{{ date('Y-m-d') }}" required>
                         </div>
-                    </div>
-                    <div class="wizard-step" data-step="3">
+                    </div> --}}
+                    <div class="wizard-step" data-step="2">
                         {{-- 19 June 2023 for Residential --}}
                         @php
                             $serviceTypeRes = [
@@ -432,7 +432,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="wizard-step" data-step="4">
+                    <div class="wizard-step" data-step="3">
                         <div class="form-group">
                             <label class="fw-bold">Listing Type:</label>
                             <div>
@@ -500,7 +500,7 @@
                         </div>
 
                     </div>
-                    <div class="wizard-step" data-step="5">
+                    <div class="wizard-step" data-step="4">
                         @php
                             $property_types = [['name' => 'Residential Property'], ['name' => 'Commercial Property']];
                         @endphp
@@ -570,7 +570,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="wizard-step" data-step="6">
+                    <div class="wizard-step" data-step="5">
                         <div class="form-group ">
                             <label class="fw-bold">Leasing Space:</label>
                             @php
@@ -658,7 +658,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="wizard-step" data-step="7">
+                    {{-- <div class="wizard-step" data-step="7">
                         <div class="form-group">
                             @php
                                 $propConditions = [
@@ -687,8 +687,8 @@
                                     class="form-control has-icon" data-icon="fa-regular fa-circle-check" required>
                             </div>
                         </div>
-                    </div>
-                    <div class="wizard-step" data-step="8">
+                    </div> --}}
+                    <div class="wizard-step" data-step="6">
                         <h4>Price and Terms:</h4>
                       <span class="timerAuction">
                         <div class="form-group">
@@ -1325,7 +1325,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="wizard-step" data-step="9">
+                    {{-- <div class="wizard-step" data-step="9">
                         <h4>Landlord Prescreening Terms:</h4>
                         <span class="resFields">
                             <div class="form-group">
@@ -1734,8 +1734,8 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div>
-                    <div class="wizard-step" data-step='15'>
+                    </div> --}}
+                    <div class="wizard-step" data-step='7'>
                         @php
                             $appliances = [
                                 ['name' => 'Bar Fridge', 'target' => ''],
@@ -1821,7 +1821,7 @@
                             </div>
                         </span>
                     </div>
-                    <div class="wizard-step" data-step='16'>
+                    {{--<div class="wizard-step" data-step='16'>
                         <span class="resFields">
                             <div class="form-group">
                                 <label class="fw-bold">
@@ -2236,9 +2236,10 @@
                                     data-icon="fa-regular fa-check-circle">
                             </div>
                         </div>
-                    </div>
-                    <div class="wizard-step" data-step='23'>
+                    </div> --}}
+                    <div class="wizard-step" data-step='8'>
                         <h4>Room Details:</h4>
+                        <input type="hidden" id="room_type_input" name="room_type_data" />
                         @php
                             $room_types = [
                                 ['name' => 'Additional Bedroom', 'target' => ''],
@@ -2286,8 +2287,8 @@
                         @endphp
                         <div class="form-group ">
                             <label class="fw-bold">Room Type:</label>
-                            <select class="grid-picker" name="room_type[]" id="room_typeRes" onChange="roomFtn();"
-                                style="justify-content: flex-start;" required>
+                            <select class="grid-picker" name="room_type" id="room_typeRes" onChange="roomFtn();"
+                                style="justify-content: flex-start;" multiple required>
                                 <option value="">Select</option>
                                 @foreach ($room_types as $room_type)
                                     <option value="{{ $room_type['name'] }}"
@@ -2299,7 +2300,8 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group roomDet">
+                        <div id="dynamicFieldsContainer"></div>
+                        {{-- <div class="form-group roomDet">
                             <label class="fw-bold">Approximate Room Dimensions (Width x Length) </label>
                             <input type="text" name="roomDimensions[]" class="form-control" required>
                             <button type="button" class="btn btn-secondary btn-sm w-100 roomBtn mt-2"
@@ -2403,6 +2405,7 @@
                                 <label class="fw-bold">Room Primary Floor Covering:</label>
                                 <input type="text" name="roomPrimaryOther" id="roomPrimaryOther" placeholder=""
                                     class="form-control has-icon" data-icon="fa-regular fa-circle-check">
+                            </div>
                         </div>
                         @php
                             $room_features = [
@@ -2470,7 +2473,7 @@
                                 <input type="text" name="roomFeatueOther" class="form-control has-icon"
                                     data-icon="fa-regular fa-check-circle">
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="wizard-step" data-step='24'>
                         <h4>Water and Dock Information:</h4>
@@ -4500,551 +4503,782 @@
     $(function() {
       show_garage_opt("");
     });
-  </script>
-    <script>
-        function changeAuctionType(v) {
-            if (v == "Auction Listing") {
-                $('.auction_length').val("");
-                $('.auction_length').parent().children('.option-container').removeClass('active');
-                $('.traditional-length').hide();
-                $('.normal-length').show();
-                $('.auction_length_cover').show();
-                $('.traditional').hide();
-                $('.timerAuction').show();
-            } else if (v == "Traditional Listing") {
-                $('.auction_length').val("");
-                $('.auction_length').parent().children('.option-container').removeClass('active');
-                $('.traditional-length').show();
-                $('.normal-length').hide();
-                $('.auction_length_cover').hide();
-                $('.traditional').show();
-                $('.timerAuction').hide();
-            }
+</script>
+<script>
+    function changeAuctionType(v) {
+        if (v == "Auction Listing") {
+            $('.auction_length').val("");
+            $('.auction_length').parent().children('.option-container').removeClass('active');
+            $('.traditional-length').hide();
+            $('.normal-length').show();
+            $('.auction_length_cover').show();
+            $('.traditional').hide();
+            $('.timerAuction').show();
+        } else if (v == "Traditional Listing") {
+            $('.auction_length').val("");
+            $('.auction_length').parent().children('.option-container').removeClass('active');
+            $('.traditional-length').show();
+            $('.normal-length').hide();
+            $('.auction_length_cover').hide();
+            $('.traditional').show();
+            $('.timerAuction').hide();
         }
-        // document.getElementById('auction_type').change();
-        $(function() {
-            changeAuctionType();
-        });
+    }
+    // document.getElementById('auction_type').change();
+    $(function() {
+        changeAuctionType();
+    });
 
-        // Nisar Changing
-        Filevalidation = () => {
+    // Nisar Changing
+    Filevalidation = () => {
 
-            var txt = "";
-            const fi = document.getElementById('file');
-            // Check if any file is selected.
-            if (fi.files.length > 0) {
-                for (const i = 0; i <= fi.files.length - 1; i++) {
+        var txt = "";
+        const fi = document.getElementById('file');
+        // Check if any file is selected.
+        if (fi.files.length > 0) {
+            for (const i = 0; i <= fi.files.length - 1; i++) {
 
-                    const fsize = fi.files.item(i).size;
-                    const file = Math.round((fsize / 1024));
-                    // The size of the file.
-                    if (file >= 102400) {
-                        // alert(
-                        //     "File too Big, please select a file less than 2mb");
-                        txt = "File too Big, please select a file less than 100mb";
-                        document.getElementById("demo").innerHTML = txt;
-                        // var myText = "File too Big, please select a file less than 2mb";
-                    } else if (file < 102400) {
-                        txt = "";
-                        document.getElementById("demo").innerHTML = txt;
-                    } else {
-                        document.getElementById('size').innerHTML = '<b>' +
-                            file + '</b> KB';
-                    }
-                }
-            }
-        }
-        // Nisar Changing End
-    </script>
-    <script>
-        function changePropertyType(p) {
-            if (p == "Residential Property") {
-                $('.property_items').val("");
-                $('.property_items').parent().children('.option-container').removeClass('active');
-                $('.residential-length').show();
-                $('.income-length').hide();
-                $('.commercial-length').hide();
-                $('.residential_show').removeClass('d-none');
-                $('.commercial_show').addClass('d-none');
-                // nisar changing
-                $('#leasable-sqft').remove();
-                $('#price').remove();
-                $('#terms').remove();
-                $('.resFields').each(function() {
-                    $(this).find('select, input,label,div,option,textarea').prop('disabled', false).show();
-                });
-                $('.commercialFields').each(function() {
-                    $(this).find('select, input,label,div,option ,textarea').prop('disabled', true).hide();
-                });
-
-
-            } else if (p == "Commercial Property") {
-                $('.property_items').val("");
-                $('.property_items').parent().children('.option-container').removeClass('active');
-                $('.residential-length').hide();
-                $('.income-length').hide();
-                $('.commercial-length').show();
-                $('.residential_show').addClass('d-none');
-                $('.commercial_show').removeClass('d-none');
-
-                // nisar changing
-                $('#price').show();
-                $('#bathroom').remove();
-                $('#commercial').remove();
-                $('#furnishings').remove();
-                $('#pool').remove();
-                $('#priceSqft').remove();
-                $('#RentIncludes').remove();
-                $('#acceptPet').remove();
-                $('.commercialFields').each(function() {
-                    $(this).find('select, input,label,div,option ,textarea').prop('disabled', false).show();
-                });
-                $('.resFields').each(function() {
-                    $(this).find('select,input,label,div,option ,textarea').prop('disabled', true).hide();
-                });
-            } else {
-                $('.property_items').val("");
-                $('.property_items').parent().children('.option-container').removeClass('active');
-                $('.residential-length').hide();
-                $('.income-length').hide();
-                $('.commercial-length').hide();
-            }
-        }
-        // document.getElementById('auction_type').change();
-        $(function() {
-            changePropertyType("");
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('.compensation_structure').change(function(){
-                let selected = $(this).val();
-                if(selected === "There is no compensation offered to the tenant's broker."){
-                    $('compensationYes').removeClass('d-none');
-                }else{
-                    $('compensationYes').addClass('d-none');
-                }
-            })
-        })
-    </script>
-    <script>
-        $(function() {
-            $('.has-icon').each(function(i) {
-                var cover = `<div class="input-cover input-cover-${i}"></div>`;
-                $(this).before(cover);
-                $(this).appendTo(`.input-cover-${i}`);
-                var iconClass = $(this).data('icon');
-                var id = $(this).attr('id');
-                var htm = `<label for="${id}" class="input-icon"><i class="${iconClass} " ></i></label>`;
-                $(this).before(htm);
-            });
-
-            $('.grid-picker').each(function(index, elm) {
-                var st = $(elm).attr('style');
-                var html =
-                    `<div class="options-container options-container-${index}" style="${st}"></div>`;
-                $(elm).after(html);
-                $(elm).appendTo(`.options-container-${index}`);
-                $(elm).children('option').each(function(i) {
-                    var val = $(this).val();
-                    if (val != "") {
-                        var text = $(this).text();
-                        var classes = $(this).attr('class');
-                        var styles = $(this).attr('style') || "";
-                        var icon = $(this).data('icon') || "";
-                        var selected = $(this).attr('selected') || "";
-                        var target = $(this).data('target') || "";
-                        selected = selected && "active";
-                        icon = icon && icon + " ";
-                        var htm = `<div onclick="checkselect(this);" style="${styles}" class="${classes} ${selected} option-container" data-index="${i}" data-target="${target}">
-                        <div class="option-icon">${icon}</div>
-                        <div class="option-text">${text}</div>
-                        </div>`;
-                        $(`.options-container-${index}`).append(htm);
-                    }
-                });
-            });
-        });
-        $(document).on('change', '#has_water_view', function() {
-
-            var selectedOptionWater = $(this).val();
-            if (selectedOptionWater == 'No') {
-                $('#water_show').hide();
-                $('#water_extras_show').hide();
-            }
-            if (selectedOptionWater == 'Yes') {
-                $('#water_show').show();
-                $('#water_extras_show').show();
-            }
-
-        });
-
-        //water view changing by waqas
-
-
-        function checkselect(elm) {
-            var i = $(elm).data('index');
-            var mult = $(elm).parent().children('select').attr('multiple') || false;
-            if (mult == false) {
-                var option = $(elm).parent().children('select').children(`option:eq(${i})`);
-                var ov = option.val();
-                $(elm).parent().children('.option-container').removeClass('active');
-                $(elm).addClass('active');
-                $(elm).parent().children('select').val(ov);
-            } else {
-                $(elm).toggleClass('active');
-                var option = $(elm).parent().children('select').children(`option:eq(${i})`);
-                var ov = option.val();
-                var vals = $(elm).parent().children('select').val();
-                if (vals.includes(ov)) {
-                    option.removeAttr('selected');
+                const fsize = fi.files.item(i).size;
+                const file = Math.round((fsize / 1024));
+                // The size of the file.
+                if (file >= 102400) {
+                    // alert(
+                    //     "File too Big, please select a file less than 2mb");
+                    txt = "File too Big, please select a file less than 100mb";
+                    document.getElementById("demo").innerHTML = txt;
+                    // var myText = "File too Big, please select a file less than 2mb";
+                } else if (file < 102400) {
+                    txt = "";
+                    document.getElementById("demo").innerHTML = txt;
                 } else {
-                    option.attr('selected', 'selected');
+                    document.getElementById('size').innerHTML = '<b>' +
+                        file + '</b> KB';
                 }
             }
-            var v = $(elm).parent().children('select').val();
-            $(elm).parent().children('select').trigger('change');
-            check_custom();
         }
-
-        function check_custom() {
-            $('.option-container').each(function(i, elm) {
-                var target = $(elm).data('target') || "";
-                var is_active = $(elm).hasClass('active');
-                if (target != "") {
-                    if (is_active) {
-                        $(target).removeClass("d-none");
-                    } else {
-                        $(target).addClass("d-none");
-                    }
-                }
+    }
+    // Nisar Changing End
+</script>
+<script>
+    function changePropertyType(p) {
+        if (p == "Residential Property") {
+            $('.property_items').val("");
+            $('.property_items').parent().children('.option-container').removeClass('active');
+            $('.residential-length').show();
+            $('.income-length').hide();
+            $('.commercial-length').hide();
+            $('.residential_show').removeClass('d-none');
+            $('.commercial_show').addClass('d-none');
+            // nisar changing
+            $('#leasable-sqft').remove();
+            $('#price').remove();
+            $('#terms').remove();
+            $('.resFields').each(function() {
+                $(this).find('select, input,label,div,option,textarea').prop('disabled', false).show();
             });
+            $('.commercialFields').each(function() {
+                $(this).find('select, input,label,div,option ,textarea').prop('disabled', true).hide();
+            });
+
+
+        } else if (p == "Commercial Property") {
+            $('.property_items').val("");
+            $('.property_items').parent().children('.option-container').removeClass('active');
+            $('.residential-length').hide();
+            $('.income-length').hide();
+            $('.commercial-length').show();
+            $('.residential_show').addClass('d-none');
+            $('.commercial_show').removeClass('d-none');
+
+            // nisar changing
+            $('#price').show();
+            $('#bathroom').remove();
+            $('#commercial').remove();
+            $('#furnishings').remove();
+            $('#pool').remove();
+            $('#priceSqft').remove();
+            $('#RentIncludes').remove();
+            $('#acceptPet').remove();
+            $('.commercialFields').each(function() {
+                $(this).find('select, input,label,div,option ,textarea').prop('disabled', false).show();
+            });
+            $('.resFields').each(function() {
+                $(this).find('select,input,label,div,option ,textarea').prop('disabled', true).hide();
+            });
+        } else {
+            $('.property_items').val("");
+            $('.property_items').parent().children('.option-container').removeClass('active');
+            $('.residential-length').hide();
+            $('.income-length').hide();
+            $('.commercial-length').hide();
         }
-    </script>
-    <script>
-        $(function() {
-            StepWizard.init();
-        });
-        var StepWizard = {
-            init: function() {
-                StepWizard.total_steps = $('.wizard-step').length;
-                var v = $(".mainform").validate({
-                    errorClass: "text-error text-danger w-100",
-                    onkeyup: false,
-                    onfocusout: false,
-                });
-                StepWizard.setStep();
-                property_type;
-                $('#property_type').on('change', function() {
-                    property_type = $(this).val();
-                });
-                $('.wizard-step-next').click(function(e) {
-                    console.log(StepWizard.currentStep)
-                    if (v.form()) {
-                        if ($('.wizard-step.active').next().is('.wizard-step')) {
-
-                            $('.wizard-step.active').removeClass('active');
-                            if (StepWizard.currentStep == 13 && property_type ==
-                                'Commercial Property') {
-                                StepWizard.nextStep = 15;
-                                StepWizard.backStep = 13;
-                            }
-                            
-                            // else if (StepWizard.currentStep == 1 ){
-                            //     StepWizard.nextStep = 45;
-                            //     StepWizard.backStep = 1;
-                            // }
-                            else if (StepWizard.currentStep == 9 && property_type ==
-                                'Commercial Property') {
-                                StepWizard.nextStep = 11;
-                                StepWizard.backStep = 9;
-                            } else if (StepWizard.currentStep == 17 && property_type ==
-                                'Commercial Property') {
-                                StepWizard.nextStep = 21;
-                                StepWizard.backStep = 17;
-                            } else if (StepWizard.currentStep == 22 && property_type ==
-                                'Commercial Property') {
-                                StepWizard.nextStep = 24;
-                                StepWizard.backStep = 22;
-                            }  
-                            // else if (StepWizard.currentStep == 24 && property_type ==
-                            //     'Commercial Property') {
-                            //     StepWizard.nextStep = 26;
-                            //     StepWizard.backStep = 24;
-                            // }
-                             else if (StepWizard.currentStep == 26 && property_type ==
-                                'Commercial Property') {
-                                StepWizard.nextStep = 29;
-                                StepWizard.backStep = 26;
-                            } 
-                            else if (StepWizard.currentStep == 32 && property_type ==
-                                'Commercial Property') {
-                                StepWizard.nextStep = 35;
-                                StepWizard.backStep = 32;
-                            }
-                              else if (StepWizard.currentStep == 41 && property_type ==
-                                'Commercial Property') {
-                                StepWizard.nextStep = 43;
-                                StepWizard.backStep = 41;
-                            } 
-                            else if (StepWizard.currentStep == 28 && property_type ==
-                                'Residential Property') {
-                                StepWizard.nextStep = 30;
-                                StepWizard.backStep = 28;
-                            } 
-                            else if (StepWizard.currentStep == 34 && property_type ==
-                                'Residential Property') {
-                                StepWizard.nextStep = 37;
-                                StepWizard.backStep = 33;
-                            } 
-                            else if (StepWizard.currentStep == 38 && property_type ==
-                                'Residential Property') {
-                                StepWizard.nextStep = 42;
-                                StepWizard.backStep = 38;
-                            } else {
-                                StepWizard.backStep = StepWizard.currentStep;
-
-                            }
-                            $('[ data-step="' + StepWizard.nextStep + '"]').addClass("active");
-                            StepWizard.setStep();
-                            //   if (StepWizard.currentStep == 50 &&
-                            //     property_type == 'Residential Property'
-                            //   ) {
-                            //     $('.wizard-step-next').hide();
-                            //     $('.wizard-step-finish').show();
-                            //   }
-                        }
-                    }
-                });
-
-                $('.wizard-step-back').click(function(e) {
-                    if ($('.wizard-step.active').prev().is('.wizard-step')) {
+    }
+    // document.getElementById('auction_type').change();
+    $(function() {
+        changePropertyType("");
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('.compensation_structure').change(function(){
+            let selected = $(this).val();
+            if(selected === "There is no compensation offered to the tenant's broker."){
+                $('compensationYes').removeClass('d-none');
+            }else{
+                $('compensationYes').addClass('d-none');
+            }
+        })
+    })
+</script>
+<script>
+    $(function() {
+        StepWizard.init();
+    });
+    var StepWizard = {
+        init: function() {
+            StepWizard.total_steps = $('.wizard-step').length;
+            var v = $(".mainform").validate({
+                errorClass: "text-error text-danger w-100",
+                onkeyup: false,
+                onfocusout: false,
+            });
+            StepWizard.setStep();
+            property_type;
+            $('#property_type').on('change', function() {
+                property_type = $(this).val();
+            });
+            $('.wizard-step-next').click(function(e) {
+                console.log(StepWizard.currentStep)
+                if (v.form()) {
+                    if ($('.wizard-step.active').next().is('.wizard-step')) {
 
                         $('.wizard-step.active').removeClass('active');
-                        $('[ data-step="' + StepWizard.backStep + '"]').addClass("active");
-                        StepWizard.setStep();
-                        console.log(StepWizard.currentStep)
-                        if (StepWizard.currentStep == 15 && property_type ==
+                        if (StepWizard.currentStep == 13 && property_type ==
                             'Commercial Property') {
+                            StepWizard.nextStep = 15;
                             StepWizard.backStep = 13;
-                        } else if (StepWizard.currentStep == 11 && property_type ==
+                        }
+                        
+                        // else if (StepWizard.currentStep == 1 ){
+                        //     StepWizard.nextStep = 45;
+                        //     StepWizard.backStep = 1;
+                        // }
+                        else if (StepWizard.currentStep == 9 && property_type ==
                             'Commercial Property') {
+                            StepWizard.nextStep = 11;
                             StepWizard.backStep = 9;
-                        } else if (StepWizard.currentStep == 21 && property_type ==
+                        } else if (StepWizard.currentStep == 17 && property_type ==
                             'Commercial Property') {
+                            StepWizard.nextStep = 21;
                             StepWizard.backStep = 17;
-                        } else if (StepWizard.currentStep == 24 && property_type ==
+                        } else if (StepWizard.currentStep == 22 && property_type ==
                             'Commercial Property') {
+                            StepWizard.nextStep = 24;
                             StepWizard.backStep = 22;
-                        } 
-                        // else if (StepWizard.currentStep == 26 && property_type ==
+                        }  
+                        // else if (StepWizard.currentStep == 24 && property_type ==
                         //     'Commercial Property') {
+                        //     StepWizard.nextStep = 26;
                         //     StepWizard.backStep = 24;
-                        // } 
-                        else if (StepWizard.currentStep == 29 && property_type ==
+                        // }
+                            else if (StepWizard.currentStep == 26 && property_type ==
                             'Commercial Property') {
+                            StepWizard.nextStep = 29;
                             StepWizard.backStep = 26;
-                        }else if (StepWizard.currentStep == 35 && property_type ==
+                        } 
+                        else if (StepWizard.currentStep == 32 && property_type ==
                             'Commercial Property') {
+                            StepWizard.nextStep = 35;
                             StepWizard.backStep = 32;
-                        } else if (StepWizard.currentStep == 43 && property_type ==
+                        }
+                            else if (StepWizard.currentStep == 41 && property_type ==
                             'Commercial Property') {
+                            StepWizard.nextStep = 43;
                             StepWizard.backStep = 41;
-                        }  else if (StepWizard.currentStep == 30 && property_type ==
+                        } 
+                        else if (StepWizard.currentStep == 28 && property_type ==
                             'Residential Property') {
+                            StepWizard.nextStep = 30;
                             StepWizard.backStep = 28;
-                        } else if (StepWizard.currentStep == 37 && property_type ==
+                        } 
+                        else if (StepWizard.currentStep == 34 && property_type ==
                             'Residential Property') {
+                            StepWizard.nextStep = 37;
                             StepWizard.backStep = 33;
-                        } else if (StepWizard.currentStep == 42 && property_type ==
+                        } 
+                        else if (StepWizard.currentStep == 38 && property_type ==
                             'Residential Property') {
+                            StepWizard.nextStep = 42;
                             StepWizard.backStep = 38;
                         } else {
-                            StepWizard.backStep = StepWizard.currentStep - 1;
+                            StepWizard.backStep = StepWizard.currentStep;
+
                         }
+                        $('[ data-step="' + StepWizard.nextStep + '"]').addClass("active");
+                        StepWizard.setStep();
+                        //   if (StepWizard.currentStep == 50 &&
+                        //     property_type == 'Residential Property'
+                        //   ) {
+                        //     $('.wizard-step-next').hide();
+                        //     $('.wizard-step-finish').show();
+                        //   }
                     }
-                });
-
-                $('.wizard-step-finish').click(function(e) {
-                    $('.mainform').submit();
-                });
-
-            },
-            setStep: function() {
-                if ($('.wizard-step.active').length == 0) {
-                    $('.wizard-step').first().addClass('active');
                 }
+            });
+
+            $('.wizard-step-back').click(function(e) {
                 if ($('.wizard-step.active').prev().is('.wizard-step')) {
-                    $('.wizard-step-back').show();
-                } else {
-                    $('.wizard-step-back').hide();
-                }
 
-                if ($('.wizard-step.active').next().is('.wizard-step')) {
-                    $('.wizard-step-next').show();
-                    $('.wizard-step-finish').hide();
-                } else {
-
-                    $('.wizard-step-next').hide();
-                    $('.wizard-step-finish').show();
-                }
-                $('.wizard-step').each(function(i, element) {
-                    var k = i + 1;
-                    if ($(element).hasClass('active')) {
-                        StepWizard.currentStep = k;
-                        StepWizard.data_step = k;
-                        StepWizard.nextStep = k + 1;
+                    $('.wizard-step.active').removeClass('active');
+                    $('[ data-step="' + StepWizard.backStep + '"]').addClass("active");
+                    StepWizard.setStep();
+                    console.log(StepWizard.currentStep)
+                    if (StepWizard.currentStep == 15 && property_type ==
+                        'Commercial Property') {
+                        StepWizard.backStep = 13;
+                    } else if (StepWizard.currentStep == 11 && property_type ==
+                        'Commercial Property') {
+                        StepWizard.backStep = 9;
+                    } else if (StepWizard.currentStep == 21 && property_type ==
+                        'Commercial Property') {
+                        StepWizard.backStep = 17;
+                    } else if (StepWizard.currentStep == 24 && property_type ==
+                        'Commercial Property') {
+                        StepWizard.backStep = 22;
+                    } 
+                    // else if (StepWizard.currentStep == 26 && property_type ==
+                    //     'Commercial Property') {
+                    //     StepWizard.backStep = 24;
+                    // } 
+                    else if (StepWizard.currentStep == 29 && property_type ==
+                        'Commercial Property') {
+                        StepWizard.backStep = 26;
+                    }else if (StepWizard.currentStep == 35 && property_type ==
+                        'Commercial Property') {
+                        StepWizard.backStep = 32;
+                    } else if (StepWizard.currentStep == 43 && property_type ==
+                        'Commercial Property') {
+                        StepWizard.backStep = 41;
+                    }  else if (StepWizard.currentStep == 30 && property_type ==
+                        'Residential Property') {
+                        StepWizard.backStep = 28;
+                    } else if (StepWizard.currentStep == 37 && property_type ==
+                        'Residential Property') {
+                        StepWizard.backStep = 33;
+                    } else if (StepWizard.currentStep == 42 && property_type ==
+                        'Residential Property') {
+                        StepWizard.backStep = 38;
+                    } else {
+                        StepWizard.backStep = StepWizard.currentStep - 1;
                     }
-                });
-                StepWizard.stepChanged();
-            },
-            stepChanged: function() {
-                var comp = (StepWizard.currentStep / StepWizard.total_steps) * 100;
-                $('.steps-progress-percent').animate({
-                    width: comp.toFixed(0) + '%',
-                });
-            },
-            currentStep: 1,
-            total_steps: 0,
-        };
-    </script>
-
-    <script>
-        // google.maps.event.addDomListener(window, 'load', initialize);
-        function initialize() {
-            var inputField = document.getElementsByClassName('search_places');
-
-            for (var i = 0; i < inputField.length; i++) {
-                var t = inputField[i].dataset.type;
-                if (t === "cities") {
-                    var options = {
-                        types: ['(cities)'],
-                        componentRestrictions: {
-                            country: "us"
-                        },
-                    };
-                } else if (t === "states") {
-                    var options = {
-                        types: ['administrative_area_level_1'],
-                        componentRestrictions: {
-                            country: "us"
-                        },
-                    };
-                } else if (t === "address") {
-                    var options = {
-                        types: [],
-                        componentRestrictions: {
-                            country: "us"
-                        },
-                    };
-                } else {
-                    var options = {
-                        types: ['administrative_area_level_2'],
-                        componentRestrictions: {
-                            country: "us"
-                        },
-                    };
                 }
+            });
 
-                google.maps.event.addDomListener(inputField[i], 'keydown', function(e) {
-                    if (e.keyCode == 13) {
-                        if (e.preventDefault) {
-                            e.preventDefault();
-                        } else {
-                            // Since the google event handler framework does not handle early IE versions, we have to do it by our self.: -(
-                            e.cancelBubble = true;
-                            e.returnValue = false;
-                        }
-                    }
-                });
+            $('.wizard-step-finish').click(function(e) {
+                $('.mainform').submit();
+            });
 
-
-
-                var autocomplete = new google.maps.places.Autocomplete(inputField[i], options);
-
-                autocomplete.addListener('place_changed', function(e) {
-                    var place = autocomplete.getPlace();
-                    if (place) {
-                        // place variable will have all the information you are looking for.
-                        var lat = place.geometry['location'].lat();
-                        var lng = place.geometry['location'].lng();
-                        if (t == "counties") {
-                            $('#lat').val(lat);
-                            $('#long').val(lng);
-                        }
-                    }
-                });
+        },
+        setStep: function() {
+            if ($('.wizard-step.active').length == 0) {
+                $('.wizard-step').first().addClass('active');
             }
-        }
-        var leaseRes = $('#leaseTermOptions');
-        $('#leaseTermRes').change(function() {
-            //Disply and hide a div
-            ($(this).val().includes('3 Months') || $(this).val().includes('6 Months') || $(this).val().includes(
-                    '9 Months') || $(this).val().includes('1 Year') || $(this).val().includes('2 Years') || $(this)
-                .val()
-                .includes('3-5 Years') || $(this).val().includes('5+ Years') || $(this).val().includes(
-                    'Month to Month') || $(
-                    this).val().includes('Other')) ? leaseRes.show():
-                leaseRes.hide()
-            //   end
-            var selectedOption = $(this).find(':selected');
-            var targetClass = selectedOption.data('target');
-
-            // Hide all custom option fields first
-            $('.form-group[data-target^=".custom_"]').addClass('d-none');
-
-            // Show the specific custom option field based on the selected value
-            if (targetClass) {
-                $(targetClass).removeClass('d-none');
-            }
-        });
-
-        var feeReqOptDiv = $('#feeReq');
-        $('#feeReqOption').change(function() {
-            //Disply and hide a div
-            ($(this).val().includes('Required') || $(this).val().includes('Optional')) ? feeReqOptDiv.show():
-                feeReqOptDiv.hide()
-            //   end
-            var selectedOption = $(this).find(':selected');
-            var targetClass = selectedOption.data('target');
-
-            // Hide all custom option fields first
-            $('.form-group[data-target^=".custom_"]').addClass('d-none');
-
-            // Show the specific custom option field based on the selected value
-            if (targetClass) {
-                $(targetClass).removeClass('d-none');
-            }
-        });
-
-        function add_room_dimension() {
-            var roomTemp = $('.roomDimensionTemp').html();
-            $('.roomBtn').before(roomTemp);
-        }
-
-        function roomFtn() {
-            if ($('#room_typeRes').val() !== '') {
-                $('.roomDet').each(function() {
-                    $(this).show();
-                });
+            if ($('.wizard-step.active').prev().is('.wizard-step')) {
+                $('.wizard-step-back').show();
             } else {
-                $('.roomDet').each(function() {
-                    $(this).hide();
-                });
+                $('.wizard-step-back').hide();
             }
 
+            if ($('.wizard-step.active').next().is('.wizard-step')) {
+                $('.wizard-step-next').show();
+                $('.wizard-step-finish').hide();
+            } else {
+
+                $('.wizard-step-next').hide();
+                $('.wizard-step-finish').show();
+            }
+            $('.wizard-step').each(function(i, element) {
+                var k = i + 1;
+                if ($(element).hasClass('active')) {
+                    StepWizard.currentStep = k;
+                    StepWizard.data_step = k;
+                    StepWizard.nextStep = k + 1;
+                }
+            });
+            StepWizard.stepChanged();
+        },
+        stepChanged: function() {
+            var comp = (StepWizard.currentStep / StepWizard.total_steps) * 100;
+            $('.steps-progress-percent').animate({
+                width: comp.toFixed(0) + '%',
+            });
+        },
+        currentStep: 1,
+        total_steps: 0,
+    };
+    
+</script>
+<script>
+    $(document).ready(function(){
+        const roomTypeSelect = $('#room_typeRes');
+        const fieldsContainer = $('#dynamicFieldsContainer');
+        const roomTypeData = $('#room_type_data');
+
+        const fieldData = {}; // object to store field data
+
+        function sanitizeId(optionName) {
+            return optionName
+                .toLowerCase() // Optional: make it lowercase for consistency
+                .replace(/[^a-z0-9]/g, '-'); // Replace invalid characters with underscores
         }
-        roomFtn();
 
-        $('#has_hoa').change(function(){
-            if($(this).val() == 'Yes'){
-                $('.HOA_show').removeClass('d-none');
-            }else{
-                $('.HOA_show').addClass('d-none');
-            }
+        // Handle changes in the select element
+        $(roomTypeSelect).change(function () {
+            const selectedOptions = $(this).val(); // Get selected options
+
+            // Add fields for new options
+            selectedOptions.forEach(option => { 
+                let newOpt = sanitizeId(option);
+                if (!fieldData[newOpt]) {
+                    createFields(newOpt, option);
+                }
+            });
+
+            // Remove fields for unselected options
+            Object.keys(fieldData).forEach(option => {
+                const sanitizedIds = selectedOptions.map((option) => {
+                    const sanitizedOption = sanitizeId(option);
+                    return `${sanitizedOption}`; // Create unique ID for each
+                });
+                if (!sanitizedIds.includes(option)) {
+                    removeFields(option);
+                }
+            });
+
+            updateHiddenField(); // Update the hidden field after changes
+        });
+
+
+        // Create fields for a selected option
+        function createFields(option, optionName) {
+
+                $(fieldsContainer).append(`<div id="${option}-fields-container"></div`)
+
+                const roomDimensionHtml = `
+                    <hr data-room-type="${option}">
+                    <h5 data-room-type="${option}">Room Type: ${optionName}</h5>
+                    <div class="form-group roomDet" data-option="${option}">
+                        <label class="fw-bold">Approximate Room Dimensions (Width x Length)</label>
+                        <input type="text" name="roomDimensions[]" data-option="${option}"  class="form-control dynamic-room-input" required>
+                        <button type="button" class="btn btn-secondary btn-sm w-100 addRoomBtn mt-2">
+                            <i class="fa-solid fa-plus"></i> Add New Row
+                        </button>
+                    </div>
+                `;
+
+                $(`#${option}-fields-container`).append(roomDimensionHtml);
+
+                // $('#dynamicFieldsContainer').on('click', '.addRoomBtn', function(){
+                //     add_room_dimension(this);
+                // })
+
+                // Add Room Levels dropdown
+                const roomLevels = [
+                    { name: "Basement", target: "" },
+                    { name: "First", target: "" },
+                    { name: "Second", target: "" },
+                    { name: "Third", target: "" },
+                    { name: "Upper", target: "" },
+                ];
+                appendDropdown("Room Level:", "room_level[]", roomLevels, 1, 'fa-regular fa-circle-check', true);
+
+                // Add Bedroom Closets dropdown
+                const bedroomClosets = [
+                    { name: "Built-in Closet", target: "" },
+                    { name: "Coat Closet", target: "" },
+                    { name: "Dual Closets", target: "" },
+                    { name: "No Closet", target: "" },
+                    // Add more options as needed
+                ];
+                appendDropdown("Closet Type:", "bedroomCloset[]", bedroomClosets, 2, 'fa-regular fa-circle-check', true);
+
+                // Add Room Primary Floor Covering dropdown
+                const roomPrimary = [
+                    { name: "Bamboo", target: "" },
+                    { name: "Brick/Stone", target: "" },
+                    { name: "Other", target: ".floor_covering_other" },
+                    // Add more options as needed
+                ];
+                appendDropdown("Room Primary Floor Covering:", "roomPrimary[]", roomPrimary, 3, 'fa-regular fa-circle-check', false, true);
+
+                // Add Room Features dropdown
+                const roomFeatures = [
+                    { name: "Bar", target: "" },
+                    { name: "Other", target: ".roomFeatureOther" },
+                    // Add more options as needed
+                ];
+                appendDropdown("Room Features:", "room_feature[]", roomFeatures, 4, 'fa-regular fa-circle-check', false, true);
+
+                // Function to append dropdowns dynamically
+                function appendDropdown(labelText, name, options, index, icon, multiple = false, otherFields = false) {
+                    let optionsHtml = options
+                        .map(
+                            (opt) =>
+                                `<option value="${opt.name}" data-target="${opt.target}" data-icon="<i class='${icon}'></i>" 
+                                    style="width:calc(33.3% - 10px);" class="card flex-row" style="width:calc(33.3% - 10px);">
+                                    ${opt.name}
+                                </option>`
+                        )
+                        .join("");
+
+                    const targetName = options.find(item => item.name === 'Other' ? item : null);
+
+                    const dropdownHtml = `
+                        <div class="form-group roomDet" data-option="${option}" data-index="${index}">
+                            <label class="fw-bold">${labelText}</label>
+                            <select class="grid-picker dynamic-room-select" name="${name}" data-option="${option}" style="justify-content: flex-start;" ${multiple ? 'multiple': ''} required>
+                                <option value="">Select</option>
+                                ${optionsHtml}
+                            </select>
+                            ${otherFields ? 
+                            `<div class="form-group ${targetName?.target?.slice(1)} d-none">
+                                <label class="fw-bold">${labelText}</label>
+                                <input type="text" name="${name}Other" class="form-control has-icon"
+                                    data-icon="fa-regular fa-check-circle">
+                            </div>` : ''
+                            }
+                        </div>
+                    `;
+
+                    $(`#${option}-fields-container`).append(dropdownHtml);
+                    
+                }
+
+            initializeNewIcons(option);
+            initializeNewSelectFields(option);
+            fieldData[option] = {}; // Initialize data for the option
+            console.log('fieldData', fieldData);
+            // initializeFields();
+        }
+
+        // Remove fields for an unselected option
+        function removeFields(option) {
+            $(`[data-option="${option}"]`).remove(); // Remove field group
+            $(`[data-room-type="${option}"]`).remove(); // Remove field group
+            $(`#${option}-fields-container`).remove();
+            delete fieldData[option]; // Remove data for the option
+        }
+
+        // Update the hidden field whenever inputs change
+        $(document).on('input', '.dynamic-room-input', function () {
+            const option = $(this).data('option');
+            const name = $(this).attr('name');
+            const value = $(this).val();
+
+            if (!fieldData[option]) fieldData[option] = {}; // Initialize if necessary
+            fieldData[option][name] = value;
+
+            updateHiddenField(); // Update hidden field
+        });
+
+        $(document).on('change', '.dynamic-room-select', function () {
+            const option = $(this).data('option');
+            const name = $(this).attr('name');
+            const value = $(this).val();
+
+            if (!fieldData[option]) fieldData[option] = {}; // Initialize if necessary
+            fieldData[option][name] = value;
+
+            updateHiddenField(); // Update hidden field
+        });
+
+        // Update the hidden field with the current data
+        function updateHiddenField() {
+            roomTypeData.val(JSON.stringify(fieldData));
+        }
+
+    })
+</script>
+
+<script>
+    // $(function() {
+    function initializeIcons(){
+        $('.has-icon').each(function(i) {
+            var cover = `<div class="input-cover input-cover-${i}"></div>`;
+            $(this).before(cover);
+            $(this).appendTo(`.input-cover-${i}`);
+            var iconClass = $(this).data('icon');
+            var id = $(this).attr('id');
+            var htm = `<label for="${id}" class="input-icon"><i class="${iconClass}"></i></label>`;
+            $(this).before(htm);
+        });
+    }
+    function initializeFields(){
+        $('.grid-picker').each(function(index, elm) {
+            var st = $(elm).attr('style');
+            var html =
+                `<div class="options-container options-container-${index}" style="${st}"></div>`;
+            $(elm).after(html);
+            $(elm).appendTo(`.options-container-${index}`);
+            $(elm).children('option').each(function(i) {
+                var val = $(this).val();
+                if (val != "") {
+                    var text = $(this).text();
+                    var classes = $(this).attr('class');
+                    var styles = $(this).attr('style') || "";
+                    var icon = $(this).data('icon') || "";
+                    var selected = $(this).attr('selected') || "";
+                    var target = $(this).data('target') || "";
+                    selected = selected && "active";
+                    icon = icon && icon + " ";
+                    var htm = `<div onclick="checkselect(this);" style="${styles}" class="${classes} ${selected} option-container" data-index="${i}" data-target="${target}">
+                    <div class="option-icon">${icon}</div>
+                    <div class="option-text">${text}</div>
+                    </div>`;
+                    $(`.options-container-${index}`).append(htm);
+                }
+            });
+        });
+    }
+
+    initializeFields();
+    initializeIcons();
+    // initializeNewSelectFields(elm, option, index)
+
+    function initializeNewIcons(option){
+        $(`#${option}-fields-container .has-icon`).each(function(i) {
+            var cover = `<div class="input-cover input-cover-${i}"></div>`;
+            $(this).before(cover);
+            $(this).appendTo(`.input-cover-${i}`);
+            var iconClass = $(this).data('icon');
+            var id = $(this).attr('id');
+            var htm = `<label for="${id}" class="input-icon"><i class="${iconClass}"></i></label>`;
+            $(this).before(htm);
+        });
+    }
+
+    function initializeNewSelectFields(option){
+        $(`#${option}-fields-container .grid-picker`).each(function(index, elm) {
+            console.log('newFields', {elm, option, index});
+            var st = $(elm).attr('style');
+            var html =
+                `<div class="options-container options-container-${option}-${index}" style="${st}"></div>`;
+            $(elm).after(html);
+            $(elm).appendTo(`.options-container-${option}-${index}`);
+            $(elm).children('option').each(function(i) {
+                var val = $(this).val();
+                if (val != "") {
+                    var text = $(this).text();
+                    var classes = $(this).attr('class');
+                    var styles = $(this).attr('style') || "";
+                    var icon = $(this).data('icon') || "";
+                    var selected = $(this).attr('selected') || "";
+                    var target = $(this).data('target') || "";
+                    selected = selected && "active";
+                    icon = icon && icon + " ";
+                    var htm = `<div onclick="checkselect(this);" style="${styles}" class="${classes} ${selected} option-container" data-index="${i}" data-target="${target}">
+                    <div class="option-icon">${icon}</div>
+                    <div class="option-text">${text}</div>
+                    </div>`;
+                    $(`.options-container-${option}-${index}`).append(htm);
+                }
+            });
         })
-    </script>
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_PLACES_API_KEY') }}&libraries=places&callback=initialize">
-    </script>
+    }
+
+    // });
+    $(document).on('change', '#has_water_view', function() {
+
+        var selectedOptionWater = $(this).val();
+        if (selectedOptionWater == 'No') {
+            $('#water_show').hide();
+            $('#water_extras_show').hide();
+        }
+        if (selectedOptionWater == 'Yes') {
+            $('#water_show').show();
+            $('#water_extras_show').show();
+        }
+
+    });
+
+    //water view changing by waqas
+
+
+    function checkselect(elm) {
+        var i = $(elm).data('index');
+        var mult = $(elm).parent().children('select').attr('multiple') || false;
+        if (mult == false) {
+            var option = $(elm).parent().children('select').children(`option:eq(${i})`);
+            var ov = option.val();
+            $(elm).parent().children('.option-container').removeClass('active');
+            $(elm).addClass('active');
+            $(elm).parent().children('select').val(ov);
+        } else {
+            $(elm).toggleClass('active');
+            var option = $(elm).parent().children('select').children(`option:eq(${i})`);
+            var ov = option.val();
+            var vals = $(elm).parent().children('select').val();
+            if (vals.includes(ov)) {
+                option.removeAttr('selected');
+            } else {
+                option.attr('selected', 'selected');
+            }
+        }
+        var v = $(elm).parent().children('select').val();
+        $(elm).parent().children('select').trigger('change');
+        check_custom();
+    }
+
+    function check_custom() {
+        $('.option-container').each(function(i, elm) {
+            var target = $(elm).data('target') || "";
+            var is_active = $(elm).hasClass('active');
+            if (target != "") {
+                if (is_active) {
+                    $(target).removeClass("d-none");
+                } else {
+                    $(target).addClass("d-none");
+                }
+            }
+        });
+    }
+</script>
+<script>
+    // google.maps.event.addDomListener(window, 'load', initialize);
+    function initialize() {
+        var inputField = document.getElementsByClassName('search_places');
+
+        for (var i = 0; i < inputField.length; i++) {
+            var t = inputField[i].dataset.type;
+            if (t === "cities") {
+                var options = {
+                    types: ['(cities)'],
+                    componentRestrictions: {
+                        country: "us"
+                    },
+                };
+            } else if (t === "states") {
+                var options = {
+                    types: ['administrative_area_level_1'],
+                    componentRestrictions: {
+                        country: "us"
+                    },
+                };
+            } else if (t === "address") {
+                var options = {
+                    types: [],
+                    componentRestrictions: {
+                        country: "us"
+                    },
+                };
+            } else {
+                var options = {
+                    types: ['administrative_area_level_2'],
+                    componentRestrictions: {
+                        country: "us"
+                    },
+                };
+            }
+
+            google.maps.event.addDomListener(inputField[i], 'keydown', function(e) {
+                if (e.keyCode == 13) {
+                    if (e.preventDefault) {
+                        e.preventDefault();
+                    } else {
+                        // Since the google event handler framework does not handle early IE versions, we have to do it by our self.: -(
+                        e.cancelBubble = true;
+                        e.returnValue = false;
+                    }
+                }
+            });
+
+
+
+            var autocomplete = new google.maps.places.Autocomplete(inputField[i], options);
+
+            autocomplete.addListener('place_changed', function(e) {
+                var place = autocomplete.getPlace();
+                if (place) {
+                    // place variable will have all the information you are looking for.
+                    var lat = place.geometry['location'].lat();
+                    var lng = place.geometry['location'].lng();
+                    if (t == "counties") {
+                        $('#lat').val(lat);
+                        $('#long').val(lng);
+                    }
+                }
+            });
+        }
+    }
+    var leaseRes = $('#leaseTermOptions');
+    $('#leaseTermRes').change(function() {
+        //Disply and hide a div
+        ($(this).val().includes('3 Months') || $(this).val().includes('6 Months') || $(this).val().includes(
+                '9 Months') || $(this).val().includes('1 Year') || $(this).val().includes('2 Years') || $(this)
+            .val()
+            .includes('3-5 Years') || $(this).val().includes('5+ Years') || $(this).val().includes(
+                'Month to Month') || $(
+                this).val().includes('Other')) ? leaseRes.show():
+            leaseRes.hide()
+        //   end
+        var selectedOption = $(this).find(':selected');
+        var targetClass = selectedOption.data('target');
+
+        // Hide all custom option fields first
+        $('.form-group[data-target^=".custom_"]').addClass('d-none');
+
+        // Show the specific custom option field based on the selected value
+        if (targetClass) {
+            $(targetClass).removeClass('d-none');
+        }
+    });
+
+    var feeReqOptDiv = $('#feeReq');
+    $('#feeReqOption').change(function() {
+        //Disply and hide a div
+        ($(this).val().includes('Required') || $(this).val().includes('Optional')) ? feeReqOptDiv.show():
+            feeReqOptDiv.hide()
+        //   end
+        var selectedOption = $(this).find(':selected');
+        var targetClass = selectedOption.data('target');
+
+        // Hide all custom option fields first
+        $('.form-group[data-target^=".custom_"]').addClass('d-none');
+
+        // Show the specific custom option field based on the selected value
+        if (targetClass) {
+            $(targetClass).removeClass('d-none');
+        }
+    });
+
+    $('#dynamicFieldsContainer').on('click', '.addRoomBtn', function() {
+        var roomTemp = $('.roomDimensionTemp').html();
+        $(this).before(roomTemp);
+    })
+
+    function roomFtn() {
+        if ($('#room_typeRes').val() !== '') {
+            $('.roomDet').each(function() {
+                $(this).show();
+            });
+        } else {
+            $('.roomDet').each(function() {
+                $(this).hide();
+            });
+        }
+
+    }
+    roomFtn();
+
+    $('#has_hoa').change(function(){
+        if($(this).val() == 'Yes'){
+            $('.HOA_show').removeClass('d-none');
+        }else{
+            $('.HOA_show').addClass('d-none');
+        }
+    })
+</script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_PLACES_API_KEY') }}&libraries=places&callback=initialize">
+</script>
 @endpush
