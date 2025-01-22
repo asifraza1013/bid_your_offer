@@ -740,64 +740,44 @@
             <hr>
 
             <h4>Room Details:</h4>
-              @if(gettype(json_decode(@$auction->get->roomDimensions)) == 'array')
-                <div class="col-md-12 fw-bold"><i class="far fa-check-square"></i> Approximate Room Dimensions (Width x Length):
-                    @foreach (json_decode(@$auction->get->roomDimensions) as $item)
-                        <span class="removeBold">{{$item}}</span>
-                    @endforeach
-                </div>
-              @endif
-              @if(gettype(json_decode(@$auction->get->room_type)) == 'array')
-              <div class="col-md-12 fw-bold"><i class="far fa-check-square"></i> Room Type:
-                  @foreach (json_decode(@$auction->get->room_type) as $item)
+              @php
+                $detailsOne = json_decode($auction->get->room_details_data, true);
+                $details = json_decode($detailsOne, true);
+              @endphp
+              @if (isset($details) && is_Array($details))
+                @foreach ($details as $roomName => $roomData)
+                  <div class="col-md-12 fw-bold"><i class="far fa-check-square"></i> Approximate Room Dimensions (Width x Length):
+                    <span class="removeBold">{{$roomData['roomDimensions']}}</span>
+                  </div>
+                  <div class="col-md-12 fw-bold"><i class="far fa-check-square"></i> Room Type:
+                    <span class="removeBold badge bg-secondary">
+                        {{ $roomName}} 
+                    </span>
+                  </div>
+                  <div class="col-md-12 fw-bold"><i class="far fa-check-square"></i> Room Level:
+                    @foreach ($roomData['room_level'] as $item)
                       <span class="removeBold badge bg-secondary">
                           {{ $item }} 
                       </span>
-                  @endforeach
-              </div>
-              @endif
-              @if(gettype(json_decode(@$auction->get->room_level)) == 'array')
-                  <div class="col-md-12 fw-bold"><i class="far fa-check-square"></i> Room Level:
-                      @foreach (json_decode(@$auction->get->room_level) as $item)
-                          <span class="removeBold badge bg-secondary">
-                              {{ $item }} 
-                          </span>
-                      @endforeach
+                    @endforeach
                   </div>
-              @endif
-              @if(gettype(json_decode(@$auction->get->bedroomCloset)) == 'array')
                   <div class="col-md-12 fw-bold"><i class="far fa-check-square"></i> Bedroom Closet Type:
-                      @foreach (json_decode(@$auction->get->bedroomCloset) as $item)
-                          <span class="removeBold badge bg-secondary">
-                              {{ $item }} 
-                          </span>
-                      @endforeach
+                    <span class="removeBold badge bg-secondary">
+                        {{ $roomData['bedroomCloset'] }} 
+                    </span>
                   </div>
-              @endif
-              @if(gettype(json_decode(@$auction->get->roomPrimary)) == 'array')
                   <div class="col-md-12 fw-bold"><i class="far fa-check-square"></i> Room Primary Covering:
-                      @foreach (json_decode(@$auction->get->roomPrimary) as $item)
-                        @if ($item !== 'Other')
-                          <span class="removeBold badge bg-secondary">
-                            {{ $item }} 
-                        </span>
-                        @endif
-                      @endforeach
+                    <span class="removeBold badge bg-secondary">
+                      {{ $roomData['roomPrimary'] !== 'Other' ? $roomData['roomPrimary'] : $roomData['roomPrimaryOther'] }} 
+                    </span>
                   </div>
-              @endif
-              @if(gettype(json_decode(@$auction->get->room_feature)) == 'array')
                   <div class="col-md-12 fw-bold"><i class="far fa-check-square"></i> Room Features:
-                      @foreach (json_decode(@$auction->get->room_feature) as $item)
-                          <span class="removeBold badge bg-secondary">
-                              @if($item !='Other')
-                              {{ $item }} 
-                              @endif
-                              @if($item == 'Other')
-                                  {{ $auction->get->roomFeatueOther }}
-                              @endif
-                          </span>
-                      @endforeach
+                    <span class="removeBold badge bg-secondary">
+                      {{ $roomData['room_feature'] !== 'Other' ? $roomData['room_feature'] : $roomData['room_featureOther'] }}
+                    </span>
                   </div>
+                  <br>
+                @endforeach
               @endif
             <hr>
             

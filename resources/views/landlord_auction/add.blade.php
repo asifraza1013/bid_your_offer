@@ -364,7 +364,7 @@
                                 placeholder="" required>
                         </div> --}}
                     </div>
-                    {{-- <div class="wizard-step" data-step="2">
+                    <div class="wizard-step" data-step="2">
                         <div class="form-group">
                             <label for="address" class="fw-bold">Listing Date:</label>
                             <input type="date" name="listing_date" id="listing_date" class="form-control has-icon "
@@ -376,8 +376,8 @@
                                 class="form-control has-icon" data-icon="fa-regular fa-calendar-days"
                                 min="{{ date('Y-m-d') }}" required>
                         </div>
-                    </div> --}}
-                    <div class="wizard-step" data-step="2">
+                    </div>
+                    <div class="wizard-step" data-step="3">
                         {{-- 19 June 2023 for Residential --}}
                         @php
                             $serviceTypeRes = [
@@ -432,7 +432,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="wizard-step" data-step="3">
+                    <div class="wizard-step" data-step="4">
                         <div class="form-group">
                             <label class="fw-bold">Listing Type:</label>
                             <div>
@@ -500,7 +500,7 @@
                         </div>
 
                     </div>
-                    <div class="wizard-step" data-step="4">
+                    <div class="wizard-step" data-step="5">
                         @php
                             $property_types = [['name' => 'Residential Property'], ['name' => 'Commercial Property']];
                         @endphp
@@ -570,7 +570,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="wizard-step" data-step="5">
+                    <div class="wizard-step" data-step="6">
                         <div class="form-group ">
                             <label class="fw-bold">Leasing Space:</label>
                             @php
@@ -658,7 +658,7 @@
                             </span>
                         </div>
                     </div>
-                    {{-- <div class="wizard-step" data-step="7">
+                    <div class="wizard-step" data-step="7">
                         <div class="form-group">
                             @php
                                 $propConditions = [
@@ -687,8 +687,8 @@
                                     class="form-control has-icon" data-icon="fa-regular fa-circle-check" required>
                             </div>
                         </div>
-                    </div> --}}
-                    <div class="wizard-step" data-step="6">
+                    </div>
+                    <div class="wizard-step" data-step="8">
                         <h4>Price and Terms:</h4>
                       <span class="timerAuction">
                         <div class="form-group">
@@ -1325,7 +1325,7 @@
                         </div>
                       </div>
                     </div>
-                    {{-- <div class="wizard-step" data-step="9">
+                    <div class="wizard-step" data-step="9">
                         <h4>Landlord Prescreening Terms:</h4>
                         <span class="resFields">
                             <div class="form-group">
@@ -1734,8 +1734,8 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div> --}}
-                    <div class="wizard-step" data-step='7'>
+                    </div>
+                    <div class="wizard-step" data-step='15'>
                         @php
                             $appliances = [
                                 ['name' => 'Bar Fridge', 'target' => ''],
@@ -1821,7 +1821,7 @@
                             </div>
                         </span>
                     </div>
-                    {{--<div class="wizard-step" data-step='16'>
+                    <div class="wizard-step" data-step='16'>
                         <span class="resFields">
                             <div class="form-group">
                                 <label class="fw-bold">
@@ -2236,10 +2236,10 @@
                                     data-icon="fa-regular fa-check-circle">
                             </div>
                         </div>
-                    </div> --}}
-                    <div class="wizard-step" data-step='8'>
+                    </div>
+                    <div class="wizard-step" data-step='23'>
                         <h4>Room Details:</h4>
-                        <input type="hidden" id="room_type_input" name="room_type_data" />
+                        <input type="hidden" id="room_type_input" name="room_details_data" />
                         @php
                             $room_types = [
                                 ['name' => 'Additional Bedroom', 'target' => ''],
@@ -2301,179 +2301,6 @@
                             </select>
                         </div>
                         <div id="dynamicFieldsContainer"></div>
-                        {{-- <div class="form-group roomDet">
-                            <label class="fw-bold">Approximate Room Dimensions (Width x Length) </label>
-                            <input type="text" name="roomDimensions[]" class="form-control" required>
-                            <button type="button" class="btn btn-secondary btn-sm w-100 roomBtn mt-2"
-                                onclick="add_room_dimension();"><i class="fa-solid fa-plus"></i> Add New
-                                Row</button>
-                        </div>
-                        @php
-                            $room_levels = [
-                                ['name' => 'Basement', 'target' => ''],
-                                ['name' => 'First', 'target' => ''],
-                                ['name' => 'Second', 'target' => ''],
-                                ['name' => 'Third', 'target' => ''],
-                                ['name' => 'Upper', 'target' => ''],
-                            ];
-                        @endphp
-                        <div class="form-group roomDet">
-                            <label class="fw-bold">Room Level:</label>
-                            <select class="grid-picker" name="room_level[]" id="room_level"
-                                style="justify-content: flex-start;" required multiple>
-                                <option value="">Select</option>
-                                @foreach ($room_levels as $room_level)
-                                    <option value="{{ $room_level['name'] }}"
-                                        data-target="{{ $room_level['target'] }}" class="card flex-row"
-                                        style="width:calc(33.3% - 10px);"
-                                        data-icon="<i class='fa-regular fa-circle-check'></i>">
-                                        {{ $room_level['name'] }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        @php
-                            $bedroomCloset = [
-                                ['name' => 'Built-in Closet', 'target' => ''],
-                                ['name' => 'Coat Closet', 'target' => ''],
-                                ['name' => 'Dual Closets', 'target' => ''],
-                                ['name' => 'Linen Closet', 'target' => ''],
-                                ['name' => 'No Closet', 'target' => ''],
-                                ['name' => 'Storage Closet', 'target' => ''],
-                                ['name' => 'Walk-in Closet', 'target' => ''],
-                            ];
-                        @endphp
-                        <div class="form-group roomDet ">
-                            <label class="fw-bold">Closet Type:</label>
-                            <select class="grid-picker" name="bedroomCloset[]" style="justify-content: flex-start;"
-                                required>
-                                <option value="">Select</option>
-                                @foreach ($bedroomCloset as $item)
-                                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                                        class="card flex-row" style="width:calc(33.3% - 10px);"
-                                        data-icon="<i class='fa-regular fa-circle-check'></i>">
-                                        {{ $item['name'] }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        @php
-                            $roomPrimary = [
-                                ['name' => 'Bamboo', 'target' => ''],
-                                ['name' => 'Brick/Stone', 'target' => ''],
-                                ['name' => 'Carpet', 'target' => ''],
-                                ['name' => 'Ceramic Tile', 'target' => ''],
-                                ['name' => 'Concrete', 'target' => ''],
-                                ['name' => 'Cork', 'target' => ''],
-                                ['name' => 'Engineered Hardwood', 'target' => ''],
-                                ['name' => 'Epoxy', 'target' => ''],
-                                ['name' => 'Forestry Stewardship Certified', 'target' => ''],
-                                ['name' => 'Granite', 'target' => ''],
-                                ['name' => 'Laminate', 'target' => ''],
-                                ['name' => 'Linoleum', 'target' => ''],
-                                ['name' => 'Marble', 'target' => ''],
-                                ['name' => 'Parquet', 'target' => ''],
-                                ['name' => 'Porcelain Tile', 'target' => ''],
-                                ['name' => 'Quarry Tile', 'target' => ''],
-                                ['name' => 'Reclaimed Wood', 'target' => ''],
-                                ['name' => 'Recycled/Composite Flooring', 'target' => ''],
-                                ['name' => 'Slate', 'target' => ''],
-                                ['name' => 'Terrazzo', 'target' => ''],
-                                ['name' => 'Tile', 'target' => ''],
-                                ['name' => 'Travertine', 'target' => ''],
-                                ['name' => 'Vinyl', 'target' => ''],
-                                ['name' => 'Wood', 'target' => ''],
-                                ['name' => 'Other', 'target' => '.floor_covering_other'],
-                            ];
-                        @endphp
-                        <div class="form-group roomDet ">
-                            <label class="fw-bold">Room Primary Floor Covering:</label>
-                            <select class="grid-picker" name="roomPrimary[]" style="justify-content: flex-start;"
-                                multiple required>
-                                <option value="">Select</option>
-                                @foreach ($roomPrimary as $item)
-                                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                                        class="card flex-row" style="width:calc(33.3% - 10px);"
-                                        data-icon="<i class='fa-regular fa-circle-check'></i>">
-                                        {{ $item['name'] }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="floor_covering_other d-none">
-                            <div class="form-group">
-                                <label class="fw-bold">Room Primary Floor Covering:</label>
-                                <input type="text" name="roomPrimaryOther" id="roomPrimaryOther" placeholder=""
-                                    class="form-control has-icon" data-icon="fa-regular fa-circle-check">
-                            </div>
-                        </div>
-                        @php
-                            $room_features = [
-                                ['name' => 'Bar', 'target' => ''],
-                                ['name' => 'Bath with Spa/Hydro Massage Tub', 'target' => ''],
-                                ['name' => 'Bath With Whirlpool', 'target' => ''],
-                                ['name' => 'Bidet', 'target' => ''],
-                                ['name' => 'Breakfast Bar', 'target' => ''],
-                                ['name' => 'Built-In Shelving', 'target' => ''],
-                                ['name' => 'Built-In Shower Bench', 'target' => ''],
-                                ['name' => 'Ceiling Fan(s)', 'target' => ''],
-                                ['name' => 'Claw Foot Tub', 'target' => ''],
-                                ['name' => 'Closet Pantry', 'target' => ''],
-                                ['name' => 'Cooking Island', 'target' => ''],
-                                ['name' => 'Desk Built-In ', 'target' => ''],
-                                ['name' => 'Dual Sinks', 'target' => ''],
-                                ['name' => 'En Suite Bathroom ', 'target' => ''],
-                                ['name' => 'Exhaust Fan', 'target' => ''],
-                                ['name' => 'Garden Bath ', 'target' => ''],
-                                ['name' => 'Granite Counters', 'target' => ''],
-                                ['name' => 'Handicap Accessible', 'target' => ''],
-                                ['name' => 'Heated Floors', 'target' => ''],
-                                ['name' => 'Island', 'target' => ''],
-                                ['name' => 'Jack and Jill Bathroom', 'target' => ''],
-                                ['name' => 'Makeup/Vanity Space', 'target' => ''],
-                                ['name' => 'Multiple Shower Heads', 'target' => ''],
-                                ['name' => 'Pantry', 'target' => ''],
-                                ['name' => 'Rain Shower Head', 'target' => ''],
-                                ['name' => 'Sauna', 'target' => ''],
-                                ['name' => 'Shower- No Tub', 'target' => ''],
-                                ['name' => 'Single Vanity', 'target' => ''],
-                                ['name' => 'Sink-Pedestal ', 'target' => ''],
-                                ['name' => 'Split Vanities ', 'target' => ''],
-                                ['name' => 'Steam Shower', 'target' => ''],
-                                ['name' => 'Stone Counters', 'target' => ''],
-                                ['name' => 'Sunken Shower', 'target' => ''],
-                                ['name' => 'Tall Countertops ', 'target' => ''],
-                                ['name' => 'Tile Counters', 'target' => ''],
-                                ['name' => 'Tub with Separate Shower Stall ', 'target' => ''],
-                                ['name' => 'Tub with Shower', 'target' => ''],
-                                ['name' => 'Urinal', 'target' => ''],
-                                ['name' => 'Walk-In Pantry', 'target' => ''],
-                                ['name' => 'Walk-In Tub', 'target' => ''],
-                                ['name' => 'Water Closet/Priv Toliet', 'target' => ''],
-                                ['name' => 'Wet Bar', 'target' => ''],
-                                ['name' => 'Window/Skylight in Bath', 'target' => ''],
-                                ['name' => 'Other', 'target' => '.roomFeatureOther'],
-                            ];
-                        @endphp
-                        <div class="form-group roomDet ">
-                            <label class="fw-bold">Room Features:</label>
-                            <select class="grid-picker" name="room_feature[]" id="room_feature"
-                                style="justify-content: flex-start;" multiple required>
-                                <option value="">Select</option>
-                                @foreach ($room_features as $item)
-                                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                                        class="card flex-row" style="width:calc(33.3% - 10px);"
-                                        data-icon="<i class='fa-regular fa-circle-check'></i>">
-                                        {{ $item['name'] }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <div class="form-group roomFeatureOther d-none">
-                                <label class="fw-bold">Room Features:</label>
-                                <input type="text" name="roomFeatueOther" class="form-control has-icon"
-                                    data-icon="fa-regular fa-check-circle">
-                            </div>
-                        </div> --}}
                     </div>
                     <div class="wizard-step" data-step='24'>
                         <h4>Water and Dock Information:</h4>
@@ -4117,7 +3944,7 @@
                             @endphp
                             <label class="fw-bold">What is the compensation structure for the tenant's broker?</label>
                             <select class="grid-picker" name="compensation_structure" id="compensation_structure"
-                                style="justify-content: flex-start;" multiple>
+                                style="justify-content: flex-start;">
                                 <option value="">Select</option>
                                 @foreach ($agent_compensation as $item)
                                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
@@ -4138,7 +3965,7 @@
                                 @endphp
                                 <label class="fw-bold">What compensation is being offered to the tenant's broker?</label>
                                 <select class="grid-picker" name="compensation_structure_yes" id="compensation_structure_yes"
-                                    style="justify-content: flex-start;" multiple>
+                                    style="justify-content: flex-start;">
                                     <option value="">Select</option>
                                     @foreach ($agent_compensation_yes as $item)
                                         <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
@@ -4308,7 +4135,7 @@
                         </div>
                     </div>
                     <template class="roomDimensionTemp">
-                        <input type="text" name="roomDimensions[]" data-type="" class="form-control mt-2"
+                        <input type="text" name="roomDimensions[]" data-type="" class="form-control mt-2 dynamic-room-input"
                             data-msg-required="">
                     </template>
                 </form>
@@ -4620,12 +4447,12 @@
 </script>
 <script>
     $(document).ready(function() {
-        $('.compensation_structure').change(function(){
+        $('#compensation_structure').change(function(){
             let selected = $(this).val();
-            if(selected === "There is no compensation offered to the tenant's broker."){
-                $('compensationYes').removeClass('d-none');
+            if(selected !== "There is no compensation offered to the tenant's broker."){
+                $('.compensationYes').removeClass('d-none');
             }else{
-                $('compensationYes').addClass('d-none');
+                $('.compensationYes').addClass('d-none');
             }
         })
     })
@@ -4822,7 +4649,7 @@
     $(document).ready(function(){
         const roomTypeSelect = $('#room_typeRes');
         const fieldsContainer = $('#dynamicFieldsContainer');
-        const roomTypeData = $('#room_type_data');
+        const roomTypeData = $('#room_type_input');
 
         const fieldData = {}; // object to store field data
 
@@ -4838,9 +4665,9 @@
 
             // Add fields for new options
             selectedOptions.forEach(option => { 
-                let newOpt = sanitizeId(option);
-                if (!fieldData[newOpt]) {
-                    createFields(newOpt, option);
+                let sanitizedOpt = sanitizeId(option);
+                if (!fieldData[option]) {
+                    createFields(sanitizedOpt, option);
                 }
             });
 
@@ -4850,8 +4677,9 @@
                     const sanitizedOption = sanitizeId(option);
                     return `${sanitizedOption}`; // Create unique ID for each
                 });
-                if (!sanitizedIds.includes(option)) {
-                    removeFields(option);
+                if (!selectedOptions.includes(option)) {
+                    let sanitizedOpt = sanitizeId(option);
+                    removeFields(sanitizedOpt, option);
                 }
             });
 
@@ -4867,20 +4695,17 @@
                 const roomDimensionHtml = `
                     <hr data-room-type="${option}">
                     <h5 data-room-type="${option}">Room Type: ${optionName}</h5>
-                    <div class="form-group roomDet" data-option="${option}">
+                    <div class="form-group roomDet" data-option="${optionName}">
                         <label class="fw-bold">Approximate Room Dimensions (Width x Length)</label>
-                        <input type="text" name="roomDimensions[]" data-option="${option}"  class="form-control dynamic-room-input" required>
-                        <button type="button" class="btn btn-secondary btn-sm w-100 addRoomBtn mt-2">
-                            <i class="fa-solid fa-plus"></i> Add New Row
-                        </button>
+                        <input type="text" name="roomDimensions" data-option="${optionName}"  class="form-control dynamic-room-input" required>
                     </div>
                 `;
 
-                $(`#${option}-fields-container`).append(roomDimensionHtml);
+                // <button type="button" class="btn btn-secondary btn-sm w-100 addRoomBtn mt-2" data-option="${optionName}">
+                //  <i class="fa-solid fa-plus"></i> Add New Row
+                // </button>
 
-                // $('#dynamicFieldsContainer').on('click', '.addRoomBtn', function(){
-                //     add_room_dimension(this);
-                // })
+                $(`#${option}-fields-container`).append(roomDimensionHtml);
 
                 // Add Room Levels dropdown
                 const roomLevels = [
@@ -4890,34 +4715,98 @@
                     { name: "Third", target: "" },
                     { name: "Upper", target: "" },
                 ];
-                appendDropdown("Room Level:", "room_level[]", roomLevels, 1, 'fa-regular fa-circle-check', true);
+                appendDropdown("Room Level:", "room_level", roomLevels, 1, 'fa-regular fa-circle-check', true);
 
                 // Add Bedroom Closets dropdown
                 const bedroomClosets = [
                     { name: "Built-in Closet", target: "" },
                     { name: "Coat Closet", target: "" },
                     { name: "Dual Closets", target: "" },
+                    { name: "Linen Closet", target: "" },
                     { name: "No Closet", target: "" },
-                    // Add more options as needed
+                    { name: "Storage Closet", target: "" },
+                    { name: 'Walk-in Closet', target: ""},
                 ];
-                appendDropdown("Closet Type:", "bedroomCloset[]", bedroomClosets, 2, 'fa-regular fa-circle-check', true);
+                appendDropdown("Closet Type:", "bedroomCloset", bedroomClosets, 2, 'fa-regular fa-circle-check');
 
                 // Add Room Primary Floor Covering dropdown
                 const roomPrimary = [
                     { name: "Bamboo", target: "" },
                     { name: "Brick/Stone", target: "" },
+                    { name: "Carpet", target: "" },
+                    { name: "Ceramic Tile", target: "" },
+                    { name: "Concrete", target: "" },
+                    { name: "Cork", target: "" },
+                    { name: "Engineered Hardwood", target: "" },
+                    { name: "Epoxy", target: "" },
+                    { name: "Forestry Stewardship Certified", target: "" },
+                    { name: "Granite", target: "" },
+                    { name: "Laminate", target: "" },
+                    { name: "Linoleum", target: "" },
+                    { name: "Marble", target: "" },
+                    { name: "Parquet", target: "" },
+                    { name: "Porcelain Tile", target: "" },
+                    { name: "Quarry Tile", target: "" },
+                    { name: "Reclaimed Wood", target: "" },
+                    { name: "Recycled/Composite Flooring", target: "" },
+                    { name: "Slate", target: "" },
+                    { name: "Terrazzo", target: "" },
+                    { name: "Tile", target: "" },
+                    { name: "Travertine", target: "" },
+                    { name: "Vinyl", target: "" },
+                    { name: "Wood", target: "" },
                     { name: "Other", target: ".floor_covering_other" },
-                    // Add more options as needed
                 ];
-                appendDropdown("Room Primary Floor Covering:", "roomPrimary[]", roomPrimary, 3, 'fa-regular fa-circle-check', false, true);
+                appendDropdown("Room Primary Floor Covering:", "roomPrimary", roomPrimary, 3, 'fa-regular fa-circle-check', false, true);
 
                 // Add Room Features dropdown
                 const roomFeatures = [
                     { name: "Bar", target: "" },
+                    { name: "Bath with Spa/Hydro Massage Tub", target: "" },
+                    { name: "Bath With Whirlpool", target: "" },
+                    { name: "Bidet", target: "" },
+                    { name: "Breakfast Bar", target: "" },
+                    { name: "Built-In Shelving", target: "" },
+                    { name: "Built-In Shower Bench", target: "" },
+                    { name: "Ceiling Fan(s)", target: "" },
+                    { name: "Claw Foot Tub", target: "" },
+                    { name: "Closet Pantry", target: "" },
+                    { name: "Cooking Island", target: "" },
+                    { name: "Desk Built-In", target: "" },
+                    { name: "Dual Sinks", target: "" },
+                    { name: "En Suite Bathroom", target: "" },
+                    { name: "Exhaust Fan", target: "" },
+                    { name: "Garden Bath", target: "" },
+                    { name: "Granite Counters", target: "" },
+                    { name: "Handicap Accessible", target: "" },
+                    { name: "Heated Floors", target: "" },
+                    { name: "Island", target: "" },
+                    { name: "Jack and Jill Bathroom", target: "" },
+                    { name: "Makeup/Vanity Space", target: "" },
+                    { name: "Multiple Shower Heads", target: "" },
+                    { name: "Pantry", target: "" },
+                    { name: "Rain Shower Head", target: "" },
+                    { name: "Sauna", target: "" },
+                    { name: "Shower- No Tub", target: "" },
+                    { name: "Single Vanity", target: "" },
+                    { name: "Sink-Pedestal", target: "" },
+                    { name: "Split Vanities", target: "" },
+                    { name: "Steam Shower", target: "" },
+                    { name: "Stone Counters", target: "" },
+                    { name: "Sunken Shower", target: "" },
+                    { name: "Tall Countertops", target: "" },
+                    { name: "Tile Counters", target: "" },
+                    { name: "Tub with Separate Shower Stall", target: "" },
+                    { name: "Tub with Shower", target: "" },
+                    { name: "Urinal", target: "" },
+                    { name: "Walk-In Pantry", target: "" },
+                    { name: "Walk-In Tub", target: "" },
+                    { name: "Water Closet/Priv Toliet", target: "" },
+                    { name: "Wet Bar", target: "" },
+                    { name: "Window/Skylight in Bath", target: "" },
                     { name: "Other", target: ".roomFeatureOther" },
-                    // Add more options as needed
                 ];
-                appendDropdown("Room Features:", "room_feature[]", roomFeatures, 4, 'fa-regular fa-circle-check', false, true);
+                appendDropdown("Room Features:", "room_feature", roomFeatures, 4, 'fa-regular fa-circle-check', false, true);
 
                 // Function to append dropdowns dynamically
                 function appendDropdown(labelText, name, options, index, icon, multiple = false, otherFields = false) {
@@ -4934,39 +4823,36 @@
                     const targetName = options.find(item => item.name === 'Other' ? item : null);
 
                     const dropdownHtml = `
-                        <div class="form-group roomDet" data-option="${option}" data-index="${index}">
+                        <div class="form-group roomDet" data-option="${optionName}" data-index="${index}">
                             <label class="fw-bold">${labelText}</label>
-                            <select class="grid-picker dynamic-room-select" name="${name}" data-option="${option}" style="justify-content: flex-start;" ${multiple ? 'multiple': ''} required>
+                            <select class="grid-picker dynamic-room-select" name="${name}" data-option="${optionName}" style="justify-content: flex-start;" ${multiple ? 'multiple': ''} required>
                                 <option value="">Select</option>
                                 ${optionsHtml}
                             </select>
                             ${otherFields ? 
                             `<div class="form-group ${targetName?.target?.slice(1)} d-none">
                                 <label class="fw-bold">${labelText}</label>
-                                <input type="text" name="${name}Other" class="form-control has-icon"
-                                    data-icon="fa-regular fa-check-circle">
+                                <input type="text" name="${name}Other" data-option="${optionName}" class="form-control has-icon dynamic-room-input"
+                                    data-icon="fa-regular fa-check-circle" required>
                             </div>` : ''
                             }
                         </div>
                     `;
 
                     $(`#${option}-fields-container`).append(dropdownHtml);
-                    
                 }
 
-            initializeNewIcons(option);
-            initializeNewSelectFields(option);
-            fieldData[option] = {}; // Initialize data for the option
-            console.log('fieldData', fieldData);
-            // initializeFields();
+            initializeNewIcons(option); //Initialize icons for the option
+            initializeNewSelectFields(option); // Initialize select fields for the option
+            fieldData[`${optionName}`] = {}; // Initialize data for the option
         }
 
         // Remove fields for an unselected option
-        function removeFields(option) {
+        function removeFields(option, optionName) {
             $(`[data-option="${option}"]`).remove(); // Remove field group
             $(`[data-room-type="${option}"]`).remove(); // Remove field group
-            $(`#${option}-fields-container`).remove();
-            delete fieldData[option]; // Remove data for the option
+            $(`#${option}-fields-container`).remove(); // Remove field container
+            delete fieldData[`${optionName}`]; // Remove data for the option
         }
 
         // Update the hidden field whenever inputs change
@@ -4975,8 +4861,8 @@
             const name = $(this).attr('name');
             const value = $(this).val();
 
-            if (!fieldData[option]) fieldData[option] = {}; // Initialize if necessary
-            fieldData[option][name] = value;
+            if (!fieldData[option]) fieldData[option] = {}; // Initialize key
+            fieldData[option][name] = value; // Update value
 
             updateHiddenField(); // Update hidden field
         });
@@ -4986,22 +4872,22 @@
             const name = $(this).attr('name');
             const value = $(this).val();
 
-            if (!fieldData[option]) fieldData[option] = {}; // Initialize if necessary
-            fieldData[option][name] = value;
+            if (!fieldData[option]) fieldData[option] = {}; // Initialize key
+            fieldData[option][name] = value; // Update value
 
             updateHiddenField(); // Update hidden field
         });
 
         // Update the hidden field with the current data
         function updateHiddenField() {
-            roomTypeData.val(JSON.stringify(fieldData));
+            roomTypeData.val(JSON.stringify(fieldData)); // Update hidden field
+            console.log('roomTypeDataVal', roomTypeData.val());
         }
 
     })
 </script>
 
 <script>
-    // $(function() {
     function initializeIcons(){
         $('.has-icon').each(function(i) {
             var cover = `<div class="input-cover input-cover-${i}"></div>`;
@@ -5043,7 +4929,6 @@
 
     initializeFields();
     initializeIcons();
-    // initializeNewSelectFields(elm, option, index)
 
     function initializeNewIcons(option){
         $(`#${option}-fields-container .has-icon`).each(function(i) {
@@ -5252,8 +5137,10 @@
     });
 
     $('#dynamicFieldsContainer').on('click', '.addRoomBtn', function() {
-        var roomTemp = $('.roomDimensionTemp').html();
-        $(this).before(roomTemp);
+        let optionName = $(this).data('option');
+        let roomDimensionsFieldNew = $($('.roomDimensionTemp').html());
+        roomDimensionsFieldNew.attr('data-option', optionName);
+        $(this).before(roomDimensionsFieldNew);
     })
 
     function roomFtn() {

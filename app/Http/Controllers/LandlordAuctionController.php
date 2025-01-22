@@ -187,6 +187,7 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("floorConvringOther", $request->floorConvringOther);
             $landlord_auction->saveMeta("roomDimensions", json_encode($request->roomDimensions));
             $landlord_auction->saveMeta("room_type", json_encode($request->room_type));
+            $landlord_auction->saveMeta("room_details_data", json_encode($request->room_details_data));
             $landlord_auction->saveMeta("room_level", json_encode($request->room_level));
             $landlord_auction->saveMeta("bedroomCloset", json_encode($request->bedroomCloset));
             $landlord_auction->saveMeta("roomPrimary", json_encode($request->roomPrimary));
@@ -734,6 +735,7 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("floorConvringOther", $request->floorConvringOther);
             $landlord_auction->saveMeta("roomDimensions", json_encode($request->roomDimensions));
             $landlord_auction->saveMeta("room_type", json_encode($request->room_type));
+            $landlord_auction->saveMeta("room_details_data", json_encode($request->room_details_data));
             $landlord_auction->saveMeta("room_level", json_encode($request->room_level));
             $landlord_auction->saveMeta("bedroomCloset", json_encode($request->bedroomCloset));
             $landlord_auction->saveMeta("roomPrimary", json_encode($request->roomPrimary));
