@@ -117,6 +117,9 @@ Route::post('renew_buyer', [BuyerCriteriaAuctionBidController::class, 'renew_sav
 Route::post('renew_landloard', [LandlordAuctionController::class, 'renew_save'])->name('renewLandlord');
 
 
+// general routes
+Route::post('render_patch', [UserController::class, 'fetchPatches'])->name('fetchPatches');
+
 
 //End
 
