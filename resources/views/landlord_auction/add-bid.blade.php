@@ -148,10 +148,10 @@
           @php
             $yes_or_nos = [['name' => 'Yes', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
           @endphp
-          <div class="wizard-step" data-step="8">
+          <div class="wizard-step" data-step="1">
             <div class="form-group">
               <label class="fw-bold" for="offered_price">Offered Price:</label>
-              <input type="text" id="offered_price" name="offered_price" class="form-control has-icon" data-icon="fa-regular fa-check-circle"
+              <input type="number" id="offered_price" name="offered_price" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign"
                 required>
             </div>
             @php
@@ -199,7 +199,7 @@
                 $tenantPet = [['name' => 'Yes', 'target' => '.petYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
               @endphp
               <div class="form-group">
-                <label class="fw-bold" for="custom_terms">Does the tenant have a pet? </label>
+                <label class="fw-bold" for="custom_terms">Do the tenant(s) have any pets?</label>
                 <select class="grid-picker" name="petOpt" id="mySelect" style="justify-content: flex-start;"
                   required>
                   <option value="">Select</option>
@@ -244,9 +244,8 @@
                   ["name" => "Excellent", "target" => ""]
                 ];  
               @endphp
-              <label class="fw-bold" for="">What is the tenant’s credit score rating? </label>
-              <select class="grid-picker" name="scoreRating" id="mySelect" style="justify-content: flex-start;"
-              required>
+              <label class="fw-bold" for="">What is the credit score rating of the tenant(s)?</label>
+              <select class="grid-picker" name="scoreRating" id="mySelect" style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($creditScores as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
@@ -257,8 +256,8 @@
               </select>
             </div>
             <div class="form-group">
-              <label class="fw-bold" for="">What is the household monthly net income of the tenant? </label>
-              <input type="text" name="monthlyIncome" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
+              <label class="fw-bold" for="">What is the total household monthly net income of the tenant(s)?</label>
+              <input type="number" name="monthlyIncome" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
             </div>
             <div class="form-group">
               @php 
@@ -267,7 +266,7 @@
                   ["name" => "No", "target" => "",'icon'=>'fa-regular fa-circle-xmark'],
                 ];  
               @endphp
-              <label class="fw-bold" for="">Has the tenant had any prior evictions within the last 7 years?
+              <label class="fw-bold" for="">Have the tenant(s) had any prior evictions within the last 7 years?
               </label>
               <select class="grid-picker" name="evictions" id="mySelect" style="justify-content: flex-start;"
               required>
@@ -291,7 +290,7 @@
                   ["name" => "No", "target" => "",'icon'=>'fa-regular fa-circle-xmark'],
                 ];  
               @endphp
-              <label class="fw-bold" for="">Has the tenant been convicted of a felony within the last 7 years?
+              <label class="fw-bold" for="">Have the tenant(s) been convicted of a felony within the last 7 years?
               </label>
               <select class="grid-picker" name="convicted" id="mySelect" style="justify-content: flex-start;"
               required>
@@ -315,7 +314,7 @@
                   ["name" => "No", "target" => "",'icon'=>'fa-regular fa-circle-xmark'],
                 ];  
               @endphp
-              <label class="fw-bold" for="">Has the tenant been involved in any prior lease violations?</label>
+              <label class="fw-bold" for="">Have the tenant(s) been involved in any prior lease violations?</label>
               <select class="grid-picker" name="violations" id="mySelect" style="justify-content: flex-start;"
               required>
                 <option value="">Select</option>
@@ -338,7 +337,7 @@
                   ["name" => "No", "target" => "",'icon'=>'fa-regular fa-circle-xmark'],
                 ];  
               @endphp
-              <label class="fw-bold" for="">Does the tenant have any outstanding balances with previous landlords?</label>
+              <label class="fw-bold" for="">Do the tenant(s) have any outstanding balances with previous landlords?</label>
               <select class="grid-picker" name="outstanding" id="mySelect" style="justify-content: flex-start;"
               required>
                 <option value="">Select</option>
@@ -362,7 +361,7 @@
                   ["name" => "No", "target" => "",'icon'=>'fa-regular fa-circle-xmark'],
                 ];  
               @endphp
-              <label class="fw-bold" for="">Is the tenant represented by a real estate agent?</label>
+              <label class="fw-bold" for="">Are the tenant(s) represented by a real estate agent?</label>
               <select class="grid-picker" name="tenant_represented" id="represented" style="justify-content: flex-start;" required>
                 <option value="">Select</option>
                 @foreach ($tenantRepresented as $item)
@@ -372,7 +371,7 @@
                   </option>
                 @endforeach
               </select>
-              <div class="form-group representedYes d-none">
+              {{-- <div class="form-group representedYes d-none">
                 @php 
                 $agent_accept_compensation = [
                   ["name" => "Yes", "target" => "",'icon'=>'fa-regular fa-circle-check'],
@@ -437,8 +436,30 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> --}}
             </div>
+
+            @if (isset($auction->get->compensation_structure_yes) && $auction->get->compensation_structure_yes == 'Negotiable')
+              <div class="form-group">
+                @php 
+                  $compensationStructure = [
+                    ["name" => "___% of the gross lease value", "target" => "",'icon'=>'fa-regular fa-circle-check'],
+                    ["name" => "____% of the first month’s rent", "target" => "",'icon'=>'fa-regular fa-circle-check'],
+                    ["name" => 'Fixed amount : $____', "target" => "",'icon'=>'fa-regular fa-circle-check'],
+                  ];  
+                @endphp
+                <label class="fw-bold" for="">What compensation is acceptable to the tenant(s)’ broker?</label>
+                <select class="grid-picker" name="compensation_acceptable" id="represented" style="justify-content: flex-start;" required>
+                  <option value="">Select</option>
+                  @foreach ($compensationStructure as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{$item['icon']}}"></i>'>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+            @endif
 
             @if ($auction->get->auction_type == 'Traditional Listing')
               <div class="form-group">
@@ -454,9 +475,7 @@
                 ["name" => "No", "target" => "", 'icon'=>'fa-regular fa-circle-xmark'],
               ];  
               @endphp
-              <label class="fw-bold mt-4" for="">Would the tenant like to set an escalation clause to automatically increase their
-                bid price and terms up to a maximum amount specified by the tenant in the event of
-                multiple offers?</label>
+              <label class="fw-bold mt-4" for="">Would the tenant(s) like to set an escalation clause to automatically increase their bid price and terms up to a maximum amount specified by them in the event of multiple offers?</label>
               <select class="grid-picker" name="escalation_clause" id="escalation_clause" style="justify-content: flex-start;" required>
                 <option value="">Select</option>
                 @foreach ($escalation_clause as $item)
@@ -487,7 +506,7 @@
             @endif
 
             <div class="form-group">
-              <label class="fw-bold" for="">Please provide any additional information that the tenant would like to include.</label>
+              <label class="fw-bold" for="">Please provide any additional information that the tenant(s) would like to include:</label>
               <textarea type="text" name="additionalInfo" class="form-control has-icon" data-icon="fa-regular fa-circle-check" rows="8">{{ old('additionalInfo') }}</textarea>
             </div>
           </div>

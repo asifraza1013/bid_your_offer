@@ -477,7 +477,7 @@
                                                 ],
                                                 [
                                                     'name' => 'Traditional Listing',
-                                                    'icon' => '<i class="fa-regular fa-circle-xmark"></i>',
+                                                    'icon' => '<i class="fa-solid fa-clipboard-list"></i>',
                                                     'target' => '',
                                                 ],
                                             ];

@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\LandlordAgentAuction;
+use App\Models\LandlordAgentAuctionBid;
 use App\Models\LandlordAgentAuctionMeta;
 use Illuminate\Support\Facades\Auth;
 
@@ -439,19 +440,21 @@ class LandlordAgentAuctionController extends Controller
         // return $data->get;
 
         $page_data['auction'] = $auction = LandlordAgentAuction::find($id);
-        $page_data['title'] = $auction->address;
+        $page_data['title'] = $auction->get->titleListing;
         $page_data['counties'] = County::all();
         $page_data['id'] = $id;
+        $page_data['bids'] = $bids = LandlordAgentAuctionBid::with('meta')->where('landlord_agent_auction_id', $id)->whereNull('counter_id')->get();
         return view('hire_landlord_agent.view', $page_data);
     }
 
-    public function bidsVisibility($id, $vis){
+    public function bidsVisibility($id, $vis)
+    {
         $auction = landlordAgentAuction::where('id', $id)->first();
-        if($vis == 'show'){
+        if ($vis == 'show') {
             $auction->display_bids = 1;
             $auction->save();
             return redirect()->back()->with('success', 'Bids list is now visible');
-        }else{
+        } else {
             $auction->display_bids = 0;
             $auction->save();
             return redirect()->back()->with('success', 'Bids list is now hidden');

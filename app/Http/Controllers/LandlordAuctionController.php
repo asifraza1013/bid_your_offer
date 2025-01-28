@@ -215,10 +215,12 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("water", json_encode($request->water));
             $landlord_auction->saveMeta("otherWater", $request->otherWater);
             $landlord_auction->saveMeta("sewer", json_encode($request->sewer));
+            $landlord_auction->saveMeta('otherSewer', $request->otherSewer);
             $landlord_auction->saveMeta("airConditioning", json_encode($request->airConditioning));
             $landlord_auction->saveMeta("otherAirCondition", $request->otherAirCondition);
             $landlord_auction->saveMeta("heatingFuel", json_encode($request->heatingFuel));
             $landlord_auction->saveMeta("otherFuel", $request->otherFuel);
+            $landlord_auction->saveMeta('carport', $request->carport);
             $landlord_auction->saveMeta("carportOther", $request->carportOther);
             $landlord_auction->saveMeta("garage", $request->garage);
             $landlord_auction->saveMeta("garageOther", $request->garageOther);
@@ -763,10 +765,12 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("water", json_encode($request->water));
             $landlord_auction->saveMeta("otherWater", $request->otherWater);
             $landlord_auction->saveMeta("sewer", json_encode($request->sewer));
+            $landlord_auction->saveMeta('otherSewer', $request->otherSewer);
             $landlord_auction->saveMeta("airConditioning", json_encode($request->airConditioning));
             $landlord_auction->saveMeta("otherAirCondition", $request->otherAirCondition);
             $landlord_auction->saveMeta("heatingFuel", json_encode($request->heatingFuel));
             $landlord_auction->saveMeta("otherFuel", $request->otherFuel);
+            $landlord_auction->saveMeta('carport', $request->carport);
             $landlord_auction->saveMeta("carportOther", $request->carportOther);
             $landlord_auction->saveMeta("garage", $request->garage);
             $landlord_auction->saveMeta("garageOther", $request->garageOther);
@@ -1050,6 +1054,8 @@ class LandlordAuctionController extends Controller
             $auction_bid->saveMeta('tenant_requests_commission', $request->tenant_requests_commission);
             $auction_bid->saveMeta('tenant_requests_commission_amount', $request->tenant_requests_commission_amount);
             $auction_bid->saveMeta('tenant_requests_commission_amount_other', $request->tenant_requests_commission_amount_other);
+
+            $auction->bid->saveMeta('compensation_acceptable', $request->compensation_acceptable);
 
             $auction_bid->saveMeta('offer_expiry', $request->offer_expiry);
 

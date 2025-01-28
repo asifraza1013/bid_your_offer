@@ -98,12 +98,25 @@
     <div class="container listingDescription">
         <div class="row">
             <div class="col-sm-12 col-md-8 col-lg-8 leftCol">
-                @if ($auction->user_id == auth()->user()->id)
-                    <div class="d-flex justify-content-end align-content-center">
-                        <a href="{{route('landlord.hire.agent.auction.edit', $auction->id)}}" class="btn btn-success btn-sm px-3 mb-3 me-2"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Listing</a>
-                        {{-- <a href="javascript:void(0)" class="btn btn-success btn-sm px-3 mb-3"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Auction Status</a> --}}
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center justify-content-left">
+                      @if ($auction->is_approved == 1)
+                        <span class="badge bg-primary me-2">Active</span>
+                      @endif
+                      @if ($auction->is_approved == 0)
+                        <span class="badge bg-warning me-2">Pending</span>
+                      @endif
+                      @if ($auction->is_sold == 1)
+                        <span class="badge bg-success">Hired</span>
+                      @endif
                     </div>
-                @endif
+                    @if ($auction->user_id == auth()->user()->id)
+                        <div class="d-flex justify-content-end align-content-center">
+                            <a href="{{route('landlord.hire.agent.auction.edit', $auction->id)}}" class="btn btn-success btn-sm px-3 mb-3 me-2"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Listing</a>
+                            {{-- <a href="javascript:void(0)" class="btn btn-success btn-sm px-3 mb-3"><i class="fa-solid fa-pen-to-square me-1"></i>Edit Auction Status</a> --}}
+                        </div>
+                    @endif
+                </div>
                 @if (gettype(@$auction->get->photos) == 'array')
                     <div class="d-flex flex-wrap justify-content-start">
                         @foreach (@$auction->get->photos as $image)
@@ -869,8 +882,8 @@
                         @endif
                         <div class="accordion" id="accordionExample">
                             <div class="accordion-item border-0">
-                                @if ($auction->display_bids == 1)
-                                    @foreach (@$auction->bids as $bid)
+                                @if ($auction->display_bids == 1 || $auction->user_id == auth()->user()->id)
+                                    @foreach ($bids as $bid)
                                         <!-- Item loop -->
                                         <div class="accordion" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#item{{ @$bid->id }}" aria-expanded="true"
@@ -924,10 +937,91 @@
                                                             </div>
                                                         @endif
                                                     </div>
+                                                    @if (@$auction->user_id == $auth_id)
+                                                        @if (!@$auction->is_sold)
+                                                            <form action="{{ route('landlord.hire.agent.auction.bid.accept', $bid->id) }}" method="post">
+                                                            @csrf
+                                                            <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
+                                                            <input type="hidden" name="bid_id" value="{{ $bid->id }}">
+                                                            <div style="text-align: right;">
+                                                                <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                                            </div>
+                                                            </form>
+                                                        @endif
+                                                    @endif
+                                                    @auth
+                                                        <div class="form-group biddingOperations">
+                                                            @if (!$auction->sold && (auth()->user()->id == $bid->user_id || (auth()->user()->user_type == 'agent' || auth()->user()->user_type == 'admin')))
+                                                                <form action="{{ route('landlord.agent.add.counter-bid', $bid->id) }}" method="get">
+                                                                    <div class="d-flex gap-1">
+                                                                    <button type="submit" class="btn btn-primary">Counter Bid</button>
+                                                                    </div>
+                                                                </form>
+                                                            @endif
+                                                            @php
+                                                                $allBids = App\Models\LandlordAgentAuctionBid::where('counter_id', $bid->id)->with('meta')
+                                                                    ->orderByDesc('created_at')
+                                                                    ->get();
+                                                            @endphp
+                                                            <div class="form-group">
+                                                                @if (!$auction->sold)
+                                                                    <h5>Counter Bids</h5>
+                                                                    <hr>
+                                                                    @foreach ($allBids as $key => $countBid)
+                                                                        <div>
+                                                                            <p class="d-flex justify-content-between small">First Name:
+                                                                                <span>{{ $countBid->get->first_name }}</span>
+                                                                            </p>
+                                                                            <p class="d-flex justify-content-between small">Landlord Agency
+                                                                                Agreement Timeframe:
+                                                                                <span>{{ $countBid->get->listing_terms }}</span>
+                                                                            </p>
+                                                                            <p class="d-flex justify-content-between small">Commission Offered:
+                                                                                <span>{{ $countBid->get->offering_price }}</span>
+                                                                            </p>
+                                                                            @if ($countBid->get->services)
+                                                                                <div>
+                                                                                    <label>Services Offered by the Agent:</label>
+                                                                                    <ul class="services">
+                                                                                        @foreach ($countBid->get->services as $service)
+                                                                                            @if ($service == 'Other')
+                                                                                                @continue
+                                                                                            @endif
+                                                                                            <li style="font-size: 16px; margin-top:15px;">
+                                                                                                {{ $service }}</li>
+                                                                                        @endforeach
+                                                                                        @if ($countBid->get->other_services != '' && $countBid->get->other_services != 'null')
+                                                                                            <li style="font-size: 16px; margin-top:15px;">
+                                                                                                {{ $countBid->get->other_services }}</li>
+                                                                                        @endif
+                                                                                    </ul>
+                                                                                </div>
+                                                                            @endif
+                                                                        </div>
+                                                                        @if ($auction->user_id == $auth_id)
+                                                                            @if (!$auction->is_sold)
+                                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                                <form action="{{ route('landlord.hire.agent.auction.bid.accept', $countBid->id) }}" method="post">
+                                                                                @csrf
+                                                                                <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
+                                                                                <input type="hidden" name="bid_id" value="{{ $countBid->id }}">
+                                                                                <button type="submit" class="badge bg-success p-2 borderless">Accept</button>
+                                                                                </form>
+                                                                            </div>
+                                                                            @endif
+                                                                        @endif
+                                                                        <hr>
+                                                                    @endforeach
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    @endauth
                                                 </div>
                                             </div>
                                         </div>
                                     @endforeach
+                                @else
+                                    <div class="alert alert-danger text-center" role="alert">Bids are hidden!</div>
                                 @endif
                             </div>
                         </div>

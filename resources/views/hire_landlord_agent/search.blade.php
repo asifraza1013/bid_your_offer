@@ -84,7 +84,7 @@
               <div class="card-body pb-2 pt-2">
                 <div style="min-height: 56px;">
                   <h5 class="card-title w-75"><a
-                      href="{{ route('landlord.agent.auction.view', @$auction->id) }}">{{ @$auction->address }}</a>
+                      href="{{ route('landlord.agent.auction.view', $auction->id) }}">{{ $auction->get->titleListing }}</a>
                   </h5>
                 </div>
                 <div class="qr-code" style="width: 50px; height:50px; position: absolute; top:0; right:0;">
