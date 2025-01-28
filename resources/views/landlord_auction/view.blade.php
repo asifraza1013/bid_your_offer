@@ -170,7 +170,6 @@
                 <!-- Small Images  -->
                 <div class="col-sm-12 col-md-4 col-lg-4">
                   <div class="row">
-                    {{-- @dd(@$auction->get) --}}
                     @if ($photo)
                       @foreach ($photo as $image)
                         <div class="col-sm-4 col-md-6 col-lg-6 p-2">
@@ -286,11 +285,6 @@
                 <span class="removeBold">{{ @$auction->get->startingPrice }}</span>
               </div>
               @endif
-              {{-- @if(isset($auction->get->reservePrice) && $auction->get->reservePrice != null)
-              <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Reserve Price:
-                <span class="removeBold">{{ @$auction->get->reservePrice }}</span>
-              </div>
-              @endif --}}
               @if(isset($auction->get->leaseDate) && $auction->get->leaseDate != null)
                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Lease Availability Date:
                   <span class="removeBold">{{ \Carbon\Carbon::parse($auction->get->leaseDate)->format('d-m-Y') }}</span>
@@ -306,7 +300,7 @@
                   @endforeach
                 </div>
               @endif
-              @if(isset($auction->get->leaseTerms))
+              @if(isset($auction->get->leaseTerms) && $auction->get->leaseTerms != 'null')
                 @php
                   $leaseTerms = json_decode($auction->get->leaseTerms);
                 @endphp
@@ -340,7 +334,7 @@
                       @endforeach
                   </div>
               @endif
-              @if(isset($auction->get->tenant_pays))
+              @if(isset($auction->get->tenant_pays) && $auction->get->tenant_pays != 'null')
                 @php
                   $tenant_pays = json_decode($auction->get->tenant_pays);
                 @endphp
@@ -447,26 +441,15 @@
               <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Address: 
                 <span class="removeBold"> {{ @$auction->address }}</span>
               </div>
-              {{-- <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> City: 
-                <span class="removeBold">{{ @$auction->city }}</span>
-              </div> --}}
               <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> County: 
                 <span class="removeBold">{{ @$auction->county }}</span>
               </div>
-              {{-- <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> State: 
-                <span class="removeBold">{{ @$auction->state }}</span>
-              </div> --}}
               <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Listing Date:
                 <span class="removeBold">{{ Carbon\Carbon::parse(@$auction->listing_date)->format('M d, Y') }}</span>
               </div>
               <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Expiration Date:
                 <span class="removeBold">{{ Carbon\Carbon::parse(@$auction->expiration_date)->format('M d, Y') }}</span>
               </div>
-              {{-- @if(@$auction->get->listing_service_type != null)
-              <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Listing Service Type:
-                <span class="removeBold">{{ @$auction->get->listing_service_type }}</span>
-              </div>
-              @endif --}}
               @if(@$auction->get->representation != null)
               <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Representation:
                 <span class="removeBold">{{ @$auction->get->representation }}</span>
@@ -477,7 +460,7 @@
                 <span class="removeBold">{{ @$auction->get->auction_type }}</span>
               </div>
               @endif
-              @if(@$auction->get->property_type != null)
+              @if(isset($auction->get->property_type))
               <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Property Style:
                 <span class="removeBold">{{ @$auction->get->property_type }}</span>
                 @if (isset($auction->get->property_items))
@@ -485,7 +468,9 @@
                     $property_items = json_decode($auction->get->property_items);
                   @endphp
                   @foreach ($property_items as $item)
-                    <span class="d-inline-block removeBold badge bg-secondary">{{$item}}</span>
+                    @if ($item)
+                      <span class="d-inline-block removeBold badge bg-secondary">{{$item}}</span>
+                    @endif
                   @endforeach
                 @endif
               </div>
@@ -1072,11 +1057,14 @@
                     @endif
                   </div>
                 @endif
-                @if (isset($auction->get->has_water_view))
+                @if (isset($auction->get->has_water_view) && $auction->get->has_water_view != 'null')
                 <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Water View:
                   @if ($auction->get->has_water_view === 'Yes')
                     <span class="removeBold">Yes</span>
-                    @foreach ($auction->get->water_view as $item)
+                    @php
+                      $water_view = json_decode($auction->get->water_view, true);
+                    @endphp
+                    @foreach ($water_view  as $item)
                       <span class="badge bg-secondary removeBold">{{ $item }}</span>
                     @endforeach
                   @else
@@ -1344,15 +1332,7 @@
               </div>
               <hr>
             @endif
-            
 
-            {{-- @if (@$auction->get->compensationYes != null)
-            <h4>Tenant’s Agent Compensation:</h4>
-            <div class="col-md-12 fw-bold">
-                <span class="removeBold">{{ @$auction->get->compensationYes }}</span>
-              </div>
-              <hr>
-            @endif --}}
             <h4>Tenant’s Agent Compensation:</h4>
             @if (isset($auction->get->compensation_structure))
               <div class="col-md-12 fw-bold"><i class="far fa-check-square"></i> Tenant’s Broker Commission Structure:
@@ -1481,7 +1461,6 @@
               @if (@$auction->sold)
                 <span class="badge bg-danger">Sold</span>
               @endif
-              {{-- {{$res}} --}}
             </button>
           @endif
         @else

@@ -34,6 +34,8 @@
             @endforeach
             console.log('All scripts initialized.');
         @endif
+
+        $('select').trigger('change');
         // Hide loader after the AJAX request is completed (success or error)
         showAjaxLoader(false);
     }).catch(function(error) {

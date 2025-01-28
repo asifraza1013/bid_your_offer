@@ -3,34 +3,32 @@
         state, pertaining to the real estate asset that the landlord intends to place on the market:
     </h4>
     <div class="form-group">
+        <label for="address" class="fw-bold">Address:</label>
+        <input type="text" name="address" data-type="address" placeholder="" value="{{ $auction->address }}"
+            id="address" class="form-control has-icon search_places" data-icon="fa-solid fa-location-dot" required>
+    </div>
+    <div class="form-group">
         <label class="fw-bold" for="unit_number">Unit Number:</label>
         <input type="text" name="unit_number" data-type="unit_number" value="{{ $auction->get->unit_number }}"
             placeholder="" id="unit_number" class="form-control has-icon search_places"
             data-icon="fa-solid fa-location-dot" required>
     </div>
     <div class="form-group">
-        <label for="address" class="fw-bold">Address:</label>
-        <input type="text" name="address" data-type="address" placeholder="" value="{{ $auction->address }}"
-            id="address" class="form-control has-icon search_places" data-icon="fa-solid fa-location-dot" required>
-    </div>
-    <div class="form-group">
-        <label class="fw-bold">City:</label>
-        <input type="text" name="city" data-type="cities" id="cities" value="{{ $auction->city }}"
-            class="form-control has-icon search_places" data-icon="fa-solid fa-city" placeholder="" required>
-    </div>
-
-    <div class="form-group">
         <label class="fw-bold">County:</label>
         <input type="text" name="county" data-type="counties" id="county" value="{{ $auction->county }}"
             class="form-control has-icon search_places" data-icon="fa-solid fa-tree-city" placeholder="" required>
     </div>
-
-    {{-- nisar changing --}}
+    
+    {{-- <div class="form-group">
+        <label class="fw-bold">City:</label>
+        <input type="text" name="city" data-type="cities" id="cities" value="{{ $auction->city }}"
+            class="form-control has-icon search_places" data-icon="fa-solid fa-city" placeholder="" required>
+    </div>
     <div class="form-group">
         <label class="fw-bold">State:</label>
         <input type="text" name="state" data-type="states" id="state" value="{{ $auction->state }}"
             class="form-control has-icon search_places" data-icon="fa-solid fa-flag-usa" placeholder="" required>
-    </div>
+    </div> --}}
 </div>
 <div class="wizard-step" data-step="2">
     <?php
@@ -53,7 +51,7 @@
 </div>
 <div class="wizard-step" data-step="3">
     {{-- 19 June 2023 for Residential --}}
-    @php
+    {{-- @php
         $serviceTypeRes = [
             ['name' => 'Full Service', 'target' => '', 'icon' => 'fa-regular fa-circle-check'],
             [
@@ -77,7 +75,7 @@
                 </option>
             @endforeach
         </select>
-    </div>
+    </div> --}}
     <div class="form-group">
         @php
             $representationRes = [
@@ -196,22 +194,23 @@
         <div>
             @php
                 $property_items = [
-                    ['name' => 'Single Family Residence', 'class' => 'residential-length'],
-                    ['name' => 'Apartment', 'class' => 'residential-length'],
-                    ['name' => 'Townhouse', 'class' => 'residential-length'],
-                    ['name' => 'Villa', 'class' => 'residential-length'],
-                    ['name' => 'Condominium', 'class' => 'residential-length'],
-                    ['name' => 'Condo-Hotel', 'class' => 'residential-length'],
-                    ['name' => '½ Duplex', 'class' => 'residential-length'],
                     ['name' => '1/3 Triplex', 'class' => 'residential-length'],
                     ['name' => '1/4 Quadplex', 'class' => 'residential-length'],
+                    ['name' => '½ Duplex', 'class' => 'residential-length'],
+                    ['name' => 'Apartment', 'class' => 'residential-length'],
+                    ['name' => 'Condominium', 'class' => 'residential-length'],
+                    ['name' => 'Condo-Hotel', 'class' => 'residential-length'],
                     ['name' => 'Dock-Rackominium', 'class' => 'residential-length'],
                     ['name' => 'Farm', 'class' => 'residential-length'],
                     ['name' => 'Garage Condo', 'class' => 'residential-length'],
                     ['name' => 'Manufactured Home- Post 1977', 'class' => 'residential-length'],
                     ['name' => 'Mobile Home- Pre 1976', 'class' => 'residential-length'],
-                    ['name' => 'Unimproved Land', 'class' => 'residential-length'],
                     ['name' => 'Modular Home', 'class' => 'residential-length'],
+                    ['name' => 'Single Family Residence', 'class' => 'residential-length'],
+                    ['name' => 'Townhouse', 'class' => 'residential-length'],
+                    ['name' => 'Unimproved Land', 'class' => 'residential-length'],
+                    ['name' => 'Villa', 'class' => 'residential-length'],
+
                     ['name' => 'Duplex', 'class' => 'income-length'],
                     ['name' => 'Triplex', 'class' => 'income-length'],
                     ['name' => 'Quadplex', 'class' => 'income-length'],
@@ -236,7 +235,7 @@
                 @foreach ($property_items as $item)
                     <option value="{{ $item['name'] }}" data-target="" class="card flex-row {{ $item['class'] }}"
                         style="width:calc(33.33% - 10px);" data-icon='<i class="fa-regular fa-check-circle"></i>'
-                        {{ in_array($item['name'], json_decode($auction->get->property_items)) ? 'selected' : '' }}>
+                        {{ in_array($item['name'], json_decode($auction->get->property_items) ?? []) ? 'selected' : ''  }}>
                         {{ $item['name'] }}
                     </option>
                 @endforeach
@@ -248,7 +247,7 @@
     <div class="form-group ">
         <label class="fw-bold">Leasing Space:</label>
         @php
-            $leasePropOption = [
+            $leasePropOptions = [
                 ['name' => 'Entire Property', 'target' => ''],
                 ['name' => 'Single Room', 'target' => '.singleRoomRes'],
             ];
@@ -256,7 +255,7 @@
         <select name="leasePropOption" id="auction_length" class="auction_length grid-picker"
             style="justify-content: flex-start;" required>
             <option value=""></option>
-            @foreach ($leasePropOption as $item)
+            @foreach ($leasePropOptions as $item)
                 <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
                     style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-check-circle"></i>'
                     {{ $item['name'] == $auction->get->leasePropOption ? 'selected' : '' }}>
@@ -269,70 +268,80 @@
         @endphp
         <span class="resFields">
             <div class="form-group singleRoomRes d-none">
-                <label class="fw-bold">What is the size of the room the landlord intends to lease?</label>
-                <input class="form-control has-icon" type="text" name="singleRoom[]"
-                    data-icon="fa-solid fa-question" value="{{ $singleRoom[0] }}">
-                <label class="fw-bold">Is there a private bathroom, or is it shared?</label>
-                <input class="form-control has-icon" type="text" name="singleRoom[]"
-                    data-icon="fa-solid fa-question" value="{{ $singleRoom[1] }}">
-                <label class="fw-bold">How much storage space is available?</label>
-                <input class="form-control has-icon" type="text" name="singleRoom[]"
-                    data-icon="fa-solid fa-question" value="{{ $singleRoom[2] }}">
-                <label class="fw-bold">Can tenants use common areas like the kitchen, living room, or
-                    backyard?</label>
-                <input class="form-control has-icon" type="text" name="singleRoom[]"
-                    data-icon="fa-solid fa-question" value="{{ $singleRoom[3] }}">
-                <label class="fw-bold">How is cleaning and maintenance of common areas managed?</label>
-                <input class="form-control has-icon" type="text" name="singleRoom[]"
-                    data-icon="fa-solid fa-question" value="{{ $singleRoom[4] }}">
                 <label class="fw-bold">Are tenants allowed to have guests, and if so, are there any
                     restrictions?</label>
                 <input class="form-control has-icon" type="text" name="singleRoom[]"
-                    data-icon="fa-solid fa-question" value="{{ $singleRoom[5] }}">
+                    data-icon="fa-regular fa-check-circle">
+                <label class="fw-bold">Can tenants use common areas like the kitchen, living room, or
+                    backyard?</label>
+                <input class="form-control has-icon" type="text" name="singleRoom[]"
+                    data-icon="fa-regular fa-check-circle">
                 <label class="fw-bold">How are maintenance issues handled?</label>
                 <input class="form-control has-icon" type="text" name="singleRoom[]"
-                    data-icon="fa-solid fa-question" value="{{ $singleRoom[6] }}">
+                    data-icon="fa-regular fa-check-circle">
                 <label class="fw-bold">How are the utilities split?</label>
                 <input class="form-control has-icon" type="text" name="singleRoom[]"
-                    data-icon="fa-solid fa-question" value="{{ $singleRoom[7] }}">
+                    data-icon="fa-regular fa-check-circle">
+                <label class="fw-bold">How is cleaning and maintenance of common areas managed?</label>
+                <input class="form-control has-icon" type="text" name="singleRoom[]"
+                    data-icon="fa-regular fa-check-circle">
+                <label class="fw-bold">How much storage space is available?</label>
+                <input class="form-control has-icon" type="text" name="singleRoom[]"
+                    data-icon="fa-regular fa-check-circle">
+                <label class="fw-bold">Is there a private bathroom, or is it shared?</label>
+                <input class="form-control has-icon" type="text" name="singleRoom[]"
+                    data-icon="fa-regular fa-check-circle">
+                <label class="fw-bold">What is the size of the room the landlord intends to lease?</label>
+                <input class="form-control has-icon" type="text" name="singleRoom[]"
+                    data-icon="fa-regular fa-check-circle">
             </div>
         </span>
         <span class="commercialFields">
             <div class="form-group singleRoomRes d-none">
-                <label class="fw-bold">What is the size of the room the landlord intends to lease?</label>
-                <input class="form-control has-icon" type="text" name="singleRoom[]"
-                    data-icon="fa-solid fa-question" value="{{ $singleRoom[0] }}">
-                <label class="fw-bold">Is there a designated reception area?</label>
-                <input class="form-control has-icon" type="text" name="singleRoom[]"
-                    data-icon="fa-solid fa-question" value="{{ $singleRoom[1] }}">
-                <label class="fw-bold">How is the layout of the commercial space configured?</label>
-                <input class="form-control has-icon" type="text" name="singleRoom[]"
-                    data-icon="fa-solid fa-question" value="{{ $singleRoom[2] }}">
-                <label class="fw-bold">Are there specific zoning restrictions or permitted uses for the space?</label>
-                <input class="form-control has-icon" type="text" name="singleRoom[]"
-                    data-icon="fa-solid fa-question" value="{{ $singleRoom[3] }}">
-                <label class="fw-bold">How much storage space is available?</label>
-                <input class="form-control has-icon" type="text" name="singleRoom[]"
-                    data-icon="fa-solid fa-question" value="{{ $singleRoom[4] }}">
                 <label class="fw-bold">Are there any shared amenities, such as conference rooms or parking
                     facilities?</label>
                 <input class="form-control has-icon" type="text" name="singleRoom[]"
-                    data-icon="fa-solid fa-question" value="{{ $singleRoom[5] }}">
-                <label class="fw-bold">How is cleaning and maintenance of common areas managed?</label>
-                <input class="form-control has-icon" type="text" name="singleRoom[]"
-                    data-icon="fa-solid fa-question" value="{{ $singleRoom[6] }}">
+                    data-icon="fa-solid fa-question">
+
                 <label class="fw-bold">Are there specific hours of operation for the building, and is 24/7 access
                     available?</label>
                 <input class="form-control has-icon" type="text" name="singleRoom[]"
-                    data-icon="fa-solid fa-question" value="{{ $singleRoom[7] }}">
+                    data-icon="fa-solid fa-question">
+
+                <label class="fw-bold">Are there specific zoning restrictions or permitted uses for the space?</label>
+                <input class="form-control has-icon" type="text" name="singleRoom[]"
+                    data-icon="fa-solid fa-question">
+
                 <label class="fw-bold">How are maintenance issues and repairs handled for the commercial space?</label>
                 <input class="form-control has-icon" type="text" name="singleRoom[]"
                     data-icon="fa-solid fa-question">
+
                 <label class="fw-bold">How are the utilities split?</label>
                 <input class="form-control has-icon" type="text" name="singleRoom[]"
                     data-icon="fa-solid fa-question">
+
+                <label class="fw-bold">How is cleaning and maintenance of common areas managed?</label>
+                <input class="form-control has-icon" type="text" name="singleRoom[]"
+                    data-icon="fa-solid fa-question">
+
+                <label class="fw-bold">How is the layout of the commercial space configured?</label>
+                <input class="form-control has-icon" type="text" name="singleRoom[]"
+                    data-icon="fa-solid fa-question">
+
+                <label class="fw-bold">How much storage space is available?</label>
+                <input class="form-control has-icon" type="text" name="singleRoom[]"
+                    data-icon="fa-solid fa-question">
+
+                <label class="fw-bold">What is the size of the room the landlord intends to lease?</label>
+                <input class="form-control has-icon" type="text" name="singleRoom[]"
+                    data-icon="fa-solid fa-question">
+
                 <label class="fw-bold">What types of businesses are neighboring tenants in the building or surrounding
                     area?</label>
+                <input class="form-control has-icon" type="text" name="singleRoom[]"
+                    data-icon="fa-solid fa-question">
+
+                <label class="fw-bold">Is there a designated reception area?</label>
                 <input class="form-control has-icon" type="text" name="singleRoom[]"
                     data-icon="fa-solid fa-question">
             </div>
@@ -520,9 +529,9 @@
                     ['name' => 'Gas', 'target' => ''],
                     ['name' => 'Liability Insurance', 'target' => ''],
                     ['name' => 'Parking Fee', 'target' => ''],
-                    ['name' => 'Pro-rated', 'target' => ''],
                     ['name' => 'Property Insurance', 'target' => ''],
                     ['name' => 'Property Taxes', 'target' => ''],
+                    ['name' => 'Pro-Rated', 'target' => ''],
                     ['name' => 'Reserves', 'target' => ''],
                     ['name' => 'Sewer', 'target' => ''],
                     ['name' => 'Trash Collection', 'target' => ''],
@@ -607,7 +616,8 @@
                     ['name' => 'Annually', 'target' => ''],
                     ['name' => 'Daily', 'target' => ''],
                     ['name' => 'Monthly', 'target' => ''],
-                    ['name' => 'Seasonally', 'target' => ''],
+                    ['name' => 'Seasonally', 'target' => '.season_runs'],
+                    ['name' => 'Weekly', 'target' => ''],
                 ];
             @endphp
             <label class="fw-bold">Select the frequency in which the Lease Amount is paid: </label>
@@ -621,6 +631,22 @@
                     </option>
                 @endforeach
             </select>
+        </div>
+        <div class="season_runs d-none">
+            <div class="form-group">
+                @php
+                    $seasonFrom = (new DateTime($auction->get->season_runs_from))->format('Y-m-d');
+                    $seasonTo = (new DateTime($auction->get->season_runs_to))->format('Y-m-d');
+                @endphp
+                <label class="fw-bold">Season runs from:</label>
+                <input type="date" name="season_runs_from" id="season_runs_from" class="form-control has-icon"
+                    data-icon="fa-regular fa-calendar-days" min="{{ date('Y-m-d') }}" value="{{isset($seasonFrom) ? $seasonFrom : ''}}" required>
+            </div>
+            <div class="form-group">
+                <label class="fw-bold">Season runs to:</label>
+                <input type="date" name="season_runs_to" id="season_runs_to" class="form-control has-icon"
+                    data-icon="fa-regular fa-calendar-days" min="{{ date('Y-m-d') }}" value="{{isset($seasonTo) ? $seasonTo : ''}}" required>
+            </div>
         </div>
     </span>
     <span class="resFields">
@@ -672,7 +698,7 @@
     </span>
     <div class="form-group">
         @php
-            $leaseTermRes = [
+           $leaseTermRes = [
                 ['name' => 'First, Last, and Security', 'target' => '.depositOne'],
                 [
                     'name' => 'First, Last, Security Deposit, Exit Cleaning Fee, & Application Fee',

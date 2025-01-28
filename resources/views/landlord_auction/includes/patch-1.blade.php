@@ -12,19 +12,17 @@
         <input type="text" name="unit_number" data-type="unit_number" placeholder="" id="unit_number"
             class="form-control has-icon search_places" data-icon="fa-solid fa-location-dot">
     </div>
+    <div class="form-group">
+        <label class="fw-bold">County:</label>
+        <input type="text" name="county" data-type="counties" id="county"
+            class="form-control has-icon search_places" data-icon="fa-solid fa-tree-city" placeholder="" required>
+    </div>
     {{-- <div class="form-group">
         <label class="fw-bold">City:</label>
         <input type="text" name="city" data-type="cities" id="cities"
             class="form-control has-icon search_places" data-icon="fa-solid fa-city" placeholder=""
             required>
     </div> --}}
-
-    <div class="form-group">
-        <label class="fw-bold">County:</label>
-        <input type="text" name="county" data-type="counties" id="county"
-            class="form-control has-icon search_places" data-icon="fa-solid fa-tree-city" placeholder="" required>
-    </div>
-
     {{-- nisar changing --}}
     {{-- <div class="form-group">
         <label class="fw-bold">State:</label>

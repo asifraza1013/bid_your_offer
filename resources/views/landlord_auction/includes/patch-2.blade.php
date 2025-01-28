@@ -133,7 +133,7 @@
             ];
         @endphp
         <div class="form-group ">
-            <label class="fw-bold">Additional Parcels</label>
+            <label class="fw-bold">Additional Parcels:</label>
             <select class="grid-picker" name="additional_parcels" id="additional_parcels"
                 style="justify-content: flex-start;" required>
                 <option value="">Select</option>

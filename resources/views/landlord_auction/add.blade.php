@@ -1054,7 +1054,6 @@
 
     }
 </script>
-
 <script>
     function initializeIcons(){
         $('.has-icon').each(function(i) {
