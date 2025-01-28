@@ -91,6 +91,31 @@
             object-fit: contain;
         }
 
+        #ajax_loading_screen{
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 99999;
+            width: 100%;
+            height: 100%;
+            background-color: #9c9c9c75;
+        }
+
+        .ajax_loader-img{
+            object-fit: contain;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .ajax_loader-img img{
+            width: 200px;
+            height: 150px;
+        }
+
     </style>
     @stack('styles')
     <style>
@@ -119,6 +144,12 @@
         </div>
     </div>
     <!--  END LOADER -->
+
+    <div id="ajax_loading_screen">
+        <div class="ajax_loader-img align-self-center">
+            <img src="{{ asset(get_setting('logo')) }}" alt="" />
+        </div>
+    </div>
 
 
     @yield('content')
@@ -181,6 +212,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
 
     <script>
+        function showAjaxLoader(show){
+            if(show){
+                console.log('true');
+                $('#ajax_loading_screen').css('display', 'block');
+                $('body').css({'overflow': 'hidden', 'pointer-events': 'none'});
+            }else{
+                console.log('false');
+                $('#ajax_loading_screen').css('display', 'none');
+                $('body').css({'overflow': 'auto', 'pointer-events': 'unset'});
+            }
+        }
         $(function() {
             $('.service-option').each(function(i, element) {
                 $(element).after($(element).val());
@@ -226,7 +268,7 @@
                 });
             });
 
-            $('.select-btn').click(function() {
+            $(document).on('click', '.select-btn', function() {
                 $(this).closest('.icon-select-btn-div').find('.select-btn').removeClass('active');
                 $(this).addClass('active');
                 let type = $(this).data('type');
@@ -269,7 +311,7 @@
             })
 
             //remove disabled attr, trigger click
-            $('.image-input-label').click(function(event) {
+            $(document).on('click', '.image-input-label', function(event) {
                 //event.preventDefault(); // Prevent default label behavior
 
                 const fileInput = $(this).find('.image-input');
@@ -287,7 +329,7 @@
            /*******************Functions to sort and submit the reordered photos*************************/
            const MAX_FILES = 5;
            // Handle file selection and display thumbnails for each input
-            $('.image-input').on('change', function (event) {
+            $(document).on('change', '.image-input', function (event) {
                 const box = $(this).closest('.box');
                 const filesArray = Array.from(event.target.files);
 
@@ -378,7 +420,7 @@
             $('.video_type_check[name="video_upload"]').trigger('click');
 
             //check only clicked checkbox and uncheck others
-            $('.video_type_check').click(function(){
+            $(document).on('click', '.video_type_check', function(){
                 $('.video_type_check').prop('checked', false);
                 $(this).prop('checked', true);
 
@@ -404,7 +446,7 @@
             }
 
             //limit the documents selected by disclosure element
-            $('.documents-input').change(function(event){
+            $(document).on('change', '.documents-input', function(event){
                 const filesArray = Array.from(event.target.files);
                 if (filesArray.length > 5) {
                     alert(`You can only select up to ${MAX_FILES} images.`);

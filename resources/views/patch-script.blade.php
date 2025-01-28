@@ -12,25 +12,30 @@
     // Create an array of promises for all fetchPatches calls
     let fetchPromises = [];
 
+    showAjaxLoader(true); // Show loader when fetch begins
     $.each(allPatches, function(index, patch) {
         let fetchPromise = fetchPatches(patch, id); // Return the promise from fetchPatches
         fetchPromises.push(fetchPromise); // Add the promise to the array
     });
 
+    // Wait for all fetch requests to complete
     Promise.all(fetchPromises).then(function() {
         console.log('All patches fetched');
         StepWizard.init(); // Initialize StepWizard after all patches are fetched
-        // initializeFields();
-        // initializeIcons();
+        changePropertyType(''); // Update property type
+
         @if (!empty($initializeScripts))
             @foreach ($initializeScripts as $script)
                 if (typeof {{ $script }} === "function") {
-                    {{ $script }}();
+                    {{ $script }}(); // Call the function if defined
                 } else {
                     console.warn("Function {{ $script }} is not defined.");
                 }
             @endforeach
+            console.log('All scripts initialized.');
         @endif
+        // Hide loader after the AJAX request is completed (success or error)
+        showAjaxLoader(false);
     }).catch(function(error) {
         console.log("Error fetching patches:", error); // Handle any errors from fetchPatches
     });
@@ -54,6 +59,9 @@
                 error: function(xhr, status, error) {
                     console.log("Error: " + error); // Log any error during the request
                     reject(error); // Reject the promise if there's an error
+                },
+                complete: function() {
+                    
                 }
             });
         });

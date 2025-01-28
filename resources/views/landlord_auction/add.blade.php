@@ -342,16 +342,17 @@
 'initializeRoomDetailsFields', 
 'initializeFields', 
 'initializeIcons', 
-'initializeImagePicker', 
 'initializeVideoPicker', 
 'changeAuctionType', 
 'initializeCompensationFields',
-'roomFtn'
+'roomFtn',
+'loadGoogleMapsScript',
+// 'initializeImagePicker'
 ]
 ]);
 <script>
     // Video Preview
-    async function initializeVideoPicker($) {
+    async function initializeVideoPicker() {
       // Click button to activate hidden file input
       $('.fileuploader-btn').on('click', function() {
         $('.fileuploader').click();
@@ -413,9 +414,6 @@
         }
       });
     };
-
-
-
 
     // Video Preview
     function initImageUpload(box) {
@@ -557,10 +555,6 @@
             $('.timerAuction').hide();
         }
     }
-    // document.getElementById('auction_type').change();
-    // $(function() {
-    //     changeAuctionType();
-    // });
 
     // Nisar Changing
     Filevalidation = () => {
@@ -646,10 +640,6 @@
             $('.commercial-length').hide();
         }
     }
-    // document.getElementById('auction_type').change();
-    $(function() {
-        changePropertyType("");
-    });
 </script>
 <script>
     function initializeCompensationFields() {
@@ -690,13 +680,7 @@
                             'Commercial Property') {
                             StepWizard.nextStep = 15;
                             StepWizard.backStep = 13;
-                        }
-                        
-                        // else if (StepWizard.currentStep == 1 ){
-                        //     StepWizard.nextStep = 45;
-                        //     StepWizard.backStep = 1;
-                        // }
-                        else if (StepWizard.currentStep == 9 && property_type ==
+                        } else if (StepWizard.currentStep == 9 && property_type ==
                             'Commercial Property') {
                             StepWizard.nextStep = 11;
                             StepWizard.backStep = 9;
@@ -708,38 +692,27 @@
                             'Commercial Property') {
                             StepWizard.nextStep = 24;
                             StepWizard.backStep = 22;
-                        }  
-                        // else if (StepWizard.currentStep == 24 && property_type ==
-                        //     'Commercial Property') {
-                        //     StepWizard.nextStep = 26;
-                        //     StepWizard.backStep = 24;
-                        // }
-                            else if (StepWizard.currentStep == 26 && property_type ==
+                        } else if (StepWizard.currentStep == 26 && property_type ==
                             'Commercial Property') {
                             StepWizard.nextStep = 29;
                             StepWizard.backStep = 26;
-                        } 
-                        else if (StepWizard.currentStep == 32 && property_type ==
+                        } else if (StepWizard.currentStep == 32 && property_type ==
                             'Commercial Property') {
                             StepWizard.nextStep = 35;
                             StepWizard.backStep = 32;
-                        }
-                            else if (StepWizard.currentStep == 41 && property_type ==
+                        } else if (StepWizard.currentStep == 41 && property_type ==
                             'Commercial Property') {
                             StepWizard.nextStep = 43;
                             StepWizard.backStep = 41;
-                        } 
-                        else if (StepWizard.currentStep == 28 && property_type ==
+                        } else if (StepWizard.currentStep == 28 && property_type ==
                             'Residential Property') {
                             StepWizard.nextStep = 30;
                             StepWizard.backStep = 28;
-                        } 
-                        else if (StepWizard.currentStep == 34 && property_type ==
+                        } else if (StepWizard.currentStep == 34 && property_type ==
                             'Residential Property') {
                             StepWizard.nextStep = 37;
                             StepWizard.backStep = 33;
-                        } 
-                        else if (StepWizard.currentStep == 38 && property_type ==
+                        } else if (StepWizard.currentStep == 38 && property_type ==
                             'Residential Property') {
                             StepWizard.nextStep = 42;
                             StepWizard.backStep = 38;
@@ -749,12 +722,6 @@
                         }
                         $('[ data-step="' + StepWizard.nextStep + '"]').addClass("active");
                         StepWizard.setStep();
-                        //   if (StepWizard.currentStep == 50 &&
-                        //     property_type == 'Residential Property'
-                        //   ) {
-                        //     $('.wizard-step-next').hide();
-                        //     $('.wizard-step-finish').show();
-                        //   }
                     }
                 }
             });
@@ -778,21 +745,16 @@
                     } else if (StepWizard.currentStep == 24 && property_type ==
                         'Commercial Property') {
                         StepWizard.backStep = 22;
-                    } 
-                    // else if (StepWizard.currentStep == 26 && property_type ==
-                    //     'Commercial Property') {
-                    //     StepWizard.backStep = 24;
-                    // } 
-                    else if (StepWizard.currentStep == 29 && property_type ==
+                    } else if (StepWizard.currentStep == 29 && property_type ==
                         'Commercial Property') {
                         StepWizard.backStep = 26;
-                    }else if (StepWizard.currentStep == 35 && property_type ==
+                    } else if (StepWizard.currentStep == 35 && property_type ==
                         'Commercial Property') {
                         StepWizard.backStep = 32;
                     } else if (StepWizard.currentStep == 43 && property_type ==
                         'Commercial Property') {
                         StepWizard.backStep = 41;
-                    }  else if (StepWizard.currentStep == 30 && property_type ==
+                    } else if (StepWizard.currentStep == 30 && property_type ==
                         'Residential Property') {
                         StepWizard.backStep = 28;
                     } else if (StepWizard.currentStep == 37 && property_type ==
@@ -1133,9 +1095,6 @@
         });
     }
 
-    initializeFields();
-    initializeIcons();
-
     function initializeNewIcons(option){
         $(`#${option}-fields-container .has-icon`).each(function(i) {
             var cover = `<div class="input-cover input-cover-${i}"></div>`;
@@ -1177,7 +1136,6 @@
         })
     }
 
-    // });
     $(document).on('change', '#has_water_view', function() {
 
         var selectedOptionWater = $(this).val();
@@ -1193,8 +1151,6 @@
     });
 
     //water view changing by waqas
-
-
     function checkselect(elm) {
         var i = $(elm).data('index');
         var mult = $(elm).parent().children('select').attr('multiple') || false;
@@ -1235,8 +1191,7 @@
     }
 </script>
 <script>
-    // google.maps.event.addDomListener(window, 'load', initialize);
-    function initialize() {
+    function initializeMap() {
         var inputField = document.getElementsByClassName('search_places');
 
         for (var i = 0; i < inputField.length; i++) {
@@ -1271,12 +1226,12 @@
                 };
             }
 
-            google.maps.event.addDomListener(inputField[i], 'keydown', function(e) {
-                if (e.keyCode == 13) {
+            inputField[i].addEventListener('keydown', function (e) {
+                if (e.keyCode === 13) { // Check for Enter key
                     if (e.preventDefault) {
                         e.preventDefault();
                     } else {
-                        // Since the google event handler framework does not handle early IE versions, we have to do it by our self.: -(
+                        // Handling for older browsers
                         e.cancelBubble = true;
                         e.returnValue = false;
                     }
@@ -1302,7 +1257,7 @@
         }
     }
     
-    $('#leaseTermRes').change(function() {
+    $(document).on('change', '#leaseTermRes', function() {
         var leaseRes = $('#leaseTermOptions');
         //Disply and hide a div
         ($(this).val().includes('3 Months') || $(this).val().includes('6 Months') || $(this).val().includes(
@@ -1326,7 +1281,7 @@
     });
 
     
-    $('#feeReqOption').change(function() {
+    $(document).on('change', '#feeReqOption', function() {
         var feeReqOptDiv = $('#feeReq');
         //Disply and hide a div
         ($(this).val().includes('Required') || $(this).val().includes('Optional')) ? feeReqOptDiv.show():
@@ -1363,7 +1318,6 @@
         }
 
     }
-    // roomFtn();
 
     $('#has_hoa').change(function(){
         if($(this).val() == 'Yes'){
@@ -1373,7 +1327,15 @@
         }
     })
 </script>
-<script
-    src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_PLACES_API_KEY') }}&libraries=places&callback=initialize">
+<script>
+    function loadGoogleMapsScript() {
+        var script = document.createElement('script');
+        let googlePlacesApiKey = "{{env('GOOGLE_PLACES_API_KEY')}}";
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${googlePlacesApiKey}&libraries=places&callback=initializeMap`;
+        script.async = true;
+        script.defer = true;
+
+        document.body.appendChild(script);
+    }
 </script>
 @endpush
