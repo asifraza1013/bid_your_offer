@@ -20,8 +20,17 @@
     Promise.all(fetchPromises).then(function() {
         console.log('All patches fetched');
         StepWizard.init(); // Initialize StepWizard after all patches are fetched
-        initializeFields();
-        initializeIcons();
+        // initializeFields();
+        // initializeIcons();
+        @if (!empty($initializeScripts))
+            @foreach ($initializeScripts as $script)
+                if (typeof {{ $script }} === "function") {
+                    {{ $script }}();
+                } else {
+                    console.warn("Function {{ $script }} is not defined.");
+                }
+            @endforeach
+        @endif
     }).catch(function(error) {
         console.log("Error fetching patches:", error); // Handle any errors from fetchPatches
     });

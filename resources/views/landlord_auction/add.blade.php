@@ -333,12 +333,25 @@
     </div>
 @endsection
 @push('scripts')
-@include('patch-script', ['moduleName' => 'landlord-auction', 'patchName' => 'landlord-auction']);
+@include('patch-script', 
+['moduleName' => 'landlord-auction', 
+'patchName' => 'landlord-auction', 
+'id' => '', 
+'initializeScripts' => 
+[
+'initializeRoomDetailsFields', 
+'initializeFields', 
+'initializeIcons', 
+'initializeImagePicker', 
+'initializeVideoPicker', 
+'changeAuctionType', 
+'initializeCompensationFields',
+'roomFtn'
+]
+]);
 <script>
     // Video Preview
-    $(document).ready(async function($) {
-
-
+    async function initializeVideoPicker($) {
       // Click button to activate hidden file input
       $('.fileuploader-btn').on('click', function() {
         $('.fileuploader').click();
@@ -399,7 +412,7 @@
           }
         }
       });
-    });
+    };
 
 
 
@@ -440,14 +453,15 @@
     }
 
     // initialize box-scope
-    var boxes = document.querySelectorAll('.box');
+    function initializeImagePicker(){
+        var boxes = document.querySelectorAll('.box');
 
-    for (let i = 0; i < boxes.length; i++) {
-      let box = boxes[i];
-      initDropEffect(box);
-      initImageUpload(box);
+        for (let i = 0; i < boxes.length; i++) {
+        let box = boxes[i];
+        initDropEffect(box);
+        initImageUpload(box);
+        }
     }
-
 
 
     /// drop-effect
@@ -544,9 +558,9 @@
         }
     }
     // document.getElementById('auction_type').change();
-    $(function() {
-        changeAuctionType();
-    });
+    // $(function() {
+    //     changeAuctionType();
+    // });
 
     // Nisar Changing
     Filevalidation = () => {
@@ -638,7 +652,7 @@
     });
 </script>
 <script>
-    $(document).ready(function() {
+    function initializeCompensationFields() {
         $('#compensation_structure').change(function(){
             let selected = $(this).val();
             if(selected !== "There is no compensation offered to the tenant's broker."){
@@ -647,7 +661,7 @@
                 $('.compensationYes').addClass('d-none');
             }
         })
-    })
+    }
 </script>
 <script>
     $(function() {
@@ -656,13 +670,13 @@
     var StepWizard = {
         init: function() {
             StepWizard.total_steps = $('.wizard-step').length;
+            var property_type;
             var v = $(".mainform").validate({
                 errorClass: "text-error text-danger w-100",
                 onkeyup: false,
                 onfocusout: false,
             });
             StepWizard.setStep();
-            property_type;
             $('#property_type').on('change', function() {
                 property_type = $(this).val();
             });
@@ -838,7 +852,7 @@
     
 </script>
 <script>
-    $(document).ready(function(){
+    function initializeRoomDetailsFields(){
         const roomTypeSelect = $('#room_typeRes');
         const fieldsContainer = $('#dynamicFieldsContainer');
         const roomTypeData = $('#room_type_input');
@@ -1076,7 +1090,7 @@
             console.log('roomTypeDataVal', roomTypeData.val());
         }
 
-    })
+    }
 </script>
 
 <script>
@@ -1287,8 +1301,9 @@
             });
         }
     }
-    var leaseRes = $('#leaseTermOptions');
+    
     $('#leaseTermRes').change(function() {
+        var leaseRes = $('#leaseTermOptions');
         //Disply and hide a div
         ($(this).val().includes('3 Months') || $(this).val().includes('6 Months') || $(this).val().includes(
                 '9 Months') || $(this).val().includes('1 Year') || $(this).val().includes('2 Years') || $(this)
@@ -1310,8 +1325,9 @@
         }
     });
 
-    var feeReqOptDiv = $('#feeReq');
+    
     $('#feeReqOption').change(function() {
+        var feeReqOptDiv = $('#feeReq');
         //Disply and hide a div
         ($(this).val().includes('Required') || $(this).val().includes('Optional')) ? feeReqOptDiv.show():
             feeReqOptDiv.hide()
@@ -1347,7 +1363,7 @@
         }
 
     }
-    roomFtn();
+    // roomFtn();
 
     $('#has_hoa').change(function(){
         if($(this).val() == 'Yes'){
