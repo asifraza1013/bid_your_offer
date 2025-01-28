@@ -1,0 +1,52 @@
+<script>
+    // all patches
+    let moduleName = "{{ $moduleName }}";
+    let patchName = "{{ $patchName }}";
+    let id = "{{ $id }}";
+
+    let allPatches = <?php echo json_encode(config('listing-patches')); ?>;
+    allPatches = allPatches[patchName]['patches']
+
+    let totalPatches = Object.keys(allPatches).length;
+
+    // Create an array of promises for all fetchPatches calls
+    let fetchPromises = [];
+
+    $.each(allPatches, function(index, patch) {
+        let fetchPromise = fetchPatches(patch, id); // Return the promise from fetchPatches
+        fetchPromises.push(fetchPromise); // Add the promise to the array
+    });
+
+    Promise.all(fetchPromises).then(function() {
+        console.log('All patches fetched');
+        StepWizard.init(); // Initialize StepWizard after all patches are fetched
+        initializeFields();
+        initializeIcons();
+    }).catch(function(error) {
+        console.log("Error fetching patches:", error); // Handle any errors from fetchPatches
+    });
+
+    async function fetchPatches(patch, id) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "{{ route('fetchPatches') }}",
+                method: 'POST',
+                data: {
+                    patch,
+                    moduleName,
+                    id,
+                    _token: "{{ csrf_token() }}"
+                },
+                cache: false,
+                success: function(html) {
+                    $('#' + moduleName).append(html.html);
+                    resolve(); // Resolve the promise when the request is successful
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error: " + error); // Log any error during the request
+                    reject(error); // Reject the promise if there's an error
+                }
+            });
+        });
+    }
+</script>

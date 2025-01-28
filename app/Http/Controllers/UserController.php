@@ -8,6 +8,7 @@ use App\Models\BuyerCriteriaAuction;
 use App\Models\LandlordAgentAuction;
 use App\Models\LandlordAuction;
 use App\Models\PropertyAuction;
+use App\Models\PropertyType;
 use App\Models\SellerAgentAuction;
 use App\Models\TenantAgentAuction;
 use App\Models\TenantCriteriaAuction;
@@ -102,5 +103,39 @@ class UserController extends Controller
         $user = User::where("short_id", $short_id)->firstOrFail();
         $uri = $user->get->qr ?? route('author', $user->id);
         return redirect()->to($uri);
+    }
+
+    public function fetchPatches(Request $request){
+
+        $yes_or_nos = [
+            ['name' => 'Yes', 'target' => '', 'icon' => 'fa-regular fa-circle-check'],
+            ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark'],
+        ];
+        $yes_or_nos_opt = [
+            ['name' => 'Yes', 'target' => '', 'icon' => 'fa-regular fa-circle-check'],
+            ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark'],
+            ['name' => 'Optional', 'target' => '', 'icon' => 'fa-regular fa-circle-question'],
+        ];
+
+        $page_data = [];
+        $auction = null;
+
+        if ($request->moduleName == 'edit-landlord-auction') {
+            $auction = LandlordAuction::find($request->id);
+            $page_data['auction'] = $auction;
+            $page_data['title'] = "Edit Auction for Landlord";
+            $page_data['property_types'] = PropertyType::orderBy('sort', 'asc')->get();
+        }
+        
+        // Pass $auction to the view, ensuring it's always available
+        $html = view($request->patch, [
+            'yes_or_nos' => $yes_or_nos, 
+            'yes_or_nos_opt' => $yes_or_nos_opt,
+            'page_data' => $page_data,
+            'auction' => $auction
+        ])->render();
+        
+
+        return response()->json(['status' => true, 'html' => $html]);
     }
 }
