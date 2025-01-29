@@ -585,17 +585,13 @@
 
     <div class="form-group HOA_show d-none">
         @php
-            $community_features = [
+           $community_features = [
                 ['name' => 'Airport/Runway', 'target' => ''],
                 ['name' => 'Association Recreation - Lease', 'target' => ''],
                 ['name' => 'Association Recreation - Owned', 'target' => ''],
                 ['name' => 'Buyer Approval Required', 'target' => ''],
                 ['name' => 'Clubhouse', 'target' => ''],
                 ['name' => 'Dog Park', 'target' => ''],
-                ['name' => 'Community Boat Ramp', 'target' => ''],
-                ['name' => 'Community Mailbox', 'target' => ''],
-                ['name' => 'Deed Restrictions', 'target' => ''],
-                ['name' => 'Fishing', 'target' => ''],
                 ['name' => 'Fitness Center', 'target' => ''],
                 ['name' => 'Gated Community - Guard', 'target' => ''],
                 ['name' => 'Gated Community- Not Guard ', 'target' => ''],
@@ -606,20 +602,16 @@
                 ['name' => 'Horses Allowed', 'target' => ''],
                 ['name' => 'Irrigation-Reclaimed Water', 'target' => ''],
                 ['name' => 'No Truck/RV/Motorcycle Parking', 'target' => ''],
-                ['name' => 'Lake', 'target' => ''],
                 ['name' => 'No Truck/RV/Motorcycle Parking', 'target' => ''],
                 ['name' => 'Park', 'target' => ''],
                 ['name' => 'Playground', 'target' => ''],
                 ['name' => 'Pool', 'target' => ''],
-                ['name' => 'Public Boat Ramp', 'target' => ''],
                 ['name' => 'Racquetball', 'target' => ''],
                 ['name' => 'Restaurant', 'target' => ''],
                 ['name' => 'Sidewalk', 'target' => ''],
                 ['name' => 'Special Community Restrictions', 'target' => ''],
                 ['name' => 'Stream Seasonal', 'target' => ''],
                 ['name' => 'Tennis Courts', 'target' => ''],
-                ['name' => ' Water Access', 'target' => ''],
-                ['name' => 'Waterfront', 'target' => ''],
                 ['name' => 'Wheelchair Access', 'target' => ''],
                 ['name' => 'None', 'target' => ''],
                 ['name' => 'Other', 'target' => '.otherCommunity'],
@@ -646,15 +638,13 @@
         </div>
     </div>
 
-    <div class="form-group  residential_show">
+    <div class="form-group residential_show">
         @php
-            $association_amenities = [
+           $association_amenities = [
                 ['name' => 'Airport/Runway', 'target' => ''],
                 ['name' => 'Basketball Court', 'target' => ''],
-                ['name' => 'Boat Slip', 'target' => ''],
                 ['name' => 'Cable', 'target' => ''],
                 ['name' => 'Clubhouse', 'target' => ''],
-                ['name' => 'Dock', 'target' => ''],
                 ['name' => 'Elevators', 'target' => ''],
                 ['name' => 'Fence Restrictions', 'target' => ''],
                 ['name' => 'Fitness Center', 'target' => ''],
@@ -665,13 +655,11 @@
                 ['name' => 'Laundry', 'target' => ''],
                 ['name' => 'Lobby Key Required', 'target' => ''],
                 ['name' => 'Maintenance', 'target' => ''],
-                ['name' => 'Marina', 'target' => ''],
                 ['name' => 'Optional Additional Fees', 'target' => ''],
                 ['name' => 'Park', 'target' => ''],
                 ['name' => 'Pickleball Court(s)', 'target' => ''],
                 ['name' => 'Playground', 'target' => ''],
                 ['name' => 'Pool', 'target' => ''],
-                ['name' => 'Private Boat Ramp', 'target' => ''],
                 ['name' => 'Racquet Ball', 'target' => ''],
                 ['name' => 'Recreation Facilities', 'target' => ''],
                 ['name' => 'Sauna', 'target' => ''],
@@ -709,18 +697,18 @@
 <div class="wizard-step" data-step='43'>
     <div class="form-group">
         <label class="fw-bold"> Description:</label>
-        <textarea name="description" id="description" class="form-control" cols="30" rows="10" required>{{ isset($auction->get->description) ? $auction->get->description : '' }}"</textarea>
+        <textarea name="description" id="description" class="form-control" cols="30" rows="10" required>{{ isset($auction->get->description) ? $auction->get->description : '' }}</textarea>
     </div>
     <div class="form-group">
         <label class="fw-bold">Legal Disclaimers:</label>
         <textarea name="disclaimer" id="description" class="form-control" cols="30" rows="6"
-            required>value="{{ isset($auction->get->disclaimer) ? $auction->get->disclaimer : '' }}"</textarea>
+            required>{{ isset($auction->get->disclaimer) ? $auction->get->disclaimer : '' }}</textarea>
     </div>
     <div class="form-group">
         <label class="fw-bold">Driving Directions:</label>
         <input type="text" name="driving_directions" class="form-control has-icon" data-icon="fa-solid fa-car" value="{{ isset($auction->get->driving_directions) ? $auction->get->driving_directions : '' }}">
     </div>
-    <div class="form-group">
+    {{-- <div class="form-group">
         @php
             $compensationYesRes = [
                 [
@@ -737,39 +725,81 @@
             style="justify-content: flex-start;">
             <option value="">Select</option>
             @foreach ($compensationYesRes as $item)
-<option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     class="card flex-row" style="width:calc(33.3% - 10px);"
                     data-icon="{{ $item['icon'] }}" {{ isset($auction->get->tenant_agent_compensation) && $item['name'] == $auction->get->tenant_agent_compensation ? 'selected' : '' }}>
                     {{ $item['name'] }}
                 </option>
-@endforeach
+            @endforeach
         </select>
         <div class="form-group agentCompensationYesRes d-none">
             <label class="fw-bold">Tenant’s Agent Compensation:</label>
             <input type="text" name="compensationYes" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" value="{{ isset($auction->get->compensationYes) ? $auction->get->compensationYes : '' }}">
         </div>
+    </div> --}}
+</div>
+<div class="wizard-step" data-step="44">
+    <h4>Tenant’s Agent Compensation:</h4>
+    <div class="form-group">
+        @php
+            $agent_compensation = [
+                ['name' => "The listing broker will compensate the tenant's broker from the listing broker's commission, if applicable.", 'target' => '',],
+                ['name' => "The owner will pay the tenant's broker separately, if applicable.", 'target' => ''],
+                ['name' => "There is no compensation offered to the tenant's broker.", 'target' => ''],
+            ];
+        @endphp
+        <label class="fw-bold">What is the compensation structure for the tenant's broker?</label>
+        <select class="grid-picker" name="compensation_structure" id="compensation_structure"
+            style="justify-content: flex-start;">
+            <option value="">Select</option>
+            @foreach ($agent_compensation as $item)
+                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                    style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-circle-check'></i>" {{ isset($auction->get->compensation_structure) && $item['name'] == $auction->get->compensation_structure ? 'selected' : '' }}>
+                    {{ $item['name'] }}
+                </option>
+            @endforeach
+        </select>
+        <div class="form-group compensationYes d-none">
+            @php
+                $agent_compensation_yes = [
+                    ['name' => '___% of the gross lease value', 'target' => ''],
+                    ['name' => '____% of the first month’s rent', 'target' => ''],
+                    ['name' => 'Fixed amount : $____', 'target' => ''],
+                    ['name' => 'Negotiable', 'target' => ''],
+                ];
+            @endphp
+            <label class="fw-bold">What compensation is being offered to the tenant's broker?</label>
+            <select class="grid-picker" name="compensation_structure_yes" id="compensation_structure_yes"
+                style="justify-content: flex-start;">
+                <option value="">Select</option>
+                @foreach ($agent_compensation_yes as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                        style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-circle-check'></i>" {{ isset($auction->get->compensation_structure_yes) && $item['name'] == $auction->get->compensation_structure_yes ? 'selected' : '' }}>
+                        {{ $item['name'] }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
     </div>
 </div>
-<div class="wizard-step" data-step='44'>
+<div class="wizard-step" data-step='45'>
     @if (auth()->user()->user_type == 'landlord')
-<h4>Landlord’s Info:</h4>
-@else
-<h4>Landlord’s Agent Info:</h4>
-@endif
-    
-
+        <h4>Landlord’s Info:</h4>
+    @else
+        <h4>Landlord’s Agent Info:</h4>
+    @endif
     <div class="form-group row">
         <div class="form-group col-md-6">
             <label class="fw-bold" for="first_name">First Name:</label>
             <input type="text" name="first_name" placeholder="" id="first_name"
                 class="form-control has-icon hide_arrow" data-icon="fa-solid fa-user"
-                value="{{ Auth::user()->first_name }}">
+                value="{{ $auction->get->first_name }}">
         </div>
         <div class="form-group col-md-6">
             <label class="fw-bold" for="last_name">Last Name:</label>
             <input type="text" name="last_name" placeholder="" id="last_name"
                 class="form-control has-icon hide_arrow" data-icon="fa-solid fa-user"
-                value="{{ Auth::user()->last_name }}">
+                value="{{ $auction->get->last_name }}">
         </div>
     </div>
     <div class="form-group row">
@@ -777,36 +807,35 @@
             <label class="fw-bold" for="agent_phone">Phone Number:</label>
             <input type="text" name="agent_phone" placeholder="" id="agent_phone"
                 class="form-control has-icon hide_arrow" data-icon="fa-solid fa-phone"
-                value="{{ Auth::user()->phone }}">
+                value="{{ $auction->get->agent_phone }}">
         </div>
         <div class="form-group col-md-6">
             <label class="fw-bold" for="agent_email">Email:</label>
-            <input type="text" name="agent_email" class="form-control has-icon hide_arrow" data-icon="fa-solid fa-envelope" value="{{ Auth::user()->email }}">
+            <input type="text" name="agent_email" class="form-control has-icon hide_arrow" data-icon="fa-solid fa-envelope" value="{{ $auction->get->agent_email }}">
         </div>
     </div>
     @if (auth()->user()->user_type !== 'landlord')
-<div class="form-group row">
+        <div class="form-group row">
             <div class="form-group col-md-6">
                 <label class="fw-bold" for="agent_brokerage">Brokerage:</label>
-                <input type="text" name="agent_brokerage" class="form-control has-icon hide_arrow" data-icon="fa-solid fa-handshake" value="{{ Auth::user()->brokerage }}">
+                <input type="text" name="agent_brokerage" class="form-control has-icon hide_arrow" data-icon="fa-solid fa-handshake" value="{{ $auction->get->agent_brokerage }}">
             </div>
             <div class="form-group col-md-6">
                 <label class="fw-bold" for="agent_license_no">Real Estate License #:</label>
                 <input type="text" name="agent_license_no" class="form-control has-icon hide_arrow" data-icon="fa-solid fa-id-card"
-                    value="{{ Auth::user()->license_no }}">
+                    value="{{ $auction->get->agent_license_no }}">
             </div>
         </div>
-
         <div class="form-group row">
             <div class="form-group col-md-6">
                 <label class="fw-bold" for="agent_mls_id">NAR Member ID (NRDS ID): </label>
                 <input type="number" name="agent_mls_id" class="form-control has-icon hide_arrow"
-                    data-icon="fa-solid fa-id-card-clip" value="{{ Auth::user()->mls_id }}">
+                    data-icon="fa-solid fa-id-card-clip" value="{{ $auction->get->agent_mls_id }}">
             </div>
         </div>
-@endif
+    @endif
 </div>
-<div class="wizard-step" data-step='45'>
+<div class="wizard-step" data-step='46'>
     <div class="row">
         <div class="col-6">
             <div class="upload form-group">
@@ -874,12 +903,11 @@
         <div class="form-group">
             <label class="fw-bold">3d Tour (Link):</label>
             <input type="text" name="three_d_tour" id="three_d_tour" placeholder=""
-                class="form-control has-icon" data-icon="fa-solid fa-link">
+                class="form-control has-icon" data-icon="fa-solid fa-link" value="{{$auction->get->three_d_tour}}">
         </div>
         <div class="form-group">
             <label class="fw-bold">Floor Plan:</label>
-            <input type="file" name="visible_note" id="visible_note"
-                class="form-control p-3">
+            <input type="file" name="visible_note" id="visible_note" class="form-control p-3">
         </div>
         <div class="form-group">
             <label class="fw-bold">Addendums/Disclosures: </label>

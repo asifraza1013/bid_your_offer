@@ -22,6 +22,8 @@
     Promise.all(fetchPromises).then(function() {
         console.log('All patches fetched');
         StepWizard.init(); // Initialize StepWizard after all patches are fetched
+        // Hide loader after the AJAX request is completed (success or error)
+        showAjaxLoader(false);
         changePropertyType(''); // Update property type
 
         @if (!empty($initializeScripts))
@@ -36,8 +38,6 @@
         @endif
 
         $('select').trigger('change');
-        // Hide loader after the AJAX request is completed (success or error)
-        showAjaxLoader(false);
     }).catch(function(error) {
         console.log("Error fetching patches:", error); // Handle any errors from fetchPatches
     });

@@ -113,7 +113,7 @@
 
         .ajax_loader-img img{
             width: 200px;
-            height: 150px;
+            height: 200px;
         }
 
     </style>
@@ -147,7 +147,7 @@
 
     <div id="ajax_loading_screen">
         <div class="ajax_loader-img align-self-center">
-            <img src="{{ asset(get_setting('logo')) }}" alt="" />
+            <img src="{{ asset('images/Spinner.gif') }}" alt="" />
         </div>
     </div>
 

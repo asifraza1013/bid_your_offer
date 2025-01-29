@@ -626,6 +626,9 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("buildingFeatures", json_encode($request->buildingFeatures));
             $landlord_auction->saveMeta("buildingFeaturesOther", $request->buildingFeaturesOther);
             $landlord_auction->saveMeta("frequency", json_encode($request->frequency));
+            $landlord_auction->saveMeta("season_runs_from", $request->season_runs_from);
+            $landlord_auction->saveMeta("season_runs_to", $request->season_runs_to);
+            $landlord_auction->saveMeta("roomPrimaryOther", $request->roomPrimaryOther);
             $landlord_auction->saveMeta("tenant_pays", json_encode($request->tenant_pays));
             $landlord_auction->saveMeta("tenantPaysOther", $request->tenantPaysOther);
             $landlord_auction->saveMeta("ownerPays", json_encode($request->ownerPays));
@@ -634,6 +637,8 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("rentOther", $request->rentOther);
             $landlord_auction->saveMeta("required_at_move_in", $request->required_at_move_in);
             $landlord_auction->saveMeta("leaseTermOther", $request->leaseTermOther);
+            $landlord_auction->saveMeta("required_move_in", $request->required_move_in);
+            $landlord_auction->saveMeta("required_move_in_amount", $request->required_move_in_amount);
             $landlord_auction->saveMeta("firstMonthDeposit", $request->firstMonthDeposit);
             $landlord_auction->saveMeta("lastMonthDeposit", $request->lastMonthDeposit);
             $landlord_auction->saveMeta("securityDeposit", $request->securityDeposit);
@@ -720,9 +725,6 @@ class LandlordAuctionController extends Controller
             $landlord_auction->saveMeta("amenities", json_encode($request->amenities));
             $landlord_auction->saveMeta("otherAmenities", $request->otherAmenities);
             $landlord_auction->saveMeta("features", json_encode($request->features));
-            $landlord_auction->saveMeta("season_runs_from", $request->season_runs_from);
-            $landlord_auction->saveMeta("season_runs_to", $request->season_runs_to);
-            $landlord_auction->saveMeta("roomPrimaryOther", $request->roomPrimaryOther);
             $landlord_auction->saveMeta("interiorFeatures", json_encode($request->interiorFeatures));
             $landlord_auction->saveMeta("interiorFeatureOther", $request->interiorFeatureOther);
             $landlord_auction->saveMeta("additional_rooms", json_encode($request->additional_rooms));

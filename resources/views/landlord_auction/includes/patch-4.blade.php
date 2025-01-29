@@ -817,8 +817,7 @@
                         <div class="js--image-preview"></div>
                         <div class="upload-options">
                             <label class="image-input-label">
-                                <input type="file" name="photo[]" class="image-input" accept="image/*"
-                                    multiple />
+                                <input type="file" name="photo[]" class="image-input" accept="image/*" multiple />
                             </label>
                         </div>
                         <div class="thumbnails-container"></div>

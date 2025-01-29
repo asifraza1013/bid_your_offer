@@ -1,5 +1,6 @@
 <div class="wizard-step" data-step='23'>
     <h4>Room Details:</h4>
+    <input type="hidden" id="room_type_input" name="room_details_data" />
     @php
         $room_types = [
             ['name' => 'Additional Bedroom', 'target' => ''],
@@ -45,188 +46,30 @@
             ['name' => 'Workshop', 'target' => ''],
         ];
     @endphp
-    {{-- <div class="form-group ">
+    <div class="form-group ">
+        @php
+            $roomData = json_decode($auction->get->room_details_data, true);
+            $roomDetailsData = json_decode($roomData, true);
+            $roomTypes = [];
+            foreach ($roomDetailsData as $roomName => $values) {
+                $roomTypes[] = $roomName;
+            }
+        @endphp
         <label class="fw-bold">Room Type:</label>
         <select class="grid-picker" name="room_type[]" id="room_typeRes" onChange="roomFtn();"
-            style="justify-content: flex-start;" required>
+            style="justify-content: flex-start;" multiple required>
             <option value="">Select</option>
             @foreach ($room_types as $room_type)
                 <option value="{{ $room_type['name'] }}" data-target="{{ $room_type['target'] }}"
                     class="card flex-row" style="width:calc(33.3% - 10px);"
                     data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    {{ isset($auction->get->room_type) && in_array($item['name'], json_decode($auction->get->room_type) ?? []) ? 'selected' : '' }}>
+                    {{ in_array($room_type['name'], $roomTypes ?? []) ? 'selected' : '' }}>
                     {{ $room_type['name'] }}
                 </option>
             @endforeach
         </select>
     </div>
-    <div class="form-group roomDet">
-        <label class="fw-bold">Approximate Room Dimensions (Width x Length) </label>
-        <input type="text" name="roomDimensions[]" class="form-control" required
-            value="{{ isset($auction->get->roomDimensions) ? json_decode($auction->get->roomDimensions)[0] : '' }}">
-        <button type="button" class="btn btn-secondary btn-sm w-100 roomBtn mt-2" onclick="add_room_dimension();"><i
-                class="fa-solid fa-plus"></i> Add New
-            Row</button>
-    </div>
-    @php
-        $room_levels = [
-            ['name' => 'Upper', 'target' => ''],
-            ['name' => 'Basement', 'target' => ''],
-            ['name' => 'First', 'target' => ''],
-            ['name' => 'Second', 'target' => ''],
-            ['name' => 'Third', 'target' => ''],
-        ];
-    @endphp
-    <div class="form-group roomDet">
-        <label class="fw-bold">Room Level:</label>
-        <select class="grid-picker" name="room_level[]" id="room_level" style="justify-content: flex-start;"
-            required multiple>
-            <option value="">Select</option>
-            @foreach ($room_levels as $room_level)
-                <option value="{{ $room_level['name'] }}" data-target="{{ $room_level['target'] }}"
-                    class="card flex-row" style="width:calc(33.3% - 10px);"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    {{ isset($auction->get->room_level) && in_array($item['name'], json_decode($auction->get->room_level) ?? []) ? 'selected' : '' }}>
-                    {{ $room_level['name'] }}
-                </option>
-            @endforeach
-        </select>
-    </div>
-    @php
-        $bedroomCloset = [
-            ['name' => 'Built-in Closet', 'target' => ''],
-            ['name' => 'Coat Closet', 'target' => ''],
-            ['name' => 'Dual Closets', 'target' => ''],
-            ['name' => 'Linen Closet', 'target' => ''],
-            ['name' => 'No Closet', 'target' => ''],
-            ['name' => 'Storage Closet', 'target' => ''],
-            ['name' => 'Walk-in Closet', 'target' => ''],
-        ];
-    @endphp
-    <div class="form-group roomDet ">
-        <label class="fw-bold">Closet Type:</label>
-        <select class="grid-picker" name="bedroomCloset[]" style="justify-content: flex-start;" required>
-            <option value="">Select</option>
-            @foreach ($bedroomCloset as $item)
-                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    {{ isset($auction->get->bedroomCloset) && in_array($item['name'], json_decode($auction->get->bedroomCloset) ?? []) ? 'selected' : '' }}>
-                    {{ $item['name'] }}
-                </option>
-            @endforeach
-        </select>
-    </div>
-    @php
-        $roomPrimary = [
-            ['name' => 'Bamboo', 'target' => ''],
-            ['name' => 'Brick/Stone', 'target' => ''],
-            ['name' => 'Carpet', 'target' => ''],
-            ['name' => 'Ceramic Tile', 'target' => ''],
-            ['name' => 'Concrete', 'target' => ''],
-            ['name' => 'Cork', 'target' => ''],
-            ['name' => 'Engineered Hardwood', 'target' => ''],
-            ['name' => 'Epoxy', 'target' => ''],
-            ['name' => 'Forestry Stewardship Certified', 'target' => ''],
-            ['name' => 'Granite', 'target' => ''],
-            ['name' => 'Laminate', 'target' => ''],
-            ['name' => 'Linoleum', 'target' => ''],
-            ['name' => 'Marble', 'target' => ''],
-            ['name' => 'Parquet', 'target' => ''],
-            ['name' => 'Porcelain Tile', 'target' => ''],
-            ['name' => 'Quarry Tile', 'target' => ''],
-            ['name' => 'Reclaimed Wood', 'target' => ''],
-            ['name' => 'Recycled/Composite Flooring', 'target' => ''],
-            ['name' => 'Slate', 'target' => ''],
-            ['name' => 'Terrazzo', 'target' => ''],
-            ['name' => 'Tile', 'target' => ''],
-            ['name' => 'Travertine', 'target' => ''],
-            ['name' => 'Vinyl', 'target' => ''],
-            ['name' => 'Wood', 'target' => ''],
-            ['name' => 'Other', 'target' => ''],
-        ];
-    @endphp
-    <div class="form-group roomDet ">
-        <label class="fw-bold">Room Primary Floor Covering:</label>
-        <select class="grid-picker" name="roomPrimary[]" style="justify-content: flex-start;" multiple required>
-            <option value="">Select</option>
-            @foreach ($roomPrimary as $item)
-                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    {{ isset($auction->get->roomPrimary) && in_array($item['name'], json_decode($auction->get->roomPrimary) ?? []) ? 'selected' : '' }}>
-                    {{ $item['name'] }}
-                </option>
-            @endforeach
-        </select>
-    </div>
-    @php
-        $room_features = [
-            ['name' => 'Bar', 'target' => ''],
-            ['name' => 'Bath with Spa/Hydro Massage Tub', 'target' => ''],
-            ['name' => 'Bath With Whirlpoo', 'target' => ''],
-            ['name' => 'Bidet', 'target' => ''],
-            ['name' => 'Breakfast Bar', 'target' => ''],
-            ['name' => 'Built-In Shelving', 'target' => ''],
-            ['name' => 'Built-In Shower Bench', 'target' => ''],
-            ['name' => 'Ceiling Fan(s)', 'target' => ''],
-            ['name' => 'Claw Foot Tub', 'target' => ''],
-            ['name' => 'Closet Pantry', 'target' => ''],
-            ['name' => 'Cooking Island', 'target' => ''],
-            ['name' => 'Desk Built-In ', 'target' => ''],
-            ['name' => 'Dual Sinks', 'target' => ''],
-            ['name' => 'En Suite Bathroom ', 'target' => ''],
-            ['name' => 'Exhaust Fan', 'target' => ''],
-            ['name' => 'Garden Bath ', 'target' => ''],
-            ['name' => 'Granite Counters', 'target' => ''],
-            ['name' => 'Handicap Accessible', 'target' => ''],
-            ['name' => 'Heated Floors', 'target' => ''],
-            ['name' => 'Island', 'target' => ''],
-            ['name' => 'Jack and Jill Bathroom', 'target' => ''],
-            ['name' => 'Linen Closet Bath', 'target' => ''],
-            ['name' => 'Makeup/Vanity Space', 'target' => ''],
-            ['name' => 'Multiple Shower Heads', 'target' => ''],
-            ['name' => 'Wet Bar', 'target' => ''],
-            ['name' => 'Pantry', 'target' => ''],
-            ['name' => 'Rain Shower Head', 'target' => ''],
-            ['name' => 'Sauna', 'target' => ''],
-            ['name' => 'Shower- No Tub', 'target' => ''],
-            ['name' => 'Single Vanity', 'target' => ''],
-            ['name' => 'Sink-Pedestal ', 'target' => ''],
-            ['name' => 'Split Vanities ', 'target' => ''],
-            ['name' => 'Steam Shower', 'target' => ''],
-            ['name' => 'Stone Counters', 'target' => ''],
-            ['name' => 'Sunken Shower', 'target' => ''],
-            ['name' => 'Tall Countertops ', 'target' => ''],
-            ['name' => 'Tile Counters', 'target' => ''],
-            ['name' => 'Tub with Separate Shower Stall ', 'target' => ''],
-            ['name' => 'Tub with Shower', 'target' => ''],
-            ['name' => 'Urinal', 'target' => ''],
-            ['name' => 'Walk-In Pantry', 'target' => ''],
-            ['name' => 'Walk-In Tub', 'target' => ''],
-            ['name' => 'Water Closet/Priv Toliet', 'target' => ''],
-            ['name' => 'Window/Skylight in Bath', 'target' => ''],
-            ['name' => 'Other', 'target' => '.roomFeatureOther'],
-        ];
-    @endphp
-    <div class="form-group roomDet ">
-        <label class="fw-bold">Room Features:</label>
-        <select class="grid-picker" name="room_feature[]" id="room_feature" style="justify-content: flex-start;"
-            multiple required>
-            <option value="">Select</option>
-            @foreach ($room_features as $item)
-                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    {{ isset($auction->get->room_feature) && in_array($item['name'], json_decode($auction->get->room_feature) ?? []) ? 'selected' : '' }}>
-                    {{ $item['name'] }}
-                </option>
-            @endforeach
-        </select>
-        <div class="form-group roomFeatureOther d-none">
-            <label class="fw-bold">Room Features:</label>
-            <input type="text" name="roomFeatueOther" class="form-control has-icon"
-                data-icon="fa-regular fa-check-circle"
-                value="{{ isset($auction->get->roomFeatueOther) ? $auction->get->roomFeatueOther : '' }}">
-        </div>
-    </div> --}}
+    <div id="dynamicFieldsContainer"></div>
 </div>
 <div class="wizard-step" data-step='24'>
     <h4>Water and Dock Information:</h4>
@@ -508,6 +351,7 @@
                     ['name' => 'Dock w/o Electric', 'target' => ''],
                     ['name' => 'Dock w/o Water Supply', 'target' => ''],
                     ['name' => 'Dock w/Water Supply', 'target' => ''],
+                    ['name' => 'Dry Dock', 'target' => ''],
                     ['name' => 'Fish Cleaning Station', 'target' => ''],
                     ['name' => 'Floating Dock', 'target' => ''],
                     ['name' => 'Harbormaster', 'target' => ''],
@@ -516,7 +360,7 @@
                     ['name' => 'Restroom/Shower', 'target' => ''],
                     ['name' => 'Wet Dock', 'target' => ''],
                     ['name' => 'None', 'target' => ''],
-                    ['name' => 'Other', 'target' => '.therDock'],
+                    ['name' => 'Other', 'target' => '.otherDock'],
                 ];
             @endphp
             <label class="fw-bold">Dock: </label>
@@ -638,36 +482,6 @@
         </div>
     </div>
     @php
-        $waters = [
-            ['name' => 'Canal/Lake For Irrigation', 'target' => ''],
-            ['name' => 'Private', 'target' => ''],
-            ['name' => 'Public', 'target' => ''],
-            ['name' => 'Well', 'target' => ''],
-            ['name' => 'None', 'target' => ''],
-            ['name' => 'Other', 'target' => '.otherWaterRes'],
-        ];
-    @endphp
-    <div class="form-group">
-        <label class="fw-bold">Water:</label>
-        <select class="grid-picker" name="water[]" id="water12" style="justify-content: flex-start;" multiple
-            required>
-            <option value="">Select</option>
-            @foreach ($waters as $water)
-                <option value="{{ $water['name'] }}" data-target="{{ $water['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    {{ isset($auction->get->water) && in_array($item['name'], json_decode($auction->get->water) ?? []) ? 'selected' : '' }}>
-                    {{ $water['name'] }}
-                </option>
-            @endforeach
-        </select>
-        <div class="form-group otherWaterRes d-none">
-            <label for="" class="fw-bold">Water: </label>
-            <input type="text" class="form-control has-icon" data-icon="fa-regular fa-check-circle"
-                name="otherWater" value="{{ isset($auction->get->otherWater) ? $auction->get->otherWater : '' }}">
-        </div>
-    </div>
-
-    @php
         $sewers1 = [
             ['name' => 'Aerobic Septic', 'target' => ''],
             ['name' => 'PEP-Holding Tank', 'target' => ''],
@@ -697,11 +511,42 @@
                 name="otherSewer" value="{{ isset($auction->get->otherSewer) ? $auction->get->otherSewer : '' }}">
         </div>
     </div>
+    @php
+        $waters = [
+            ['name' => 'Canal/Lake For Irrigation', 'target' => ''],
+            ['name' => 'Private', 'target' => ''],
+            ['name' => 'Public', 'target' => ''],
+            ['name' => 'Well', 'target' => ''],
+            ['name' => 'Well Required', 'target' => ''],
+            ['name' => 'None', 'target' => ''],
+            ['name' => 'Other', 'target' => '.otherWaterRes'],
+        ];
+    @endphp
+    <div class="form-group">
+        <label class="fw-bold">Water:</label>
+        <select class="grid-picker" name="water[]" id="water12" style="justify-content: flex-start;" multiple
+            required>
+            <option value="">Select</option>
+            @foreach ($waters as $water)
+                <option value="{{ $water['name'] }}" data-target="{{ $water['target'] }}" class="card flex-row"
+                    style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-circle-check'></i>"
+                    {{ isset($auction->get->water) && in_array($item['name'], json_decode($auction->get->water) ?? []) ? 'selected' : '' }}>
+                    {{ $water['name'] }}
+                </option>
+            @endforeach
+        </select>
+        <div class="form-group otherWaterRes d-none">
+            <label for="" class="fw-bold">Water: </label>
+            <input type="text" class="form-control has-icon" data-icon="fa-regular fa-check-circle"
+                name="otherWater" value="{{ isset($auction->get->otherWater) ? $auction->get->otherWater : '' }}">
+        </div>
+    </div>
 </div>
 <div class="wizard-step" data-step='26'>
     <div class="form-group ">
         @php
             $airConditioning = [
+                ['name' => 'A/C - Office Only', 'target' => ''],
                 ['name' => 'Central Air', 'target' => ''],
                 ['name' => 'Humidity Control', 'target' => ''],
                 ['name' => 'Mini-Split Unit(s)', 'target' => ''],
@@ -735,8 +580,11 @@
             $heatingFuel = [
                 ['name' => 'Baseboard', 'target' => ''],
                 ['name' => 'Central', 'target' => ''],
+                ['name' => 'Central Building ', 'target' => ''],
+                ['name' => 'Central Individual', 'target' => ''],
                 ['name' => 'Electric', 'target' => ''],
                 ['name' => 'Exhaust Fans', 'target' => ''],
+                ['name' => 'Gas', 'target' => ''],
                 ['name' => 'Heat Pump', 'target' => ''],
                 ['name' => 'Heat Recovery Unit', 'target' => ''],
                 ['name' => 'Natural Gas', 'target' => ''],
@@ -896,6 +744,7 @@
             <div class="form-group viewYes d-none">
                 @php
                     $view = [
+                        ['name' => 'Beach', 'target' => ''],
                         ['name' => 'City', 'target' => ''],
                         ['name' => 'Garden', 'target' => ''],
                         ['name' => 'Golf Course', 'target' => ''],
@@ -906,7 +755,6 @@
                         ['name' => 'Tennis Court', 'target' => ''],
                         ['name' => 'Trees/Woods', 'target' => ''],
                         ['name' => 'Water', 'target' => ''],
-                        ['name' => 'Beach', 'target' => ''],
                         ['name' => 'Other', 'target' => '.viewOther'],
                     ];
                 @endphp
@@ -945,15 +793,11 @@
             ['target' => '', 'name' => 'Common', 'icon' => 'fa-solid fa-warehouse'],
             ['target' => '', 'name' => 'Curb Parking', 'icon' => 'fa-solid fa-warehouse'],
             ['target' => '', 'name' => 'Deeded', 'icon' => 'fa-solid fa-warehouse'],
-            [
-                'target' => '',
-                'name' => 'Electric Vehicle Charging Station(s)',
-                'icon' => 'fa-solid fa-warehouse',
-            ],
+            ['target' => '', 'name' => 'Electric Vehicle Charging Station(s)', 'icon' => 'fa-solid fa-warehouse'],
             ['target' => '', 'name' => 'Ground Level', 'icon' => 'fa-solid fa-warehouse'],
             ['target' => '', 'name' => 'Lighted', 'icon' => 'fa-solid fa-warehouse'],
-            ['target' => '', 'name' => 'None', 'icon' => 'fa-solid fa-warehouse'],
             ['target' => '', 'name' => 'Over 30 Spaces', 'icon' => 'fa-solid fa-warehouse'],
+            ['target' => '', 'name' => 'RV Parking', 'icon' => 'fa-solid fa-warehouse'],
             ['target' => '', 'name' => 'Secured', 'icon' => 'fa-solid fa-warehouse'],
             ['target' => '', 'name' => 'Under Building', 'icon' => 'fa-solid fa-warehouse'],
             ['target' => '', 'name' => 'Underground', 'icon' => 'fa-solid fa-warehouse'],
@@ -986,15 +830,14 @@
 <div class="wizard-step" data-step='30'>
     @php
         $front_exposures = [
-            ['name' => 'North', 'target' => ''],
             ['name' => 'East', 'target' => ''],
-            ['name' => 'South', 'target' => ''],
-            ['name' => 'West', 'target' => ''],
-            ['name' => 'Southeast', 'target' => ''],
+            ['name' => 'North', 'target' => ''],
             ['name' => 'Northeast', 'target' => ''],
-            ['name' => 'Southwest', 'target' => ''],
             ['name' => 'Northwest', 'target' => ''],
-            ['name' => 'Undetermined', 'target' => ''],
+            ['name' => 'South', 'target' => ''],
+            ['name' => 'Southeast', 'target' => ''],
+            ['name' => 'Southwest', 'target' => ''],
+            ['name' => 'West', 'target' => ''],
         ];
     @endphp
     <div class="form-group residential_and_income_hide">

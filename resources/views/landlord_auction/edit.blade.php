@@ -332,6 +332,9 @@ label.fileuploader-btn {
             </div>
         </div>
     </div>
+    @php
+        $roomDataBackend = json_decode($auction->get->room_details_data);
+    @endphp
 @endsection
 @push('scripts')
     @include('patch-script', 
@@ -340,14 +343,13 @@ label.fileuploader-btn {
     'id' => $auction->id, 
     'initializeScripts' => 
     [
-    'initializeRoomDetailsFields', 
+    'initializeRoomDetailsFields',
     'initializeFields', 
     'initializeIcons', 
     'initializeVideoPicker', 
     'changeAuctionType', 
     'initializeCompensationFields',
-    'roomFtn',
-    'loadGoogleMapsScript',
+    'loadGoogleMapsScript', 
     // 'initializeImagePicker'
     ]
     ]);
@@ -538,6 +540,7 @@ label.fileuploader-btn {
     </script>
     <script>
         function changeAuctionType(v) {
+            console.log('Auction_Type', v);
             if (v == "Auction Listing") {
                 $('.auction_length').val("");
                 $('.auction_length').parent().children('.option-container').removeClass('active');
@@ -589,6 +592,7 @@ label.fileuploader-btn {
     </script>
     <script>
         function changePropertyType(p) {
+            console.log('Property_type', p);
             if (p == "Residential Property") {
                 $('.property_items').val("");
                 $('.property_items').parent().children('.option-container').removeClass('active');
@@ -607,8 +611,6 @@ label.fileuploader-btn {
                 $('.commercialFields').each(function() {
                     $(this).find('select, input,label,div,option ,textarea').prop('disabled', true).hide();
                 });
-    
-    
             } else if (p == "Commercial Property") {
                 $('.property_items').val("");
                 $('.property_items').parent().children('.option-container').removeClass('active');
@@ -712,7 +714,7 @@ label.fileuploader-btn {
                             } else if (StepWizard.currentStep == 34 && property_type ==
                                 'Residential Property') {
                                 StepWizard.nextStep = 37;
-                                StepWizard.backStep = 33;
+                                StepWizard.backStep = 34;
                             } else if (StepWizard.currentStep == 38 && property_type ==
                                 'Residential Property') {
                                 StepWizard.nextStep = 42;
@@ -760,7 +762,7 @@ label.fileuploader-btn {
                             StepWizard.backStep = 28;
                         } else if (StepWizard.currentStep == 37 && property_type ==
                             'Residential Property') {
-                            StepWizard.backStep = 33;
+                            StepWizard.backStep = 34;
                         } else if (StepWizard.currentStep == 42 && property_type ==
                             'Residential Property') {
                             StepWizard.backStep = 38;
@@ -819,6 +821,8 @@ label.fileuploader-btn {
             const roomTypeSelect = $('#room_typeRes');
             const fieldsContainer = $('#dynamicFieldsContainer');
             const roomTypeData = $('#room_type_input');
+            const roomData = @json($roomDataBackend);
+            const roomDetailsData = JSON.parse(roomData);
     
             const fieldData = {}; // object to store field data
     
@@ -831,12 +835,15 @@ label.fileuploader-btn {
             // Handle changes in the select element
             $(roomTypeSelect).change(function () {
                 const selectedOptions = $(this).val(); // Get selected options
+                console.log('selectedOptions', selectedOptions);
+                if(!selectedOptions) return; // Exit if no options are selected
     
                 // Add fields for new options
-                selectedOptions.forEach(option => { 
+                selectedOptions.forEach(option => {
+                    const roomTypeBackendData = roomDetailsData[option];
                     let sanitizedOpt = sanitizeId(option);
                     if (!fieldData[option]) {
-                        createFields(sanitizedOpt, option);
+                        createFields(sanitizedOpt, option, roomTypeBackendData);
                     }
                 });
     
@@ -857,7 +864,7 @@ label.fileuploader-btn {
     
     
             // Create fields for a selected option
-            function createFields(option, optionName) {
+            function createFields(option, optionName, roomTypeBackendData) {
     
                     $(fieldsContainer).append(`<div id="${option}-fields-container"></div`)
     
@@ -866,7 +873,7 @@ label.fileuploader-btn {
                         <h5 data-room-type="${option}">Room Type: ${optionName}</h5>
                         <div class="form-group roomDet" data-option="${optionName}">
                             <label class="fw-bold">Approximate Room Dimensions (Width x Length)</label>
-                            <input type="text" name="roomDimensions" data-option="${optionName}"  class="form-control dynamic-room-input" required>
+                            <input type="text" name="roomDimensions" id="dynamic-input-roomDimensions-${optionName}" data-option="${optionName}" value="${roomTypeBackendData['roomDimensions']}"  class="form-control dynamic-room-input" required>
                         </div>
                     `;
     
@@ -875,6 +882,7 @@ label.fileuploader-btn {
                     // </button>
     
                     $(`#${option}-fields-container`).append(roomDimensionHtml);
+                    $(`#dynamic-input-roomDimensions-${optionName}`).trigger('input');
     
                     // Add Room Levels dropdown
                     const roomLevels = [
@@ -982,33 +990,41 @@ label.fileuploader-btn {
                         let optionsHtml = options
                             .map(
                                 (opt) =>
-                                    `<option value="${opt.name}" data-target="${opt.target}" data-icon="<i class='${icon}'></i>" 
-                                        style="width:calc(33.3% - 10px);" class="card flex-row" style="width:calc(33.3% - 10px);">
+                                    `<option value="${opt.name}" data-target="${opt.target}" data-icon="<i class='${icon}'></i>"
+                                        style="width:calc(33.3% - 10px);" class="card flex-row"
+                                        ${Array.isArray(roomTypeBackendData[name]) 
+                                            ? (roomTypeBackendData[name].includes(opt.name) ? 'selected' : '') 
+                                            : (roomTypeBackendData[name] === opt.name ? 'selected' : '')}>
                                         ${opt.name}
                                     </option>`
                             )
                             .join("");
     
                         const targetName = options.find(item => item.name === 'Other' ? item : null);
+
+                        const otherFieldsHtml = 
+                            `<div class="form-group ${targetName?.target?.slice(1)} ${roomTypeBackendData[name] === 'Other' ? '' : 'd-none'}">
+                                <label class="fw-bold">${labelText}</label>
+                                <input type="text" name="${name}Other" id="dynamic-input-${name}-${optionName}" data-option="${optionName}" value="${roomTypeBackendData[name + 'Other']}" class="form-control has-icon dynamic-room-input"
+                                    data-icon="fa-regular fa-check-circle" required>
+                            </div>`;
     
                         const dropdownHtml = `
-                            <div class="form-group roomDet" data-option="${optionName}" data-index="${index}">
+                            <div class="form-group roomDet" data-option="${optionName}" data-index="${index}" id="room-det-${optionName}-${index}">
                                 <label class="fw-bold">${labelText}</label>
-                                <select class="grid-picker dynamic-room-select" name="${name}" data-option="${optionName}" style="justify-content: flex-start;" ${multiple ? 'multiple': ''} required>
+                                <select class="grid-picker dynamic-room-select" id="dynamic-select-${name}-${optionName}" name="${name}" data-option="${optionName}" style="justify-content: flex-start;" ${multiple ? 'multiple': ''} required>
                                     <option value="">Select</option>
                                     ${optionsHtml}
                                 </select>
-                                ${otherFields ? 
-                                `<div class="form-group ${targetName?.target?.slice(1)} d-none">
-                                    <label class="fw-bold">${labelText}</label>
-                                    <input type="text" name="${name}Other" data-option="${optionName}" class="form-control has-icon dynamic-room-input"
-                                        data-icon="fa-regular fa-check-circle" required>
-                                </div>` : ''
-                                }
                             </div>
                         `;
-    
+
                         $(`#${option}-fields-container`).append(dropdownHtml);
+                        $(`#dynamic-select-${name}-${optionName}`).trigger('change');
+                        if (otherFields) {
+                            $(`#room-det-${optionName}-${index}`).append(otherFieldsHtml);
+                            $(`#dynamic-input-${name}-${optionName}`).trigger('input');
+                        }
                     }
     
                 initializeNewIcons(option); //Initialize icons for the option
@@ -1097,9 +1113,9 @@ label.fileuploader-btn {
     
         function initializeNewIcons(option){
             $(`#${option}-fields-container .has-icon`).each(function(i) {
-                var cover = `<div class="input-cover input-cover-${i}"></div>`;
+                var cover = `<div class="input-cover ${option}-fields-container-input-cover-${i}"></div>`;
                 $(this).before(cover);
-                $(this).appendTo(`.input-cover-${i}`);
+                $(this).appendTo(`.${option}-fields-container-input-cover-${i}`);
                 var iconClass = $(this).data('icon');
                 var id = $(this).attr('id');
                 var htm = `<label for="${id}" class="input-icon"><i class="${iconClass}"></i></label>`;
@@ -1298,13 +1314,6 @@ label.fileuploader-btn {
                 $(targetClass).removeClass('d-none');
             }
         });
-    
-        $('#dynamicFieldsContainer').on('click', '.addRoomBtn', function() {
-            let optionName = $(this).data('option');
-            let roomDimensionsFieldNew = $($('.roomDimensionTemp').html());
-            roomDimensionsFieldNew.attr('data-option', optionName);
-            $(this).before(roomDimensionsFieldNew);
-        })
     
         function roomFtn() {
             if ($('#room_typeRes').val() !== '') {

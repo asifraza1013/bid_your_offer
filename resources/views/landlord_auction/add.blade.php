@@ -711,7 +711,7 @@
                         } else if (StepWizard.currentStep == 34 && property_type ==
                             'Residential Property') {
                             StepWizard.nextStep = 37;
-                            StepWizard.backStep = 33;
+                            StepWizard.backStep = 34;
                         } else if (StepWizard.currentStep == 38 && property_type ==
                             'Residential Property') {
                             StepWizard.nextStep = 42;
@@ -759,7 +759,7 @@
                         StepWizard.backStep = 28;
                     } else if (StepWizard.currentStep == 37 && property_type ==
                         'Residential Property') {
-                        StepWizard.backStep = 33;
+                        StepWizard.backStep = 34;
                     } else if (StepWizard.currentStep == 42 && property_type ==
                         'Residential Property') {
                         StepWizard.backStep = 38;
