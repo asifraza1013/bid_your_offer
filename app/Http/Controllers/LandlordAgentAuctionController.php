@@ -43,6 +43,7 @@ class LandlordAgentAuctionController extends Controller
             $auction->save();
             $auction->saveMeta("working_with_agent", $request->working_with_agent);
             $auction->saveMeta("address", $request->address);
+            $auction->saveMeta("unit_num", $request->unit_num);
             $auction->saveMeta("city", $request->city);
             $auction->saveMeta("county", $request->county);
             $auction->saveMeta("state", $request->state);
@@ -117,9 +118,24 @@ class LandlordAgentAuctionController extends Controller
             $auction->saveMeta("offeredCommissionOther", $request->offeredCommissionOther);
             $auction->saveMeta("tenantCommission", $request->tenantCommission);
             $auction->saveMeta("tenantCommissionOther", $request->tenantCommissionOther);
+            $auction->saveMeta("broker_compensation", $request->broker_compensation);
+            $auction->saveMeta("compensation_percent", $request->compensation_percent);
+            $auction->saveMeta("handle_compensation", $request->handle_compensation);
+            $auction->saveMeta("compensation_amount", $request->compensation_amount);
+            $auction->saveMeta("compensation_tenant_broker", $request->compensation_tenant_broker);
+            $auction->saveMeta("payment_timing", $request->payment_timing);
+            $auction->saveMeta("payment_timing_days", $request->payment_timing_days);
+            $auction->saveMeta("early_termination", $request->early_termination);
+            $auction->saveMeta("early_termination_amount", $request->early_termination_amount);
+            $auction->saveMeta("protection_period", $request->protection_period);
+            $auction->saveMeta("compensation_new_lease_percent", $request->compensation_new_lease_percent);
+            $auction->saveMeta("compensation_new_lease_amount", $request->compensation_new_lease_amount);
+            $auction->saveMeta("compensation_new_lease", $request->compensation_new_lease);
             $auction->saveMeta("termLease", json_encode($request->termLease));
             $auction->saveMeta("termLeaseOther", $request->termLeaseOther);
             $auction->saveMeta("leaseAmount", $request->leaseAmount);
+            $auction->saveMeta("season_runs_from", $request->season_runs_from);
+            $auction->saveMeta("season_runs_to", $request->season_runs_to);
             $auction->saveMeta("description", $request->description);
             $auction->saveMeta("important_info", $request->important_info);
             $auction->saveMeta("services", json_encode($request->services));
@@ -128,6 +144,9 @@ class LandlordAgentAuctionController extends Controller
             $auction->saveMeta("last_name", $request->last_name);
             $auction->saveMeta("email", $request->email);
             $auction->saveMeta("phone", $request->phone);
+            $auction->saveMeta('video_type', $request->video_type);
+            $auction->saveMeta('youtube_video_link', $request->youtube_video_link);
+            $auction->saveMeta('vimeo_video_link', $request->vimeo_video_link);
             // adding 3 sections data
             // Pictures and Video Upload
             $allowedPhotos = ['jpg', 'png', 'jpeg', 'gif', 'svg'];
@@ -173,7 +192,7 @@ class LandlordAgentAuctionController extends Controller
             // 17 July 2023
             $auction->saveMeta('auction_length_days', $auction_length_days);
             DB::commit();
-            return redirect()->back()->with('success', 'Auction added successfully');
+            return redirect()->route('landlord.agent.auction.view', $auction->id)->with('success', 'Auction added successfully');
         } catch (\Exception $e) {
             //throw $e;
             DB::rollBack();
@@ -209,6 +228,7 @@ class LandlordAgentAuctionController extends Controller
             $auction->save();
             $auction->saveMeta("working_with_agent", $request->working_with_agent);
             $auction->saveMeta("address", $request->address);
+            $auction->saveMeta("unit_num", $request->unit_num);
             $auction->saveMeta("city", $request->city);
             $auction->saveMeta("county", $request->county);
             $auction->saveMeta("state", $request->state);
@@ -283,9 +303,24 @@ class LandlordAgentAuctionController extends Controller
             $auction->saveMeta("offeredCommissionOther", $request->offeredCommissionOther);
             $auction->saveMeta("tenantCommission", $request->tenantCommission);
             $auction->saveMeta("tenantCommissionOther", $request->tenantCommissionOther);
+            $auction->saveMeta("broker_compensation", $request->broker_compensation);
+            $auction->saveMeta("compensation_percent", $request->compensation_percent);
+            $auction->saveMeta("handle_compensation", $request->handle_compensation);
+            $auction->saveMeta("compensation_amount", $request->compensation_amount);
+            $auction->saveMeta("compensation_tenant_broker", $request->compensation_tenant_broker);
+            $auction->saveMeta("payment_timing", $request->payment_timing);
+            $auction->saveMeta("payment_timing_days", $request->payment_timing_days);
+            $auction->saveMeta("early_termination", $request->early_termination);
+            $auction->saveMeta("early_termination_amount", $request->early_termination_amount);
+            $auction->saveMeta("protection_period", $request->protection_period);
+            $auction->saveMeta("compensation_new_lease_percent", $request->compensation_new_lease_percent);
+            $auction->saveMeta("compensation_new_lease_amount", $request->compensation_new_lease_amount);
+            $auction->saveMeta("protection_period", $request->protection_period);
             $auction->saveMeta("termLease", json_encode($request->termLease));
             $auction->saveMeta("termLeaseOther", $request->termLeaseOther);
             $auction->saveMeta("leaseAmount", $request->leaseAmount);
+            $auction->saveMeta("season_runs_from", $request->season_runs_from);
+            $auction->saveMeta("season_runs_to", $request->season_runs_to);
             $auction->saveMeta("description", $request->description);
             $auction->saveMeta("important_info", $request->important_info);
             $auction->saveMeta("services", json_encode($request->services));
@@ -294,6 +329,9 @@ class LandlordAgentAuctionController extends Controller
             $auction->saveMeta("last_name", $request->last_name);
             $auction->saveMeta("email", $request->email);
             $auction->saveMeta("phone", $request->phone);
+            $auction->saveMeta('video_type', $request->video_type);
+            $auction->saveMeta('youtube_video_link', $request->youtube_video_link);
+            $auction->saveMeta('vimeo_video_link', $request->vimeo_video_link);
             if ($request->hasFile('photos')) {
                 $photos = $request->photos;
                 $photosNames = array();
@@ -310,12 +348,12 @@ class LandlordAgentAuctionController extends Controller
                 }
             }
             DB::commit();
-            return redirect()->back()->with('success', 'Auction updated successfully');
+            return redirect()->route('landlord.agent.auction.view', $id)->with('success', 'Auction updated successfully!');
         } catch (\Exception $e) {
             //throw $e;
             DB::rollBack();
             return $e->getMessage();
-            return redirect()->back()->with('error', 'Unable to update auction');
+            return redirect()->back()->with('error', 'Unable to update auction!');
         }
     }
 
@@ -445,6 +483,13 @@ class LandlordAgentAuctionController extends Controller
         $page_data['id'] = $id;
         $page_data['bids'] = $bids = LandlordAgentAuctionBid::with('meta')->where('landlord_agent_auction_id', $id)->whereNull('counter_id')->get();
         return view('hire_landlord_agent.view', $page_data);
+    }
+
+    public function endAuction($id)
+    {
+        $auction = LandlordAgentAuction::findOrFail($id);
+        $auction->update(['auction_ended' => true]);
+        return response()->json(['message' => 'Auction ended successfully']);
     }
 
     public function bidsVisibility($id, $vis)

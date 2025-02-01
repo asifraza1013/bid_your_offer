@@ -162,6 +162,7 @@ Route::get('/search/agents', [SearchAgentController::class, 'search'])->name('se
 
 
 Route::get('/hire/agent/auction/view/{id}', [LandlordAgentAuctionController::class, 'view'])->name('landlord.agent.auction.view');
+Route::post('/hire/agent/auction/end/{id}', [LandlordAgentAuctionController::class, 'endAuction'])->name('landlord.agent.auction.end');
 Route::get('/search/hire/landlord/agent/auctions', [LandlordAgentAuctionController::class, 'search'])->name('landlord.agent.auctions.search');
 
 Route::get('tenant/hire/agent/auction/view/{id}', [TenantAgentAuctionController::class, 'view'])->name('tenant.agent.auction.view');
@@ -363,6 +364,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/hire/agent/auction/edit/{id}', [LandlordAgentAuctionController::class, 'update']);
         Route::get('/hire/agent/auctions/list', [LandlordAgentAuctionController::class, 'list'])->name('agent.auctions.list');
         Route::post('hire/agent/auction/bid/accept', [LandlordAgentAuctionBidController::class, 'accept_bid'])->name('hire.agent.auction.bid.accept');
+        Route::post('hire/agent/auction/bid/reject', [LandlordAgentAuctionBidController::class, 'reject_bid'])->name('hire.agent.auction.bid.reject');
         Route::any('/counter-terms/{id}', [LandlordCounteredTermsController::class, 'add'])->name('counter-terms');
         Route::any('/add-counter-terms', [LandlordCounteredTermsController::class, 'store'])->name('add-counter-terms');
         Route::any('/edit-counter-terms/{id}', [LandlordCounteredTermsController::class, 'edit'])->name('edit-counter-terms');

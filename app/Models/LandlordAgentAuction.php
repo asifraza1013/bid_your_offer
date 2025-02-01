@@ -10,6 +10,7 @@ class LandlordAgentAuction extends Model
 {
     use HasFactory;
     protected $appends = ["get"];
+    protected $guarded = [];
 
     public function user()
     {

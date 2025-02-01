@@ -121,7 +121,7 @@ class LandlordAgentAuctionBidController extends Controller
         try {
             DB::beginTransaction();
             $bid = LandlordAgentAuctionBid::whereId($request->bid_id)->first();
-            $bid->accepted = true;
+            $bid->accepted = 1;
             $bid->accepted_date = date('Y-m-d H:i:s');
             $bid->save();
 
@@ -143,6 +143,14 @@ class LandlordAgentAuctionBidController extends Controller
             DB::rollBack();
             return redirect()->back()->with('error', 'Some problem in bid acceptance!');
         }
+    }
+
+    public function reject_bid(Request $request)
+    {
+        $bid = LandlordAgentAuctionBid::whereId($request->bid_id)->first();
+        $bid->accepted = 2;
+        $bid->save();
+        return redirect()->back()->with('success', 'Bid Rejected successfully!');
     }
 
     public function addCounterBid(Request $request, $bid_id)

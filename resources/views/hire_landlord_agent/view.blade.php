@@ -2,6 +2,8 @@
 @push('styles')
     <!-- //Listing Description css  -->
     <link rel="stylesheet" href="{{ asset('assets/css/listingDescription.css') }}" />
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <style>
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
@@ -791,36 +793,42 @@
                 <hr>
                 @inject('carbon', 'Carbon\Carbon')
                 @php
-                    if (@$auction->auction_length > 0) {
+                    if ($auction->auction_length > 0) {
                         $start = $carbon::now();
                         $end = $carbon::parse(@$auction->created_at)->addDays(@$auction->auction_length);
-                        $diff = $end->diffInDays($start);
+                        $diff = $start->diffInDays($end, false);
                     }
                 @endphp
-                @if (@$auction->auction_length > 0)
+                @if ($auction->auction_length > 0)
                     @php
-                        $diff_d = $diff;
-                        $diff_H = $start->diff($end)->format('%H');
-                        $diff_I = $start->diff($end)->format('%I');
-                        $diff_S = $start->diff($end)->format('%S');
+                        $diff_d = $diff < 0 ? 0 : $diff;
+                        $diff_H = $diff < 0 ? 0 : $start->diff($end)->format('%H');
+                        $diff_I = $diff < 0 ? 0 : $start->diff($end)->format('%I');
+                        $diff_S = $diff < 0 ? 0 : $start->diff($end)->format('%S');
                     @endphp
-                    <div class="time d-flex justify-content-between text-center flex-wrap pb-2">
-                        <div>
-                            <h5><b class="timer-d"> {{ $diff_d }} </b></h5>
-                            <h6 class="opacity-50">Days</h6>
-                        </div>
-                        <div>
-                            <h5><b class="timer-h"> {{ $diff_H }} </b></h5>
-                            <h6 class="opacity-50">Hrs</h6>
-                        </div>
-                        <div>
-                            <h5><b class="timer-m"> {{ $diff_I }} </b></h5>
-                            <h6 class="opacity-50">Mins</h6>
-                        </div>
-                        <div>
-                            <h5><b class="timer-s"> {{ $diff_S }} </b></h5>
-                            <h6 class="opacity-50">Secs</h6>
-                        </div>
+                    <div id="countdown" class="time d-flex justify-content-between text-center flex-wrap pb-2">
+                        @if ($auction->auction_ended)
+                            <div class="d-flex justify-content-center align-items-center w-100">
+                                <h4 class="text-success">Auction Ended</h4>
+                            </div>
+                        @else
+                            <div>
+                                <h5><b class="timer-d"> {{ $diff_d }} </b></h5>
+                                <h6 class="opacity-50">Days</h6>
+                            </div>
+                            <div>
+                                <h5><b class="timer-h"> {{ $diff_H }} </b></h5>
+                                <h6 class="opacity-50">Hrs</h6>
+                            </div>
+                            <div>
+                                <h5><b class="timer-m"> {{ $diff_I }} </b></h5>
+                                <h6 class="opacity-50">Mins</h6>
+                            </div>
+                            <div>
+                                <h5><b class="timer-s"> {{ $diff_S }} </b></h5>
+                                <h6 class="opacity-50">Secs</h6>
+                            </div>
+                        @endif
                     </div>
                 @endif
                 @php
@@ -937,17 +945,31 @@
                                                             </div>
                                                         @endif
                                                     </div>
-                                                    @if (@$auction->user_id == $auth_id)
-                                                        @if (!@$auction->is_sold)
-                                                            <form action="{{ route('landlord.hire.agent.auction.bid.accept', $bid->id) }}" method="post">
-                                                            @csrf
-                                                            <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
-                                                            <input type="hidden" name="bid_id" value="{{ $bid->id }}">
-                                                            <div style="text-align: right;">
-                                                                <button type="submit" class="btn btn-success btn-sm">Accept</button>
-                                                            </div>
-                                                            </form>
-                                                        @endif
+                                                    @if ($bid->accepted == 2)
+                                                        <div class="d-flex justify-content-center align-items-center bg-white mb-4">
+                                                            <h4 class="text-danger">Rejected</h4>
+                                                        </div>
+                                                    @elseif ($bid->accepted != 2)
+                                                        <div class="form-group d-flex justify-content-space gap-1">
+                                                            @if (($auction->auction_type == 'Auction Listing' && $auction->auction_ended || $auction->auction_type == 'Traditional Listing') && $auction->user_id == $auth_id && !$auction->is_sold)
+                                                                <form action="{{ route('landlord.hire.agent.auction.bid.accept', $bid->id) }}" method="post">
+                                                                    @csrf
+                                                                    <input type="hidden" name="auction_id" value="{{ $auction->id }}">
+                                                                    <input type="hidden" name="bid_id" value="{{ $bid->id }}">
+                                                                    <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                                                </form>
+                                                                <form action="{{ route('landlord.hire.agent.auction.bid.reject') }}" id="deleteForm" method="post">
+                                                                    @csrf
+                                                                    <input type="hidden" name="auction_id" value="{{ $auction->id }}">
+                                                                    <input type="hidden" name="bid_id" value="{{ $bid->id }}">
+                                                                    <button type="button" style="background-color:#da2a43" class="btn btn-danger btn-sm" onclick="showToast()">Reject</button>
+                                                                </form>
+                                                            @endif
+                                                        </div>
+                                                    @else
+                                                        <div class="d-flex justify-content-center align-items-center bg-white mb-4">
+                                                            <h4 class="text-success">Accepted</h4>
+                                                        </div>
                                                     @endif
                                                     @auth
                                                         <div class="form-group biddingOperations">
@@ -998,17 +1020,31 @@
                                                                                 </div>
                                                                             @endif
                                                                         </div>
-                                                                        @if ($auction->user_id == $auth_id)
-                                                                            @if (!$auction->is_sold)
-                                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                                <form action="{{ route('landlord.hire.agent.auction.bid.accept', $countBid->id) }}" method="post">
-                                                                                @csrf
-                                                                                <input type="hidden" name="auction_id" value="{{ @$auction->id }}">
-                                                                                <input type="hidden" name="bid_id" value="{{ $countBid->id }}">
-                                                                                <button type="submit" class="badge bg-success p-2 borderless">Accept</button>
-                                                                                </form>
+                                                                        @if ($countBid->accepted == 2)
+                                                                            <div class="d-flex justify-content-center align-items-center bg-white mb-4">
+                                                                                <h4 class="text-danger">Rejected</h4>
                                                                             </div>
-                                                                            @endif
+                                                                        @elseif ($countBid->accepted == 0)
+                                                                            <div class="form-group d-flex justify-content-space gap-1">
+                                                                                @if (($auction->auction_type == 'Auction Listing' && $auction->auction_ended || $auction->auction_type == 'Traditional Listing') && $auction->user_id == $auth_id && !$auction->is_sold)
+                                                                                    <form action="{{ route('landlord.hire.agent.auction.bid.accept') }}" method="post">
+                                                                                        @csrf
+                                                                                        <input type="hidden" name="auction_id" value="{{ $auction->id }}">
+                                                                                        <input type="hidden" name="bid_id" value="{{ $countBid->id }}">
+                                                                                        <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                                                                    </form>
+                                                                                    <form action="{{ route('landlord.hire.agent.auction.bid.reject') }}" id="deleteForm" method="post">
+                                                                                        @csrf
+                                                                                        <input type="hidden" name="auction_id" value="{{ $auction->id }}">
+                                                                                        <input type="hidden" name="bid_id" value="{{ $countBid->id }}">
+                                                                                        <button type="button" style="background-color:#da2a43" class="btn btn-danger btn-sm" onclick="showToast()">Reject</button>
+                                                                                    </form>
+                                                                                @endif
+                                                                            </div>
+                                                                        @else
+                                                                            <div class="d-flex justify-content-center align-items-center bg-white mb-4">
+                                                                                <h4 class="text-success">Accepted</h4>
+                                                                            </div>
                                                                         @endif
                                                                         <hr>
                                                                     @endforeach
@@ -1425,7 +1461,52 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/timer.jquery/0.9.0/timer.jquery.min.js" crossorigin="anonymous"
         referrerpolicy="no-referrer"></script>
-    @if (@$auction->get->auction_length_days > 0)
+        <!-- Toastr JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script>
+        // Toastr Options
+        toastr.options = {
+          "closeButton": true,
+          "positionClass": "toast-top-center",
+          "preventDuplicates": true,
+          "onclick": null,
+          "showDuration": "300",
+          "hideDuration": "1000",
+          "timeOut": 0,
+          "extendedTimeOut": 0,
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut",
+          "toastClass": "custom-toast"
+        };
+    
+        // Function to display the Toastr toast notification and confirm before form submission
+        function showToast() {
+          // Define custom HTML content for the toast message with "Yes" and "No" buttons
+          var toastContent =
+            '<div><span>Are you sure you want to reject this bid?</span><br><br>' +
+            '<div class="d-flex justify-content-between"><button type="button" class="btn btn-danger rounded" onclick="rejectBid()">Confirm</button>' +
+            '<button type="button" class="btn btn-secondary border-radius-3" onclick="toastr.clear()">Cancel</button></div></div>';
+    
+          // Display custom Toastr notification with HTML content
+          toastr.clear(); // Clear any existing toastr notifications
+          toastr.info(toastContent, '', {
+            closeButton: true,
+            timeOut: 0,
+            extendedTimeOut: 0
+          });
+        }
+    
+        // Function to handle "Yes" button click
+        function rejectBid() {
+          // Submit the form or perform any other action
+          $('#deleteForm').submit();
+        }
+    </script>
+
+    @if ($auction->get->auction_length_days > 0)
         <script>
             var durations = '{{ $diff_d }}d{{ $diff_H }}h{{ $diff_I }}m{{ $diff_S }}s';
             $('.timer-d').timer({
@@ -1450,6 +1531,47 @@
             });
         </script>
     @endif
+    <script>
+        $(document).ready(function() {
+            const auctionEnded = {{ $auction->auction_ended}};
+            let createdAt = new Date("{{ $auction->created_at }}").getTime(); 
+            let auctionLength = {{ $auction->auction_length }} * 24 * 60 * 60 * 1000;
+            let auctionEndTime = createdAt + auctionLength;
+
+            console.log('time', {createdAt, auctionLength, auctionEndTime});
+
+            if(auctionEnded) return;
+
+            console.log('auction_continues');
+            function checkAndEndAuction() {
+                let now = new Date().getTime();
+                if (now >= auctionEndTime) {
+                    $('#countdown').html("Auction Ended");
+                    endAuctionAutomatically();
+                }
+            }
+
+            function endAuctionAutomatically() {
+                $.ajax({
+                    url: "/hire/agent/auction/end/{{ $auction->id }}",
+                    type: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    success: function (response) {
+                        alert(response.message);
+                        location.reload();
+                    },
+                    error: function (xhr) {
+                        console.error("Error:", xhr.responseText);
+                    }
+                });
+            }
+
+
+            checkAndEndAuction();
+        })
+    </script>
     <script src="{{ asset('js/lightbox.js') }}"></script>
     <script>
         import Lightbox from "bs5-lightbox";
