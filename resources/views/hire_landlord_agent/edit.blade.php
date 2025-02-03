@@ -413,31 +413,35 @@
                                     <label class="fw-bold">Address:</label>
                                     <input type="text" name="address" class="form-control search_places has-icon"
                                         data-type="address" required value="{{ old('address') }}"
-                                        data-icon="fa-solid fa-location-dot" placeholder="" />
-                                    @if ($errors->has('address'))
-                                        <div class="small error">{{ $errors->first('address') }}</div>
-                                    @endif
+                                        data-icon="fa-solid fa-location-dot" placeholder="" value="{{$auction->get->address}}" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="fw-bold">Unit Number:</label>
+                                    <input type="text" name="unit_num" data-type="cities" id="city"
+                                        class="form-control has-icon search_places" data-icon="fa-solid fa-city"
+                                        placeholder="" value="{{$auction->get->unit_num}}" />
                                 </div>
 
                                 <div class="form-group">
                                     <label class="fw-bold">City: </label>
                                     <input type="text" name="city" data-type="cities" id="city"
                                         class="form-control has-icon search_places" data-icon="fa-solid fa-city"
-                                        placeholder="" required>
+                                        placeholder="" required value="{{$auction->get->city}}" />
                                 </div>
 
                                 <div class="form-group">
                                     <label class="fw-bold">County: </label>
                                     <input type="text" name="county" data-type="counties" id="county"
                                         class="form-control has-icon search_places" data-icon="fa-solid fa-tree-city"
-                                        placeholder="" required>
+                                        placeholder="" required value="{{$auction->get->county}}" />
                                 </div>
 
                                 <div class="form-group">
                                     <label class="fw-bold">State:</label>
                                     <input type="text" name="state" data-type="states" id="state"
                                         class="form-control has-icon search_places" data-icon="fa-solid fa-flag-usa"
-                                        placeholder="" required>
+                                        placeholder="" required value="{{$auction->get->state}}" />
                                 </div>
                                 <small class="mt-1 fs-5">Note: The listing's address remains confidential until a seller
                                     employs an agent.
@@ -477,7 +481,7 @@
                                                 ],
                                                 [
                                                     'name' => 'Traditional Listing',
-                                                    'icon' => '<i class="fa-regular fa-circle-xmark"></i>',
+                                                    'icon' => '<i class="fa-solid fa-clipboard-list"></i>',
                                                     'target' => '',
                                                 ],
                                             ];
@@ -567,33 +571,26 @@
                                     <div>
                                         @php
                                             $property_items = [
-                                                ['name' => 'Single Family Residence', 'class' => 'residential-length'],
-                                                ['name' => 'Apartment ', 'class' => 'residential-length'],
-                                                ['name' => 'Townhouse', 'class' => 'residential-length'],
-                                                ['name' => 'Villa', 'class' => 'residential-length'],
-                                                ['name' => 'Condominium', 'class' => 'residential-length'],
+                                                ['name' => '1/2 Duplex', 'class' => 'residential-length'],
+                                                ['name' => '1/3 Triplex', 'class' => 'residential-length'],
+                                                ['name' => '1/4 Quadplex', 'class' => 'residential-length'],
+                                                ['name' => 'Apartment', 'class' => 'residential-length'],
                                                 ['name' => 'Condo-Hotel', 'class' => 'residential-length'],
+                                                ['name' => 'Condominium', 'class' => 'residential-length'],
                                                 ['name' => 'Dock-Rackominium', 'class' => 'residential-length'],
                                                 ['name' => 'Farm', 'class' => 'residential-length'],
                                                 ['name' => 'Garage Condo', 'class' => 'residential-length'],
-                                                [
-                                                    'name' => 'Manufactured Home- Post 1977',
-                                                    'class' => 'residential-length',
-                                                ],
+                                                ['name' => 'Manufactured Home- Post 1977', 'class' => 'residential-length'],
                                                 ['name' => 'Mobile Home- Pre 1976', 'class' => 'residential-length'],
                                                 ['name' => 'Modular Home', 'class' => 'residential-length'],
-                                                ['name' => 'Duplex', 'class' => 'income-length'],
-                                                ['name' => 'Triplex', 'class' => 'income-length'],
-                                                ['name' => 'Quadplex', 'class' => 'income-length'],
-                                                [
-                                                    'name' => 'Five or More (Residential units)',
-                                                    'class' => 'income-length',
-                                                ],
+                                                ['name' => 'Single Family Residence', 'class' => 'residential-length'],
+                                                ['name' => 'Townhouse', 'class' => 'residential-length'],
+                                                ['name' => 'Villa', 'class' => 'residential-length'],
+                                                ['name' => 'Unimproved Land', 'class' => 'residential-length'],
+
                                                 ['name' => 'Agriculture', 'class' => 'commercial-length'],
                                                 ['name' => 'Assembly Building', 'class' => 'commercial-length'],
                                                 ['name' => 'Business', 'class' => 'commercial-length'],
-                                                // Nisar Changing
-                                                // ['name' => 'Five or More (Residential units)', 'class' => 'commercial-length'],
                                                 ['name' => 'Five or More', 'class' => 'commercial-length'],
                                                 ['name' => 'Hotel/Motel', 'class' => 'commercial-length'],
                                                 ['name' => 'Industrial', 'class' => 'commercial-length'],
@@ -601,11 +598,16 @@
                                                 ['name' => 'Office', 'class' => 'commercial-length'],
                                                 ['name' => 'Restaurant', 'class' => 'commercial-length'],
                                                 ['name' => 'Retail', 'class' => 'commercial-length'],
-                                                ['name' => 'Unimproved Land', 'class' => 'residential-length'],
-                                                ['name' => '1/2 Duplex', 'class' => 'residential-length'],
-                                                ['name' => '1/3 Triplex', 'class' => 'residential-length'],
-                                                ['name' => '1/4 Quadplex', 'class' => 'residential-length'],
                                                 ['name' => 'Warehouse', 'class' => 'commercial-length'],
+
+
+                                                // [
+                                                //     'name' => 'Five or More (Residential units)',
+                                                //     'class' => 'income-length',
+                                                // ],
+                                                // ['name' => 'Duplex', 'class' => 'income-length'],
+                                                // ['name' => 'Triplex', 'class' => 'income-length'],
+                                                // ['name' => 'Quadplex', 'class' => 'income-length'],
                                             ];
                                         @endphp
                                         <select name="property_items[]" id="property_items"
@@ -632,7 +634,7 @@
                                         ];
                                     @endphp
                                     <div class="form-group">
-                                        <label class="fw-bold">Leasing:
+                                        <label class="fw-bold">Is the landlord looking to lease their entire property or a single room? 
                                         </label>
                                         <select class="grid-picker" name="leaseRoom" id="prop_condition"
                                             style="justify-content: flex-start;" required>
@@ -650,57 +652,12 @@
                                             <div class="form-group input-cover">
                                                 <span class="commercialFields">
                                                     <div class="form-group">
-                                                        <label class="fw-bold">What is the size of the room the landlord
-                                                            intends to lease?</label>
-                                                        <input type="text" class="form-control has-icon"
-                                                            data-icon="fa-regular fa-check-circle" name="sizeOfRoom"
-                                                            id="roomSize" required />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Is there a designated reception
-                                                            area?</label>
-                                                        <input type="text" class="form-control has-icon"
-                                                            data-icon="fa-regular fa-check-circle"
-                                                            name="designatedReceptionArea" id="designatedReceptionArea"
-                                                            required />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">How is the layout of the commercial space
-                                                            configured?</label>
-                                                        <input type="text" class="form-control has-icon"
-                                                            data-icon="fa-regular fa-check-circle"
-                                                            name="layoutConfiguration" id="layoutConfiguration"
-                                                            required />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Are there specific zoning restrictions or
-                                                            permitted uses for the
-                                                            space?</label>
-                                                        <input type="text" class="form-control has-icon"
-                                                            data-icon="fa-regular fa-check-circle"
-                                                            name="zoningRestrictions" id="zoningRestrictions" required />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">How much storage space is available?</label>
-                                                        <input type="text" class="form-control has-icon"
-                                                            data-icon="fa-regular fa-check-circle" name="storageSpace"
-                                                            id="storageSpaceAvailable" required />
-                                                    </div>
-                                                    <div class="form-group">
                                                         <label class="fw-bold">Are there any shared amenities, such as
                                                             conference rooms or parking
                                                             facilities?</label>
                                                         <input type="text" class="form-control has-icon"
                                                             data-icon="fa-regular fa-check-circle" name="sharedAmenities"
                                                             id="sharedAmenities" required />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">How is cleaning and maintenance of common
-                                                            areas
-                                                            managed?</label>
-                                                        <input type="text" class="form-control has-icon"
-                                                            data-icon="fa-regular fa-check-circle" name="areasManaged"
-                                                            required />
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="fw-bold">Are there specific hours of operation for
@@ -710,6 +667,14 @@
                                                         <input type="text" class="form-control has-icon"
                                                             data-icon="fa-regular fa-check-circle" name="hoursOfOperation"
                                                             id="hoursOfOperation" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Are there specific zoning restrictions or
+                                                            permitted uses for the
+                                                            space?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle"
+                                                            name="zoningRestrictions" id="zoningRestrictions" required />
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="fw-bold">How are maintenance issues and repairs
@@ -728,6 +693,35 @@
                                                             id="utilitiesSplit" required />
                                                     </div>
                                                     <div class="form-group">
+                                                        <label class="fw-bold">How is cleaning and maintenance of common
+                                                            areas
+                                                            managed?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="areasManaged"
+                                                            required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">How is the layout of the commercial space
+                                                            configured?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle"
+                                                            name="layoutConfiguration" id="layoutConfiguration"
+                                                            required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">How much storage space is available?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="storageSpace"
+                                                            id="storageSpaceAvailable" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">What is the size of the room the landlord
+                                                            intends to lease?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="sizeOfRoom"
+                                                            id="roomSize" required />
+                                                    </div>
+                                                    <div class="form-group">
                                                         <label class="fw-bold">What types of businesses are neighboring
                                                             tenants
                                                             in the building or
@@ -736,27 +730,23 @@
                                                             data-icon="fa-regular fa-check-circle"
                                                             name="neighboringTenants" id="neighboringTenants" required />
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">Is there a designated reception
+                                                            area?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle"
+                                                            name="designatedReceptionArea" id="designatedReceptionArea"
+                                                            required />
+                                                    </div>
                                                 </span>
                                                 <span class="resFields">
                                                     <div class="form-group">
-                                                        <label class="fw-bold"> What is the size of the room the landlord
-                                                            intends to lease?</label>
+                                                        <label class="fw-bold">Are tenants allowed to have guests, and if
+                                                            so,
+                                                            are there any
+                                                            restrictions?</label>
                                                         <input type="text" class="form-control has-icon"
-                                                            data-icon="fa-regular fa-check-circle" name="sizeOfRoom"
-                                                            id="custom_property_condition" required />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="fw-bold"> Is there a private bathroom, or is it
-                                                            shared?</label>
-                                                        <input type="text" class="form-control has-icon"
-                                                            data-icon="fa-regular fa-check-circle" name="privateBathroom"
-                                                            id="custom_property_condition" required />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="fw-bold"> How much storage space is
-                                                            available?</label>
-                                                        <input type="text" class="form-control has-icon"
-                                                            data-icon="fa-regular fa-check-circle" name="storageSpace"
+                                                            data-icon="fa-regular fa-check-circle" name="tenantsGuests"
                                                             id="custom_property_condition" required />
                                                     </div>
                                                     <div class="form-group">
@@ -766,23 +756,6 @@
                                                             backyard?</label>
                                                         <input type="text" class="form-control has-icon"
                                                             data-icon="fa-regular fa-check-circle" name="commonAreas"
-                                                            id="custom_property_condition" required />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">How is cleaning and maintenance of common
-                                                            areas
-                                                            managed?</label>
-                                                        <input type="text" class="form-control has-icon"
-                                                            data-icon="fa-regular fa-check-circle" name="areasManaged"
-                                                            id="custom_property_condition" required />
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="fw-bold">Are tenants allowed to have guests, and if
-                                                            so,
-                                                            are there any
-                                                            restrictions?</label>
-                                                        <input type="text" class="form-control has-icon"
-                                                            data-icon="fa-regular fa-check-circle" name="tenantsGuests"
                                                             id="custom_property_condition" required />
                                                     </div>
                                                     <div class="form-group">
@@ -796,6 +769,35 @@
                                                         <label class="fw-bold">How are the utilities split?</label>
                                                         <input type="text" class="form-control has-icon"
                                                             data-icon="fa-regular fa-check-circle" name="utilitiesSplit"
+                                                            id="custom_property_condition" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold">How is cleaning and maintenance of common
+                                                            areas
+                                                            managed?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="areasManaged"
+                                                            id="custom_property_condition" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold"> How much storage space is
+                                                            available?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="storageSpace"
+                                                            id="custom_property_condition" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold"> Is there a private bathroom, or is it
+                                                            shared?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="privateBathroom"
+                                                            id="custom_property_condition" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="fw-bold"> What is the size of the room the landlord
+                                                            intends to lease?</label>
+                                                        <input type="text" class="form-control has-icon"
+                                                            data-icon="fa-regular fa-check-circle" name="sizeOfRoom"
                                                             id="custom_property_condition" required />
                                                     </div>
                                                 </span>
@@ -829,56 +831,12 @@
                                         <div class="form-group singleRoomCommercial d-none">
                                             <span class="commercialFields">
                                                 <div class="form-group">
-                                                    <label class="fw-bold">What is the size of the room the landlord
-                                                        intends to lease?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                        data-icon="fa-regular fa-check-circle" name="sizeOfRoom"
-                                                        id="roomSize" required />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="fw-bold">Is there a designated reception
-                                                        area?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                        data-icon="fa-regular fa-check-circle"
-                                                        name="designatedReceptionArea" id="designatedReceptionArea"
-                                                        required />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="fw-bold">How is the layout of the commercial space
-                                                        configured?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                        data-icon="fa-regular fa-check-circle" name="layoutConfiguration"
-                                                        id="layoutConfiguration" required />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="fw-bold">Are there specific zoning restrictions or
-                                                        permitted uses for the
-                                                        space?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                        data-icon="fa-regular fa-check-circle" name="zoningRestrictions"
-                                                        id="zoningRestrictions" required />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="fw-bold">How much storage space is available?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                        data-icon="fa-regular fa-check-circle" name="storageSpace"
-                                                        id="storageSpaceAvailable" required />
-                                                </div>
-                                                <div class="form-group">
                                                     <label class="fw-bold">Are there any shared amenities, such as
                                                         conference rooms or parking
                                                         facilities?</label>
                                                     <input type="text" class="form-control has-icon"
                                                         data-icon="fa-regular fa-check-circle" name="sharedAmenities"
                                                         id="sharedAmenities" required />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="fw-bold">How is cleaning and maintenance of common
-                                                        areas
-                                                        managed?</label>
-                                                    <input type="text" class="form-control has-icon"
-                                                        data-icon="fa-regular fa-check-circle" name="areasManaged"
-                                                        required />
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="fw-bold">Are there specific hours of operation for
@@ -888,6 +846,14 @@
                                                     <input type="text" class="form-control has-icon"
                                                         data-icon="fa-regular fa-check-circle" name="hoursOfOperation"
                                                         id="hoursOfOperation" required />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Are there specific zoning restrictions or
+                                                        permitted uses for the
+                                                        space?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle" name="zoningRestrictions"
+                                                        id="zoningRestrictions" required />
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="fw-bold">How are maintenance issues and repairs
@@ -905,6 +871,34 @@
                                                         id="utilitiesSplit" required />
                                                 </div>
                                                 <div class="form-group">
+                                                    <label class="fw-bold">How is cleaning and maintenance of common
+                                                        areas
+                                                        managed?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle" name="areasManaged"
+                                                        required />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="fw-bold">How is the layout of the commercial space
+                                                        configured?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle" name="layoutConfiguration"
+                                                        id="layoutConfiguration" required />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="fw-bold">How much storage space is available?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle" name="storageSpace"
+                                                        id="storageSpaceAvailable" required />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="fw-bold">What is the size of the room the landlord
+                                                        intends to lease?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle" name="sizeOfRoom"
+                                                        id="roomSize" required />
+                                                </div>
+                                                <div class="form-group">
                                                     <label class="fw-bold">What types of businesses are neighboring
                                                         tenants
                                                         in the building or
@@ -913,87 +907,15 @@
                                                         data-icon="fa-regular fa-check-circle" name="neighboringTenants"
                                                         id="neighboringTenants" required />
                                                 </div>
+                                                <div class="form-group">
+                                                    <label class="fw-bold">Is there a designated reception
+                                                        area?</label>
+                                                    <input type="text" class="form-control has-icon"
+                                                        data-icon="fa-regular fa-check-circle"
+                                                        name="designatedReceptionArea" id="designatedReceptionArea"
+                                                        required />
+                                                </div>
                                             </span>
-                                            {{-- <div class="form-group">
-                                                <label class="fw-bold" for="roomSize">What is the size of the room the
-                                                    landlord intends to
-                                                    lease?</label>
-                                                <input type="text" name="leaseSingleRoom[]" id="roomSize"
-                                                    data-icon ="fa-solid fa-ruler-combined" class="form-control has-icon"
-                                                    required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="fw-bold" for="accessHours">What are the access hours to the
-                                                    commercial
-                                                    space?</label>
-                                                <input type="text" name="leaseSingleRoom[]" id="accessHours"
-                                                    data-icon ="fa-solid fa-ruler-combined" class="form-control has-icon"
-                                                    required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="fw-bold" for="roomDescription">Can you provide a detailed
-                                                    description of the room
-                                                    and its
-                                                    dimensions?</label>
-                                                <input type="text" name="leaseSingleRoom[]" id="roomDescription"
-                                                    data-icon ="fa-solid fa-ruler-combined" class="form-control has-icon"
-                                                    required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="fw-bold" for="bathroomType">Is there a private bathroom, or
-                                                    is it shared?</label>
-                                                <input type="text" name="leaseSingleRoom[]" id="bathroomType"
-                                                    data-icon ="fa-solid fa-ruler-combined" class="form-control has-icon"
-                                                    required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="fw-bold" for="spaceRestrictions">Are there any restrictions
-                                                    on how the space can
-                                                    be used or
-                                                    modified?</label>
-                                                <input type="text" name="leaseSingleRoom[]" id="spaceRestrictions"
-                                                    data-icon ="fa-solid fa-ruler-combined" class="form-control has-icon"
-                                                    required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="fw-bold" for="cleaningMaintenance">How is cleaning and
-                                                    maintenance of common areas
-                                                    managed?</label>
-                                                <input type="text" name="leaseSingleRoom[]" id="cleaningMaintenance"
-                                                    class="form-control has-icon" data-icon ="fa-solid fa-ruler-combined"
-                                                    required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="fw-bold" for="sharedAmenities">Are there shared amenities,
-                                                    and how are they
-                                                    maintained?</label>
-                                                <input type="text" name="leaseSingleRoom[]" id="sharedAmenities"
-                                                    class="form-control has-icon" data-icon ="fa-solid fa-ruler-combined"
-                                                    required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="fw-bold" for="maintenanceResponsibility">Who is responsible
-                                                    for maintenance and
-                                                    repairs within the
-                                                    rented space?</label>
-                                                <input type="text" name="leaseSingleRoom[]"
-                                                    id="maintenanceResponsibility" class="form-control has-icon"
-                                                    data-icon ="fa-solid fa-ruler-combined" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="fw-bold" for="utilitiesSplit">How are the utilities
-                                                    split?</label>
-                                                <input type="text" name="leaseSingleRoom[]" id="utilitiesSplit"
-                                                    class="form-control has-icon" data-icon ="fa-solid fa-ruler-combined"
-                                                    required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="fw-bold" for="storageSpace">How much storage space is
-                                                    available?</label>
-                                                <input type="text" name="leaseSingleRoom[]" id="storageSpace"
-                                                    class="form-control has-icon" data-icon ="fa-solid fa-ruler-combined"
-                                                    required>
-                                            </div> --}}
                                         </div>
                                     </div>
                                 </span>
@@ -1121,15 +1043,14 @@
                                     <div class="form-group commercial_hide">
                                         <div class="form-group">
                                             <label class="fw-bold">Net Leaseable Sqft: </label>
-                                            <input type="text"
-                                                name="net_leasable_square_footage"id="net_square_footage"
+                                            <input type="number" name="net_leasable_square_footage"id="net_square_footage"
                                                 class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"
                                                 data-msg-required="" required />
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="fw-bold">Total Sqft: </label>
-                                        <input type="text" name="totalSqft" id="net_square_footage"
+                                        <input type="number" name="totalSqft" id="net_square_footage"
                                             class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"
                                             data-msg-required="" required />
                                     </div>
@@ -1368,7 +1289,7 @@
                                                 <div class="form-group garageYes d-none">
                                                     <label class="fw-bold" for="heated_sqft">How many garage spaces?
                                                     </label>
-                                                    <input type="text" name="custom_garage" id="total_acreage"
+                                                    <input type="number" name="custom_garage" id="total_acreage"
                                                         class="form-control has-icon hide_arrow"
                                                         data-icon="fa-solid fa-warehouse" required>
                                                 </div>
@@ -1409,7 +1330,7 @@
                                                 <div class="form-group carportOptionsYes d-none">
                                                     <label class="fw-bold" for="heated_sqft">How many carport spaces?
                                                     </label>
-                                                    <input type="text" name="custom_carport" id="total_acreage"
+                                                    <input type="number" name="custom_carport" id="total_acreage"
                                                         class="form-control has-icon hide_arrow"
                                                         data-icon="fa-solid fa-warehouse" required>
                                                 </div>
@@ -1513,7 +1434,7 @@
                                             [
                                                 'target' => '.preferenceNo',
                                                 'name' => 'Beach',
-                                                'icon' => 'fa-regular fa-circle-xmark',
+                                                'icon' => 'fa-regular fa-check-circle',
                                             ],
                                             ['target' => '', 'name' => 'Pool', 'icon' => 'fa-regular fa-check-circle'],
                                             [
@@ -1666,7 +1587,7 @@
                                         @endphp
                                         <div class="form-group d-none garageOptionYes">
                                             <select class="grid-picker" name="parking"
-                                                style="justify-content: flex-start;" required>
+                                                style="justify-content: flex-start;" multiple required>
                                                 <option value="">Select</option>
                                                 @foreach ($garageParking as $item)
                                                     <option value="{{ $item['name'] }}"
@@ -1678,8 +1599,7 @@
                                                 @endforeach
                                             </select>
                                             <div class="form-group other_garage d-none">
-                                                <label class="fw-bold" for="other_garage">Garage/Parking Features
-                                                    :</label>
+                                                <label class="fw-bold" for="other_garage">Garage/Parking Features:</label>
                                                 <input type="text" name="parkingOther"
                                                     class="form-control has-icon hide_arrow"
                                                     data-icon="fa-solid fa-warehouse" required>
@@ -1762,7 +1682,7 @@
                                     <div class="form-group">
                                         <label class="fw-bold">Furnishings: </label>
 
-                                        <select class="grid-picker" name="Furnishings" id="appliances"
+                                        <select class="grid-picker" name="furnishings[]" id="appliances"
                                             style="justify-content: flex-start;" multiple required>
                                             <option value="">Select</option>
                                             @foreach ($Furnishings as $item)
@@ -1784,42 +1704,41 @@
                                         </label>
                                         @php
                                             $amenitiesFeatureCommercial = [
-                                                ['name' => 'Parking Spaces', 'target' => ''],
-                                                ['name' => 'Loading Dock', 'target' => ''],
-                                                ['name' => 'Warehouse Space', 'target' => ''],
-                                                ['name' => 'Office Space', 'target' => ''],
+                                                ['name' => 'Access to Public Transportation', 'target' => ''],
+                                                ['name' => 'Business Center', 'target' => ''],
+                                                ['name' => 'Common Areas', 'target' => ''],
                                                 ['name' => 'Conference Room', 'target' => ''],
-                                                ['name' => 'Kitchenette/Break Room', 'target' => ''],
-                                                ['name' => 'Restrooms', 'target' => ''],
                                                 ['name' => 'Elevator', 'target' => ''],
+                                                ['name' => 'Energy-Efficient Features', 'target' => ''],
+                                                ['name' => 'Fire Safety Systems', 'target' => ''],
+                                                ['name' => 'Flexibility for Renovations', 'target' => ''],
+                                                ['name' => 'Green Building Certification', 'target' => ''],
+                                                ['name' => 'Gym/Fitness Facilities', 'target' => ''],
                                                 ['name' => 'Handicap Accessibility', 'target' => ''],
-                                                ['name' => 'Security System', 'target' => ''],
+                                                ['name' => 'High-Speed Internet', 'target' => ''],
+                                                ['name' => 'HVAC System', 'target' => ''],
+                                                ['name' => 'Industrial Features', 'target' => ''],
+                                                ['name' => 'Kitchenette/Break Room', 'target' => ''],
+                                                ['name' => 'Loading Dock', 'target' => ''],
+                                                ['name' => 'Lounge Area', 'target' => ''],
+                                                ['name' => 'Natural Lighting', 'target' => ''],
+                                                ['name' => 'Office Space', 'target' => ''],
                                                 ['name' => 'On-site Maintenance', 'target' => ''],
                                                 ['name' => 'On-site Management', 'target' => ''],
-                                                ['name' => 'Outdoor Space/Garden', 'target' => ''],
-                                                ['name' => 'Signage Opportunities', 'target' => ''],
-                                                ['name' => 'High-Speed Internet', 'target' => ''],
-                                                ['name' => 'Utilities Included', 'target' => ''],
-                                                ['name' => 'HVAC System', 'target' => ''],
-                                                ['name' => 'Natural Lighting', 'target' => ''],
-                                                ['name' => 'Storage Space', 'target' => ''],
                                                 ['name' => 'Open Floor Plan', 'target' => ''],
+                                                ['name' => 'Parking Spaces', 'target' => ''],
+                                                ['name' => 'Proximity to Highways', 'target' => ''],
+                                                ['name' => 'Reception Area', 'target' => ''],
+                                                ['name' => 'Restrooms', 'target' => ''],
                                                 ['name' => 'Retail Frontage', 'target' => ''],
                                                 ['name' => 'Restaurant Space', 'target' => ''],
-                                                ['name' => 'Industrial Features', 'target' => ''],
-                                                ['name' => 'Flexibility for Renovations', 'target' => ''],
-                                                ['name' => 'Common Areas', 'target' => ''],
-                                                ['name' => 'Business Center', 'target' => ''],
-                                                ['name' => 'Gym/Fitness Facilities', 'target' => ''],
-                                                ['name' => 'Lounge Area', 'target' => ''],
-                                                ['name' => 'Reception Area', 'target' => ''],
                                                 ['name' => 'Security Guard', 'target' => ''],
-                                                ['name' => 'Fire Safety Systems', 'target' => ''],
-                                                ['name' => 'Energy-Efficient Features', 'target' => ''],
-                                                ['name' => 'Green Building Certification', 'target' => ''],
-                                                ['name' => 'Access to Public Transportation', 'target' => ''],
-                                                ['name' => 'Proximity to Highways', 'target' => ''],
+                                                ['name' => 'Security System', 'target' => ''],
+                                                ['name' => 'Signage Opportunities', 'target' => ''],
+                                                ['name' => 'Storage Space', 'target' => ''],
+                                                ['name' => 'Utilities Included', 'target' => ''],
                                                 ['name' => 'Visibility from Main Road', 'target' => ''],
+                                                ['name' => 'Warehouse Space', 'target' => ''],
                                                 ['target' => '.otherAmenitiesFeatureCommercial', 'name' => 'Other'],
                                             ];
                                         @endphp
@@ -1827,9 +1746,8 @@
                                             style="justify-content: flex-start;" multiple required>
                                             <option value=""></option>
                                             @foreach ($amenitiesFeatureCommercial as $item)
-                                                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                                                    class="card flex-column" style="width:calc(20% - 10px);"
-                                                    data-icon='<i class="fa-regular fa-check-circle" style="font-size:24px;"></i>'>
+                                                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row" 
+                                                style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-check-circle"></i>'>
                                                     {{ $item['name'] }}
                                                 </option>
                                             @endforeach
@@ -1851,42 +1769,42 @@
                                         </label>
                                         @php
                                             $amenitiesFeatureRes = [
-                                                ['target' => '', 'name' => 'Garage'],
+                                                ['target' => '', 'name' => '55 and Over Community'],
+                                                ['target' => '', 'name' => 'Accessibility Features'],
+                                                ['target' => '', 'name' => 'Balcony/Patio'],
+                                                ['target' => '', 'name' => 'Carpet Floors'],
                                                 ['target' => '', 'name' => 'Carport'],
-                                                ['target' => '', 'name' => 'Pool'],
-                                                ['target' => '', 'name' => 'Waterfront'],
+                                                ['target' => '', 'name' => 'Central Air Conditioning'],
+                                                ['target' => '', 'name' => 'Central Heating'],
+                                                ['target' => '', 'name' => 'Clubhouse'],
+                                                ['target' => '', 'name' => 'Covered Carport'],
+                                                ['target' => '', 'name' => 'Elevator'],
+                                                ['target' => '', 'name' => 'Fireplace'],
+                                                ['target' => '', 'name' => 'Fitness Center/Gym'],
+                                                ['target' => '', 'name' => 'First Floor Unit'],
+                                                ['target' => '', 'name' => 'Gated Community'],
+                                                ['target' => '', 'name' => 'Garage'],
+                                                ['target' => '', 'name' => 'Hardwood Floors'],
+                                                ['target' => '', 'name' => 'HOA Community'],
                                                 ['target' => '', 'name' => 'In-Unit Laundry'],
                                                 ['target' => '', 'name' => 'On-site Laundry'],
-                                                ['target' => '', 'name' => 'Washer and Dryer Hookup'],
-                                                ['target' => '', 'name' => 'Washer and Dryer'],
-                                                ['target' => '', 'name' => 'Covered Carport'],
-                                                ['target' => '', 'name' => 'First Floor Unit'],
-                                                ['target' => '', 'name' => 'Elevator'],
-                                                ['target' => '', 'name' => 'Pet Friendly'],
-                                                ['target' => '', 'name' => 'Balcony/Patio'],
-                                                ['target' => '', 'name' => 'Fitness Center/Gym'],
-                                                ['target' => '', 'name' => 'Central Heating'],
-                                                ['target' => '', 'name' => 'Central Air Conditioning'],
-                                                ['target' => '', 'name' => 'Fireplace'],
-                                                ['target' => '', 'name' => 'Walk-in Closet'],
-                                                ['target' => '', 'name' => 'Hardwood Floors'],
-                                                ['target' => '', 'name' => 'Tile Floors'],
-                                                ['target' => '', 'name' => 'Carpet Floors '],
-                                                ['target' => '', 'name' => 'Security System'],
-                                                ['target' => '', 'name' => 'Gated Community'],
-                                                ['target' => '', 'name' => 'HOA Community'],
-                                                ['target' => '', 'name' => '55 and Over Community'],
-                                                ['target' => '', 'name' => 'Specific School District'],
-                                                ['target' => '', 'name' => 'Accessibility Features'],
                                                 ['target' => '', 'name' => 'On-site Maintenance'],
                                                 ['target' => '', 'name' => 'On-site Management'],
                                                 ['target' => '', 'name' => 'Outdoor Space'],
+                                                ['target' => '', 'name' => 'Pet Friendly'],
                                                 ['target' => '', 'name' => 'Playground'],
-                                                ['target' => '', 'name' => 'Clubhouse'],
+                                                ['target' => '', 'name' => 'Pool'],
+                                                ['target' => '', 'name' => 'Security System'],
+                                                ['target' => '', 'name' => 'Specific School District'],
                                                 ['target' => '', 'name' => 'Storage Space'],
                                                 ['target' => '', 'name' => 'Study/Den/Office'],
-                                                ['target' => '', 'name' => 'Updated Kitchen'],
+                                                ['target' => '', 'name' => 'Tile Floors'],
                                                 ['target' => '', 'name' => 'Updated Bathroom'],
+                                                ['target' => '', 'name' => 'Updated Kitchen'],
+                                                ['target' => '', 'name' => 'Walk-in Closet'],
+                                                ['target' => '', 'name' => 'Washer and Dryer'],
+                                                ['target' => '', 'name' => 'Washer and Dryer Hookup'],
+                                                ['target' => '', 'name' => 'Waterfront'],
                                                 ['target' => '.otherAmenitiesFeatureRes', 'name' => 'Other'],
                                             ];
                                         @endphp
@@ -1895,16 +1813,14 @@
                                             <option value=""></option>
                                             @foreach ($amenitiesFeatureRes as $item)
                                                 <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                                                    class="card flex-column" style="width:calc(20% - 10px);"
-                                                    data-icon='<i class="fa-regular fa-check-circle" style="font-size:24px;"></i>'>
+                                                    class="card flex-row" style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-check-circle"></i>'>
                                                     {{ $item['name'] }}
                                                 </option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="form-group otherAmenitiesFeatureRes d-none">
-                                        <label class="fw-bold" for="custom_negotiable_terms"> Amenities and Property
-                                            Features:
+                                        <label class="fw-bold" for="custom_negotiable_terms"> Amenities and Property Features:
                                         </label>
                                         <input type="text" name="otherAmenities" id="custom_negotiable_terms"
                                             placeholder="" class="form-control has-icon"
@@ -1960,25 +1876,22 @@
                             <div class="wizard-step" data-step="19" data-old="22">
                                 @php
                                     $tenantPays = [
-                                        ['name' => 'Cable TV', 'target' => ''],
+                                        ['name' => 'Association Fees', 'target' => ''],
+                                        ['name' => 'Capital Expenses', 'target' => ''],
+                                        ['name' => 'Common Area Maintenance', 'target' => ''],
+                                        ['name' => 'Condominium Fees', 'target' => ''],
                                         ['name' => 'Electricity', 'target' => ''],
                                         ['name' => 'Gas', 'target' => ''],
-                                        ['name' => 'Grounds Care', 'target' => ''],
-                                        ['name' => 'Insurance', 'target' => ''],
-                                        ['name' => 'Internet', 'target' => ''],
-                                        ['name' => 'Laundry', 'target' => ''],
-                                        ['name' => 'Management', 'target' => ''],
-                                        ['name' => 'Pest Control', 'target' => ''],
-                                        ['name' => 'Pool Maintenance', 'target' => ''],
-                                        ['name' => 'Recreational', 'target' => ''],
-                                        ['name' => 'Repairs', 'target' => ''],
-                                        ['name' => 'Security', 'target' => ''],
+                                        ['name' => 'Liability Insurance', 'target' => ''],
+                                        ['name' => 'Parking Fee', 'target' => ''],
+                                        ['name' => 'Pro-Rated', 'target' => ''],
+                                        ['name' => 'Property Insurance', 'target' => ''],
+                                        ['name' => 'Property Taxes', 'target' => ''],
+                                        ['name' => 'Reserves', 'target' => ''],
                                         ['name' => 'Sewer', 'target' => ''],
-                                        ['name' => 'Taxes', 'target' => ''],
-                                        ['name' => 'Telephone', 'target' => ''],
                                         ['name' => 'Trash Collection', 'target' => ''],
-                                        ['name' => 'None', 'target' => ''],
                                         ['name' => 'Water', 'target' => ''],
+                                        ['name' => 'None ', 'target' => ''],
                                         ['name' => 'Other', 'target' => '.otherTenantPays'],
                                     ];
                                 @endphp
@@ -2027,7 +1940,7 @@
                                     ];
                                 @endphp
                                 <div class="form-group">
-                                    <label class="fw-bold">Landlord Pays:</label>
+                                    <label class="fw-bold">Owner Pays:</label>
                                     <select class="grid-picker" name="ownerPays[]" id=""
                                         style="justify-content: flex-start;" multiple required>
                                         <option value="">Select</option>
@@ -2041,7 +1954,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group otherOwnerPays d-none">
-                                    <label class="fw-bold">Landlord Pays:</label>
+                                    <label class="fw-bold">Owner Pays:</label>
                                     <input type="text" class="form-control has-icon" placeholder=""
                                         name="otherOwnerPays" data-icon="fa-regular fa-check-circle" id="rent_include"
                                         required />
@@ -2079,40 +1992,34 @@
                                             <div class="form-group">
                                                 <label class="fw-bold" for="heated_sqft">Number of Pets Allowed:</label>
                                                 <input type="text" name="petsNumber" id="total_acreage"
-                                                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dog"
-                                                    required>
+                                                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dog" >
                                             </div>
                                             <div class="form-group">
                                                 <label class="fw-bold" for="heated_sqft">Acceptable Pet Types:</label>
                                                 <input type="text" name="petsType" id="total_acreage"
-                                                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dog"
-                                                    required>
+                                                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dog" >
                                             </div>
                                             <div class="form-group">
                                                 <label class="fw-bold" for="heated_sqft">Maximum Pet Weight:</label>
                                                 <input type="text" name="petsWeight" id="total_acreage"
-                                                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dog"
-                                                    required>
+                                                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dog" >
                                             </div>
                                             <div class="form-group">
                                                 <label class="fw-bold" for="heated_sqft">One-Time Pet Deposit or Monthly
                                                     Pet Fee:</label>
                                                 <input type="text" name="petsFee" id="total_acreage"
-                                                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dog"
-                                                    required>
+                                                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dog" >
                                             </div>
                                             <div class="form-group">
                                                 <label class="fw-bold" for="heated_sqft">Pet Fee Amount:</label>
-                                                <input type="text" name="petsFeeAmount" id="total_acreage"
-                                                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dog"
-                                                    required>
+                                                <input type="number" name="petsFeeAmount" id="total_acreage"
+                                                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dallar-sign" >
                                             </div>
                                             <div class="form-group">
                                                 <label class="fw-bold" for="heated_sqft">Is the Pet Fee Refundable or
                                                     Non-Refundable?</label>
                                                 <input type="text" name="petsFund" id="total_acreage"
-                                                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dog"
-                                                    required>
+                                                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dog" >
                                             </div>
                                         </div>
                                     </div>
@@ -2148,11 +2055,12 @@
                                             ['name' => 'Annually', 'target' => ''],
                                             ['name' => 'Daily', 'target' => ''],
                                             ['name' => 'Monthly', 'target' => ''],
-                                            ['name' => 'Seasonally', 'target' => ''],
+                                            ['name' => 'Seasonally', 'target' => '.season_runs'],
+                                            ['name' => 'Weekly', 'target' => ''],
                                         ];
                                     @endphp
                                     <div class="form-group">
-                                        <label class="fw-bold">Select the frequency in which the Lease Amount is paid:
+                                        <label class="fw-bold">Select the frequency at which the lease amount is paid:
                                         </label>
 
                                         <select class="grid-picker" name="leaseAmount" id="appliances"
@@ -2167,6 +2075,18 @@
                                                 </option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                    <div class="season_runs d-none">
+                                        <div class="form-group">
+                                            <label class="fw-bold">Season runs from:</label>
+                                            <input type="date" name="season_runs_from" id="season_runs_from" class="form-control has-icon"
+                                                data-icon="fa-regular fa-calendar-days" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="fw-bold">Season runs to:</label>
+                                            <input type="date" name="season_runs_to" id="season_runs_to" class="form-control has-icon"
+                                                data-icon="fa-regular fa-calendar-days" required>
+                                        </div>
                                     </div>
                                 </span>
                                 <span class="commercialFields">
@@ -2195,7 +2115,7 @@
                                     </div>
                                 </span>
                             </div>
-                            <div class="wizard-step" data-step="23" data-old="26">
+                            {{-- <div class="wizard-step" data-step="23" data-old="26">
                                 @php
                                     $leaseDuration = [
                                         ['name' => '3 Months', 'target' => ''],
@@ -2230,8 +2150,8 @@
                                             data-icon="fa-solid fa-calendar-days" required />
                                     </div>
                                 </div>
-                            </div>
-                            <div class="wizard-step" data-step="24" data-old="27">
+                            </div> --}}
+                            <div class="wizard-step" data-step="23" data-old="24">
                                 @php
                                     $termLease = [
                                         ['name' => 'Absolute (Triple) Net', 'target' => ''],
@@ -2254,7 +2174,7 @@
                                     ];
                                 @endphp
                                 <div class="form-group">
-                                    <label class="fw-bold"> Terms of Lease: </label>
+                                    <label class="fw-bold"> Terms of Lease:</label>
 
                                     <select class="grid-picker" name="termLease[]" id="appliances"
                                         style="justify-content: flex-start;" multiple required>
@@ -2271,20 +2191,16 @@
                                     <div class="form-group other_terms_lease d-none">
                                         <label class="fw-bold">Terms of Lease:<span class="text-danger"></span></label>
                                         <input type="text" class="form-control has-icon" placeholder=" "
-                                            name="termLeaseOther" data-icon="fa-regular fa-check-circle"
+                                            name="termLeaseOther" data-icon="fa-regular fa-calendar-days"
                                             id="occupant_type_input" required />
                                     </div>
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="25" data-old="28">
+                            <div class="wizard-step" data-step="24" data-old="25">
                                 @php
                                     $occupant_types = [
                                         ['name' => 'Vacant', 'target' => '', 'icon' => 'fa-regular fa-circle-check'],
-                                        [
-                                            'name' => 'Occupied',
-                                            'target' => '.custom_occupant_type',
-                                            'icon' => 'fa-regular fa-circle-check',
-                                        ],
+                                        ['name' => 'Occupied', 'target' => '.custom_occupant_type', 'icon' => 'fa-regular fa-circle-check'],
                                     ];
                                 @endphp
                                 <div class="form-group">
@@ -2309,7 +2225,7 @@
                                         id="occupant_type_input" required />
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="26" data-old="29">
+                            <div class="wizard-step" data-step="25" data-old="26">
                                 <div class="form-group">
                                     <label class="fw-bold">
                                         Desired Rental Amount:
@@ -2318,7 +2234,7 @@
                                         data-icon="fa-solid fa-dollar-sign" id="expectation" required />
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="27" data-old="30">
+                            <div class="wizard-step" data-step="26" data-old="27">
                                 <div class="form-group">
 
                                     <label class="fw-bold">Listing Availability Date:</label>
@@ -2326,7 +2242,7 @@
                                         class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="28" data-old="31">
+                            <div class="wizard-step" data-step="27" data-old="28">
                                 <div class="form-group">
                                     <label class="fw-bold">
                                         Desired Lease Length:
@@ -2340,6 +2256,7 @@
                                             ['name' => '2 Years', 'target' => ''],
                                             ['name' => '3-5 Years', 'target' => ''],
                                             ['name' => '5+ Years', 'target' => ''],
+                                            ['name' => 'Month to Month', 'target' => ''],
                                             ['name' => 'Other', 'target' => '.custom_lease_period'],
                                         ];
                                     @endphp
@@ -2361,10 +2278,10 @@
                                         data-icon="fa-solid fa-calendar-days" id="custom_lease_period" required />
                                 </div>
                             </div>
-                            <div class="wizard-step" data-step="29" data-old="32">
+                            <div class="wizard-step" data-step="28" data-old="29">
                                 <div class="form-group ">
                                     <label class="fw-bold">
-                                        What is the timeframe offered to the agent in the Landlord Agency Agreement?
+                                        What is the timeframe offered to the agent in the landlord agency agreement? 
                                     </label>
                                     @php
                                         $listing_terms_res = [
@@ -2398,8 +2315,109 @@
                                 </div>
                                 {{-- </span> --}}
                             </div>
-                            <div class="wizard-step" data-step="30" data-old="33">
-                                <div class="form-group ">
+                            <div class="wizard-step" data-step="29" data-old="30">
+                                <h4>Owner's Agreement on Commission Rates:</h4>
+                                <h6>The owner agrees to compensate the broker as follows, including paying any applicable taxes on the broker's services, if the owner enters into a lease of the property with a tenant during the listing period, regardless of whether the tenant fulfills the terms of the lease; or if, during the listing period, the broker procures a tenant who is ready, willing, and able to lease the property under the terms of this agreement, or terms acceptable to the owner. All commission is negotiable.</h6>
+                                
+                                <div class="form-group">
+                                    @php
+                                        $broker_compensation = [
+                                            [ 'name' => "___% of each rental period", 'target' => ''],
+                                            ['name' => "___% of the gross lease value", 'target' => ''],
+                                            ['name' => "____% of the first month's rent", 'target' => ''],
+                                            ['name' => 'Fixed amount: $____ ', 'target' => ''],
+                                            ['name' => 'Negotiable', 'target' => ''],
+                                        ];
+                                    @endphp
+                                    <label class="fw-bold">What compensation will the owner provide to the listing broker for their services?</label>
+                                    <select class="grid-picker" name="broker_compensation" id="broker_compensation"
+                                        style="justify-content: flex-start;">
+                                        <option value="">Select</option>
+                                        @foreach ($broker_compensation as $item)
+                                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                                                style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-circle-check'></i>">
+                                                {{ $item['name'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="form-group compensation_broker_yes d-none ">
+                                        <label class="fw-bold">What compensation will the owner provide to the listing broker for their services?</label>
+                                        <input type="number" class="form-control has-icon" placeholder=""
+                                            name="compensation_percent" data-icon="fa-solid fa-dollar-sign" required />
+                                    </div>                                
+                                </div>
+                                <div class="form-group">
+                                    @php
+                                        $handle_compensation = [
+                                            ['name' => "Allow the listing broker to compensate the tenant's broker from the listing broker's commission, if applicable.", 'target' => ''],
+                                            ['name' => "Pay the tenant's broker separately, if applicable.", 'target' => ''],
+                                            ['name' => "No compensation will be offered to the tenant’s broker.", 'target' => ''],
+                                        ];
+                                    @endphp
+                                    <label class="fw-bold">How would the owner prefer to handle compensation for a tenant's broker?</label>
+                                    <select class="grid-picker" name="handle_compensation" id="handle_compensation"
+                                        style="justify-content: flex-start;">
+                                        <option value="">Select</option>
+                                        @foreach ($handle_compensation as $item)
+                                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                                                style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-circle-check'></i>">
+                                                {{ $item['name'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="form-group handle_compensation_broker_yes d-none ">
+                                        @php
+                                        $compensation_amount = [
+                                            [ 'name' => "___% of the gross lease value", 'target' => ''],
+                                            ['name' => "____% of the first month’s rent", 'target' => ''],
+                                            ['name' => 'Fixed amount: $____', 'target' => ''],
+                                            ['name' => 'Negotiable', 'target' => ''],
+                                        ];
+                                        @endphp
+                                        <label class="fw-bold">What compensation is being offered to the tenant's broker?</label>
+                                        <select class="grid-picker" name="compensation_amount" id="compensation_amount"
+                                            style="justify-content: flex-start;">
+                                            <option value="">Select</option>
+                                            @foreach ($compensation_amount as $item)
+                                                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                                                    style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-circle-check'></i>">
+                                                    {{ $item['name'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <div class="form-group compensation_amount_yes d-none ">
+                                            <label class="fw-bold">What compensation is being offered to the tenant's broker?</label>
+                                            <input type="number" class="form-control has-icon" placeholder=""
+                                                name="compensation_tenant_broker" data-icon="fa-solid fa-dollar-sign" required />
+                                        </div> 
+                                    </div>                                
+                                </div>
+                                <div class="form-group">
+                                    @php
+                                        $payment_timing = [
+                                            ['name' => "Deducted from rent collected by the broker; the owner will pay the balance (if any) within ___ calendar days of the rent due date.", 'target' => ''],
+                                            ['name' => "Paid within ___ calendar days after the lease agreement is executed.", 'target' => ''],
+                                            ['name' => "Paid within ___ calendar days of each tenant's rent payment.", 'target' => ''],
+                                        ];
+                                    @endphp
+                                    <label class="fw-bold">Payment Timing for Broker Fees:</label>
+                                    <select class="grid-picker" name="payment_timing" id="payment_timing"
+                                        style="justify-content: flex-start;">
+                                        <option value="">Select</option>
+                                        @foreach ($payment_timing as $item)
+                                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                                                style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-circle-check'></i>">
+                                                {{ $item['name'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="form-group payment_timing_days d-none ">
+                                        <label class="fw-bold">Payment Timing for Broker Fees:</label>
+                                        <input type="number" class="form-control has-icon" placeholder=""
+                                            name="payment_timing_days" data-icon="fa-regular fa-check-circle" required />
+                                    </div>                                
+                                </div>
+                                {{-- <div class="form-group ">
                                     <label class="fw-bold">
                                         What is the total commission being offered to the listing agent?
                                     </label>
@@ -2429,9 +2447,9 @@
                                             name="offeredCommissionOther" data-icon="fa-solid fa-dollar-sign"
                                             id="custom_offered_commission" required />
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
-                            <div class="wizard-step" data-step="31" data-old="34">
+                            {{-- <div class="wizard-step" data-step="30" data-old="31">
                                 <div class="form-group ">
                                     <label class="fw-bold">
                                         If a tenant is represented by an agent, what portion of the commission should be
@@ -2466,8 +2484,111 @@
                                             id="custom_offered_commission" required />
                                     </div>
                                 </div>
+                            </div> --}}
+                            <div class="wizard-step" data-step="30">
+                                <h4>Early Termination and Protection Period:</h4>
+                                <div class="form-group">
+                                    @php
+                                        $early_termination = [
+                                            ['name' => 'The owner may terminate this agreement by signing a withdrawal agreement and paying a cancellation fee of $______ plus tax.', 'target' => ''],
+                                            ['name' => "If the property is leased to a tenant during the termination or protection period, the broker may void the termination and collect full compensation (minus the cancellation fee).", 'target' => ''],
+                                        ];
+                                    @endphp
+                                    <label class="fw-bold">Early Termination:</label>
+                                    <select class="grid-picker" name="early_termination" id="early_termination"
+                                        style="justify-content: flex-start;">
+                                        <option value="">Select</option>
+                                        @foreach ($early_termination as $item)
+                                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                                                style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-circle-check'></i>">
+                                                {{ $item['name'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="form-group early_termination_yes d-none ">
+                                        <label class="fw-bold">Early Termination:</label>
+                                        <input type="number" class="form-control has-icon" placeholder=""
+                                            name="early_termination_amount" data-icon="fa-regular fa-check-circle" required />
+                                    </div>                                
+                                </div>
+
+                                <div class="form-group">
+                                    @php
+                                        $protection_period = [
+                                            ['name' => "If the owner leases the property within ___ days after the listing period to any tenant introduced by the broker, the owner agrees to pay the broker's fee.", 'target' => '.protection_period_yes'],
+                                            ['name' => "The broker will provide a list of prospects upon request; compensation applies only to names on the list.", 'target' => ''],
+                                            ['name' => "The protection period is void if the owner signs an exclusive agreement with another broker after the listing period.", 'target' => ''],
+                                        ];
+                                    @endphp
+                                    <label class="fw-bold">Protection Period:</label>
+                                    <select class="grid-picker" name="protection_period" id="protection_period"
+                                        style="justify-content: flex-start;">
+                                        <option value="">Select</option>
+                                        @foreach ($protection_period as $item)
+                                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                                                style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-circle-check'></i>">
+                                                {{ $item['name'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>    
+                                    <div class="form-group protection_period_yes d-none ">
+                                        <label class="fw-bold">Protection Period:</label>
+                                        <input type="number" class="form-control has-icon" placeholder=""
+                                            name="protection_period_days" data-icon="fa-regular fa-check-circle" required />
+                                    </div>                        
+                                </div>
                             </div>
-                            <div class="wizard-step" data-step="32" data-old="35">
+                            <div class="wizard-step" data-step="31">
+                                <h4>New Leases and Renewals:</h4>
+                                <div class="form-group">
+                                    @php
+                                        $compensation_new_lease = [
+                                            ['name' => 'Yes', 'target' => '.new_lease_yes'],
+                                            ['name' => "No", 'target' => ''],
+                                            ['name' => "Negotiable", 'target' => ''],
+                                        ];
+                                    @endphp
+                                    <label class="fw-bold">If the owner enters into a new lease or renewal with a tenant placed in the property by or through the broker, does the owner agree to pay the broker compensation for the new lease or renewal?</label>
+                                    <select class="grid-picker" name="compensation_new_lease" id="compensation_new_lease"
+                                        style="justify-content: flex-start;">
+                                        <option value="">Select</option>
+                                        @foreach ($compensation_new_lease as $item)
+                                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                                                style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-circle-check'></i>">
+                                                {{ $item['name'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="form-group new_lease_yes d-none ">
+                                        @php
+                                        $compensation_amount = [
+                                            ['name' => '___% of each rental period', 'target' => ''],
+                                            ['name' => "___% of the gross lease value", 'target' => ''],
+                                            ['name' => "___% of the first month's rent", 'target' => ''],
+                                            ['name' => 'Fixed amount: $____', 'target' => ''],
+                                            ['name' => "Negotiable", 'target' => ''],
+                                        ];
+                                        @endphp
+                                        <label class="fw-bold">What compensation will the owner provide to the listing broker for a new lease or lease renewal?</label>
+                                        <select class="grid-picker" name="compensation_new_lease_percent" id="compensation_new_lease_amount"
+                                            style="justify-content: flex-start;">
+                                            <option value="">Select</option>
+                                            @foreach ($compensation_amount as $item)
+                                                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                                                    style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-circle-check'></i>">
+                                                    {{ $item['name'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <div class="form-group compensation_new_lease_amount d-none ">
+                                            <label class="fw-bold">What compensation will the owner provide to the listing broker for a new lease or lease renewal?</label>
+                                            <input type="number" class="form-control has-icon" placeholder=""
+                                                name="compensation_new_lease_amount" data-icon="fa-regular fa-check-circle" required />
+                                        </div> 
+                                    </div>                                
+                                </div>
+                            </div>
+                            <div class="wizard-step" data-step="32" data-old="32">
                                 <div class="row">
                                     <div class="form-group mt-4 col-md-12">
                                         <label class='fw-bold'>
@@ -2496,96 +2617,15 @@
                                         @php
                                             $serviceRes = [
                                                 [
-                                                    'name' =>
-                                                        "Conduct a thorough rental market analysis (RMA) to determine the property's value and pricing strategy.",
+                                                    'name' => 'Assist in drafting residential lease agreements and required addendums/disclosures.',
                                                     'target' => '',
                                                 ],
                                                 [
-                                                    'name' => 'List the property on the Bid Your Offer platform.',
+                                                    'name' => 'Assist in negotiating residential lease terms, including rental price, lease duration, and any additional clauses or provisions.',
                                                     'target' => '',
                                                 ],
                                                 [
-                                                    'name' =>
-                                                        'List the property on major real estate websites, such as Zillow, Trulia, Realtor.com, Homes.com, Homesnap, Hotpads, and others, to increase visibility and exposure.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' => 'List the property on the Bid Your Offer platform.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        "Market the property to various groups, pages, and affiliates to generate interest and leads with a QR code or listing link leading to the property's listing.",
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        "Promote the property on social media platforms with a QR code or listing link leading to the property's listing.",
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Conduct real estate email marketing campaigns that lead to the property listing.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        "Provide professional photos showcasing the property's features.",
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        "Provide a professional video to showcase the property's features.",
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' => "Provide a 3D tour to showcase the property's features.",
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Provide a floor plan of the property to highlight its layout and spatial configuration.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        "Provide virtual staging to enhance the property's visual appeal and attract potential tenants.",
-                                                    'target' => '',
-                                                ],
-                                                ['name' => 'Host an Open House(s).', 'target' => ''],
-                                                [
-                                                    'name' =>
-                                                        "Send email alerts to tenants searching for properties that match the property's criteria the moment the property is listed directly through the MLS.",
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Conduct property showings and viewings for interested tenants.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Provide regular updates on market activity, showings, and feedback from potential tenants.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Conduct tenant screening with a thorough application process that includes credit, criminal, background, eviction, and income verification checks.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Assist in negotiating residential lease terms, including rental price, lease duration, and any additional clauses or provisions.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Assist in drafting residential lease agreements and required addendums/disclosures.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Assist with lease renewal negotiations and adjustments to rental terms.',
+                                                    'name' => 'Assist with lease renewal negotiations and adjustments to rental terms.',
                                                     'target' => '',
                                                 ],
                                                 [
@@ -2593,23 +2633,84 @@
                                                     'target' => '',
                                                 ],
                                                 [
-                                                    'name' =>
-                                                        'Coordinate property maintenance and repairs through trusted contractors and vendors.',
+                                                    'name' => 'Conduct a thorough rental market analysis (RMA) to determine the property\'s value and pricing strategy.',
                                                     'target' => '',
                                                 ],
                                                 [
-                                                    'name' =>
-                                                        'Handle tenant inquiries, maintenance requests, and resolve any issues that may arise during the tenancy.',
+                                                    'name' => 'Conduct property showings and viewings for interested tenants.',
                                                     'target' => '',
                                                 ],
                                                 [
-                                                    'name' =>
-                                                        'Coordinate or assist in the move-in or move-out process for tenants.',
+                                                    'name' => 'Conduct real estate email marketing campaigns that lead to the property listing.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Conduct tenant screening with a thorough application process that includes credit, criminal, background, eviction, and income verification checks.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Coordinate or assist in the move-in or move-out process for tenants.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Coordinate property maintenance and repairs through trusted contractors and vendors.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Handle tenant inquiries, maintenance requests, and resolve any issues that may arise during the tenancy.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Host an Open House(s).',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'List the property on major real estate websites—such as Zillow, Trulia, Realtor.com, Homes.com, and others—to increase visibility and exposure.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'List the property on the Bid Your Offer platform.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Market the property to various groups, pages, and affiliates to generate interest and leads with a QR code or listing link leading to the property\'s listing.',
                                                     'target' => '',
                                                 ],
                                                 [
                                                     'name' => 'Other - Add additional services as needed.',
                                                     'target' => '.otherRes',
+                                                ],
+                                                [
+                                                    'name' => 'Promote the property on social media platforms with a QR code or listing link leading to the property\'s listing.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Provide a 3D tour to showcase the property\'s features.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Provide a floor plan of the property to highlight its layout and spatial configuration.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Provide a professional video to showcase the property\'s features.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Provide professional photos showcasing the property\'s features.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Provide regular updates on market activity, showings, and feedback from potential tenants.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Provide virtual staging to enhance the property\'s visual appeal and attract potential tenants.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Send email alerts to tenants searching for properties that match the property\'s criteria the moment the property is listed directly through the MLS.',
+                                                    'target' => '',
                                                 ],
                                             ];
 
@@ -2644,98 +2745,15 @@
                                         @php
                                             $serviceCommercial = [
                                                 [
-                                                    'name' =>
-                                                        'Conduct a thorough rental market analysis (RMA) to determine the property\'s value and pricing strategy.',
-                                                    'target' => '',
-                                                ],
-                                                ['name' => 'List the property on the MLS.', 'target' => ''],
-                                                [
-                                                    'name' =>
-                                                        'List the property on Loopnet, a major commercial real estate website.',
+                                                    'name' => 'Assist in drafting residential lease agreements and required addendums/disclosures.',
                                                     'target' => '',
                                                 ],
                                                 [
-                                                    'name' =>
-                                                        'List the property on Crexi, a major commercial real estate website.',
+                                                    'name' => 'Assist in negotiating residential lease terms, including rental price, lease duration, and any additional clauses or provisions.',
                                                     'target' => '',
                                                 ],
                                                 [
-                                                    'name' => 'List the property on the Bid Your Offer platform.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Market the property to various groups, pages, and affiliates to generate interest and leads with a QR code or listing link leading to the property\'s listing.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Promote the property on social media platforms with a QR code or listing link leading to the property\'s listing.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Conduct real estate email marketing campaigns that lead to the property listing.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Provide professional photos showcasing the property\'s features.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Provide a professional video to showcase the property\'s features.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' => 'Provide a 3D tour to showcase the property\'s features.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Provide a floor plan of the property to highlight its layout and spatial configuration.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Provide virtual staging to enhance the property\'s visual appeal and attract potential tenants.',
-                                                    'target' => '',
-                                                ],
-                                                // ['name' => 'Host an Open House.', 'target' => ''],
-                                                [
-                                                    'name' =>
-                                                        'Send email alerts to tenants searching for properties that match the property\'s criteria the moment the property is listed directly through the MLS.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Conduct property showings and viewings for interested tenants.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Provide regular updates on market activity, showings, and feedback from potential tenants.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Conduct tenant screening with a thorough application process that includes credit, criminal, background, eviction, and income verification checks.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Assist in negotiating residential lease terms, including rental price, lease duration, and any additional clauses or provisions.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Assist in drafting residential lease agreements and required addendums/disclosures.',
-                                                    'target' => '',
-                                                ],
-                                                [
-                                                    'name' =>
-                                                        'Assist with lease renewal negotiations and adjustments to rental terms.',
+                                                    'name' => 'Assist with lease renewal negotiations and adjustments to rental terms.',
                                                     'target' => '',
                                                 ],
                                                 [
@@ -2743,24 +2761,88 @@
                                                     'target' => '',
                                                 ],
                                                 [
-                                                    'name' =>
-                                                        'Coordinate property maintenance and repairs through trusted contractors and vendors.',
+                                                    'name' => 'Conduct a thorough rental market analysis (RMA) to determine the property\'s value and pricing strategy.',
                                                     'target' => '',
                                                 ],
                                                 [
-                                                    'name' =>
-                                                        'Handle tenant inquiries, maintenance requests, and resolve any issues that may arise during the tenancy.',
+                                                    'name' => 'Conduct property showings and viewings for interested tenants.',
                                                     'target' => '',
                                                 ],
                                                 [
-                                                    'name' =>
-                                                        'Coordinate or assist in the move-in or move-out process for tenants.',
+                                                    'name' => 'Conduct real estate email marketing campaigns that lead to the property listing.',
                                                     'target' => '',
                                                 ],
-
+                                                [
+                                                    'name' => 'Conduct tenant screening with a thorough application process that includes credit, criminal, background, eviction, and income verification checks.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Coordinate or assist in the move-in or move-out process for tenants.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Coordinate property maintenance and repairs through trusted contractors and vendors.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Handle tenant inquiries, maintenance requests, and resolve any issues that may arise during the tenancy.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'List the property on Crexi, a major commercial real estate website.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'List the property on Loopnet, a major commercial real estate website.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'List the property on the Bid Your Offer platform.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'List the property on the MLS.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Market the property to various groups, pages, and affiliates to generate interest and leads with a QR code or listing link leading to the property\'s listing.',
+                                                    'target' => '',
+                                                ],
                                                 [
                                                     'name' => 'Other - Add additional services as needed.',
                                                     'target' => '.otherCommercial',
+                                                ],
+                                                [
+                                                    'name' => 'Promote the property on social media platforms with a QR code or listing link leading to the property\'s listing.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Provide a 3D tour to showcase the property\'s features.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Provide a floor plan of the property to highlight its layout and spatial configuration.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Provide a professional video to showcase the property\'s features.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Provide professional photos showcasing the property\'s features.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Provide regular updates on market activity, showings, and feedback from potential tenants.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Provide virtual staging to enhance the property\'s visual appeal and attract potential tenants.',
+                                                    'target' => '',
+                                                ],
+                                                [
+                                                    'name' => 'Send email alerts to tenants searching for properties that match the property\'s criteria the moment the property is listed directly through the MLS.',
+                                                    'target' => '',
                                                 ],
                                             ];
                                         @endphp
@@ -2820,17 +2902,53 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-6">
-                                        <label class="fw-bold mt-1">Video:</label>
-                                        <div class="videoBox ">
-                                            <div class="video bgImg"></div>
-                                            <div class="form-group videoDiv">
-                                                <input type="file" class="fileuploader" name="video"
-                                                    style="display: none;" accept="video/*">
-                                                <label for="fileuploader" class="fileuploader-btn">
-                                                    <span class="upload-button">+</span>
+                                    <div class="col-6 video_div">
+                                        <input type="hidden" name="video_type" class="video_type" value="video_upload">
+                                        <div class="video_type_select d-flex align-items-center justify-content-left">
+                                            <div class="form-check me-2">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="video_upload form-check-input video_type_check"
+                                                        name="video_upload">
+                                                    Video Upload
                                                 </label>
                                             </div>
+                                            <div class="form-check me-2">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="youtube_video form-check-input video_type_check"
+                                                        name="youtube_video">
+                                                    Youtube Video
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="vimeo_video form-check-input video_type_check"
+                                                        name="vimeo_video">
+                                                    Vimeo Video
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="video-upload video-type-element">
+                                            <label class="fw-bold mt-1">Video:</label>
+                                            <div class="videoBox ">
+                                                <div class="video bgImg"></div>
+                                                <div class="form-group videoDiv">
+                                                    <input type="file" class="fileuploader" name="video"
+                                                        style="display: none;" accept="video/*">
+                                                    <label for="fileuploader" class="fileuploader-btn">
+                                                        <span class="upload-button">+</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="youtube-video video-type-element form-group d-none">
+                                            <label class="fw-bold mt-1"> Youtube Video:</label>
+                                            <input type="text" name="youtube_video_link" class="form-control"
+                                                placeholder="Youtube video link i.e. https://youtube.com/embed/videoId">
+                                        </div>
+                                        <div class="vimeo-video video-type-element form-group d-none">
+                                            <label class="fw-bold mt-1">Vimeo Video:</label>
+                                            <input type="text" name="vimeo_video_link" class="form-control"
+                                                placeholder="Vimeo video link i.e. https://player.vimeo.com/video/videoId">
                                         </div>
                                     </div>
                                     <div class="col-6">
@@ -2885,9 +3003,9 @@
             // Once something is selected the change function will run
             $('.fileuploader').change(function() {
                 $('#fileSizeError').remove();
-                if (this.files[0].size > 10000000) {
+                if (this.files[0].size > 50000000) {
                     $('.videoDiv').after(
-                        '<span id="fileSizeError"  style="color: red;">Please upload a file less than 10MB. Thanks!!</span>'
+                        '<span id="fileSizeError"  style="color: red;">Please upload a file less than 50MB. Thanks!</span>'
                     );
                     $(this).val('');
                     $('#saveBtn').prop('disabled', true);
@@ -3484,6 +3602,10 @@
                                 'Commercial Property') {
                                 StepWizard.nextStep = 19;
                                 StepWizard.backStep = 17;
+                            } else if (StepWizard.currentStep == 19 && property_type ==
+                                'Commercial Property') {
+                                StepWizard.nextStep = 22;
+                                StepWizard.backStep = 19;
                             } else {
                                 StepWizard.backStep = StepWizard.currentStep;
                             }
@@ -3544,6 +3666,9 @@
                         } else if (StepWizard.currentStep == 19 && property_type ==
                             'Commercial Property') {
                             StepWizard.backStep = 17;
+                        } else if (StepWizard.currentStep == 22 && property_type ==
+                            'Commercial Property') {
+                            StepWizard.backStep = 19;
                         } else {
                             StepWizard.backStep = StepWizard.currentStep - 1;
                         }
@@ -3677,6 +3802,51 @@
             }
             //    alert(selectedValue);
         });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $(document).on('change', '#broker_compensation', function(){
+                let val = $(this).val();
+                if(val !== 'Negotiable'){
+                    $('.compensation_broker_yes').removeClass('d-none');
+                }else{
+                    $('.compensation_broker_yes').addClass('d-none');
+                }
+            });
+
+            $(document).on('change', '#handle_compensation', function(){
+                let val = $(this).val();
+                if(val !== 'No compensation will be offered to the tenant’s broker.'){
+                    $('.handle_compensation_broker_yes').removeClass('d-none');
+                }else{
+                    $('.handle_compensation_broker_yes').addClass('d-none');
+                }
+            })
+
+            $(document).on('change', '#compensation_amount', function(){
+                let val = $(this).val();
+                if(val !== 'Negotiable'){
+                    $('.compensation_amount_yes').removeClass('d-none');
+                }else{
+                    $('.compensation_amount_yes').addClass('d-none');
+                }
+            })
+
+            $(document).on('change', '#early_termination', function(){
+                $('.early_termination_yes').removeClass('d-none');
+            })
+
+            $(document).on('change', '#compensation_new_lease_amount', function(){
+                let val = $(this).val();
+
+                if(val !== 'Negotiable'){
+                    $('.compensation_new_lease_amount').removeClass('d-none');
+                }else{
+                    $('.compensation_new_lease_amount').addClass('d-none');
+                }
+            })
+        })
     </script>
 
     <script>

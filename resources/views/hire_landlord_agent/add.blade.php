@@ -1685,7 +1685,7 @@
                                     <div class="form-group">
                                         <label class="fw-bold">Furnishings: </label>
 
-                                        <select class="grid-picker" name="Furnishings" id="appliances"
+                                        <select class="grid-picker" name="furnishings[]" id="appliances"
                                             style="justify-content: flex-start;" multiple required>
                                             <option value="">Select</option>
                                             @foreach ($Furnishings as $item)
@@ -2083,12 +2083,12 @@
                                         <div class="form-group">
                                             <label class="fw-bold">Season runs from:</label>
                                             <input type="date" name="season_runs_from" id="season_runs_from" class="form-control has-icon"
-                                                data-icon="fa-regular fa-calendar-days" min="{{ date('Y-m-d') }}" required>
+                                                data-icon="fa-regular fa-calendar-days" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="fw-bold">Season runs to:</label>
                                             <input type="date" name="season_runs_to" id="season_runs_to" class="form-control has-icon"
-                                                data-icon="fa-regular fa-calendar-days" min="{{ date('Y-m-d') }}" required>
+                                                data-icon="fa-regular fa-calendar-days" required>
                                         </div>
                                     </div>
                                 </span>
@@ -2398,7 +2398,7 @@
                                 <div class="form-group">
                                     @php
                                         $payment_timing = [
-                                            [ 'name' => "Deducted from rent collected by the broker; the owner will pay the balance (if any) within ___ calendar days of the rent due date.", 'target' => ''],
+                                            ['name' => "Deducted from rent collected by the broker; the owner will pay the balance (if any) within ___ calendar days of the rent due date.", 'target' => ''],
                                             ['name' => "Paid within ___ calendar days after the lease agreement is executed.", 'target' => ''],
                                             ['name' => "Paid within ___ calendar days of each tenant's rent payment.", 'target' => ''],
                                         ];
@@ -2518,12 +2518,12 @@
                                 <div class="form-group">
                                     @php
                                         $protection_period = [
-                                            ['name' => "If the owner leases the property within ___ days after the listing period to any tenant introduced by the broker, the owner agrees to pay the broker's fee.", 'target' => ''],
+                                            ['name' => "If the owner leases the property within ___ days after the listing period to any tenant introduced by the broker, the owner agrees to pay the broker's fee.", 'target' => '.protection_period_yes'],
                                             ['name' => "The broker will provide a list of prospects upon request; compensation applies only to names on the list.", 'target' => ''],
                                             ['name' => "The protection period is void if the owner signs an exclusive agreement with another broker after the listing period.", 'target' => ''],
                                         ];
                                     @endphp
-                                    <label class="fw-bold">Early Termination:</label>
+                                    <label class="fw-bold">Protection Period:</label>
                                     <select class="grid-picker" name="protection_period" id="protection_period"
                                         style="justify-content: flex-start;">
                                         <option value="">Select</option>
@@ -2533,7 +2533,12 @@
                                                 {{ $item['name'] }}
                                             </option>
                                         @endforeach
-                                    </select>                            
+                                    </select>    
+                                    <div class="form-group protection_period_yes d-none ">
+                                        <label class="fw-bold">Protection Period:</label>
+                                        <input type="number" class="form-control has-icon" placeholder=""
+                                            name="protection_period_days" data-icon="fa-regular fa-check-circle" required />
+                                    </div>                        
                                 </div>
                             </div>
                             <div class="wizard-step" data-step="31">
@@ -2567,7 +2572,7 @@
                                             ['name' => "Negotiable", 'target' => ''],
                                         ];
                                         @endphp
-                                        <label class="fw-bold">•	What compensation will the owner provide to the listing broker for a new lease or lease renewal?</label>
+                                        <label class="fw-bold">What compensation will the owner provide to the listing broker for a new lease or lease renewal?</label>
                                         <select class="grid-picker" name="compensation_new_lease_percent" id="compensation_new_lease_amount"
                                             style="justify-content: flex-start;">
                                             <option value="">Select</option>
@@ -2579,7 +2584,7 @@
                                             @endforeach
                                         </select>
                                         <div class="form-group compensation_new_lease_amount d-none ">
-                                            <label class="fw-bold">Early Termination:</label>
+                                            <label class="fw-bold">What compensation will the owner provide to the listing broker for a new lease or lease renewal?</label>
                                             <input type="number" class="form-control has-icon" placeholder=""
                                                 name="compensation_new_lease_amount" data-icon="fa-regular fa-check-circle" required />
                                         </div> 
@@ -3833,6 +3838,16 @@
 
             $(document).on('change', '#early_termination', function(){
                 $('.early_termination_yes').removeClass('d-none');
+            })
+
+            $(document).on('change', '#compensation_new_lease_amount', function(){
+                let val = $(this).val();
+
+                if(val !== 'Negotiable'){
+                    $('.compensation_new_lease_amount').removeClass('d-none');
+                }else{
+                    $('.compensation_new_lease_amount').addClass('d-none');
+                }
             })
         })
     </script>

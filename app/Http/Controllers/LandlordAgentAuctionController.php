@@ -73,6 +73,7 @@ class LandlordAgentAuctionController extends Controller
             $auction->saveMeta("net_leasable_square_footage", $request->net_leasable_square_footage);
             $auction->saveMeta("heated_sqft", $request->heated_sqft);
             $auction->saveMeta("other_heated_sqft", $request->other_heated_sqft);
+            $auction->saveMeta("totalSqft", $request->totalSqft);
             $auction->saveMeta("total_acreage", $request->total_acreage);
             $auction->saveMeta("garageOptions", $request->garageOptions);
             $auction->saveMeta("custom_garage", $request->custom_garage);
@@ -90,6 +91,7 @@ class LandlordAgentAuctionController extends Controller
             $auction->saveMeta("viewOther", $request->viewOther);
             $auction->saveMeta("appliances", json_encode($request->appliances));
             $auction->saveMeta("otherAppliances", $request->otherAppliances);
+            $auction->saveMeta("furnishings", json_encode($request->furnishings));
             $auction->saveMeta("amenities", json_encode($request->amenities));
             $auction->saveMeta("otherAmenities", $request->otherAmenities);
             $auction->saveMeta("rent_include", json_encode($request->rent_include));
@@ -128,6 +130,7 @@ class LandlordAgentAuctionController extends Controller
             $auction->saveMeta("early_termination", $request->early_termination);
             $auction->saveMeta("early_termination_amount", $request->early_termination_amount);
             $auction->saveMeta("protection_period", $request->protection_period);
+            $auction->saveMeta("protection_period_days", $request->protection_period_days);
             $auction->saveMeta("compensation_new_lease_percent", $request->compensation_new_lease_percent);
             $auction->saveMeta("compensation_new_lease_amount", $request->compensation_new_lease_amount);
             $auction->saveMeta("compensation_new_lease", $request->compensation_new_lease);
@@ -258,6 +261,7 @@ class LandlordAgentAuctionController extends Controller
             $auction->saveMeta("net_leasable_square_footage", $request->net_leasable_square_footage);
             $auction->saveMeta("heated_sqft", $request->heated_sqft);
             $auction->saveMeta("other_heated_sqft", $request->other_heated_sqft);
+            $auction->saveMeta("totalSqft", $request->totalSqft);
             $auction->saveMeta("total_acreage", $request->total_acreage);
             $auction->saveMeta("garageOptions", $request->garageOptions);
             $auction->saveMeta("custom_garage", $request->custom_garage);
@@ -275,6 +279,7 @@ class LandlordAgentAuctionController extends Controller
             $auction->saveMeta("viewOther", $request->viewOther);
             $auction->saveMeta("appliances", json_encode($request->appliances));
             $auction->saveMeta("otherAppliances", $request->otherAppliances);
+            $auction->saveMeta("furnishings", json_encode($request->furnishings));
             $auction->saveMeta("amenities", json_encode($request->amenities));
             $auction->saveMeta("otherAmenities", $request->otherAmenities);
             $auction->saveMeta("rent_include", json_encode($request->rent_include));
@@ -313,9 +318,10 @@ class LandlordAgentAuctionController extends Controller
             $auction->saveMeta("early_termination", $request->early_termination);
             $auction->saveMeta("early_termination_amount", $request->early_termination_amount);
             $auction->saveMeta("protection_period", $request->protection_period);
+            $auction->saveMeta("protection_period_days", $request->protection_period_days);
             $auction->saveMeta("compensation_new_lease_percent", $request->compensation_new_lease_percent);
             $auction->saveMeta("compensation_new_lease_amount", $request->compensation_new_lease_amount);
-            $auction->saveMeta("protection_period", $request->protection_period);
+            $auction->saveMeta("compensation_new_lease", $request->compensation_new_lease);
             $auction->saveMeta("termLease", json_encode($request->termLease));
             $auction->saveMeta("termLeaseOther", $request->termLeaseOther);
             $auction->saveMeta("leaseAmount", $request->leaseAmount);

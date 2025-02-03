@@ -155,30 +155,33 @@
                             </div>
                         @endif
                         @if (@$auction->get->listing_date != '' && @$auction->get->listing_date != 'null')
+                            @php
+                                $formatedListingDate = Carbon\Carbon::parse($auction->get->listing_date)->format('d-m-Y');
+                            @endphp
                             <div class="row" style="flex-wrap: wrap;">
                                 <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Listing Date:
-                                    <span class="removeBold">{{ @$auction->get->listing_date }}</span>
+                                    <span class="removeBold">{{ $formatedListingDate }}</span>
                                 </div>
                             </div>
                         @endif
                         @if (@$auction->get->expiration_date != '' && @$auction->get->expiration_date != 'null')
+                            @php
+                                $formatedExpirationDate = Carbon\Carbon::parse($auction->get->expiration_date)->format('d-m-Y');
+                            @endphp
                             <div class="row" style="flex-wrap: wrap;">
                                 <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Expiration Date:
-                                    <span class="removeBold">{{ @$auction->get->expiration_date }}</span>
+                                    <span class="removeBold">{{ $formatedExpirationDate }}</span>
                                 </div>
                             </div>
                         @endif
-                        <div class="row" style="flex-wrap: wrap;">
-                            @if (@$auction->get->custom_bedrooms != '' && @$auction->get->custom_bedrooms != 'null')
-                                <div class="col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Bedrooms:
-                                    <span class="removeBold">{{ @$auction->get->custom_bedrooms }}
+                        @if (isset($auction->get->auction_type))
+                            <div class="row" style="flex-wrap: wrap;">
+                                <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Listing Type:
+                                    <span class="removeBold">{{ $auction->get->auction_type }}</span>
                                 </div>
-                            @elseif(@$auction->get->bedrooms != '' && @$auction->get->bedrooms != 'null' && @$auction->get->bedrooms != null)
-                                <div class="col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Bedrooms:
-                                    <span class="removeBold">{{ @$auction->get->bedrooms }}
-                                </div>
-                            @endif
-                        </div>
+                            </div>
+                        @endif
+                        
                         @if (@$auction->get->custom_bathrooms != '' && @$auction->get->custom_bathrooms != 'null')
                             <div class="col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Bathrooms:
                                 <span class="removeBold">{{ @$auction->get->custom_bathrooms }}
@@ -217,65 +220,18 @@
                                 @endif
                             </div>
                         @endif
-                        @if (@$auction->get->leaseRoom != '' && @$auction->get->leaseRoom != 'null')
-                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Leasing Space
-                                :<span class="removeBold"> {{ @$auction->get->leaseRoom }}</span>
-                                <br>
-                                @if (@$auction->get->leaseRoom == 'Single Room')
-                                    <span class="removeBold">
-                                        <ul class="leasing">
-                                            <div>
-                                                <li style="font-size:16px;"><span class="fw-bold">What is the size of the
-                                                        room the landlord
-                                                        intends to lease?</span></li>
-                                                {{ @$auction->get->sizeOfRoom }}
-                                            </div>
-                                            <div>
-                                                <li style="font-size:16px;"><span class="fw-bold">Is there a private
-                                                        bathroom, or is it
-                                                        shared?</span></li>
-                                                {{ @$auction->get->privateBathroom }}
-                                            </div>
-                                            <div>
-                                                <li style="font-size:16px;"><span class="fw-bold">How much storage space is
-                                                        available?</span></li>
-                                                {{ @$auction->get->storageSpace }}
-                                            </div>
-                                            <div>
-                                                <li style="font-size:16px;"><span class="fw-bold">Can tenants use common
-                                                        areas like the kitchen,
-                                                        living room, or
-                                                        backyard?</span></li>
-                                                {{ @$auction->get->commonAreas }}
-                                            </div>
-                                            <div>
-                                                <li style="font-size:16px;"><span class="fw-bold">How is cleaning and
-                                                        maintenance of common areas
-                                                        managed?</span></li>
-                                                {{ @$auction->get->areasManaged }}
-                                            </div>
-                                            <div>
-                                                <li style="font-size:16px;"><span class="fw-bold">Are tenants allowed to
-                                                        have guests, and if so,
-                                                        are there any
-                                                        restrictions?</span></li>
-                                                {{ @$auction->get->tenantsGuests }}
-                                            </div>
-                                            <div>
-                                                <li style="font-size:16px;"><span class="fw-bold">How are maintenance issues
-                                                        handled?</span></li>
-                                                {{ @$auction->get->maintenanceIssues }}
-                                            </div>
-                                            <div>
-                                                <li style="font-size:16px;"><span class="fw-bold">How are the utilities
-                                                        split?</span></li>
-                                                {{ @$auction->get->utilitiesSplit }}
-                                            </div>
-                                        </ul>
-                                    </span>
-                                @endif
-                            </div>
-                        @endif
+                        <div class="row" style="flex-wrap: wrap;">
+                            @if (@$auction->get->custom_bedrooms != '' && @$auction->get->custom_bedrooms != 'null')
+                                <div class="col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Bedrooms:
+                                    <span class="removeBold">{{ @$auction->get->custom_bedrooms }}
+                                </div>
+                            @elseif(@$auction->get->bedrooms != '' && @$auction->get->bedrooms != 'null' && @$auction->get->bedrooms != null)
+                                <div class="col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Bedrooms:
+                                    <span class="removeBold">{{ @$auction->get->bedrooms }}
+                                </div>
+                            @endif
+                        </div>
+                        
                         @if (@$auction->get->heated_square_footage != '' && @$auction->get->heated_square_footage != 'null')
                             <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Heated Sqft:
                                 <span class="removeBold">
@@ -283,7 +239,7 @@
                                 </span>
                             </div>
                         @endif
-                        @if (@$auction->get->totalSqft != '' && @$auction->get->totalSqft != 'null')
+                        @if (isset($auction->get->totalSqft))
                             <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Total Sqft:
                                 <span class="removeBold">
                                     {{ @$auction->get->totalSqft }}
@@ -317,41 +273,10 @@
                                 </span>
                             </div>
                         @endif
-                        @if (@$auction->get->petOptions != '' && @$auction->get->petOptions != 'null')
-                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Pets:
-                                <span class="removeBold">
-                                    {{ @$auction->get->petOptions }}
-                                </span>
-                            </div>
-                        @endif
-                        @if (@$auction->get->petOptions != '' && @$auction->get->petOptions != 'null' && @$auction->get->petOptions == 'Yes')
-                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Number of
-                                Pets Allowed:
-                                <span class="removeBold">
-                                    {{ @$auction->get->petsNumber }}
-                                </span>
-                            </div>
-                        @endif
-                        @if (@$auction->get->petOptions != '' && @$auction->get->petOptions != 'null' && @$auction->get->petOptions == 'Yes')
-                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Acceptable
-                                Pet Types:
-                                <span class="removeBold">
-                                    {{ @$auction->get->petsType }}
-                                </span>
-                            </div>
-                        @endif
-                        @if (@$auction->get->petOptions != '' && @$auction->get->petOptions != 'null' && @$auction->get->petOptions == 'Yes')
-                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Maximum Pet
-                                Weight:
-                                <span class="removeBold">
-                                    {{ @$auction->get->petsWeight }}
-                                </span>
-                            </div>
-                        @endif
+                        
 
                         @if (@$auction->get->total_acreage != '' && @$auction->get->total_acreage != 'null')
-                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Appliances
-                                Included:
+                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Appliances:
                                 @if (gettype(@$auction->get->appliances) == 'array')
                                     @foreach ($auction->get->appliances as $appliance)
                                         @if ($appliance != 'Other')
@@ -369,6 +294,16 @@
                                     @endforeach
                                 @endif
                             </div>
+                        @endif
+                        @if (isset($auction->get->furnishings) && is_array($auction->get->furnishings))
+                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i>
+                                Furnishings:
+                                @foreach ($auction->get->furnishings as $item)
+                                    <span class="removeBold">
+                                        {{ $item . ',' }}
+                                    </span>
+                                @endforeach
+                            </div>                            
                         @endif
                         @if (@$auction->get->garageOptions != '' && @$auction->get->garageOptions != 'null')
                             <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i>
@@ -480,12 +415,11 @@
                             </div>
                         @endif
                         @if (@$auction->get->total_acreage != '' && @$auction->get->total_acreage != 'null')
-                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Rent
-                                Includes:
+                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Rent Includes:
                                 @if (gettype(@$auction->get->rent_include) == 'array')
                                     @foreach ($auction->get->rent_include as $item)
                                         @if ($item != 'Other')
-                                            <span class="removeBold">
+                                            <span class="removeBold badge bg-secondary">
                                                 {{ $item }}
                                             </span>
                                         @else
@@ -521,8 +455,7 @@
                             @endif
                         </div>
                         @if (@$auction->get->propertyLoc != '' && @$auction->get->propertyLoc != 'null' && @$auction->get->propertyLoc != null)
-                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> 55-and-Over
-                                Community?
+                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> 55-and-Over Community:
                                 <span class="removeBold">
                                     {{ @$auction->get->propertyLoc }}
                                 </span>
@@ -541,100 +474,257 @@
                                 </div>
                             </div>
                         @endif
-                        @if (@$auction->get->leaseAmount != '' && @$auction->get->leaseAmount != 'null')
+                        <hr>
+                        
+                        <h5>Landlord’s Leasing Terms:</h5>
+                        @if (@$auction->get->expectation != '' && @$auction->get->expectation != 'null')
                             <div class="row" style="flex-wrap: wrap;">
-                                <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Lease Amount
-                                    Frequency:
-                                    <span class="removeBold">${{ @$auction->get->leaseAmount }}</span>
+                                <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Desired Rental
+                                    Amount:
+                                    <span class="removeBold">${{ @$auction->get->expectation }}</span>
                                 </div>
                             </div>
                         @endif
-
-                        <hr>
-                        <div class="card-body">
-                            <h5>Desired Price and Terms: </h5>
-                            @if (@$auction->get->expectation != '' && @$auction->get->expectation != 'null')
-                                <div class="row" style="flex-wrap: wrap;">
-                                    <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Desired Rental
-                                        Amount:
-                                        <span class="removeBold">${{ @$auction->get->expectation }}</span>
-                                    </div>
+                        @if (@$auction->get->custom_ready_timeframe != '' && @$auction->get->custom_ready_timeframe != 'null')
+                            <div class="row" style="flex-wrap: wrap;">
+                                <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Listing Availability Date:
+                                    <span class="removeBold">{{ @$auction->get->custom_ready_timeframe }}</span>
                                 </div>
-                            @endif
-                            @if (@$auction->get->occupant_type != '' && @$auction->get->occupant_type != 'null')
-                                <div class="row" style="flex-wrap: wrap;">
-                                    <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Occupancy
-                                        Status:<span class="removeBold">({{ @$auction->get->occupant_type }})</span><br>
+                            </div>
+                        @endif
+                        @if (@$auction->get->occupant_type != '' && @$auction->get->occupant_type != 'null')
+                            <div class="row" style="flex-wrap: wrap;">
+                                <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Occupancy Status:<span class="removeBold">({{ @$auction->get->occupant_type }})</span><br>
 
-                                        @if ($auction->get->occupant_type == 'Occupied')
-                                            <span class="removeBold">Occupied Until
-                                                {{ @$auction->get->occupied_until }}</span>
+                                    @if ($auction->get->occupant_type == 'Occupied')
+                                        <span class="removeBold">Occupied Until
+                                            {{ @$auction->get->occupied_until }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+                        @if (@$auction->get->leaseRoom != '' && @$auction->get->leaseRoom != 'null')
+                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Leasing Space:<span class="removeBold"> {{ @$auction->get->leaseRoom }}</span>
+                                <br>
+                                @if (@$auction->get->leaseRoom == 'Single Room')
+                                    <span class="removeBold">
+                                        <ul class="leasing">
+                                            <div>
+                                                <li style="font-size:16px;"><span class="fw-bold">What is the size of the
+                                                        room the landlord
+                                                        intends to lease?</span></li>
+                                                {{ @$auction->get->sizeOfRoom }}
+                                            </div>
+                                            <div>
+                                                <li style="font-size:16px;"><span class="fw-bold">Is there a private
+                                                        bathroom, or is it
+                                                        shared?</span></li>
+                                                {{ @$auction->get->privateBathroom }}
+                                            </div>
+                                            <div>
+                                                <li style="font-size:16px;"><span class="fw-bold">How much storage space is
+                                                        available?</span></li>
+                                                {{ @$auction->get->storageSpace }}
+                                            </div>
+                                            <div>
+                                                <li style="font-size:16px;"><span class="fw-bold">Can tenants use common
+                                                        areas like the kitchen,
+                                                        living room, or
+                                                        backyard?</span></li>
+                                                {{ @$auction->get->commonAreas }}
+                                            </div>
+                                            <div>
+                                                <li style="font-size:16px;"><span class="fw-bold">How is cleaning and
+                                                        maintenance of common areas
+                                                        managed?</span></li>
+                                                {{ @$auction->get->areasManaged }}
+                                            </div>
+                                            <div>
+                                                <li style="font-size:16px;"><span class="fw-bold">Are tenants allowed to
+                                                        have guests, and if so,
+                                                        are there any
+                                                        restrictions?</span></li>
+                                                {{ @$auction->get->tenantsGuests }}
+                                            </div>
+                                            <div>
+                                                <li style="font-size:16px;"><span class="fw-bold">How are maintenance issues
+                                                        handled?</span></li>
+                                                {{ @$auction->get->maintenanceIssues }}
+                                            </div>
+                                            <div>
+                                                <li style="font-size:16px;"><span class="fw-bold">How are the utilities
+                                                        split?</span></li>
+                                                {{ @$auction->get->utilitiesSplit }}
+                                            </div>
+                                        </ul>
+                                    </span>
+                                @endif
+                            </div>
+                        @endif
+                        @if (@$auction->get->lease_period != '' && @$auction->get->lease_period != 'null')
+                            <div class="row" style="flex-wrap: wrap;">
+                                <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Desired Lease Length:<span class="removeBold">{{ $auction->get->lease_period }}
+
+                                        @if (@$auction->get->lease_period === 'Other')
+                                            <span
+                                                class="removeBold">{{ @$auction->get->custom_lease_period }}</span>
                                         @endif
+                                </div>
+                            </div>
+                        @endif
+                        @if ($auction->get->leaseAmount != '' && $auction->get->leaseAmount != 'null')
+                            <div class="row" style="flex-wrap: wrap;">
+                                <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Lease Amount Frequency:
+                                    <span class="removeBold">${{ @$auction->get->leaseAmount }}</span>
+                                </div>
+                            </div>
+                        @endif   
+                        @if (@$auction->get->total_acreage != '' && @$auction->get->total_acreage != 'null')
+                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Rent Includes:
+                                @if (gettype(@$auction->get->rent_include) == 'array')
+                                    @foreach ($auction->get->rent_include as $item)
+                                        @if ($item != 'Other')
+                                            <span class="removeBold badge bg-secondary">
+                                                {{ $item }}
+                                            </span>
+                                        @else
+                                            <br>
+                                            <ul class="leasing">
+                                                <li style="font-size:16px;">
+                                                    <span class="removeBold">
+                                                        {{ $auction->get->other_rent_include }}</span>
+                                                </li>
+                                            </ul>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            </div>
+                        @endif                         
+                        @if (@$auction->get->petOptions != '' && @$auction->get->petOptions != 'null')
+                        <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Pets Required:
+                            <span class="removeBold">
+                                {{ @$auction->get->petOptions }}
+                            </span>
+                        </div>
+                        @endif
+                        @if (@$auction->get->petOptions != '' && @$auction->get->petOptions != 'null' && @$auction->get->petOptions == 'Yes')
+                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Number of
+                                Pets Allowed:
+                                <span class="removeBold">
+                                    {{ @$auction->get->petsNumber }}
+                                </span>
+                            </div>
+                        @endif
+                        @if (@$auction->get->petOptions != '' && @$auction->get->petOptions != 'null' && @$auction->get->petOptions == 'Yes')
+                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Acceptable
+                                Pet Types:
+                                <span class="removeBold">
+                                    {{ @$auction->get->petsType }}
+                                </span>
+                            </div>
+                        @endif
+                        @if (@$auction->get->petOptions != '' && @$auction->get->petOptions != 'null' && @$auction->get->petOptions == 'Yes')
+                            <div class="col-md-12 col-12 fw-bold"><i class="fa-regular fa-check-square"></i> Maximum Pet
+                                Weight:
+                                <span class="removeBold">
+                                    {{ @$auction->get->petsWeight }}
+                                </span>
+                            </div>
+                        @endif
+                        <hr>
+                        <div class="landlords_hiring_terms">
+                            <h5 class="mt-4">Landlord’s Hiring Terms:</h5>
+                            @if (isset($auction->get->working_with_agent))
+                                <div class="row" style="flex-wrap: wrap;">
+                                    <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Offered Timeframe for the Landlord Agency Agreement:
+                                        <span class="removeBold">{{ $auction->get->working_with_agent }}</span>
                                     </div>
                                 </div>
                             @endif
-                            <div class="landlords_hiring_terms">
-                                <h5 class="mt-4">Landlord’s Hiring Terms:</h5>
-                                @if (@$auction->get->custom_ready_timeframe != '' && @$auction->get->custom_ready_timeframe != 'null')
-                                    <div class="row" style="flex-wrap: wrap;">
-                                        <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Listing
-                                            Availability Date:
-                                            <span class="removeBold">{{ @$auction->get->custom_ready_timeframe }}</span>
-                                        </div>
+                            @if (@$auction->get->listing_term != '' && @$auction->get->listing_term != 'null')
+                                <div class="row" style="flex-wrap: wrap;">
+                                    <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Offered Timeframe for the Landlord Agency Agreement:<span
+                                            class="removeBold">{{ $auction->get->listing_term !== 'Other' ? $auction->get->listing_term : $auction->get->custom_listing_terms }}</span>
                                     </div>
-                                @endif
-                                @if (@$auction->get->lease_period != '' && @$auction->get->lease_period != 'null')
-                                    <div class="row" style="flex-wrap: wrap;">
-                                        <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Desired
-                                            Lease
-                                            Length:<span class="removeBold">{{ $auction->get->lease_period }}
+                                </div>
+                            @endif
 
-                                                @if (@$auction->get->lease_period === 'Other')
-                                                    <span
-                                                        class="removeBold">{{ @$auction->get->custom_lease_period }}</span>
-                                                @endif
-                                        </div>
+                            @if (isset($auction->get->broker_compensation))
+                                <div class="row" style="flex-wrap: wrap;">
+                                    <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Listing Broker’s Commission:<span
+                                            class="removeBold">{{ $auction->get->broker_compensation . '(' . $auction->get->compensation_percent . ')' }}</span>
                                     </div>
-                                @endif
-                                @if (@$auction->get->listing_term != '' && @$auction->get->listing_term != 'null')
-                                    <div class="row" style="flex-wrap: wrap;">
-                                        <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Offered
-                                            Timeframe for the Landlord Agency Agreement:<span
-                                                class="removeBold">{{ $auction->get->listing_term }}</span>
-
-                                            @if (@$auction->get->listing_term === 'Other')
-                                                <span class="removeBold">{{ @$auction->get->custom_listing_terms }}</span>
-                                            @endif
-                                        </div>
+                                </div>
+                            @endif
+                            @if (isset($auction->get->handle_compensation))
+                                <div class="row" style="flex-wrap: wrap;">
+                                    <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Tenant’s Broker Commission Structure:<span
+                                            class="removeBold">{{ $auction->get->handle_compensation }}</span>
                                     </div>
-                                @endif
-                                @if (@$auction->get->offered_commission != '' && @$auction->get->offered_commission != 'null')
-                                    <div class="row" style="flex-wrap: wrap;">
-                                        <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Listing
-                                            Agent
-                                            Commission Offered:<span
-                                                class="removeBold">{{ $auction->get->offered_commission }}</span>
-                                            @if (@$auction->get->offered_commission == 'Other')
-                                                <span
-                                                    class="removeBold">{{ $auction->get->offeredCommissionOther }}</span>
+                                </div>
+                            @endif
+                            @if (isset($auction->get->compensation_amount))
+                                <div class="row" style="flex-wrap: wrap;">
+                                    <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Tenant’s Broker Commission:<span
+                                            class="removeBold">{{ $auction->get->compensation_amount . '(' . $auction->get->compensation_tenant_broker . ')' }}</span>
+                                    </div>
+                                </div>
+                            @endif
+                            @if (isset($auction->get->payment_timing))
+                                <div class="row" style="flex-wrap: wrap;">
+                                    <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Payment Timing for Broker Fees:<span
+                                            class="removeBold">{{ $auction->get->payment_timing . '(' . $auction->get->payment_timing_days . ')' }}</span>
+                                    </div>
+                                </div>
+                            @endif
+                            @if (isset($auction->get->early_termination))
+                                <div class="row" style="flex-wrap: wrap;">
+                                    <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Early Termination Fee:<span
+                                            class="removeBold">{{ $auction->get->early_termination . '(' . $auction->get->early_termination_amount . ')' }}</span>
+                                    </div>
+                                </div>
+                            @endif
+                            @if (isset($auction->get->protection_period))
+                                <div class="row" style="flex-wrap: wrap;">
+                                    <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Protection Period:<span
+                                            class="removeBold">{{ $auction->get->protection_period . '(' . $auction->get->protection_period_days . ')' }}</span>
+                                    </div>
+                                </div>
+                            @endif
+                            @if (isset($auction->get->compensation_new_lease))
+                                <div class="row" style="flex-wrap: wrap;">
+                                    <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Broker compensation agreement for new lease/renewal with tenant placed by Broker:<span
+                                            class="removeBold">{{ $auction->get->compensation_new_lease }}</span>
+                                    </div>
+                                </div>
+                            @endif
+                            @if (isset($auction->get->compensation_new_lease_percent))
+                                <div class="row" style="flex-wrap: wrap;">
+                                    <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> New Lease/Renewal Fee to Listing Broker:<span
+                                            class="removeBold">{{ $auction->get->compensation_new_lease_percent . '(' . $auction->get->compensation_new_lease_amount . ')' }}</span>
+                                    </div>
+                                </div>
+                            @endif
+                            <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Services the Landlord Requests from Their Agent:
+                                @if (@$auction->get->services != '' && @$auction->get->services != null && @$auction->get->services != 'null')
+                                    <div class="col-md-12 col-12 removeBold">
+                                        <ul>
+                                            @if (gettype(@$auction->get->services) == 'array')
+                                                @foreach (@$auction->get->services as $service)
+                                                    <li style="font-size:16px;">{{ $service }}</li>
+                                                @endforeach
+                                            @else
+                                                <li style="font-size:16px;">{{ @$auction->get->services }}</li>
                                             @endif
-                                        </div>
+                                            @if (@$auction->get->servicesOther != null)
+                                                <li style="font-size:16px;">{{ @$auction->get->servicesOther }}</li>
+                                            @endif
+                                        </ul>
                                     </div>
                                 @endif
                             </div>
-                            @if (@$auction->get->tenantCommission != '' && @$auction->get->tenantCommission != 'null')
-                                <div class="row" style="flex-wrap: wrap;">
-                                    <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Tenant
-                                        Agent
-                                        Commission
-                                        Split:<span class="removeBold">{{ $auction->get->tenantCommission }}</span>
-                                        @if (@$auction->get->tenantCommission == 'Other')
-                                            <span class="removeBold">{{ $auction->get->offeredCommissionOther }}</span>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endif
                         </div>
+                        
                         <hr>
                         <div class="card-body">
                             <h4>Most Important Aspects the Landlord Considers When Hiring a Real Estate Agent:</h4>
@@ -658,25 +748,7 @@
                             </div>
                         </div>
                         <hr>
-                        <div class="card-body">
-                            <h5>Services the Landlord Requests from Their Agent:</h5>
-                            @if (@$auction->get->services != '' && @$auction->get->services != null && @$auction->get->services != 'null')
-                                <div class="col-md-12 col-12 removeBold">
-                                    <ul>
-                                        @if (gettype(@$auction->get->services) == 'array')
-                                            @foreach (@$auction->get->services as $service)
-                                                <li style="font-size:16px;">{{ $service }}</li>
-                                            @endforeach
-                                        @else
-                                            <li style="font-size:16px;">{{ @$auction->get->services }}</li>
-                                        @endif
-                                        @if (@$auction->get->servicesOther != null)
-                                            <li style="font-size:16px;">{{ @$auction->get->servicesOther }}</li>
-                                        @endif
-                                    </ul>
-                                </div>
-                            @endif
-                        </div>
+                        
                         <div class="card-body">
                             <h4>Landlord’s Info:</h4>
                             @if (@$auction->get->first_name != '' && @$auction->get->first_name != 'null')
@@ -687,40 +759,48 @@
                                     </div>
                                 </div>
                             @endif
-                            @if (@$auction->get->last_name != '' && @$auction->get->last_name != 'null')
+                            <small>(Only the first name will show on listings until an agent gets hired.)</small>
+                            @if ($auction->is_sold)
+                                @if (@$auction->get->last_name != '' && @$auction->get->last_name != 'null')
                                 <div class="row" style="flex-wrap: wrap;">
                                     <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Last Name:
                                         <span class="removeBold">{{ @$auction->get->last_name }}</span>
                                     </div>
                                 </div>
-                            @endif
-                            @if (@$auction->get->email != '' && @$auction->get->email != 'null')
-                                <div class="row" style="flex-wrap: wrap;">
-                                    <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Email:
-                                        <span class="removeBold">{{ @$auction->get->email }}</span>
+                                @endif
+                                @if (@$auction->get->email != '' && @$auction->get->email != 'null')
+                                    <div class="row" style="flex-wrap: wrap;">
+                                        <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Email:
+                                            <span class="removeBold">{{ @$auction->get->email }}</span>
+                                        </div>
                                     </div>
-                                </div>
-                            @endif
-                            @if (@$auction->get->phone != '' && @$auction->get->phone != 'null')
-                                <div class="row" style="flex-wrap: wrap;">
-                                    <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Phone
-                                        Number:
-                                        <span class="removeBold">{{ @$auction->get->phone }}</span>
+                                @endif
+                                @if (@$auction->get->phone != '' && @$auction->get->phone != 'null')
+                                    <div class="row" style="flex-wrap: wrap;">
+                                        <div class="col-12 fw-bold"> <i class="fa-regular fa-check-square"></i> Phone
+                                            Number:
+                                            <span class="removeBold">{{ @$auction->get->phone }}</span>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             @endif
+                            
                             @if ($auction->get->auction_type !== null && $auction->get->auction_type == 'Auction Listing')
                                 <div class="disclaimer mt-4">
                                     <h5>Legal Disclaimer:</h5>
-                                    <p>For Timed Listings, the landlord must wait until the timer
-                                        has ended before selecting an agent to accept, counter, or reject. The only way the
-                                        landlord can choose
-                                        to end the timer early is if an agent matches the 'Hire Now' terms. These terms
-                                        consist of the landlord’s
-                                        preferences for the Landlord Agent Agreement Timeframe, the Landlord’s Agent
-                                        Commission Split from
-                                        the Listing Agent’s Commission, and the services the tenant requests from their
-                                        agent.</p>
+                                    <p>For Timed Listings, the landlord must wait until the timer has ended before selecting an agent to accept, counter, or reject. The landlord may choose to end the timer early only if an agent matches the "Hire Now" terms. These terms include the landlord's preferences for:</p>
+                                    <ul>
+                                        <li>The Listing Agreement timeframe</li>
+                                        <li>The Listing Broker’s commission</li>
+                                        <li>The Tenant’s Broker Commission Structure</li>
+                                        <li>The Tenant’s Broker Commission</li>
+                                        <li>The payment timing for broker fees</li>
+                                        <li>The early termination fee</li>
+                                        <li>The protection period</li>
+                                        <li>The broker compensation agreement for new lease/renewal with a tenant placed by the broker</li>
+                                        <li>The new lease/renewal fee to the Listing Broker</li>
+                                        <li>The services requested by the landlord from their agent</li>
+                                    </ul>
                                 </div>
                             @endif
                             <div class="row">
@@ -901,7 +981,7 @@
                                                     <span class="badge">{{ $loop->iteration }}</span>
                                                 </div>
                                                 <div class="col-4">
-                                                    {{ @$bid->user->name }}
+                                                    {{ $bid->get->first_name . ' ' . $bid->get->last_name }}
                                                 </div>
                                                 <div class="col-4 text-right">
                                                     ${{ @$bid->get->offering_price }}
@@ -916,34 +996,90 @@
                                             <div class="accordion-body">
                                                 <div id="bidding_history_data">
                                                     <div>
-                                                        <p class="d-flex justify-content-between small">First Name:
-                                                            <span>{{ @$bid->get->first_name }}</span>
-                                                        </p>
-                                                        <p class="d-flex justify-content-between small">Landlord Agency
-                                                            Agreement Timeframe:
-                                                            <span>{{ @$bid->get->listing_terms }}</span>
-                                                        </p>
-                                                        <p class="d-flex justify-content-between small">Commission Offered:
-                                                            <span>{{ @$bid->get->offering_price }}</span>
-                                                        </p>
-                                                        @if (@$bid->get->services)
-                                                            <div>
-                                                                <label>Services Offered by the Agent:</label>
-                                                                <ul class="services">
-                                                                    @foreach (@$bid->get->services as $service)
-                                                                        @if ($service == 'Other')
-                                                                            @continue
-                                                                        @endif
-                                                                        <li style="font-size: 16px; margin-top:15px;">
-                                                                            {{ $service }}</li>
-                                                                    @endforeach
-                                                                    @if (@$bid->get->other_services != '' && @$bid->get->other_services != 'null')
-                                                                        <li style="font-size: 16px; margin-top:15px;">
-                                                                            {{ @$bid->get->other_services }}</li>
-                                                                    @endif
-                                                                </ul>
-                                                            </div>
-                                                        @endif
+                                                        <div class="d-flex justify-content-center align-items-center w-100">
+                                                            <a href="{{route('landlord.agent.auction.bid.view', $bid->id)}}" style="color: blue">
+                                                                View <i class="fa fa-eye"></i>
+                                                            </a>
+                                                        </div>
+                                                        <table class="table table-bordered">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th class="small">First Name:</th>
+                                                                    <td class="small">{{ @$bid->get->first_name }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="small">Landlord Agency Agreement Timeframe:</th>
+                                                                    <td>{{ @$bid->get->listing_terms }}</td>
+                                                                </tr>
+                                                                @if (isset($bid->get->broker_compensation))
+                                                                    <tr>
+                                                                        <th class="small">Listing Broker’s Commission:</th>
+                                                                        <td>{{ $bid->get->broker_compensation . '(' . $bid->get->compensation_percent . ')' }}</td>
+                                                                    </tr>
+                                                                @endif
+                                                                @if (isset($bid->get->handle_compensation))
+                                                                    <tr>
+                                                                        <th class="small">Tenant’s Broker Commission Structure: </th>
+                                                                        <td>{{ $bid->get->handle_compensation }}</td>
+                                                                    </tr>
+                                                                @endif
+                                                                @if (isset($bid->get->compensation_amount))
+                                                                    <tr>
+                                                                        <th class="small">Tenant’s Broker Commission:</th>
+                                                                        <td>{{ $bid->get->compensation_amount . '(' . $bid->get->compensation_tenant_broker . ')' }}</td>
+                                                                    </tr>
+                                                                @endif
+                                                                @if (isset($bid->get->payment_timing))
+                                                                    <tr>
+                                                                        <th class="small">Payment Timing for Broker Fees:</th>
+                                                                        <td>{{ $bid->get->payment_timing . '(' . $bid->get->payment_timing_days . ')' }}</td>
+                                                                    </tr>
+                                                                @endif
+                                                                @if (isset($bid->get->early_termination))
+                                                                    <tr>
+                                                                        <th class="small">Early Termination Fee:</th>
+                                                                        <td>{{ $bid->get->early_termination . '(' . $bid->get->early_termination_amount . ')' }}</td>
+                                                                    </tr>
+                                                                @endif
+                                                                @if (isset($bid->get->protection_period))
+                                                                    <tr>
+                                                                        <th class="small">Protection Period:</th>
+                                                                        <td>{{ $bid->get->protection_period . '(' . $bid->get->protection_period_days . ')' }}</td>
+                                                                    </tr>
+                                                                @endif
+                                                                @if (isset($bid->get->compensation_new_lease))
+                                                                    <tr>
+                                                                        <th class="small">Broker compensation agreement for new lease/renewal with tenant placed by Broker:</th>
+                                                                        <td>{{ $bid->get->compensation_new_lease }}</td>
+                                                                    </tr>
+                                                                @endif
+                                                                @if (isset($bid->get->compensation_new_lease_percent))
+                                                                    <tr>
+                                                                        <th class="small">New Lease/Renewal Fee to Listing Broker:</th>
+                                                                        <td>{{ $bid->get->compensation_new_lease_percent . '(' . $bid->get->compensation_new_lease_amount . ')' }}</td>
+                                                                    </tr>
+                                                                @endif
+                                                                
+                                                                @if (@$bid->get->services)
+                                                                    <tr>
+                                                                        <th class="small">Services Offered by the Agent:</th>
+                                                                        <td class="services">
+                                                                            @foreach (@$bid->get->services as $service)
+                                                                                @if ($service == 'Other')
+                                                                                    @continue
+                                                                                @endif
+                                                                                <li style="font-size: 16px; margin-top:15px;">
+                                                                                    {{ $service }}</li>
+                                                                            @endforeach
+                                                                            @if (@$bid->get->other_services != '' && @$bid->get->other_services != 'null')
+                                                                                <li style="font-size: 16px; margin-top:15px;">
+                                                                                    {{ @$bid->get->other_services }}</li>
+                                                                            @endif
+                                                                        </td>
+                                                                    </tr>
+                                                                @endif
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                     @if ($bid->accepted == 2)
                                                         <div class="d-flex justify-content-center align-items-center bg-white mb-4">
@@ -989,65 +1125,127 @@
                                                                 @if (!$auction->sold)
                                                                     <h5>Counter Bids</h5>
                                                                     <hr>
-                                                                    @foreach ($allBids as $key => $countBid)
-                                                                        <div>
-                                                                            <p class="d-flex justify-content-between small">First Name:
-                                                                                <span>{{ $countBid->get->first_name }}</span>
-                                                                            </p>
-                                                                            <p class="d-flex justify-content-between small">Landlord Agency
-                                                                                Agreement Timeframe:
-                                                                                <span>{{ $countBid->get->listing_terms }}</span>
-                                                                            </p>
-                                                                            <p class="d-flex justify-content-between small">Commission Offered:
-                                                                                <span>{{ $countBid->get->offering_price }}</span>
-                                                                            </p>
-                                                                            @if ($countBid->get->services)
-                                                                                <div>
-                                                                                    <label>Services Offered by the Agent:</label>
-                                                                                    <ul class="services">
-                                                                                        @foreach ($countBid->get->services as $service)
-                                                                                            @if ($service == 'Other')
-                                                                                                @continue
-                                                                                            @endif
-                                                                                            <li style="font-size: 16px; margin-top:15px;">
-                                                                                                {{ $service }}</li>
-                                                                                        @endforeach
-                                                                                        @if ($countBid->get->other_services != '' && $countBid->get->other_services != 'null')
-                                                                                            <li style="font-size: 16px; margin-top:15px;">
-                                                                                                {{ $countBid->get->other_services }}</li>
+                                                                    @if (isset($allBids) && count($allBids) > 0)
+                                                                        @foreach ($allBids as $key => $countBid)
+                                                                            <div>
+                                                                                <div class="d-flex justify-content-center align-items-center w-100">
+                                                                                    <a href="{{route('landlord.agent.auction.bid.view', $bid->id)}}" style="color: blue">
+                                                                                        View <i class="fa fa-eye"></i>
+                                                                                    </a>
+                                                                                </div>
+                                                                                <table class="table table-bordered">
+                                                                                    <tbody>
+                                                                                        <tr>
+                                                                                            <th class="small">First Name:</th>
+                                                                                            <td class="small">{{ $countBid->get->first_name }}</td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <th class="small">Landlord Agency Agreement Timeframe:</th>
+                                                                                            <td>{{ $countBid->get->listing_terms }}</td>
+                                                                                        </tr>
+                                                                                        @if (isset($countBid->get->broker_compensation))
+                                                                                            <tr>
+                                                                                                <th class="small">Listing Broker’s Commission:</th>
+                                                                                                <td>{{ $countBid->get->broker_compensation . '(' . $countBid->get->compensation_percent . ')' }}</td>
+                                                                                            </tr>
                                                                                         @endif
-                                                                                    </ul>
+                                                                                        @if (isset($countBid->get->handle_compensation))
+                                                                                            <tr>
+                                                                                                <th class="small">Tenant’s Broker Commission Structure: </th>
+                                                                                                <td>{{ $countBid->get->handle_compensation }}</td>
+                                                                                            </tr>
+                                                                                        @endif
+                                                                                        @if (isset($countBid->get->compensation_amount))
+                                                                                            <tr>
+                                                                                                <th class="small">Tenant’s Broker Commission:</th>
+                                                                                                <td>{{ $countBid->get->compensation_amount . '(' . $countBid->get->compensation_tenant_broker . ')' }}</td>
+                                                                                            </tr>
+                                                                                        @endif
+                                                                                        @if (isset($countBid->get->payment_timing))
+                                                                                            <tr>
+                                                                                                <th class="small">Payment Timing for Broker Fees:</th>
+                                                                                                <td>{{ $countBid->get->payment_timing . '(' . $countBid->get->payment_timing_days . ')' }}</td>
+                                                                                            </tr>
+                                                                                        @endif
+                                                                                        @if (isset($countBid->get->early_termination))
+                                                                                            <tr>
+                                                                                                <th class="small">Early Termination Fee:</th>
+                                                                                                <td>{{ $countBid->get->early_termination . '(' . $countBid->get->early_termination_amount . ')' }}</td>
+                                                                                            </tr>
+                                                                                        @endif
+                                                                                        @if (isset($countBid->get->protection_period))
+                                                                                            <tr>
+                                                                                                <th class="small">Protection Period:</th>
+                                                                                                <td>{{ $countBid->get->protection_period . '(' . $countBid->get->protection_period_days . ')' }}</td>
+                                                                                            </tr>
+                                                                                        @endif
+                                                                                        @if (isset($countBid->get->compensation_new_lease))
+                                                                                            <tr>
+                                                                                                <th class="small">Broker compensation agreement for new lease/renewal with tenant placed by Broker:</th>
+                                                                                                <td>{{ $countBid->get->compensation_new_lease }}</td>
+                                                                                            </tr>
+                                                                                        @endif
+                                                                                        @if (isset($countBid->get->compensation_new_lease_percent))
+                                                                                            <tr>
+                                                                                                <th class="small">New Lease/Renewal Fee to Listing Broker:</th>
+                                                                                                <td>{{ $countBid->get->compensation_new_lease_percent . '(' . $countBid->get->compensation_new_lease_amount . ')' }}</td>
+                                                                                            </tr>
+                                                                                        @endif
+                                                                                        
+                                                                                        @if ($countBid->get->services)
+                                                                                            <tr>
+                                                                                                <th class="small">Services Offered by the Agent:</th>
+                                                                                                <td class="services">
+                                                                                                    @foreach ($countBid->get->services as $service)
+                                                                                                        @if ($service == 'Other')
+                                                                                                            @continue
+                                                                                                        @endif
+                                                                                                        <li style="font-size: 16px; margin-top:15px;">
+                                                                                                            {{ $service }}</li>
+                                                                                                    @endforeach
+                                                                                                    @if ($countBid->get->other_services != '' && $countBid->get->other_services != 'null')
+                                                                                                        <li style="font-size: 16px; margin-top:15px;">
+                                                                                                            {{ $countBid->get->other_services }}</li>
+                                                                                                    @endif
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        @endif
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            @if ($countBid->accepted == 2)
+                                                                                <div class="d-flex justify-content-center align-items-center bg-white mb-4">
+                                                                                    <h4 class="text-danger">Rejected</h4>
+                                                                                </div>
+                                                                            @elseif ($countBid->accepted == 0)
+                                                                                <div class="form-group d-flex justify-content-space gap-1">
+                                                                                    @if (($auction->auction_type == 'Auction Listing' && $auction->auction_ended || $auction->auction_type == 'Traditional Listing') && $auction->user_id == $auth_id && !$auction->is_sold)
+                                                                                        <form action="{{ route('landlord.hire.agent.auction.bid.accept') }}" method="post">
+                                                                                            @csrf
+                                                                                            <input type="hidden" name="auction_id" value="{{ $auction->id }}">
+                                                                                            <input type="hidden" name="bid_id" value="{{ $countBid->id }}">
+                                                                                            <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                                                                        </form>
+                                                                                        <form action="{{ route('landlord.hire.agent.auction.bid.reject') }}" id="deleteForm" method="post">
+                                                                                            @csrf
+                                                                                            <input type="hidden" name="auction_id" value="{{ $auction->id }}">
+                                                                                            <input type="hidden" name="bid_id" value="{{ $countBid->id }}">
+                                                                                            <button type="button" style="background-color:#da2a43" class="btn btn-danger btn-sm" onclick="showToast()">Reject</button>
+                                                                                        </form>
+                                                                                    @endif
+                                                                                </div>
+                                                                            @else
+                                                                                <div class="d-flex justify-content-center align-items-center bg-white mb-4">
+                                                                                    <h4 class="text-success">Accepted</h4>
                                                                                 </div>
                                                                             @endif
+                                                                            <hr>
+                                                                        @endforeach
+                                                                    @else
+                                                                        <div class="d-flex justify-content-center align-items-center w-100">
+                                                                            <h6>No Counterbid</h6>
                                                                         </div>
-                                                                        @if ($countBid->accepted == 2)
-                                                                            <div class="d-flex justify-content-center align-items-center bg-white mb-4">
-                                                                                <h4 class="text-danger">Rejected</h4>
-                                                                            </div>
-                                                                        @elseif ($countBid->accepted == 0)
-                                                                            <div class="form-group d-flex justify-content-space gap-1">
-                                                                                @if (($auction->auction_type == 'Auction Listing' && $auction->auction_ended || $auction->auction_type == 'Traditional Listing') && $auction->user_id == $auth_id && !$auction->is_sold)
-                                                                                    <form action="{{ route('landlord.hire.agent.auction.bid.accept') }}" method="post">
-                                                                                        @csrf
-                                                                                        <input type="hidden" name="auction_id" value="{{ $auction->id }}">
-                                                                                        <input type="hidden" name="bid_id" value="{{ $countBid->id }}">
-                                                                                        <button type="submit" class="btn btn-success btn-sm">Accept</button>
-                                                                                    </form>
-                                                                                    <form action="{{ route('landlord.hire.agent.auction.bid.reject') }}" id="deleteForm" method="post">
-                                                                                        @csrf
-                                                                                        <input type="hidden" name="auction_id" value="{{ $auction->id }}">
-                                                                                        <input type="hidden" name="bid_id" value="{{ $countBid->id }}">
-                                                                                        <button type="button" style="background-color:#da2a43" class="btn btn-danger btn-sm" onclick="showToast()">Reject</button>
-                                                                                    </form>
-                                                                                @endif
-                                                                            </div>
-                                                                        @else
-                                                                            <div class="d-flex justify-content-center align-items-center bg-white mb-4">
-                                                                                <h4 class="text-success">Accepted</h4>
-                                                                            </div>
-                                                                        @endif
-                                                                        <hr>
-                                                                    @endforeach
+                                                                    @endif
                                                                 @endif
                                                             </div>
                                                         </div>

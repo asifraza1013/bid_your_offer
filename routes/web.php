@@ -162,6 +162,7 @@ Route::get('/search/agents', [SearchAgentController::class, 'search'])->name('se
 
 
 Route::get('/hire/agent/auction/view/{id}', [LandlordAgentAuctionController::class, 'view'])->name('landlord.agent.auction.view');
+Route::get('/hire/agent/auction/bid/view/{id}', [LandlordAgentAuctionBidController::class, 'view'])->name('landlord.agent.auction.bid.view');
 Route::post('/hire/agent/auction/end/{id}', [LandlordAgentAuctionController::class, 'endAuction'])->name('landlord.agent.auction.end');
 Route::get('/search/hire/landlord/agent/auctions', [LandlordAgentAuctionController::class, 'search'])->name('landlord.agent.auctions.search');
 

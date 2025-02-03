@@ -44,6 +44,20 @@ class LandlordAgentAuctionBidController extends Controller
         $bid->saveMeta("commissionRetianOpt", $request->commissionRetianOpt);
         $bid->saveMeta("customRetainCommission", $request->customRetainCommission);
         $bid->saveMeta("agentCharges", $request->agentCharges);
+        $bid->saveMeta("broker_compensation", $request->broker_compensation);
+        $bid->saveMeta("compensation_percent", $request->compensation_percent);
+        $bid->saveMeta("handle_compensation", $request->handle_compensation);
+        $bid->saveMeta("compensation_amount", $request->compensation_amount);
+        $bid->saveMeta("compensation_tenant_broker", $request->compensation_tenant_broker);
+        $bid->saveMeta("payment_timing", $request->payment_timing);
+        $bid->saveMeta("payment_timing_days", $request->payment_timing_days);
+        $bid->saveMeta("early_termination", $request->early_termination);
+        $bid->saveMeta("early_termination_amount", $request->early_termination_amount);
+        $bid->saveMeta("protection_period", $request->protection_period);
+        $bid->saveMeta("protection_period_days", $request->protection_period_days);
+        $bid->saveMeta("compensation_new_lease_percent", $request->compensation_new_lease_percent);
+        $bid->saveMeta("compensation_new_lease_amount", $request->compensation_new_lease_amount);
+        $bid->saveMeta("compensation_new_lease", $request->compensation_new_lease);
         $bid->saveMeta("custom_agent_charges", $request->custom_agent_charges);
         $bid->saveMeta("services", json_encode($request->services));
         $bid->saveMeta("other_services", $request->other_services);
@@ -105,6 +119,28 @@ class LandlordAgentAuctionBidController extends Controller
             }
         }
         // DB::commit();
+
+        $hireNowTerms = [
+            'listing_term',
+            'custom_listing_terms',
+            'broker_compensation', 
+            'compensation_percent', 
+            'handle_compensation', 
+            'compensation_amount', 
+            'compensation_tenant_broker',
+            'payment_timing',
+            'payment_timing_days',
+            'early_termination',
+            'early_termination_amount',
+            'protection_period',
+            'protection_period_days',
+            'compensation_new_lease_percent',
+            'compensation_new_lease_amount',
+            'compensation_new_lease'
+        ];
+
+        $this->checkHireNowTerms($request, $hireNowTerms, $request->auction_id, $bid->id);
+
         $route = route('landlord.agent.auction.view', $request->auction_id);
         return redirect()->to($route)->with('success', 'Bid added successfully.');
         // } catch (\Exception $e) {
@@ -113,6 +149,12 @@ class LandlordAgentAuctionBidController extends Controller
         return $e->getMessage();
         return redirect()->back()->with('error', 'Unable to add bid on Landlord\'s Agent Auction.');
         // }
+    }
+
+    public function view($bid_id)
+    {
+        $bid = LandlordAgentAuctionBid::findOrFail($bid_id);
+        return view('hire_landlord_agent.view-bid', compact('bid'));
     }
 
 
@@ -180,6 +222,20 @@ class LandlordAgentAuctionBidController extends Controller
         $bid->saveMeta("agentCommissionOther", $request->agentCommissionOther);
         $bid->saveMeta("commissionRetianOpt", $request->commissionRetianOpt);
         $bid->saveMeta("customRetainCommission", $request->customRetainCommission);
+        $bid->saveMeta("broker_compensation", $request->broker_compensation);
+        $bid->saveMeta("compensation_percent", $request->compensation_percent);
+        $bid->saveMeta("handle_compensation", $request->handle_compensation);
+        $bid->saveMeta("compensation_amount", $request->compensation_amount);
+        $bid->saveMeta("compensation_tenant_broker", $request->compensation_tenant_broker);
+        $bid->saveMeta("payment_timing", $request->payment_timing);
+        $bid->saveMeta("payment_timing_days", $request->payment_timing_days);
+        $bid->saveMeta("early_termination", $request->early_termination);
+        $bid->saveMeta("early_termination_amount", $request->early_termination_amount);
+        $bid->saveMeta("protection_period", $request->protection_period);
+        $bid->saveMeta("protection_period_days", $request->protection_period_days);
+        $bid->saveMeta("compensation_new_lease_percent", $request->compensation_new_lease_percent);
+        $bid->saveMeta("compensation_new_lease_amount", $request->compensation_new_lease_amount);
+        $bid->saveMeta("compensation_new_lease", $request->compensation_new_lease);
         $bid->saveMeta("agentCharges", $request->agentCharges);
         $bid->saveMeta("custom_agent_charges", $request->custom_agent_charges);
         $bid->saveMeta("services", json_encode($request->services));
@@ -250,5 +306,51 @@ class LandlordAgentAuctionBidController extends Controller
 
         $route = route('landlord.agent.auction.view', $auctionBid->landlord_agent_auction_id);
         return redirect()->to($route)->with('success', 'Counter Bid placed successfully!');
+    }
+
+    private function checkHireNowTerms($req, $terms, $auction_id, $bid_id)
+    {
+        $auction = LandlordAgentAuction::find($auction_id);
+        $bid = LandlordAgentAuctionBid::find($bid_id);
+
+        if (!$auction) {
+            return false;
+        }
+
+        // Check terms
+        foreach ($terms as $term) {
+            if ($req->has($term) && $req->input($term) != $auction->$term) {
+                return false; // Found a mismatch, return false immediately
+            }
+        }
+
+        // Check services
+        if (!empty($req->services) && is_array($req->services)) {
+            foreach ($req->services as $service) {
+                if (!in_array($service, json_decode($auction->services, true))) {
+                    return false; // Found a mismatch, return false immediately
+                }
+            }
+        }
+
+        // If everything is valid, update auction
+        DB::beginTransaction();
+        $bid->accepted = 1;
+        $bid->accepted_date = date('Y-m-d H:i:s');
+        $bid->save();
+
+        $auction->auction_ended = 1;
+        $auction->is_sold = true;
+        $auction->sold_date = date('Y-m-d H:i:s');
+        $auction->save();
+
+        $ua = new UserAgent();
+        $ua->user_id = Auth::user()->id;
+        $ua->agent_id = $bid->user_id;
+        $ua->type = 'landlord';
+        $ua->save();
+        DB::commit();
+
+        return true;
     }
 }

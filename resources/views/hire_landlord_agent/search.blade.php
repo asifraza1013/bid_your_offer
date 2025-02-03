@@ -113,9 +113,12 @@
                         $diff = $end->diffInDays($start);
                       @endphp
                     </svg>
-                    <b
-                      class="timer-{{ @$auction->id }} badge bg-info">{{ round(@$auction->auction_length) <= 0 ? 'No Time Limit' : $diff . 'd ' . $start->diff($end)->format('%H:%I:%S') }}</b>
-                  </p>
+                    @if (!$auction->auction_ended)
+                      <b class="timer-{{ @$auction->id }} badge bg-info">{{ round(@$auction->auction_length) <= 0 ? 'No Time Limit' : $diff . 'd ' . $start->diff($end)->format('%H:%I:%S') }}</b></p>
+                    @else
+                      <b class="badge bg-info">Auction Ended</b></p>
+                    @endif
+                    
                   @if ($auction->is_sold)
                     <b class="badge bg-info align-self-center">Agent Hired</b>
                   @else
