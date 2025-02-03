@@ -154,7 +154,9 @@ class LandlordAgentAuctionBidController extends Controller
     public function view($bid_id)
     {
         $bid = LandlordAgentAuctionBid::findOrFail($bid_id);
-        return view('hire_landlord_agent.view-bid', compact('bid'));
+        $page_data['title'] = 'Landlord Agent Auction Bid';
+        $page_data['bid'] = $bid;
+        return view('hire_landlord_agent.view-bid', $page_data);
     }
 
 

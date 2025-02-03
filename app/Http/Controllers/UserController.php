@@ -12,6 +12,7 @@ use App\Models\PropertyType;
 use App\Models\SellerAgentAuction;
 use App\Models\TenantAgentAuction;
 use App\Models\TenantCriteriaAuction;
+use App\Models\Financing;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -125,6 +126,12 @@ class UserController extends Controller
             $page_data['auction'] = $auction;
             $page_data['title'] = "Edit Auction for Landlord";
             $page_data['property_types'] = PropertyType::orderBy('sort', 'asc')->get();
+        }
+
+        if($request->moduleName == 'edit-landlord-agent-auction') {
+            $auction = LandlordAgentAuction::find($request->id);
+            $page_data['auction'] = $auction;
+            $page_data['financings'] = Financing::orderBy('sort', 'asc')->get();
         }
         
         // Pass $auction to the view, ensuring it's always available

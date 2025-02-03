@@ -362,7 +362,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/hire/agent/auction', [LandlordAgentAuctionController::class, 'index'])->name('hire.agent.auction');
         Route::post('/hire/agent/auction', [LandlordAgentAuctionController::class, 'store']);
         Route::get('/hire/agent/auction/edit/{id}', [LandlordAgentAuctionController::class, 'edit'])->name('hire.agent.auction.edit');
-        Route::post('/hire/agent/auction/edit/{id}', [LandlordAgentAuctionController::class, 'update']);
+        Route::post('/hire/agent/auction/edit/{id}', [LandlordAgentAuctionController::class, 'update'])->name('hire.agent.auction.update');
         Route::get('/hire/agent/auctions/list', [LandlordAgentAuctionController::class, 'list'])->name('agent.auctions.list');
         Route::post('hire/agent/auction/bid/accept', [LandlordAgentAuctionBidController::class, 'accept_bid'])->name('hire.agent.auction.bid.accept');
         Route::post('hire/agent/auction/bid/reject', [LandlordAgentAuctionBidController::class, 'reject_bid'])->name('hire.agent.auction.bid.reject');

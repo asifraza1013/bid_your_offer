@@ -1579,6 +1579,10 @@
             $(document).on('change', '#compensation_new_lease_amount', function(){
                 $('.compensation_new_lease_amount').removeClass('d-none');
             })
+
+            $(document).on('change', '#payment_timing', function(){
+                $('.payment_timing_days').removeClass('d-none');
+            })
         })
     </script>
     <script

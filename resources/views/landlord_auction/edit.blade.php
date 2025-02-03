@@ -324,7 +324,7 @@ label.fileuploader-btn {
                 <div class="wizard-steps-progress">
                     <div class="steps-progress-percent"></div>
                 </div>
-                <form class="p-4 pt-0 mainform" id="edit-landlord-auction" action="{{ route('agent.landlord.auction.update', @$auction->id) }}"
+                <form class="p-4 pt-0 mainform" id="edit-landlord-auction" action="{{ route('agent.landlord.auction.update', $auction->id) }}"
                     method="POST" enctype="multipart/form-data">
                     @csrf
                     

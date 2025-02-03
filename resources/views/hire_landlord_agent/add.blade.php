@@ -2016,7 +2016,7 @@
                                             <div class="form-group">
                                                 <label class="fw-bold" for="heated_sqft">Pet Fee Amount:</label>
                                                 <input type="number" name="petsFeeAmount" id="total_acreage"
-                                                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dallar-sign" >
+                                                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dollar-sign" >
                                             </div>
                                             <div class="form-group">
                                                 <label class="fw-bold" for="heated_sqft">Is the Pet Fee Refundable or
@@ -3848,6 +3848,10 @@
                 }else{
                     $('.compensation_new_lease_amount').addClass('d-none');
                 }
+            })
+
+            $(document).on('change', '#payment_timing', function(){
+                $('.payment_timing_days').removeClass('d-none');
             })
         })
     </script>

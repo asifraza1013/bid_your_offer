@@ -18,4 +18,14 @@ return [
             '4'=> 'landlord_auction.includes.edit.patch-4',
         ]
     ],
+
+    'edit-landlord-agent-auction' => [
+        'patches' => [
+            '1'=> 'hire_landlord_agent.includes.edit.patch-1',
+            '2'=> 'hire_landlord_agent.includes.edit.patch-2',
+            '3'=> 'hire_landlord_agent.includes.edit.patch-3',
+            '4'=> 'hire_landlord_agent.includes.edit.patch-4',
+            '5'=> 'hire_landlord_agent.includes.edit.patch-5',
+        ]
+    ],
 ];
