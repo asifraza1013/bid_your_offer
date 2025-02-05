@@ -555,6 +555,21 @@ class LandlordAuctionController extends Controller
         }
     }
 
+    public function viewBid($bid_id)
+    {
+        $bid = LandlordAuctionBid::findOrFail($bid_id);
+        $page_data['title'] = 'Landlord Auction Bid';
+        $page_data['bid'] = $bid;
+        return view('landlord_auction.view-bid', $page_data);
+    }
+
+    public function endAuction($id)
+    {
+        $auction = landlordAuction::findOrFail($id);
+        $auction->update(['auction_ended' => true]);
+        return response()->json(['message' => 'Auction ended successfully']);
+    }
+
     public function bidsVisibility($id, $vis)
     {
         $auction = landlordAuction::where('id', $id)->first();
@@ -1057,7 +1072,7 @@ class LandlordAuctionController extends Controller
             $auction_bid->saveMeta('tenant_requests_commission_amount', $request->tenant_requests_commission_amount);
             $auction_bid->saveMeta('tenant_requests_commission_amount_other', $request->tenant_requests_commission_amount_other);
 
-            $auction->bid->saveMeta('compensation_acceptable', $request->compensation_acceptable);
+            $auction_bid->saveMeta('compensation_acceptable', $request->compensation_acceptable);
 
             $auction_bid->saveMeta('offer_expiry', $request->offer_expiry);
 
@@ -1172,7 +1187,7 @@ class LandlordAuctionController extends Controller
         try {
             DB::beginTransaction();
             $bid = LandlordAuctionBid::find($id);
-            $bid->accepted = true;
+            $bid->accepted = 1;
             $bid->accepted_date = date('Y-m-d H:i:s');
             $bid->save();
             $auction = LandlordAuction::find($request->auction_id);
@@ -1186,6 +1201,14 @@ class LandlordAuctionController extends Controller
             return $e->getMessage();
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+
+    public function reject_bid($id, Request $request)
+    {
+        $bid = LandlordAuctionBid::whereId($id)->first();
+        $bid->accepted = 2;
+        $bid->save();
+        return redirect()->back()->with('success', 'Bid Rejected successfully!');
     }
 
     public function admin_list(Request $request)

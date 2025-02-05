@@ -158,7 +158,7 @@
               $lease_terms = [['name' => '3 months', 'target' => ''], ['name' => '6 months', 'target' => ''], ['name' => '9 months', 'target' => ''], ['name' => '1 year', 'target' => ''], ['name' => '2 years', 'target' => ''], ['name' => '3-5 years', 'target' => ''], ['name' => '5+ years', 'target' => ''], ['name' => 'Month to Month', 'target' => ''], ['name' => 'Other', 'target' => '.otherLease']];
             @endphp
             <div class="form-group">
-              <label class="fw-bold">Offered Lease Length: </label>
+              <label class="fw-bold">Offered Lease Length:</label>
               <select class="grid-picker" name="lease_terms[]" id="mySelect" style="justify-content: flex-start;"
                 required multiple>
                 <option value="">Select</option>

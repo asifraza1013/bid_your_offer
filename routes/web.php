@@ -234,6 +234,8 @@ Route::get('seller/service/auction/view/{id}', [SellerServiceAuctionController::
 Route::get('seller/service/auction/search', [SellerServiceAuctionController::class, 'search'])->name('seller.service.auction.search');
 Route::get("/landlord/auctions/search", [LandlordAuctionController::class, 'search_listing'])->name('agent.landlord.auctions.search');
 Route::get("/landlord/auction/view/{id}", [LandlordAuctionController::class, 'view'])->name('agent.landlord.auction');
+Route::get('/landlord/auction/bid/view/{id}', [LandlordAuctionController::class, 'viewBid'])->name('landlord.auction.bid.view');
+Route::post('/landlord/auction/end/{id}', [LandlordAuctionController::class, 'endAuction'])->name('landlord.auction.end');
 
 
 
@@ -409,6 +411,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get("/landlord/auction/edit/{id}", [LandlordAuctionController::class, 'edit'])->name('landlord.auction.edit');
             Route::post("/landlord/auction/update/{id}", [LandlordAuctionController::class, 'update'])->name('landlord.auction.update');
             Route::post("/landlord/auction/bid/accept/{id}", [LandlordAuctionController::class, 'accept_bid'])->name('landlord.auction.bid.accept');
+            Route::post('/landlord/auction/bid/reject/{id}', [LandlordAuctionController::class, 'reject_bid'])->name('landlord.auction.bid.reject');
 
             Route::get("/buyer/agent/auction/bid/{id}", [BuyerAgentAuctionBidController::class, 'add_bid'])->name('buyer.agent.auction.bid');
             Route::get("/tenant/agent/auction/bid/{id}", [TenantAgentAuctionBidController::class, 'add_bid'])->name('tenant.agent.auction.bid');
