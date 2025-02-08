@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class PropertyAuction extends Model 
+class PropertyAuction extends Model
 {
     use HasFactory;
     protected $appends = ["get"];
-    protected $fillable = ['starting_price', 'sold', 'is_paid', 'sold_date'];
+    protected $fillable = ['starting_price', 'sold', 'is_paid', 'sold_date', 'auction_ended', 'display_bids', 'auction_type', 'auction_length'];
 
     public function user()
     {

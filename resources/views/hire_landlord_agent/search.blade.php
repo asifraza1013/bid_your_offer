@@ -109,7 +109,7 @@
                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                       @php
                         $start = $carbon::now();
-                        $end = $carbon::parse(@$auction->created_at)->addDays(30);
+                        $end = $carbon::parse(@$auction->created_at)->addDays($auction->auction_length);
                         $diff = $end->diffInDays($start);
                       @endphp
                     </svg>

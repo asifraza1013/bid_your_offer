@@ -121,11 +121,15 @@
                       d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     @php
                       $start = $carbon::now();
-                      $end = $carbon::parse(@$auction->created_at)->addDays(@$auction->get->auction_length_days);
+                      $end = $carbon::parse(@$auction->created_at)->addDays($auction->auction_length);
                       $diff = $end->diffInDays($start);
                     @endphp
-                  </svg><b class="badge bg-info timer-{{ @$auction->id }}"
-                    data-time="20s">{{ round(@$auction->get->auction_length_days) <= 0 ? 'No Time Limit' : $diff . 'd ' . $start->diff($end)->format('%H:%I:%S') }}</b>
+                  </svg>
+                  @if (!$auction->auction_ended)
+                    <b class="badge bg-info timer-{{ @$auction->id }}" data-time="20s">{{ round($auction->auction_length) <= 0 ? 'No Time Limit' : $diff . 'd ' . $start->diff($end)->format('%H:%I:%S') }}</b>
+                  @else
+                    <b class="badge bg-info">Auction Ended</b></p>
+                  @endif
                 </p>
               </div>
               <div class="card-footer bg-light">

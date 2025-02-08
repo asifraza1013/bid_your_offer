@@ -244,7 +244,7 @@
       margin-bottom: 15px;
     }
 
-    .loader {
+    /* .loader {
       width: 40px;
       height: 40px;
       margin: 0 auto;
@@ -262,7 +262,7 @@
       100% {
         transform: rotate(360deg);
       }
-    }
+    } */
 
     .removeBold {
       font-weight: normal;
@@ -1089,21 +1089,26 @@
                     Number of Days the Seller Will Accept For Closing: <span class="removeBold">{{ @$auction->get->closing_days2}}</span> 
                   </div>
                 @endif
-                @if (isset($auction->get->contigencies_accepted_by_seller) && $auction->get->contigencies_accepted_by_seller !== null)
+                @if (isset($auction->get->contigencies_accepted_by_seller) && is_array($auction->get->contigencies_accepted_by_seller))
                   <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
-                    Acceptable Contingencies: <span class="d-inline-block removeBold">{{ @$auction->get->contigencies_accepted_by_seller}}</span> 
-                    @if ($auction->get->contigencies_accepted_by_seller == 'Inspection contingency')
-                      <span class="badge bg-secondary removeBold">{{ @$auction->get->inspection}}</span> 
-                    @elseif ($auction->get->contigencies_accepted_by_seller == 'Appraisal contingency')
-                      <span class="badge bg-secondary removeBold">{{ @$auction->get->appraisal}}</span> 
-                    @elseif ($auction->get->contigencies_accepted_by_seller == 'Financing contingency')
-                      <span class="badge bg-secondary removeBold">{{ @$auction->get->finance}}</span>
-                    @elseif ($auction->get->contigencies_accepted_by_seller == 'Sale of a property contingency')
-                      <span class="badge bg-secondary removeBold">{{ @$auction->get->saleContingency}}</span>
-                    @elseif ($auction->get->contigencies_accepted_by_seller == 'Other')
-                      <span class="badge bg-secondary removeBold">{{ @$auction->get->acceptable}}</span>
-                      <span class="badge bg-secondary removeBold">{{ @$auction->get->acceptable_days}}</span>
-                    @endif
+                    Acceptable Contingencies: 
+                    @foreach ($auction->get->contigencies_accepted_by_seller as $contigency)
+                      <span class="d-inline-block removeBold">
+                        {{ $contigency }}
+                      </span> 
+                      @if ($contigency == 'Inspection contingency')
+                        <span class="badge bg-secondary removeBold">{{ $auction->get->inspection . ','}}</span> 
+                      @elseif ($contigency == 'Appraisal contingency')
+                        <span class="badge bg-secondary removeBold">{{ $auction->get->appraisal . ','}}</span> 
+                      @elseif ($contigency == 'Financing contingency')
+                        <span class="badge bg-secondary removeBold">{{ $auction->get->finance . ','}}</span>
+                      @elseif ($contigency == 'Sale of a property contingency')
+                        <span class="badge bg-secondary removeBold">{{ $auction->get->saleContingency . ','}}</span>
+                      @elseif ($contigency == 'Other')
+                        <span class="badge bg-secondary removeBold">{{ $auction->get->acceptable}}</span>
+                        <span class="badge bg-secondary removeBold">{{ $auction->get->acceptable_days . ','}}</span>
+                      @endif
+                    @endforeach
                   </div>
                 @endif
                 @if (isset($auction->get->sellerOffer) && $auction->get->sellerOffer !== null)
@@ -3163,42 +3168,44 @@
         <hr>
         @inject('carbon', 'Carbon\Carbon')
         @php
-          if (@$data->get->expiration_date) {
+          if ($auction->auction_length > 0) {
               $start = $carbon::now();
-              $end = $carbon::parse($data->get->expiration_date);
-
-              // Check the values of $start and $end for debugging
-
-              $diff = $end->diffInDays($start);
-              // Output the difference for debugging purposes
+              $end = $carbon::parse($auction->created_at)->addDays($auction->auction_length);
+              $diff = $start->diffInDays($end, false);
           }
         @endphp
-        @if (@$data->get->expiration_date)
+        @if (isset($auction->auction_type) && $auction->auction_type == 'Auction Listing' && $auction->auction_length > 0)
           @php
-            $diff_d = $diff;
-            $diff_H = $start->diff($end)->format('%H');
-            $diff_I = $start->diff($end)->format('%I');
-            $diff_S = $start->diff($end)->format('%S');
+              $diff_d = $diff < 0 ? 0 : $diff;
+              $diff_H = $diff < 0 ? 0 : $start->diff($end)->format('%H');
+              $diff_I = $diff < 0 ? 0 : $start->diff($end)->format('%I');
+              $diff_S = $diff < 0 ? 0 : $start->diff($end)->format('%S');
           @endphp
-          <div class="time d-flex justify-content-between text-center flex-wrap pb-2">
-            <div>
-              <h5><b class="timer-d"> {{ $diff_d }} </b></h5>
-              <h6 class="opacity-50">Days</h6>
-            </div>
-            <div>
-              <h5><b class="timer-h"> {{ $diff_H }} </b></h5>
-              <h6 class="opacity-50">Hrs</h6>
-            </div>
-            <div>
-              <h5><b class="timer-m"> {{ $diff_I }} </b></h5>
-              <h6 class="opacity-50">Mins</h6>
-            </div>
-            <div>
-              <h5><b class="timer-s"> {{ $diff_S }} </b></h5>
-              <h6 class="opacity-50">Secs</h6>
-            </div>
+          <div id="countdown" class="time d-flex justify-content-between text-center flex-wrap pb-2">
+              @if ($auction->auction_ended)
+                  <div class="d-flex justify-content-center align-items-center w-100">
+                      <h4 class="text-success">Auction Ended</h4>
+                  </div>
+              @else
+                  <div>
+                      <h5><b class="timer-d"> {{ $diff_d }} </b></h5>
+                      <h6 class="opacity-50">Days</h6>
+                  </div>
+                  <div>
+                      <h5><b class="timer-h"> {{ $diff_H }} </b></h5>
+                      <h6 class="opacity-50">Hrs</h6>
+                  </div>
+                  <div>
+                      <h5><b class="timer-m"> {{ $diff_I }} </b></h5>
+                      <h6 class="opacity-50">Mins</h6>
+                  </div>
+                  <div>
+                      <h5><b class="timer-s"> {{ $diff_S }} </b></h5>
+                      <h6 class="opacity-50">Secs</h6>
+                  </div>
+              @endif
           </div>
-        @endif
+    @endif
         @php
           $highest_bid_price = @$auction->get->starting_price;
           // $highest_bidder = @$auction->bids->where('price', '>' , $highest_bid_price)->orderBy('price', 'desc')->first();
@@ -3897,6 +3904,8 @@
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/timer.jquery/0.9.0/timer.jquery.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
   <!-- Toastr JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
@@ -4126,30 +4135,75 @@
 
     });
   </script>
+  @if ($auction->auction_length > 0)
   <script>
-    // var durations = '2d01h43m45s';
-    var durations = '{{ $diff_d }}d{{ $diff_H }}h{{ $diff_I }}m{{ $diff_S }}s';
-    $('.timer-d').timer({
-      countdown: true,
-      duration: durations,
-      format: '%d'
-    });
-    $('.timer-h').timer({
-      countdown: true,
-      duration: durations,
-      format: '%h'
-    });
-    $('.timer-m').timer({
-      countdown: true,
-      duration: durations,
-      format: '%m'
-    });
-    $('.timer-s').timer({
-      countdown: true,
-      duration: durations,
-      format: '%s'
-    });
+      var durations = '{{ $diff_d }}d{{ $diff_H }}h{{ $diff_I }}m{{ $diff_S }}s';
+      $('.timer-d').timer({
+          countdown: true,
+          duration: durations,
+          format: '%d'
+      });
+      $('.timer-h').timer({
+          countdown: true,
+          duration: durations,
+          format: '%h'
+      });
+      $('.timer-m').timer({
+          countdown: true,
+          duration: durations,
+          format: '%m'
+      });
+      $('.timer-s').timer({
+          countdown: true,
+          duration: durations,
+          format: '%s'
+      });
   </script>
+@endif
+@if (isset($auction->auction_type) && $auction->auction_type == 'Auction Listing')
+  <script>
+    $(document).ready(function() {
+        const auctionEnded = {{ $auction->auction_ended}};
+        let createdAt = new Date("{{ $auction->created_at }}").getTime(); 
+        let auctionLength = {{ $auction->auction_length }} * 24 * 60 * 60 * 1000;
+        let auctionEndTime = createdAt + auctionLength;
+
+        console.log('time', {createdAt, auctionLength, auctionEndTime});
+
+        if(auctionEnded) return;
+
+        console.log('auction_continues');
+        function checkAndEndAuction() {
+            let now = new Date().getTime();
+            if (now >= auctionEndTime) {
+                $('#countdown').html("Auction Ended");
+                endAuctionAutomatically();
+            }
+        }
+
+        function endAuctionAutomatically() {
+            $.ajax({
+                url: "/property/auction/end/{{ $auction->id }}",
+                type: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                success: function (response) {
+                    alert(response.message);
+                    location.reload();
+                },
+                error: function (xhr) {
+                    console.error("Error:", xhr.responseText);
+                }
+            });
+        }
+
+
+        checkAndEndAuction();
+    })
+  </script>
+@endif
+
 
   {{-- End Message Blade code --}}
 @endpush
