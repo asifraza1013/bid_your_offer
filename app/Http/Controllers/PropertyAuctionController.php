@@ -49,7 +49,7 @@ class PropertyAuctionController extends Controller
     }
     public function store(Request $request)
     {
-        // dd($request->all());
+
         try {
             DB::beginTransaction();
 
@@ -112,6 +112,14 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("saleContingency", $request->saleContingency);
             $auction->saveMeta("acceptable", $request->acceptable);
             $auction->saveMeta("acceptable_days", $request->acceptable_days);
+
+            $auction->saveMeta("inspection_auction", $request->inspection_auction);
+            $auction->saveMeta("appraisal_auction", $request->appraisal_auction);
+            $auction->saveMeta("finance_auction", $request->finance_auction);
+            $auction->saveMeta("saleContingency_auction", $request->saleContingency_auction);
+            $auction->saveMeta("acceptable_auction", $request->acceptable_auction);
+            $auction->saveMeta("acceptable_days_auction", $request->acceptable_days_auction);
+
             $auction->saveMeta("term_financings", json_encode($request->term_financings));
             $auction->saveMeta("otherFinancing", $request->otherFinancing);
             $auction->saveMeta("type_of_NFT_accepted", $request->type_of_NFT_accepted);
@@ -193,6 +201,29 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("annual_net_income", $request->annual_net_income);
             $auction->saveMeta("est_annual_market_income", $request->est_annual_market_income);
             $auction->saveMeta("annual_expenses", $request->annual_expenses);
+
+            $auction->saveMeta("annual_ttl_schedule_income", $request->annual_ttl_schedule_income);
+            $auction->saveMeta("annual_income_type", $request->annual_income_type);
+            $auction->saveMeta("saleInclude", json_encode($request->saleInclude));
+            $auction->saveMeta("otherSale", $request->otherSale);
+            $auction->saveMeta("number_of_tenants", $request->number_of_tenants);
+            $auction->saveMeta("class_of_space", $request->class_of_space);
+            $auction->saveMeta("sale_include", $request->sale_include);
+            $auction->saveMeta("number_of_hotel", $request->number_of_hotel);
+            $auction->saveMeta("number_of_conference", $request->number_of_conference);
+            $auction->saveMeta("number_of_restrooms", $request->number_of_restrooms);
+            $auction->saveMeta("number_of_bays_high", $request->number_of_bays_high);
+            $auction->saveMeta("number_of_bays_level", $request->number_of_bays_level);
+            $auction->saveMeta("number_of_offices", $request->number_of_offices);
+            $auction->saveMeta("has_condo_enviornment", $request->has_condo_enviornment);
+            $auction->saveMeta("condo_fee_terms", $request->condo_fee_terms);
+            $auction->saveMeta("association_manager_contact_name", $request->association_manager_contact_name);
+            $auction->saveMeta("association_manager_contact_email", $request->association_manager_contact_email);
+            $auction->saveMeta("association_manager_contact_number", $request->association_manager_contact_number);
+            $auction->saveMeta("association_manager_contact_website", $request->association_manager_contact_website);
+            $auction->saveMeta("community_features", json_encode($request->community_features));
+            $auction->saveMeta("community_features_other", $request->community_features_other);
+
             $auction->saveMeta("custom_leases_length", $request->custom_leases_length);
             $auction->saveMeta("length_of_lease", json_encode($request->length_of_lease));
             $auction->saveMeta("terms_of_lease", $request->terms_of_lease);
@@ -313,6 +344,7 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("flood_zone_code", $request->flood_zone_code);
             $auction->saveMeta("flood_zone_code_com", $request->flood_zone_code_com);
             $auction->saveMeta("flood_zone_code_vac", $request->flood_zone_code_vac);
+            $auction->saveMeta("front_footage", $request->front_footage);
             $auction->saveMeta("utilities", json_encode($request->utilities));
             $auction->saveMeta("otherUtilitise", $request->otherUtilitise);
             $auction->saveMeta("otherUtilitiseCom", $request->otherUtilitiseCom);
@@ -327,7 +359,7 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("otherSewerVac", $request->otherSewerVac);
             $auction->saveMeta("air_conditioning", json_encode($request->air_conditioning));
             $auction->saveMeta("otherAirCondition", $request->otherAirCondition);
-            $auction->saveMeta("air_conditioning_com", $request->air_conditioning_com);
+            $auction->saveMeta("air_conditioning_com", json_encode($request->air_conditioning_com));
             $auction->saveMeta("otherAirConditionCom", $request->otherAirConditionCom);
             $auction->saveMeta("heating_and_fuel", json_encode($request->heating_and_fuel));
             $auction->saveMeta("otherHeatingFuel", $request->otherHeatingFuel);
@@ -408,6 +440,9 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("monthly_rental_ammount_com", $request->monthly_rental_ammount_com);
             $auction->saveMeta("days_notice_to_terminate", $request->days_notice_to_terminate);
             $auction->saveMeta("days_notice_to_terminate_com", $request->days_notice_to_terminate_com);
+            $auction->saveMeta("operating_expenses", $request->operating_expenses);
+            $auction->saveMeta("net_operating_income", $request->net_operating_income);
+            $auction->saveMeta("net_operating_income_type", $request->net_operating_income_type);
             $auction->saveMeta("has_leasing", $request->has_leasing);
             $auction->saveMeta("has_lease_restriction", $request->has_lease_restriction);
             $auction->saveMeta("association_approval_required", $request->association_approval_required);
@@ -426,6 +461,7 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("otherFeeInclude_vac", $request->otherFeeInclude_vac);
             $auction->saveMeta("amenities_with_additional_fees", $request->amenities_with_additional_fees);
             $auction->saveMeta("amenities_with_additional_fees_vac", $request->amenities_with_additional_fees_vac);
+            $auction->saveMeta("comm_assoc_water_features", $request->comm_assoc_water_features);
             $auction->saveMeta("has_cdd", $request->has_cdd);
             $auction->saveMeta("annual_cdd_fee", $request->annual_cdd_fee);
             $auction->saveMeta("has_cdd_vac", $request->has_cdd_vac);
@@ -438,10 +474,12 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("hoaFeeRequirements_vac", $request->hoaFeeRequirements_vac);
             $auction->saveMeta("hoaFeeAmount", $request->hoaFeeAmount);
             $auction->saveMeta("hoaFeeAmount_vac", $request->hoaFeeAmount_vac);
+
             $auction->saveMeta("paymentSchedules", $request->paymentSchedules);
             $auction->saveMeta("paymentSchedules_vac", $request->paymentSchedules_vac);
             $auction->saveMeta("condoFeeAmount", $request->condoFeeAmount);
             $auction->saveMeta("condoFeeAmount_com", $request->condoFeeAmount_com);
+            $auction->saveMeta("condoFee_vac", $request->condoFee_vac);
             $auction->saveMeta("condoFeeAmount_vac", $request->condoFeeAmount_vac);
             $auction->saveMeta("condoPay", $request->condoPay);
             $auction->saveMeta("condoPay_vac", $request->condoPay_vac);
@@ -524,6 +562,8 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta('youtube_video_link', $request->youtube_video_link);
             $auction->saveMeta('vimeo_video_link', $request->vimeo_video_link);
 
+
+
             // Pictures and Video Upload
             $allowedPhotos = ['jpg', 'png', 'jpeg', 'gif', 'svg'];
             $allowedVideos = ['mp4', 'mov', 'avi', 'mkv', 'wmv', 'flv', 'webm', 'm4v'];
@@ -536,14 +576,16 @@ class PropertyAuctionController extends Controller
             $allowedFiles = ['jpg', 'png', 'jpeg', 'gif', 'svg', 'csv', 'txt', 'xlx', 'xls', 'pdf', 'doc', 'docs', 'docm', 'docx', 'dot', 'dotm', 'dotx', 'odt', 'rtf', 'wps', 'xml', 'xps']; //csv,txt,xlx,xls,pdf
 
             if ($request->hasFile('floor_plan')) {
-                $file = $request->floor_plan[0];
-                $extension = $file->getClientOriginalExtension();
-                $check = in_array($extension, $allowedFiles);
-                if ($check) {
-                    $uuid = (string) Str::uuid();
-                    $fileName = $uuid . '.' . $extension;
-                    $file->move(public_path('auction/files'), $fileName);
-                    $auction->saveMeta('floor_plan', 'auction/files/' . $fileName);
+                $file = $request->floor_plan;
+                foreach ($file as $singleFile) {
+                    $extension = $singleFile->getClientOriginalExtension();
+                    $check = in_array($extension, $allowedFiles);
+                    if ($check) {
+                        $uuid = (string) Str::uuid();
+                        $fileName = $uuid . '.' . $extension;
+                        $singleFile->move(public_path('auction/files'), $fileName);
+                        $auction->saveMeta('floor_plan', 'auction/files/' . $fileName);
+                    }
                 }
             }
             // if ($request->hasFile('photo')) {
@@ -718,6 +760,14 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("saleContingency", $request->saleContingency);
             $auction->saveMeta("acceptable", $request->acceptable);
             $auction->saveMeta("acceptable_days", $request->acceptable_days);
+
+            $auction->saveMeta("inspection_auction", $request->inspection_auction);
+            $auction->saveMeta("appraisal_auction", $request->appraisal_auction);
+            $auction->saveMeta("finance_auction", $request->finance_auction);
+            $auction->saveMeta("saleContingency_auction", $request->saleContingency_auction);
+            $auction->saveMeta("acceptable_auction", $request->acceptable_auction);
+            $auction->saveMeta("acceptable_days_auction", $request->acceptable_days_auction);
+
             $auction->saveMeta("term_financings", json_encode($request->term_financings));
             $auction->saveMeta("otherFinancing", $request->otherFinancing);
             $auction->saveMeta("type_of_NFT_accepted", $request->type_of_NFT_accepted);
@@ -799,6 +849,28 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("annual_net_income", $request->annual_net_income);
             $auction->saveMeta("est_annual_market_income", $request->est_annual_market_income);
             $auction->saveMeta("annual_expenses", $request->annual_expenses);
+
+            $auction->saveMeta("annual_ttl_schedule_income", $request->annual_ttl_schedule_income);
+            $auction->saveMeta("annual_income_type", $request->annual_income_type);
+            $auction->saveMeta("saleInclude", json_encode($request->saleInclude));
+            $auction->saveMeta("otherSale", $request->otherSale);
+            $auction->saveMeta("number_of_tenants", $request->number_of_tenants);
+            $auction->saveMeta("class_of_space", $request->class_of_space);
+            $auction->saveMeta("sale_include", $request->sale_include);
+            $auction->saveMeta("number_of_hotel", $request->number_of_hotel);
+            $auction->saveMeta("number_of_conference", $request->number_of_conference);
+            $auction->saveMeta("number_of_restrooms", $request->number_of_restrooms);
+            $auction->saveMeta("number_of_bays_high", $request->number_of_bays_high);
+            $auction->saveMeta("number_of_bays_level", $request->number_of_bays_level);
+            $auction->saveMeta("number_of_offices", $request->number_of_offices);
+            $auction->saveMeta("has_condo_enviornment", $request->has_condo_enviornment);
+            $auction->saveMeta("condo_fee_terms", $request->condo_fee_terms);
+            $auction->saveMeta("association_manager_contact_name", $request->association_manager_contact_name);
+            $auction->saveMeta("association_manager_contact_email", $request->association_manager_contact_email);
+            $auction->saveMeta("association_manager_contact_number", $request->association_manager_contact_number);
+            $auction->saveMeta("association_manager_contact_website", $request->association_manager_contact_website);
+            $auction->saveMeta("community_features", json_encode($request->community_features));
+
             $auction->saveMeta("custom_leases_length", $request->custom_leases_length);
             $auction->saveMeta("length_of_lease", json_encode($request->length_of_lease));
             $auction->saveMeta("terms_of_lease", $request->terms_of_lease);
@@ -919,6 +991,7 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("flood_zone_code", $request->flood_zone_code);
             $auction->saveMeta("flood_zone_code_com", $request->flood_zone_code_com);
             $auction->saveMeta("flood_zone_code_vac", $request->flood_zone_code_vac);
+            $auction->saveMeta("front_footage", $request->front_footage);
             $auction->saveMeta("utilities", json_encode($request->utilities));
             $auction->saveMeta("otherUtilitise", $request->otherUtilitise);
             $auction->saveMeta("otherUtilitiseCom", $request->otherUtilitiseCom);
@@ -933,7 +1006,7 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("otherSewerVac", $request->otherSewerVac);
             $auction->saveMeta("air_conditioning", json_encode($request->air_conditioning));
             $auction->saveMeta("otherAirCondition", $request->otherAirCondition);
-            $auction->saveMeta("air_conditioning_com", $request->air_conditioning_com);
+            $auction->saveMeta("air_conditioning_com", json_encode($request->air_conditioning_com));
             $auction->saveMeta("otherAirConditionCom", $request->otherAirConditionCom);
             $auction->saveMeta("heating_and_fuel", json_encode($request->heating_and_fuel));
             $auction->saveMeta("otherHeatingFuel", $request->otherHeatingFuel);
@@ -1014,6 +1087,9 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("monthly_rental_ammount_com", $request->monthly_rental_ammount_com);
             $auction->saveMeta("days_notice_to_terminate", $request->days_notice_to_terminate);
             $auction->saveMeta("days_notice_to_terminate_com", $request->days_notice_to_terminate_com);
+            $auction->saveMeta("operating_expenses", $request->operating_expenses);
+            $auction->saveMeta("net_operating_income", $request->net_operating_income);
+            $auction->saveMeta("net_operating_income_type", $request->net_operating_income_type);
             $auction->saveMeta("has_leasing", $request->has_leasing);
             $auction->saveMeta("has_lease_restriction", $request->has_lease_restriction);
             $auction->saveMeta("association_approval_required", $request->association_approval_required);
@@ -1032,6 +1108,7 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("otherFeeInclude_vac", $request->otherFeeInclude_vac);
             $auction->saveMeta("amenities_with_additional_fees", $request->amenities_with_additional_fees);
             $auction->saveMeta("amenities_with_additional_fees_vac", $request->amenities_with_additional_fees_vac);
+            $auction->saveMeta("comm_assoc_water_features", $request->comm_assoc_water_features);
             $auction->saveMeta("has_cdd", $request->has_cdd);
             $auction->saveMeta("annual_cdd_fee", $request->annual_cdd_fee);
             $auction->saveMeta("has_cdd_vac", $request->has_cdd_vac);
@@ -1048,6 +1125,7 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("paymentSchedules_vac", $request->paymentSchedules_vac);
             $auction->saveMeta("condoFeeAmount", $request->condoFeeAmount);
             $auction->saveMeta("condoFeeAmount_com", $request->condoFeeAmount_com);
+            $auction->saveMeta("condoFee_vac", $request->condoFee_vac);
             $auction->saveMeta("condoFeeAmount_vac", $request->condoFeeAmount_vac);
             $auction->saveMeta("condoPay", $request->condoPay);
             $auction->saveMeta("condoPay_vac", $request->condoPay_vac);

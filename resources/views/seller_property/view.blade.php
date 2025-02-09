@@ -1158,21 +1158,42 @@
                   Number of Days the Seller Will Accept For Closing: <span class="removeBold">{{ @$auction->get->closing_days2}}</span> 
                 </div>
               @endif
-              @if (isset($auction->get->contigencies_accepted_by_seller) && $auction->get->contigencies_accepted_by_seller !== null)
+              @if (isset($auction->get->contigencies_accepted_by_seller) && is_array($auction->get->contigencies_accepted_by_seller))
                 <div class="col-md-12 col-12 fw-bold mt-1 mb-1"><i class="fa-regular fa-check-square"></i>
-                  Acceptable Contingencies: <span class="d-inline-block removeBold">{{ @$auction->get->contigencies_accepted_by_seller}}</span> 
-                  @if ($auction->get->contigencies_accepted_by_seller == 'Inspection contingency')
-                    <span class="badge bg-secondary removeBold">{{ @$auction->get->inspection}}</span> 
-                  @elseif ($auction->get->contigencies_accepted_by_seller == 'Appraisal contingency')
-                    <span class="badge bg-secondary removeBold">{{ @$auction->get->appraisal}}</span> 
-                  @elseif ($auction->get->contigencies_accepted_by_seller == 'Financing contingency')
-                    <span class="badge bg-secondary removeBold">{{ @$auction->get->finance}}</span>
-                  @elseif ($auction->get->contigencies_accepted_by_seller == 'Sale of a property contingency')
-                    <span class="badge bg-secondary removeBold">{{ @$auction->get->saleContingency}}</span>
-                  @elseif ($auction->get->contigencies_accepted_by_seller == 'Other')
-                    <span class="badge bg-secondary removeBold">{{ @$auction->get->acceptable}}</span>
-                    <span class="badge bg-secondary removeBold">{{ @$auction->get->acceptable_days}}</span>
-                  @endif
+                  Acceptable Contingencies: 
+                  @foreach ($auction->get->contigencies_accepted_by_seller as $contingency)
+                    <span class="d-inline-block removeBold">
+                      {{ $contingency}}
+                    </span> 
+                    @if ($auction->auction_type === 'Traditional Listing')
+                      @if ($contingency == 'Inspection contingency')
+                      <span class="badge bg-secondary removeBold">{{ $auction->get->inspection}}</span> 
+                      @elseif ($contingency == 'Appraisal contingency')
+                        <span class="badge bg-secondary removeBold">{{ $auction->get->appraisal}}</span> 
+                      @elseif ($contingency == 'Financing contingency')
+                        <span class="badge bg-secondary removeBold">{{ $auction->get->finance}}</span>
+                      @elseif ($contingency == 'Sale of a property contingency')
+                        <span class="badge bg-secondary removeBold">{{ $auction->get->saleContingency}}</span>
+                      @elseif ($contingency == 'Other')
+                        <span class="badge bg-secondary removeBold">{{ $auction->get->acceptable}}</span>
+                        <span class="badge bg-secondary removeBold">{{ $auction->get->acceptable_days}}</span>
+                      @endif
+                    @else
+                      @if ($contingency == 'Inspection contingency')
+                      <span class="badge bg-secondary removeBold">{{ $auction->get->inspection_auction}}</span> 
+                      @elseif ($contingency == 'Appraisal contingency')
+                        <span class="badge bg-secondary removeBold">{{ $auction->get->appraisal_auction}}</span> 
+                      @elseif ($contingency == 'Financing contingency')
+                        <span class="badge bg-secondary removeBold">{{ $auction->get->finance_auction}}</span>
+                      @elseif ($contingency == 'Sale of a property contingency')
+                        <span class="badge bg-secondary removeBold">{{ $auction->get->saleContingency_auction}}</span>
+                      @elseif ($contingency == 'Other')
+                        <span class="badge bg-secondary removeBold">{{ $auction->get->acceptable_auction}}</span>
+                        <span class="badge bg-secondary removeBold">{{ $auction->get->acceptable_days_auction}}</span>
+                      @endif
+                    @endif
+                    
+                  @endforeach
                 </div>
               @endif'
               @if (isset($auction->get->sellerOffer) && $auction->get->sellerOffer !== null)
