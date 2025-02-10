@@ -146,6 +146,7 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("lease_option_conditions", $request->lease_option_conditions);
             $auction->saveMeta("price_changes_possibility", $request->price_changes_possibility);
             $auction->saveMeta("exchange_trade", $request->exchange_trade);
+            $auction->saveMeta("sellerFeeOption", $request->sellerFeeOption);
             $auction->saveMeta("sellerFeeOptionYes", $request->sellerFeeOptionYes);
             $auction->saveMeta("desired_offering_price_lease_purchase", $request->desired_offering_price_lease_purchase);
             $auction->saveMeta("lease_purchase_terms", $request->lease_purchase_terms);
@@ -153,11 +154,13 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("monthly_payment_amount_lease_purchase", $request->monthly_payment_amount_lease_purchase);
             $auction->saveMeta("lease_purchase_conditions", $request->lease_purchase_conditions);
             $auction->saveMeta("price_changes_possibility_lease_purchase", $request->price_changes_possibility_lease_purchase);
+            $auction->saveMeta("sellerFeePurchase", $request->sellerFeePurchase);
             $auction->saveMeta("sellerFeePurchaseYes", $request->sellerFeePurchaseYes);
             $auction->saveMeta("assumable_terms_offered", $request->assumable_terms_offered);
             $auction->saveMeta("restrictions_or_qualifications", $request->restrictions_or_qualifications);
             $auction->saveMeta("assumable_interest", $request->assumable_interest);
             $auction->saveMeta("assumable_monthly_payment", $request->assumable_monthly_payment);
+            $auction->saveMeta("assumable_balance_loan", $request->assumable_balance_loan);
             $auction->saveMeta("outstandingBalanceYes", $request->outstandingBalanceYes);
             $auction->saveMeta("loan_balance_down_payment", $request->loan_balance_down_payment);
             $auction->saveMeta("otherTrade", $request->otherTrade);
@@ -270,6 +273,7 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("otherInterior", $request->otherInterior);
             $auction->saveMeta("additionalRooms", json_encode($request->additionalRooms));
             $auction->saveMeta("number_of_buildings", $request->number_of_buildings);
+            $auction->saveMeta("total_number", $request->total_number);
             $auction->saveMeta("number_of_buildings_com", $request->number_of_buildings_com);
             $auction->saveMeta("floors_in_unit", $request->floors_in_unit);
             $auction->saveMeta("floors_in_unit_com", $request->floors_in_unit_com);
@@ -794,6 +798,7 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("lease_option_conditions", $request->lease_option_conditions);
             $auction->saveMeta("price_changes_possibility", $request->price_changes_possibility);
             $auction->saveMeta("exchange_trade", $request->exchange_trade);
+            $auction->saveMeta("sellerFeeOption", $request->sellerFeeOption);
             $auction->saveMeta("sellerFeeOptionYes", $request->sellerFeeOptionYes);
             $auction->saveMeta("desired_offering_price_lease_purchase", $request->desired_offering_price_lease_purchase);
             $auction->saveMeta("lease_purchase_terms", $request->lease_purchase_terms);
@@ -801,11 +806,13 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("monthly_payment_amount_lease_purchase", $request->monthly_payment_amount_lease_purchase);
             $auction->saveMeta("lease_purchase_conditions", $request->lease_purchase_conditions);
             $auction->saveMeta("price_changes_possibility_lease_purchase", $request->price_changes_possibility_lease_purchase);
+            $auction->saveMeta("sellerFeePurchase", $request->sellerFeePurchase);
             $auction->saveMeta("sellerFeePurchaseYes", $request->sellerFeePurchaseYes);
             $auction->saveMeta("assumable_terms_offered", $request->assumable_terms_offered);
             $auction->saveMeta("restrictions_or_qualifications", $request->restrictions_or_qualifications);
             $auction->saveMeta("assumable_interest", $request->assumable_interest);
             $auction->saveMeta("assumable_monthly_payment", $request->assumable_monthly_payment);
+            $auction->saveMeta("assumable_balance_loan", $request->assumable_balance_loan);
             $auction->saveMeta("outstandingBalanceYes", $request->outstandingBalanceYes);
             $auction->saveMeta("loan_balance_down_payment", $request->loan_balance_down_payment);
             $auction->saveMeta("otherTrade", $request->otherTrade);
@@ -917,6 +924,7 @@ class PropertyAuctionController extends Controller
             $auction->saveMeta("otherInterior", $request->otherInterior);
             $auction->saveMeta("additionalRooms", json_encode($request->additionalRooms));
             $auction->saveMeta("number_of_buildings", $request->number_of_buildings);
+            $auction->saveMeta("total_number", $request->total_number);
             $auction->saveMeta("number_of_buildings_com", $request->number_of_buildings_com);
             $auction->saveMeta("floors_in_unit", $request->floors_in_unit);
             $auction->saveMeta("floors_in_unit_com", $request->floors_in_unit_com);

@@ -833,7 +833,7 @@
                         $sellerFeeOption = [['name' => 'Yes', 'target' => '.sellerFeeOptionYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
                       @endphp
                       <label class="fw-bold">Does the seller require an option fee? </label>
-                      <select class="grid-picker" name="exchange_trade" style="justify-content: flex-start;" required>
+                      <select class="grid-picker" name="sellerFeeOption" style="justify-content: flex-start;" required>
                         <option value="">Select</option>
                         @foreach ($sellerFeeOption as $item)
                           <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
@@ -876,7 +876,7 @@
                         $sellerFeePurchase = [['name' => 'Yes', 'target' => '.sellerFeePurchaseYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
                       @endphp
                       <label class="fw-bold">Does the seller require an option fee?</label>
-                      <select class="grid-picker" name="exchange_trade" style="justify-content: flex-start;" required>
+                      <select class="grid-picker" name="sellerFeePurchase" style="justify-content: flex-start;" required>
                         <option value="">Select</option>
                         @foreach ($sellerFeePurchase as $item)
                           <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
@@ -917,7 +917,7 @@
                       <div class="form-group">
                         <div class="form-group">
                           <label class="fw-bold">What is the outstanding balance on the existing loan?</label>
-                          <input type="number" name="exchange_trade"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                          <input type="number" name="assumable_balance_loan"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                         </div>
                         <div class="form-group">
                           <div class="d-flex justify-content-between aalign-items-center">
@@ -1278,7 +1278,7 @@
                       $sellerFeeOption = [['name' => 'Yes', 'target' => '.sellerFeeOptionYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
                     @endphp
                     <label class="fw-bold">Does the seller require an option fee? </label>
-                    <select class="grid-picker" name="exchange_trade" style="justify-content: flex-start;" required>
+                    <select class="grid-picker" name="sellerFeeOption" style="justify-content: flex-start;" required>
                       <option value="">Select</option>
                       @foreach ($sellerFeeOption as $item)
                         <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
@@ -1321,7 +1321,7 @@
                       $sellerFeePurchase = [['name' => 'Yes', 'target' => '.sellerFeePurchaseYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
                     @endphp
                     <label class="fw-bold">Does the seller require an option fee?</label>
-                    <select class="grid-picker" name="exchange_trade" style="justify-content: flex-start;" required>
+                    <select class="grid-picker" name="sellerFeePurchase" style="justify-content: flex-start;" required>
                       <option value="">Select</option>
                       @foreach ($sellerFeePurchase as $item)
                         <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
@@ -1362,7 +1362,7 @@
                     <div class="form-group">
                       <div class="form-group">
                         <label class="fw-bold">What is the outstanding balance on the existing loan?</label>
-                        <input type="number" name="exchange_trade"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                        <input type="number" name="assumable_balance_loan"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                       </div>
                       <div class="form-group">
                         <div class="d-flex justify-content-between aalign-items-center">
@@ -2245,7 +2245,7 @@
             </div>
             <div class="form-group">
               <label class="fw-bold">What floor number is the property on?</label>
-              <input type="number" name=" " id="floors_in_unit" placeholder=""
+              <input type="number" name="total_number" id="floors_in_unit" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-hotel">
             </div>
             <div class="form-group">

@@ -140,6 +140,7 @@
     input[type=file]::file-selector-button {
       height: 50px;
     }
+
     .box {
       display: block;
       width: 400px;
@@ -334,1244 +335,1116 @@
         <div class="wizard-steps-progress">
           <div class="steps-progress-percent"></div>
         </div>
-        <form class="p-4 pt-0 mainform" action="{{ route('update-seller-property-listing', $auction->id) }}" method="POST" enctype="multipart/form-data">
+        <form class="p-4 pt-0 mainform" id="edit-property-auction" action="{{ route('add-listing') }}" method="POST" enctype="multipart/form-data">
           @csrf
           {{-- Slide 1 --}}
           <div class="wizard-step" id="after_this" data-step="1">
             <h4>Please provide the property's complete address, along with the city, county, and state, pertaining to the real estate asset that the seller intends to place on the market.</h4>
+            
             <div class="form-group">
-              <label class="fw-bold" for="unit_number">Unit Number:</label>
-              <input type="text" name="unit_number" data-type="unit_number" value="{{$auction->get->unit_number}}" placeholder="" id="unit_number"
+              <label class="fw-bold" for="address">Address:</label>
+              <input type="text" name="address" value="{{$auction->get->address}}"data-type="address" placeholder="" id="address"
                 class="form-control has-icon search_places" data-icon="fa-solid fa-location-dot" required>
             </div>
             <div class="form-group">
-                <label class="fw-bold" for="address">Address:</label>
-                <input type="text" name="address" data-type="address" placeholder="" id="address"
-                       class="form-control has-icon search_places" data-icon="fa-solid fa-location-dot" 
-                       value="{{ $auction->get->address }}" required>
+              <label class="fw-bold" for="unit_number">Unit Number:</label>
+              <input type="text" name="unit_number" value="{{$auction->get->unit_number}}" data-type="unit_number" placeholder="" id="unit_number"
+                class="form-control has-icon search_places" data-icon="fa-solid fa-location-dot" required>
             </div>
-            
+
             <div class="form-group">
-                <label class="fw-bold" for="city">City:</label>
-                <input type="text" name="city" placeholder="" data-type="cities" id="city"
-                       class="form-control has-icon search_places" data-icon="fa-solid fa-city" 
-                       value="{{ $auction->get->city }}" required>
+              <label class="fw-bold" for="address">County:</label>
+              <input type="text" name="county" value="{{$auction->get->county}}" placeholder="" id="county"
+                class="form-control has-icon search_places" data-icon="fa-solid fa-tree-city" required>
             </div>
-        
-            <div class="form-group">
-                <label class="fw-bold" for="county">County:</label>
-                <input type="text" name="county" placeholder="" id="county"
-                       class="form-control has-icon search_places" data-icon="fa-solid fa-tree-city" 
-                       value="{{ $auction->get->county }}" required>
-            </div>
-        
-            <div class="form-group">
-                <label class="fw-bold" for="state">State:</label>
-                <input type="text" name="state" placeholder="" data-type="states" id="state"
-                       class="form-control has-icon search_places" data-icon="fa-solid fa-flag-usa" 
-                       value="{{ $auction->get->state }}" required>
-            </div>
-        </div>
+          </div>
           {{-- Slide 1 --}}
           {{-- Slide 2 --}}
           <div class="wizard-step" data-step="2">
+            <?php
+              $listingDateTime = $auction->listing_date;
+              $listingDate = (new DateTime($listingDateTime))->format('Y-m-d');
+              
+              $expirationDateTime = $auction->expiration_date; // Example date from database
+              $expirationDate = (new DateTime($expirationDateTime))->format('Y-m-d');
+            ?>
             <div class="form-group">
-                @php
-                    $listingDateTime = new DateTime($auction->get->listing_date);
-                    $listingDate = $listingDateTime->format('Y-m-d');
-                @endphp
-                <label for="listing_date" class="fw-bold">Listing Date:</label>
-                <input type="date" name="listing_date" id="listing_date" class="form-control has-icon search_places"
-                       data-icon="fa-regular fa-calendar-days" 
-                       value="{{ $listingDate }}" required>
+              <label for="address" class="fw-bold">Listing Date:</label>
+              <input type="date" name="listing_date" value="{{isset($listingDate) ? $listingDate : ''}}" id="listing_date" class="form-control has-icon search_places"
+                data-icon="fa-regular fa-calendar-days" required>
             </div>
-        
+
             <div class="form-group">
-                @php
-                    $expirationDateTime = new DateTime($auction->get->expiration_date);
-                    $expirationDate = $expirationDateTime->format('Y-m-d');
-                @endphp
-                <label for="expiration_date" class="fw-bold">Expiration Date:</label>
-                <input type="date" name="expiration_date" id="expiration_date"
-                       class="form-control has-icon search_places" data-icon="fa-regular fa-calendar-days" 
-                       value="{{ $expirationDate }}" required>
+              <label for="address" class="fw-bold">Expiration Date:</label>
+              <input type="date" name="expiration_date" value="{{isset($expirationDate) ? $expirationDate : ''}}" id="expiration_date"
+                class="form-control has-icon search_places" data-icon="fa-regular fa-calendar-days" min="{{ date('Y-m-d') }}" required>
             </div>
-        </div>
+          </div>
           {{-- Slide 2 --}}
           {{-- Slide 3 --}}
           <div class="wizard-step" data-step="3">
             <div class="form-group">
-                <label class="fw-bold">Listing Service Type:</label>
-                <div>
-                    @php
-                        $auction_types = [
-                            ['name' => 'Full Service', 'icon' => '<i class="fa-regular fa-circle-check"></i>', 'target' => ''],
-                            ['name' => 'Limited Service', 'icon' => '<i class="fa-regular fa-circle-check"></i>', 'target' => '']
-                        ];
-                    @endphp
-                    <select name="service_type" id="service_type" class="grid-picker" style="justify-content: flex-start;" required>
-                        <option value=""></option>
-                        @foreach ($auction_types as $item)
-                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                                style="width:calc(33.3% - 10px);" data-icon='{{ $item['icon'] }}'
-                                @if($item['name'] === $auction->get->service_type) selected @endif>
-                                {{ $item['name'] }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+              <label class="fw-bold">Representation:</label>
+
+              @php
+                $representation = [['name' => 'Seller Represented', 'icon' => '<i class="fa-regular fa-circle-check"></i>', 'target' => ''], ['name' => 'Seller Not Represented', 'icon' => '<i class="fa-regular fa-circle-check"></i>', 'target' => '']];
+              @endphp
+
+              <select name="representation" id="representation" class="grid-picker" style="justify-content: flex-start;"
+                required>
+                <option value=""></option>
+                @foreach ($representation as $item)
+                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                    style="width:calc(33.3% - 10px);" data-icon='{{ $item['icon'] }}' {{isset($auction->get->representation) && $auction->get->representation == $item['name'] ? 'selected' : ''}} >
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
             </div>
-        
-            <div class="form-group">
-                <label class="fw-bold">Representation:</label>
-                @php
-                    $representation = [
-                        ['name' => 'Seller Represented', 'icon' => '<i class="fa-regular fa-circle-check"></i>', 'target' => ''],
-                        ['name' => 'Seller Not Represented', 'icon' => '<i class="fa-regular fa-circle-check"></i>', 'target' => '']
-                    ];
-                @endphp
-        
-                <select name="representation" id="representation" class="grid-picker" style="justify-content: flex-start;" required>
-                    <option value=""></option>
-                    @foreach ($representation as $item)
-                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                            style="width:calc(33.3% - 10px);" data-icon='{{ $item['icon'] }}'
-                            @if($item['name'] === $auction->get->representation) selected @endif>
-                            {{ $item['name'] }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
+          </div>
           {{-- Slide 3 --}}
           {{-- Slide 4 --}}
           <div class="wizard-step" data-step="4">
             <div class="form-group">
-                <label class="fw-bold">Listing Type:</label>
-                <div>
-                    @php
-                        $auction_types = [
-                            ['target' => '.auctionTimer', 'name' => 'Auction Listing', 'icon' => '<i class="fa-regular fa-clock"></i>'],
-                            ['target' => '.traditionalTime', 'name' => 'Traditional Listing', 'icon' => '<i class="fa-solid fa-clipboard-list"></i>']
-                        ];
-                    @endphp
-                    <select name="auction_type" id="auction_type" class="grid-picker" required>
-                        <option value=""></option>
-                        @foreach ($auction_types as $item)
-                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                                style="width:calc(33.3% - 10px);" data-icon='{{ $item['icon'] }}'
-                                @if($item['name'] === $auction->get->auction_type) selected @endif>
-                                {{ $item['name'] }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        
-            <div class="form-group d-none auctionTimer">
-                <label class="fw-bold">Timer Length:</label>
-                <div>
-                    @php
-                        $timer_lengths = [
-                            ['name' => '1 Day', 'class' => 'normal-length'],
-                            ['name' => '3 Days', 'class' => 'normal-length'],
-                            ['name' => '5 Days', 'class' => 'normal-length'],
-                            ['name' => '7 Days', 'class' => 'normal-length'],
-                            ['name' => '10 Days', 'class' => 'normal-length'],
-                            ['name' => '14 Days', 'class' => 'normal-length'],
-                            ['name' => '21 Days', 'class' => 'normal-length'],
-                            ['name' => '30 Days', 'class' => 'normal-length'],
-                            ['name' => '45 Days', 'class' => 'normal-length'],
-                            ['name' => '60 Days', 'class' => 'normal-length'],
-                            ['name' => '75 Days', 'class' => 'normal-length'],
-                            ['name' => '90 Days', 'class' => 'normal-length'],
-                            ['name' => 'No time limit', 'class' => 'traditional-length']
-                        ];
-                    @endphp
-                    <select name="auction_length" id="auction_length" class="auction_length grid-picker" style="justify-content: flex-start;" required>
-                        <option value=""></option>
-                        @foreach ($timer_lengths as $item)
-                            <option value="{{ $item['name'] }}" data-target="" class="card flex-row {{ $item['class'] }}"
-                                style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-check-circle"></i>'
-                                @if($item['name'] === $auction->get->auction_length) selected @endif>
-                                {{ $item['name'] }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        </div>
-        
-          {{-- Slide 5 --}}
-        <div class="wizard-step" data-step="5">
-            <div class="form-group">
-                <label class="fw-bold">Special Sale Provision:</label>
-                <div>
-                    @php
-                        $special_sale_provision = [
-                            ['target' => '.assignment_contract_res', 'name' => 'Assignment Contract (Wholesale Property)'],
-                            ['name' => 'Auction', 'target' => ''],
-                            ['name' => 'Bank Owned/Reo', 'target' => ''],
-                            ['name' => 'Government Owned', 'target' => ''],
-                            ['name' => 'Probate Listing', 'target' => ''],
-                            ['name' => 'Short Sale', 'target' => ''],
-                            ['name' => 'None', 'target' => ''],
-                            ['name' => 'Other', 'target' => '.special_sale_provision']
-                        ];
-                    @endphp
-                    <select name="special_sale" id="special_sale" class="grid-picker" style="justify-content: flex-start;" required>
-                        <option value=""></option>
-                        @foreach ($special_sale_provision as $item)
-                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                                style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'
-                                @if($item['name'] === $auction->get->special_sale) selected @endif>
-                                {{ $item['name'] }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            
-            <div class="form-group special_sale_provision d-none">
-                <label class="fw-bold">Special Sale Provision:</label>
-                <input type="text" name="custom_special_sale_provision" id="custom_special_sale_provision"
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"
-                    value="{{ $auction->get->custom_special_sale_provision }}" required>
-            </div>
-
-            <div class="form-group d-none assignment_contract_res">
-                <label class="fw-bold">Is the seller currently under contract with a property they would like to assign?</label>
+              <label class="fw-bold">
+                Listing Type:
+              </label>
+              <div>
                 @php
-                    $seller_contract_options = [
-                        ['name' => 'Yes', 'target' => '.commercialseller_contract_yes'],
-                        ['name' => 'No', 'target' => '.commercial_seller_contract_no'],
-                    ];
+                  $auction_types = [['target' => '.auctionTimer', 'name' => 'Auction Listing', 'icon' => '<i class="fa-regular fa-clock"></i>'], ['target' => '.traditionalTime', 'name' => 'Traditional Listing', 'icon' => '<i class="fa-solid fa-clipboard-list"></i>']];
                 @endphp
-                <select name="contribute_term" id="contribute_term" class="grid-picker" style="justify-content: flex-start;" required>
-                    <option value=""></option>
-                    @foreach ($seller_contract_options as $item)
-                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                            class="card flex-column" style="width:calc(20% - 10px);"
-                            data-icon='<i class="fa-regular fa-check-circle"></i>'
-                            @if($item['name'] === $auction->get->contribute_term) selected @endif>
-                            {{ $item['name'] }}
-                        </option>
-                    @endforeach
+                <select name="auction_type" id="auction_type" class="grid-picker" required>
+                  <option value=""></option>
+                  @foreach ($auction_types as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                      style="width:calc(33.3% - 10px);" data-icon='{{ $item['icon'] }}' {{isset($auction->get->auction_type) && $auction->get->auction_type == $item['name'] ? 'selected' : ''}}>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
                 </select>
-
-                <div class="form-group commercialseller_contract_yes d-none">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <label class="fw-bold">What fee would the seller pay the agent to assign the contract?</label>
-                        <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
-                            <button type="button" class="select-btn me-1 active" data-type="amount">$</button>
-                            <button type="button" class="select-btn" data-type="percent">%</button>
-                        </div>
-                    </div>
-                    <input type="text" class="form-control has-icon" placeholder=""
-                        name="commercialseller_contract_yes" data-icon="fa-solid fa-dollar-sign"
-                        id="commercialseller_contract_yes" required />
-                </div>
-
-                <div class="form-group commercial_seller_contract_no d-none">
-                    <label class="fw-bold">Is the seller looking to take over a buyer’s contract?</label>
-                    @php
-                        $seller_contract_yes_no = [['name' => 'Yes', 'target' => ''], ['name' => 'No', 'target' => '']];
-                    @endphp
-                    <select name="custom_seller_contract_no" id="commercial_seller_contract_no" class="grid-picker"
-                        style="justify-content: flex-start;" required>
-                        <option value=""></option>
-                        @foreach ($seller_contract_yes_no as $item)
-                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                                class="card flex-column fw-bold" style="width:calc(20% - 10px);"
-                                data-icon='<i class="fa-regular fa-check-circle"></i>'
-                                @if($item['name'] === $auction->get->custom_seller_contract_no) selected @endif>
-                                {{ $item['name'] }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+              </div>
             </div>
-        </div>
-
-        <div class="wizard-step" data-step="6">
-        <span class="timeAuction">
-            <h4>Price and Terms:</h4>
-            <div class="form-group ">
-            <label class="fw-bold" for="buy_now_price" required>Buy Now Price:</label>
-            <input type="number"  name="buy_now_price"  id="buy_now_price"
-                class="form-control has-icon" data-icon="fa-solid fa-dollar"
-                data-msg-required="Please enter Buy Now Price" value="{{old('buy_now_price', $auction->get->buy_now_price)}}">
-            </div>
-            <div class="form-group ">
-            <label class="fw-bold" for="reserve_price" required>Buy Now Price Per Sqft:</label>
-            <input type="number" name="buy_now_price_per_sqfeet"  id="reserve_price"
-                class="form-control has-icon" data-icon="fa-solid fa-dollar" value="{{old('buy_now_price_per_sqfeet', $auction->get->buy_now_price_per_sqfeet)}}">
-            </div>
-            <div class="form-group ">
-            <label class="fw-bold" for="starting_price" required>Starting Price:</label>
-            <input type="number"  name="starting_price"  id="starting_price"
-                class="form-control has-icon" data-icon="fa-solid fa-dollar"
-                data-msg-required="Please enter Starting Price" value="{{old('starting_price', $auction->get->starting_price)}}">
-            </div>
-            <div class="form-group ">
-            <label class="fw-bold" for="reserve_price" required>Reserve Price:</label>
-            <input type="number"  name="reserve_price"  id="reserve_price"
-                class="form-control has-icon" data-icon="fa-solid fa-dollar" value="{{old('reserve_price', $auction->get->reserve_price)}}">
-            </div>
-            <div class="form-group row ">
-            <div class="form-group">
-                <label class="fw-bold">Acceptable Escrow Deposit:</label>
-                <input type="number" name="escrow_amount" id="term_escrow_amount" placeholder=""
-                class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" value="{{old('escrow_amount', $auction->get->escrow_amount)}}" required>
-            </div>
-            </div>
-            <div class="form-group row ">
-            <div class="form-group">
-                <label class="fw-bold">Number of Days the Seller Will Accept for Closing:</label>
-                <input type="number" name="closing_days" id="closing_days" placeholder=""
-                class="form-control has-icon" data-icon="fa-solid fa-calendar-day" value="{{old('closing_days', $auction->get->closing_days)}}" required>
-            </div>
-            </div>
-            <div class="form-group">
+            <div class="form-group  d-none auctionTimer">
+              <label class="fw-bold">
+                Timer Length:
+              </label>
+              <div>
                 @php
-                    $contigencies = [['name' => 'Inspection contingency', 'target' => '.inspectionAuction'], ['name' => 'Appraisal contingency', 'target' => '.appraisalAuction'], ['name' => 'Financing contingency', 'target' => '.financingAuction'], ['name' => 'Sale of a property contingency', 'target' => '.saleAuction'], ['name' => 'None', 'target' => ''],['name' => 'Other', 'target' => '.otherContingencyAuction'],];
+                  $timer_lengths = [['name' => '1 Day', 'class' => 'normal-length'], ['name' => '3 Days', 'class' => 'normal-length'], ['name' => '5 Days', 'class' => 'normal-length'], ['name' => '7 Days', 'class' => 'normal-length'], ['name' => '10 Days', 'class' => 'normal-length'], ['name' => '14 Days', 'class' => 'normal-length'], ['name' => '21 Days', 'class' => 'normal-length'], ['name' => '30 Days', 'class' => 'normal-length'], ['name' => '45 Days', 'class' => 'normal-length'], ['name' => '60 Days', 'class' => 'normal-length'], ['name' => '75 Days', 'class' => 'normal-length'], ['name' => '90 Days', 'class' => 'normal-length'], ['name' => 'No time limit', 'class' => 'traditional-length']];
+                @endphp
+                <select name="auction_length" id="auction_length" class="auction_length grid-picker"
+                  style="justify-content: flex-start;" required>
+                  <option value=""></option>
+                  @foreach ($timer_lengths as $item)
+                    <option value="{{ $item['name'] }}" data-target="" class="card flex-row {{ $item['class'] }}"
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-check-circle"></i>' {{isset($auction->get->auction_length) && $auction->get->auction_length == $item['name'] ? 'selected' : ''}}>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+          </div>
+          {{-- Slide 5 --}}
+          <div class="wizard-step" data-step="5">
+            <div class="form-group">
+              <label class="fw-bold">
+                Special Sale Provision:
+              </label>
+              <div>
+                @php
+                  $special_sale_provision = [  
+                    ['target' => '.assignment_contract_res','name' => 'Assignment Contract (Wholesale Property)'],['name' => 'Auction', 'target' => ''], ['name' => 'Bank Owned/Reo', 'target' => ''], ['name' => 'Government Owned', 'target' => ''], ['name' => 'Probate Listing', 'target' => ''], ['name' => 'Short Sale', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.special_sale_provision']];
+                @endphp
+                <select name="special_sale" id="special_sale" class="grid-picker" style="justify-content: flex-start;"
+                  required>
+                  <option value=""></option>
+                  @foreach ($special_sale_provision as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->special_sale) && $auction->get->special_sale == $item['name'] ? 'selected' : ''}}>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+            <div class="form-group special_sale_provision d-none">
+              <label class="fw-bold">Special Sale Provision:</label>
+              <input type="text" name="custom_special_sale_provision" value="{{isset($auction->get->custom_special_sale_provision) ? $auction->get->custom_special_sale_provision : ''}}" id="custom_special_sale_provision"
+                class="form-control has-icon" data-icon="fa-regular fa-circle-check" required>
+            </div>
+            <div class="form-group d-none assignment_contract_res">
+              <label class="fw-bold">
+                Is the seller currently under contract with a property they would like to assign?
+              </label>
+              @php
+                $seller_contract_options = [
+                    ['name' => 'Yes', 'target' => '.commercialseller_contract_yes'],
+                    ['name' => 'No', 'target' => '.commercial_seller_contract_no'],
+                ];
+              @endphp
+              <select name="contribute_term" id="contribute_term" class="grid-picker"
+                style="justify-content: flex-start;" required>
+                <option value=""></option>
+                @foreach ($seller_contract_options as $item)
+                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                    class="card flex-column" style="width:calc(20% - 10px);"
+                    data-icon='<i class="fa-regular fa-check-circle"></i>' {{isset($auction->get->contribute_term) && $auction->get->contribute_term == $item['name'] ? 'selected' : ''}}>
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+
+              <div class="form-group commercialseller_contract_yes d-none">
+                <div class="d-flex justify-content-between aalign-items-center">
+                  <label class="fw-bold">What fee would the seller pay the agent to assign the contract?</label>
+                  <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                      <button type="button" class="select-btn me-1 active"
+                          data-type="amount">$</button>
+                      <button type="button" class="select-btn" data-type="percent">%</button>
+                  </div>
+                </div>
+                <input type="number" class="form-control has-icon" placeholder=""
+                  name="commercialseller_contract_yes" value="{{isset($auction->get->commercialseller_contract_yes) ? $auction->get->commercialseller_contract_yes : ''}}" data-icon="fa-solid fa-dollar-sign"
+                  id="commercialseller_contract_yes" required />
+              </div>
+              <div class="form-group commercial_seller_contract_no d-none">
+                <label class="fw-bold">Is the seller looking to take over a buyer’s contract? </label>
+                @php
+                  $seller_contract_yes_no = [['name' => 'Yes', 'target' => ''], ['name' => 'No', 'target' => '']];
+                @endphp
+                <select name="custom_seller_contract_no" id="commercial_seller_contract_no" class="grid-picker"
+                  style="justify-content: flex-start;" required>
+                  <option value=""></option>
+                  @foreach ($seller_contract_yes_no as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                      class="card flex-column fw-bold" style="width:calc(20% - 10px);"
+                      data-icon='<i class="fa-regular fa-check-circle"></i>' {{isset($auction->get->custom_seller_contract_no) && $auction->get->custom_seller_contract_no == $item['name'] ? 'selected' : ''}}>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="wizard-step" data-step="6">
+            <span class="timeAuction">
+              <h4>Price and Terms:</h4>
+              <div class="form-group ">
+                <label class="fw-bold" for="buy_now_price" required>Buy Now Price:</label>
+                <input type="number"  name="buy_now_price" value="{{isset($auction->get->buy_now_price) ? $auction->get->buy_now_price : ''}}"  id="buy_now_price"
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar"
+                  data-msg-required="Please enter Buy Now Price">
+              </div>
+              <div class="form-group ">
+                <label class="fw-bold" for="reserve_price" required>Buy Now Price Per Sqft:</label>
+                <input type="number" name="buy_now_price_per_sqfeet" value="{{isset($auction->get->buy_now_price_per_sqfeet) ? $auction->get->buy_now_price_per_sqfeet : ''}}"  id="reserve_price"
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar">
+              </div>
+              <div class="form-group ">
+                <label class="fw-bold" for="starting_price" required>Starting Price:</label>
+                <input type="number"  name="starting_price" value="{{isset($auction->get->starting_price) ? $auction->get->starting_price : ''}}"  id="starting_price"
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar"
+                  data-msg-required="Please enter Starting Price">
+              </div>
+              <div class="form-group ">
+                <label class="fw-bold" for="reserve_price" required>Reserve Price:</label>
+                <input type="number"  name="reserve_price" value="{{isset($auction->get->reserve_price) ? $auction->get->reserve_price : ''}}"  id="reserve_price"
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar">
+              </div>
+              <div class="form-group row ">
+                <div class="form-group">
+                  <div class="d-flex justify-content-between aalign-items-center">
+                    <label class="fw-bold">Acceptable Escrow Deposit:</label>
+                    <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                        <button type="button" class="select-btn me-1 active"
+                            data-type="amount">$</button>
+                        <button type="button" class="select-btn" data-type="percent">%</button>
+                    </div>
+                  </div>
+                  <input type="number" name="escrow_amount" value="{{isset($auction->get->escrow_amount) ? $auction->get->escrow_amount : ''}}" id="term_escrow_amount" placeholder=""
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                </div>
+              </div>
+              <div class="form-group row ">
+                <div class="form-group">
+                  <label class="fw-bold">Number of Days the Seller Will Accept for Closing:</label>
+                  <input type="number" name="closing_days" value="{{isset($auction->get->closing_days) ? $auction->get->closing_days : ''}}" id="closing_days" placeholder=""
+                    class="form-control has-icon" data-icon="fa-solid fa-calendar-day" required>
+                </div>
+              </div>
+              <div class="form-group">
+                @php
+                  $contigencies = [['name' => 'Inspection contingency', 'target' => '.inspectionAuction'], ['name' => 'Appraisal contingency', 'target' => '.appraisalAuction'], ['name' => 'Financing contingency', 'target' => '.financingAuction'], ['name' => 'Sale of a property contingency', 'target' => '.saleAuction'], ['name' => 'None', 'target' => ''],['name' => 'Other', 'target' => '.otherContingencyAuction'],];
                 @endphp
                 <label class="fw-bold">Acceptable Contingencies: </label>
-                <select class="grid-picker" name="contigencies_accepted_by_seller" id="contigencies_accepted_by_seller"
-                    style="justify-content: flex-start;">
-                    <option value="">Select</option>
-                    @foreach ($contigencies as $item)
+                <select class="grid-picker" name="contigencies_accepted_by_seller[]" id="contigencies_accepted_by_seller"
+                  style="justify-content: flex-start;" multiple>
+                  <option value="">Select</option>
+                  @foreach ($contigencies as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' 
-                        {{old('contigencies_accepted_by_seller',  $auction->get->contigencies_accepted_by_seller) === $item['name'] ? 'selected' : ''}}>
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->representation) && in_array($item['name'] , json_decode($auction->get->representation) ?? []) ? 'selected' : ''}}>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+                <div class="form-group inspectionAuction d-none">
+                  <label class="fw-bold">Inspection contingency (days):</label>
+                  <input type="number" name="inspection_auction" value="{{isset($auction->get->inspection_auction) ? $auction->get->inspection_auction : ''}}" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                </div>
+                <div class="form-group appraisalAuction d-none">
+                  <label class="fw-bold">Appraisal contingency (days):</label>
+                  <input type="number" name="appraisal_auction" value="{{isset($auction->get->appraisal_auction) ? $auction->get->appraisal_auction : ''}}" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                </div>
+                <div class="form-group financingAuction d-none">
+                  <label class="fw-bold">Financing contingency (days):</label>
+                  <input type="number" name="finance_auction" value="{{isset($auction->get->finance_auction) ? $auction->get->finance_auction : ''}}" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                </div>
+                <div class="form-group saleAuction d-none">
+                  <label class="fw-bold"> Sale of a property contingency (days): </label>
+                  <input type="number" name="saleContingency_auction" value="{{isset($auction->get->saleContingency_auction) ? $auction->get->saleContingency_auction : ''}}" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                </div>
+                <div class="form-group otherContingencyAuction d-none">
+                  <label class="fw-bold">Acceptable contingency:</label>
+                  <input type="text" name="acceptable_auction" value="{{isset($auction->get->acceptable_auction) ? $auction->get->acceptable_auction : ''}}" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+
+                  <label class="fw-bold">Acceptable contingency (days):</label>
+                  <input type="number" name="acceptable_days_auction" value="{{isset($auction->get->acceptable_days_auction) ? $auction->get->acceptable_days_auction : ''}}" id="" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                </div>
+              </div>
+              <div class="form-group">
+                @php
+                  $term_financings = [
+                      ['name' => 'Assumable', 'target' => '.assumableAuction'],
+                      ['name' => 'Cash', 'target' => ''],
+                      ['name' => 'Conventional', 'target' => ''],
+                      ['name' => 'Cryptocurrency', 'target' => '.cryptoAuction'],
+                      ['name' => 'Exchange/Trade', 'target' => '.tradeAuction'],
+                      ['name' => 'FHA', 'target' => ''],
+                      ['name' => 'Jumbo', 'target' => ''],
+                      ['name' => 'Lease Option', 'target' => '.leaseOptionAuction'],
+                      ['name' => 'Lease Purchase', 'target' => '.leasePurchaseAuction'],
+                      ['name' => 'Non-Fungible Token (NFT)', 'target' => '.nftAuction'],
+                      ['name' => 'No-Doc', 'target' => ''],
+                      ['name' => 'Non-QM', 'target' => ''],
+                      ['name' => 'Seller Financing', 'target' => '.sellerFinancingAuction'],
+                      ['name' => 'USDA', 'target' => ''],
+                      ['name' => 'VA', 'target' => ''],
+                      ['name' => 'Other', 'target' => '.otherFinancingAuction'],
+                  ];
+                @endphp
+                  <label class="fw-bold">Acceptable Currency/ Financing:</label>
+                  <select class="grid-picker" name="term_financings" id="term_financings"
+                    style="justify-content: flex-start;" required>
+                    <option value="">Select</option>
+                    @foreach ($term_financings as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                        data-icon='<i class="fa-regular fa-check-circle"></i>' class="card flex-row"
+                        style="width:calc(33.3% - 10px);" {{isset($auction->get->term_financings) && $auction->get->term_financings === $item['name'] ? 'selected' : ''}}>
+                        {{ $item['name'] }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+                  {{-- Other --}}
+                  <div class="form-group otherFinancingAuction d-none">
+                      <label class="fw-bold">Acceptable Currency/Financing:</label>
+                      <input type="text" name="otherFinancing" value="{{isset($auction->get->otherFinancing) ? $auction->get->otherFinancing : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                  </div>
+                  {{-- Other --}}
+                  {{-- NFTAuction  --}}
+                  <div class="form-group nftAuction d-none">
+                    <div class="form-group col-md-12">
+                      <label class="fw-bold">What type of Non-Fungible Token (NFT) will the seller accept?</label>
+                      <input type="text" name="type_of_NFT_accepted" value="{{isset($auction->get->type_of_NFT_accepted) ? $auction->get->type_of_NFT_accepted : ''}}" id="type_of_NFT_accepted" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="fw-bold">What percentage of the sales price will the seller accept in the form of a Non-Fungible Token (NFT)?</label>
+                        <input type="number" name="percentage_in_NFT" value="{{isset($auction->get->percentage_in_NFT) ? $auction->get->percentage_in_NFT : ''}}" id="percentage_in_NFT" class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="fw-bold">What percentage of the sales price will the seller accept in cash?</label>
+                        <input type="number" name="percentage_in_cash" value="{{isset($auction->get->percentage_in_cash) ? $auction->get->percentage_in_cash : ''}}" id="percentage_in_cash" class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                    </div>
+                  </div>
+                {{-- NFT  --}}
+                {{-- CryptoAuction  --}}
+                <div class="form-group cryptoAuction d-none">
+                  <div class="form-group col-md-12">
+                    <label class="fw-bold">What type of cryptocurrency will the seller accept?</label>
+                    <input type="text" name="cryptocurrency_type" value="{{isset($auction->get->cryptocurrency_type) ? $auction->get->cryptocurrency_type : ''}}" id="cryptocurrency_type" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">What percentage of the sales price will the seller accept in cryptocurrency?</label>
+                      <input type="number" name="percentage_in_crypto" value="{{isset($auction->get->percentage_in_crypto) ? $auction->get->percentage_in_crypto : ''}}" id="percentage_in_crypto" class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">What percentage of the sales price will the seller accept in cash?</label>
+                      <input type="number" name="percentage_in_cash" value="{{isset($auction->get->percentage_in_cash) ? $auction->get->percentage_in_cash : ''}}" id="percentage_in_cash" class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                  </div> 
+                  <small>Note: Cryptocurrency can be converted to cash at closing.</small>              
+                </div>
+                {{-- CryptoAuction  --}}
+                {{-- seller financing --}}
+                <div class="form-group row sellerFinancingAuction d-none">
+                  <label class="fw-bold">Please enter the seller’s desired seller financing terms:</label>
+                <div class="form-group col-md-3">
+                  <label class="fw-bold">Purchase Price:</label>
+                  <input type="number" name="purchase_price_seller_financing" value="{{isset($auction->get->purchase_price_seller_financing) ? $auction->get->purchase_price_seller_financing : ''}}" id="purchase_price_seller_financing"
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <div class="d-flex justify-content-between aalign-items-center">
+                    <label class="fw-bold">Down Payment:</label>
+                    <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                        <button type="button" class="select-btn me-1 active"
+                            data-type="amount">$</button>
+                        <button type="button" class="select-btn" data-type="percent">%</button>
+                    </div>
+                  </div>
+                  <input type="number" name="down_payment_seller_financing" value="{{isset($auction->get->down_payment_seller_financing) ? $auction->get->down_payment_seller_financing : ''}}" id="down_payment_seller_financing"
+                    class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <div class="d-flex justify-content-between aalign-items-center">
+                    <label class="fw-bold">Seller Financing Amount:</label>
+                    <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                        <button type="button" class="select-btn me-1 active"
+                            data-type="amount">$</button>
+                        <button type="button" class="select-btn" data-type="percent">%</button>
+                    </div>
+                  </div>
+                  <input type="number" name="seller_financing_amount" value="{{isset($auction->get->seller_financing_amount) ? $auction->get->seller_financing_amount : ''}}" id="seller_financing_amount"
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="fw-bold">Interest Rate:</label>
+                  <input type="number" name="interest_rate_seller_financing" value="{{isset($auction->get->interest_rate_seller_financing) ? $auction->get->interest_rate_seller_financing : ''}}" id="interest_rate_seller_financing"
+                    class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="fw-bold">Loan Duration:</label>
+                  <input type="text" name="term_seller_financing" value="{{isset($auction->get->term_seller_financing) ? $auction->get->term_seller_financing : ''}}" id="term_seller_financing"
+                    class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="fw-bold">Monthly Payment with Principal and Interest:</label>
+                  <input type="number" name="monthly_payment_seller_financing" value="{{isset($auction->get->monthly_payment_seller_financing) ? $auction->get->monthly_payment_seller_financing : ''}}" id="monthly_payment_seller_financing"
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                </div>
+                <div class="form-group">
+                  @php
+                    $ballonPenalty = [['name' => 'Yes', 'target' => '.ballonPenaltyYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
+                  @endphp
+                  <label class="fw-bold">Prepayment Penalty:</label>
+                  <select name="ballonPenalty" id="auto_bid" class="grid-picker" style="justify-content: flex-start;"
+                    required>
+                    @foreach ($ballonPenalty as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row" 
+                        style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' 
+                        {{isset($auction->get->ballonPenalty) && $auction->get->ballonPenalty == $item['name'] ? 'selected' : ''}}>
+                      {{ $item['name'] }}
+                    </option>
+                    </option>
+                    @endforeach
+                  </select>
+                  <div class="form-group  ballonPenaltyYesAuction d-none">
+                    <label class="fw-bold">What is the prepayment penalty amount? </label>
+                    <input type="number" name="ballonPenaltyYes" value="{{isset($auction->get->ballonPenaltyYes) ? $auction->get->ballonPenaltyYes : ''}}" id="closing_costs" class="form-control has-icon"
+                      data-icon="fa-solid fa-dollar-sign" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  @php
+                    $balloonPay = [['name' => 'Yes', 'target' => '.balloonPayYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
+                  @endphp
+                  <label class="fw-bold">Balloon Payment:</label>
+                  <select name="balloonPay" id="auto_bid" class="grid-picker" style="justify-content: flex-start;"
+                    required>
+                    @foreach ($balloonPay as $item)
+                      <option value="{{ $item['name'] }}"
+                        data-target="{{ $item['target'] }}" class="card flex-row" style="width:calc(33.3% - 10px);"
+                        data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->balloonPay) && $auction->get->balloonPay == $item['name'] ? 'selected' : ''}}>
                         {{ $item['name'] }}
                     </option>
                     @endforeach
-                </select>
-                <div class="form-group inspectionAuction d-none">
-                    <label class="fw-bold">Inspection contingency (days):</label>
-                    <input type="number" name="inspection" id="inspection_days" 
-                        class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required 
-                        value="{{ old('inspection', optional($auction->get)->inspection) }}">
-                </div>
-                <div class="form-group appraisalAuction d-none">
-                    <label class="fw-bold">Appraisal contingency (days):</label>
-                    <input type="number" name="appraisal" id="appraisal_days" 
-                        class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required 
-                        value="{{ old('appraisal', optional($auction->get)->appraisal) }}">
-                </div>
-                <div class="form-group financingAuction d-none">
-                    <label class="fw-bold">Financing contingency (days):</label>
-                    <input type="number" name="finance" id="finance_days" 
-                        class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required 
-                        value="{{ old('finance', optional($auction->get)->finance) }}">
-                </div>
-                <div class="form-group saleAuction d-none">
-                    <label class="fw-bold">Sale of a property contingency (days):</label>
-                    <input type="number" name="saleContingency" id="sale_contingency_days" 
-                        class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required 
-                        value="{{ old('saleContingency', optional($auction->get)->saleContingency) }}">
-                </div>
-                <div class="form-group otherContingencyAuction d-none">
-                    <label class="fw-bold">Acceptable contingency:</label>
-                    <input type="text" name="acceptable" id="acceptable_contingency" 
-                        class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required 
-                        value="{{ old('acceptable', optional($auction->get)->acceptable) }}">
-                
-                    <label class="fw-bold">Acceptable contingency (days):</label>
-                    <input type="number" name="acceptable_days" id="acceptable_days" 
-                        class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required 
-                        value="{{ old('acceptable_days', optional($auction->get)->acceptable_days) }}">
-                </div>            
-            </div>
-            <div class="form-group">
-            @php
-                $term_financings = [
-                    ['name' => 'Cash', 'target' => ''],
-                    ['name' => 'Conventional', 'target' => ''],
-                    ['name' => 'FHA', 'target' => ''],
-                    ['name' => 'VA', 'target' => ''],
-                    ['name' => 'Non-Fungible Token (NFT)', 'target' => '.nftAuction'],
-                    ['name' => 'Cryptocurrency', 'target' => '.cryptoAuction'],
-                    ['name' => 'USDA', 'target' => ''],
-                    ['name' => 'Assumable', 'target' => '.assumableAuction'],
-                    ['name' => 'Exchange/Trade', 'target' => '.tradeAuction'],
-                    ['name' => 'Lease Option', 'target' => '.leaseOptionAuction'],
-                    ['name' => 'Lease Purchase', 'target' => '.leasePurchaseAuction'],
-                    ['name' => 'Seller Financing', 'target' => '.sellerFinancingAuction'],
-                    ['name' => 'Jumbo', 'target' => ''],
-                    ['name' => 'Non-QM', 'target' => ''],
-                    ['name' => 'No-Doc', 'target' => ''],
-                    ['name' => 'Other', 'target' => '.otherFinancingAuction'],
-                ];
-            @endphp
-                <label class="fw-bold">Acceptable Currency/ Financing:</label>
-                <select class="grid-picker" name="term_financings" id="term_financings"
-                style="justify-content: flex-start;" required>
-                <option value="">Select</option>
-                @foreach ($term_financings as $item)
-                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                    data-icon='<i class="fa-regular fa-check-circle"></i>' class="card flex-row"
-                    style="width:calc(33.3% - 10px);" {{old('term_financings', $auction->get->term_financings) == $item['name'] ? 'selected' : ''}}>
-                    {{ $item['name'] }}
-                    </option>
-                @endforeach
-                </select>
-            </div>
-                {{-- Other --}}
-                <div class="form-group otherFinancingAuction d-none">
-                    <label class="fw-bold">Acceptable Currency/Financing:</label>
-                    <input type="text" name="otherFinancing" 
-                        class="form-control has-icon" data-icon="fa-regular fa-check-circle" required 
-                        value="{{ old('otherFinancing', optional($auction->get)->otherFinancing) }}">
-                </div>
-                
-                {{-- Other --}}
-                {{-- NFTAuction  --}}
-                <div class="form-group nftAuction d-none">
-                    <div class="form-group col-md-12">
-                        <label class="fw-bold" for="type_of_NFT_accepted">What type of Non-Fungible Token (NFT) will the seller accept?</label>
-                        <input type="text" name="type_of_NFT_accepted" id="type_of_NFT_accepted" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required value="{{ old('type_of_NFT_accepted', optional($auction->get)->type_of_NFT_accepted) }}">
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label class="fw-bold" for="percentage_in_NFT">What percentage of the sales price will the seller accept in the form of a Non-Fungible Token (NFT)?</label>
-                        <input type="number" name="percentage_in_NFT" id="percentage_in_NFT" class="form-control has-icon" data-icon="fa-solid fa-percent" required value="{{ old('percentage_in_NFT', optional($auction->get)->percentage_in_NFT) }}">
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label class="fw-bold" for="percentage_in_cash">What percentage of the sales price will the seller accept in cash?</label>
-                        <input type="number" name="percentage_in_cash" id="percentage_in_cash" class="form-control has-icon" data-icon="fa-solid fa-percent" required value="{{ old('percentage_in_cash', optional($auction->get)->percentage_in_cash) }}">
-                    </div>                    
-                </div>
-            {{-- NFT  --}}
-            {{-- CryptoAuction  --}}
-                <div class="form-group cryptoAuction d-none">
-                    <div class="form-group col-md-12">
-                        <label class="fw-bold" for="cryptocurrency_type">What type of cryptocurrency will the seller accept?</label>
-                        <input type="text" name="cryptocurrency_type" id="cryptocurrency_type" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required value="{{ old('cryptocurrency_type', optional($auction->get)->cryptocurrency_type) }}">
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label class="fw-bold" for="percentage_in_crypto">What percentage of the sales price will the seller accept in cryptocurrency?</label>
-                        <input type="number" name="percentage_in_crypto" id="percentage_in_crypto" class="form-control has-icon" data-icon="fa-solid fa-percent" required value="{{ old('percentage_in_crypto', optional($auction->get)->percentage_in_crypto) }}">
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label class="fw-bold" for="percentage_in_cash">What percentage of the sales price will the seller accept in cash?</label>
-                        <input type="number" name="percentage_in_cash" id="percentage_in_cash" class="form-control has-icon" data-icon="fa-solid fa-percent" required value="{{ old('percentage_in_cash', optional($auction->get)->percentage_in_cash) }}">
-                    </div>                    
-                    <small>Note: Cryptocurrency can be converted to cash at closing.</small>              
-                </div>
-            {{-- CryptoAuction  --}}
-            {{-- seller financing --}}
-            <div class="form-group row sellerFinancingAuction d-none">
-                <label class="fw-bold">Please enter the seller’s desired seller financing terms:</label>
-                <div class="form-group col-md-3">
-                    <label class="fw-bold" for="purchase_price_seller_financing">Purchase Price:</label>
-                    <input type="number" name="purchase_price_seller_financing" id="purchase_price_seller_financing"
-                        class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" 
-                        value="{{ old('purchase_price_seller_financing', $auction->get->purchase_price_seller_financing ?? '') }}" required>
-                </div>                
-            <div class="form-group col-md-3">
-                <div class="d-flex justify-content-between aalign-items-center">
-                <label class="fw-bold">Down Payment:</label>
-                <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
-                    <button type="button" class="select-btn me-1 active"
-                        data-type="amount">$</button>
-                    <button type="button" class="select-btn" data-type="percent">%</button>
-                </div>
-                </div>
-                    <input type="number" name="down_payment_seller_financing" id="down_payment_seller_financing"
-                        class="form-control has-icon" data-icon="fa-solid fa-percent" 
-                        value="{{ old('down_payment_seller_financing', $auction->get->down_payment_seller_financing ?? '') }}" required>
-            </div>
-            <div class="form-group col-md-3">
-                <label class="fw-bold">Seller Financing Amount:</label>
-                <input type="number" name="seller_financing_amount" id="seller_financing_amount"
-                       class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" 
-                       value="{{ old('seller_financing_amount', $auction->get->seller_financing_amount ?? '') }}" required>
-            </div>
-            <div class="form-group col-md-3">
-                <label class="fw-bold">Interest Rate:</label>
-                <input type="number" name="interest_rate_seller_financing" id="interest_rate_seller_financing"
-                       class="form-control has-icon" data-icon="fa-solid fa-percent" 
-                       value="{{ old('interest_rate_seller_financing', $auction->get->interest_rate_seller_financing ?? '') }}" required>
-            </div>
-            <div class="form-group col-md-3">
-                <label class="fw-bold">Loan Duration:</label>
-                <input type="text" name="term_seller_financing" id="term_seller_financing"
-                       class="form-control has-icon" data-icon="fa-regular fa-calendar-days" 
-                       value="{{ old('term_seller_financing', $auction->get->term_seller_financing ?? '') }}" required>
-            </div>
-            <div class="form-group col-md-3">
-                <label class="fw-bold">Monthly Payment with Principal and Interest:</label>
-                <input type="number" name="monthly_payment_seller_financing" id="monthly_payment_seller_financing"
-                       class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" 
-                       value="{{ old('monthly_payment_seller_financing', $auction->get->monthly_payment_seller_financing ?? '') }}" required>
-            </div>            
-            <div class="form-group">
-                @php
-                $ballonPenalty = [['name' => 'Yes', 'target' => '.ballonPenaltyYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
-                @endphp
-                <label class="fw-bold">Prepayment Penalty:</label>
-                <select name="ballonPenalty" id="auto_bid" class="grid-picker" style="justify-content: flex-start;"
-                required>
-                    @foreach ($ballonPenalty as $item)
-                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row" style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{old('ballonPenalty' , $auction->get->ballonPenalty) == $item['name'] ? 'selected' : ''}}>
-                            {{ $item['name'] }}
-                        </option>
-                    @endforeach
-                </select>
-                <div class="form-group  ballonPenaltyYesAuction d-none">
-                <label class="fw-bold">What is the prepayment penalty amount? </label>
-                <input type="number" name="ballonPenaltyYes" id="closing_costs" class="form-control has-icon"
-                    data-icon="fa-solid fa-dollar-sign" value="{{$auction->get->ballonPenaltyYes ?? ''}}" required>
-                </div>
-            </div>
-            <div class="form-group">
-                @php
-                $balloonPay = [['name' => 'Yes', 'target' => '.balloonPayYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
-                @endphp
-                    <label class="fw-bold">Balloon Payment:</label>
-                    <select name="balloonPay" id="auto_bid" class="grid-picker" style="justify-content: flex-start;"
-                    required>
-                        @foreach ($balloonPay as $item)
-                            <option value="{{ $item['name'] }}"
-                                data-target="{{ $item['target'] }}" class="card flex-row" style="width:calc(33.3% - 10px);"
-                                data-icon='<i class="{{ $item['icon'] }}"></i>' {{old('balloonPay' , $auction->get->balloonPay) == $item['name'] ? 'selected' : ''}}>
-                                {{ $item['name'] }}
-                            </option>
-                        @endforeach
-                    </select>
+                  </select>
                     <div class="form-group balloonPayYesAuction d-none">
-                        <div class="form-group">
-                            <label class="fw-bold">How much is the balloon payment?</label>
-                            <input type="number" name="balloonPayment" id="balloon_payment" class="form-control has-icon"
-                                   data-icon="fa-solid fa-dollar-sign"
-                                   value="{{ old('balloonPayment', $auction->get->balloonPayment ?? '') }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="fw-bold">When is the balloon payment due?</label>
-                            <input type="text" name="balloonDue" id="balloon_due" class="form-control has-icon"
-                                   data-icon="fa-regular fa-calendar-days"
-                                   value="{{ old('balloonDue', $auction->get->balloonDue ?? '') }}" required>
-                        </div>                        
+                      <div class="form-group">
+                        <label class="fw-bold">How much is the balloon payment? </label>
+                        <input type="number" name="balloonPayment" value="{{isset($auction->get->balloonPayment) ? $auction->get->balloonPayment : ''}}" id="closing_costs" class="form-control has-icon"
+                          data-icon="fa-solid fa-dollar-sign" required>
+                      </div>
+                      <div class="form-group">
+                        <label class="fw-bold">When is the balloon payment due? </label>
+                        <input type="text" name="balloonDue" value="{{isset($auction->get->balloonDue) ? $auction->get->balloonDue : ''}}" id="closing_costs" class="form-control has-icon"
+                          data-icon="fa-regular fa-calendar-days" required>
+                      </div>
                     </div>
+                  </div>
                 </div>
-            </div>
-            {{-- seller financing --}}
-            {{-- Lease Option  --}}
-                <div class="form-group leaseOptionAuction d-none">
+                {{-- seller financing --}}
+                {{-- Lease Option  --}}
+                  <div class="form-group leaseOptionAuction d-none">
                     <div class="form-group col-md-12">
-                        <label class="fw-bold">What is the seller's desired offering price for a lease option?</label>
-                        <input type="number" name="desired_offering_price" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign"
-                               value="{{ old('desired_offering_price', $auction->get->desired_offering_price ?? '') }}" required>
+                      <label class="fw-bold">What is the seller's desired offering price for a lease option? </label>
+                      <input type="number" name="desired_offering_price" value="{{isset($auction->get->desired_offering_price) ? $auction->get->desired_offering_price : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="fw-bold">What specific terms does the seller propose for the lease option?</label>
-                        <input name="lease_option_terms" class="form-control has-icon" data-icon="fa-regular fa-check-circle"
-                               value="{{ old('lease_option_terms', $auction->get->lease_option_terms ?? '') }}" required>
+                        <input name="lease_option_terms" value="{{isset($auction->get->lease_option_terms) ? $auction->get->lease_option_terms : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="fw-bold">What is the proposed duration of the lease?</label>
-                        <input type="text" name="proposed_lease_duration" class="form-control has-icon" data-icon="fa-regular fa-calendar-days"
-                               value="{{ old('proposed_lease_duration', $auction->get->proposed_lease_duration ?? '') }}" required>
+                        <input type="text" name="proposed_lease_duration" value="{{isset($auction->get->proposed_lease_duration) ? $auction->get->proposed_lease_duration : ''}}" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
                     </div>
                     <div class="form-group col-md-12">
-                        <label class="fw-bold">What is the monthly payment amount the seller is seeking?</label>
-                        <input type="number" name="monthly_payment_amount" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign"
-                               value="{{ old('monthly_payment_amount', $auction->get->monthly_payment_amount ?? '') }}" required>
+                        <label class="fw-bold">What is the monthly payment amount the seller is seeking? </label>
+                        <input type="number" name="monthly_payment_amount" value="{{isset($auction->get->monthly_payment_amount) ? $auction->get->monthly_payment_amount : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="fw-bold">What are the specific conditions or requirements outlined by the seller for the lease option?</label>
-                        <input name="lease_option_conditions" class="form-control has-icon" data-icon="fa-regular fa-check-circle"
-                               value="{{ old('lease_option_conditions', $auction->get->lease_option_conditions ?? '') }}" required>
-                    </div>                    
+                        <input name="lease_option_conditions" value="{{isset($auction->get->lease_option_conditions) ? $auction->get->lease_option_conditions : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                    </div>
                     <div class="form-group">
-                        @php
+                      @php
                         $sellerFeeOption = [['name' => 'Yes', 'target' => '.sellerFeeOptionYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
-                        @endphp
-                        <label class="fw-bold">Does the seller require an option fee? </label>
-                        <select class="grid-picker" name="exchange_trade" style="justify-content: flex-start;" required>
-                            <option value="">Select</option>
+                      @endphp
+                      <label class="fw-bold">Does the seller require an option fee? </label>
+                      <select class="grid-picker" name="sellerFeeOption" style="justify-content: flex-start;" required>
+                        <option value="">Select</option>
                         @foreach ($sellerFeeOption as $item)
-                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                                style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{old('exchange_trade', $auction->get->exchange_trade) == $item['name'] ? 'selected' : ''}}>
-                                {{ $item['name'] }}
-                            </option>
+                          <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                            style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->sellerFeeOption) && $auction->get->sellerFeeOption == $item['name'] ? 'selected' : ''}}>
+                            {{ $item['name'] }}
+                          </option>
                         @endforeach
-                        </select>
-                        <div class="form-group col-md-12 sellerFeeOptionYesAuction d-none">
+                      </select>
+                      <div class="form-group col-md-12 sellerFeeOptionYesAuction d-none">
                         <label class="fw-bold">How much is the option fee? </label>
-                        <input type="number" name="sellerFeeOptionYes"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" value="{{old('sellerFeeOptionYes' , $auction->get->sellerFeeOptionYes ?? '')}}" required>
+                        <input type="number" name="sellerFeeOptionYes" value="{{isset($auction->get->sellerFeeOptionYes) ? $auction->get->sellerFeeOptionYes : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                     </div>               
+                  </div>
                 </div>
-            </div>
-            {{-- Lease Option  --}}
-            {{-- Lease Purchase  --}}
-                <div class="form-group leasePurchaseAuction d-none">
+                {{-- Lease Option  --}}
+                {{-- Lease Purchase  --}}
+                  <div class="form-group leasePurchaseAuction d-none">
                     <div class="form-group col-md-12">
-                        <label class="fw-bold">What is the seller's desired offering price for a lease purchase?</label>
-                        <input type="number" name="desired_offering_price_lease_purchase" class="form-control has-icon" data-icon="fa-solid fa-dollar"
-                               value="{{ old('desired_offering_price_lease_purchase', $auction->get->desired_offering_price_lease_purchase ?? '') }}" required>
+                      <label class="fw-bold">What is the seller's desired offering price for a lease purchase?</label>
+                      <input type="number" name="desired_offering_price_lease_purchase" value="{{isset($auction->get->desired_offering_price_lease_purchase) ? $auction->get->desired_offering_price_lease_purchase : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="fw-bold">What specific terms does the seller propose for the lease purchase?</label>
-                        <input name="lease_purchase_terms" class="form-control has-icon" data-icon="fa-regular fa-check-circle"
-                               value="{{ old('lease_purchase_terms', $auction->get->lease_purchase_terms ?? '') }}" required>
+                        <input name="lease_purchase_terms" value="{{isset($auction->get->lease_purchase_terms) ? $auction->get->lease_purchase_terms : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="fw-bold">What is the proposed duration of the lease?</label>
-                        <input type="text" name="proposed_lease_duration_lease_purchase" class="form-control has-icon" data-icon="fa-regular fa-calendar-days"
-                               value="{{ old('proposed_lease_duration_lease_purchase', $auction->get->proposed_lease_duration_lease_purchase ?? '') }}" required>
+                        <input type="text" name="proposed_lease_duration_lease_purchase" value="{{isset($auction->get->proposed_lease_duration_lease_purchase) ? $auction->get->proposed_lease_duration_lease_purchase : ''}}" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="fw-bold">What is the monthly payment amount the seller is seeking?</label>
-                        <input type="number" name="monthly_payment_amount_lease_purchase" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign"
-                               value="{{ old('monthly_payment_amount_lease_purchase', $auction->get->monthly_payment_amount_lease_purchase ?? '') }}" required>
+                        <input type="number" name="monthly_payment_amount_lease_purchase" value="{{isset($auction->get->monthly_payment_amount_lease_purchase) ? $auction->get->monthly_payment_amount_lease_purchase : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="fw-bold">What are the specific conditions or requirements outlined by the seller for the lease purchase?</label>
-                        <input name="lease_purchase_conditions" class="form-control has-icon" data-icon="fa-regular fa-check-circle"
-                               value="{{ old('lease_purchase_conditions', $auction->get->lease_purchase_conditions ?? '') }}" required>
-                    </div>                       
-                <div class="form-group">
-                    @php
-                    $sellerFeePurchase = [['name' => 'Yes', 'target' => '.sellerFeePurchaseYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
-                    @endphp
-                    <label class="fw-bold">Does the seller require an option fee?</label>
-                    <select class="grid-picker" name="exchange_trade" style="justify-content: flex-start;" required>
+                        <input name="lease_purchase_conditions" value="{{isset($auction->get->lease_purchase_conditions) ? $auction->get->lease_purchase_conditions : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                    </div>    
+                    <div class="form-group">
+                      @php
+                        $sellerFeePurchase = [['name' => 'Yes', 'target' => '.sellerFeePurchaseYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
+                      @endphp
+                      <label class="fw-bold">Does the seller require an option fee?</label>
+                      <select class="grid-picker" name="sellerFeePurchase" style="justify-content: flex-start;" required>
                         <option value="">Select</option>
                         @foreach ($sellerFeePurchase as $item)
-                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                                style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'  {{old('exchange_trade', $auction->get->exchange_trade) == $item['name'] ? 'selected' : '' }}>
-                                {{ $item['name'] }}
-                            </option>
+                          <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                            style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->sellerFeePurchase) && $auction->get->sellerFeePurchase == $item['name'] ? 'selected' : ''}}>
+                            {{ $item['name'] }}
+                          </option>
                         @endforeach
-                    </select>
-                    <div class="form-group col-md-12 sellerFeePurchaseYesAuction d-none">
+                      </select>
+                      <div class="form-group col-md-12 sellerFeePurchaseYesAuction d-none">
                         <label class="fw-bold">How much is the option fee?  </label>
-                        <input type="number" name="sellerFeePurchaseYes"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" value="{{old('sellerFeePurchaseYes' , $auction->get->sellerFeePurchaseYes ?? '')}}" required>
+                        <input type="number" name="sellerFeePurchaseYes"  value="{{isset($auction->get->sellerFeePurchaseYes) ? $auction->get->sellerFeePurchaseYes : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                     </div>               
+                  </div>
                 </div>
-            </div>
-            {{-- Lease Purchase  --}}
-            {{-- AssumableAuction  --}}
-                <div class="form-group assumableAuction d-none">
+                {{-- Lease Purchase  --}}
+                {{-- AssumableAuction  --}}
+                  <div class="form-group assumableAuction d-none">
                     <div class="form-group col-md-12">
-                        <label class="fw-bold">What assumable terms are being offered?</label>
-                        <input type="text" name="assumable_terms_offered" class="form-control has-icon" data-icon="fa-regular fa-check-circle"
-                               value="{{ old('assumable_terms_offered', $auction->get->assumable_terms_offered ?? '') }}" required>
+                      <label class="fw-bold">What assumable terms are being offered?</label>
+                      <input type="text" name="assumable_terms_offered" value="{{isset($auction->get->assumable_terms_offered) ? $auction->get->assumable_terms_offered : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label class="fw-bold">Are there any restrictions or qualifications for a buyer assuming the existing financing?</label>
-                        <input type="text" name="restrictions_or_qualifications" class="form-control has-icon" data-icon="fa-regular fa-check-circle"
-                               value="{{ old('restrictions_or_qualifications', $auction->get->restrictions_or_qualifications ?? '') }}" required>
+                        <input type="text" name="restrictions_or_qualifications" value="{{isset($auction->get->restrictions_or_qualifications) ? $auction->get->restrictions_or_qualifications : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                     </div>
                     <div class="form-group col-md-12">
-                        <label class="fw-bold">What is the interest rate of the assumable loan?</label>
-                        <input type="text" name="assumable_interest" class="form-control has-icon" data-icon="fa-solid fa-percent"
-                               value="{{ old('assumable_interest', $auction->get->assumable_interest ?? '') }}" required>
+                      <label class="fw-bold">What is the interest rate of the assumable loan?</label>
+                      <input type="number" name="assumable_interest" value="{{isset($auction->get->assumable_interest) ? $auction->get->assumable_interest : ''}}" class="form-control has-icon" data-icon="fa-solid fa-percent" required>
                     </div>
                     <div class="form-group col-md-12">
-                        <label class="fw-bold">What is the monthly payment, including principal and interest, for the assumable loan?</label>
-                        <input type="number" name="assumable_monthly_payment" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign"
-                               value="{{ old('assumable_monthly_payment', $auction->get->assumable_monthly_payment ?? '') }}" required>
-                    </div>                    
+                      <label class="fw-bold">What is the monthly payment, including principal and interest, for the assumable loan?</label>
+                      <input type="number" name="assumable_monthly_payment" value="{{isset($auction->get->assumable_monthly_payment) ? $auction->get->assumable_monthly_payment : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                    </div>
                     <div class="form-group col-md-12">
                         @php
                         $outstandingBalance = [['name' => 'Yes', 'target' => '.outstandingBalanceYesAuction', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
-                        @endphp
+                      @endphp
+                      <div class="form-group">
                         <div class="form-group">
-                        <label class="fw-bold">What is the outstanding balance on the existing loan?</label>
-                        <select class="grid-picker" name="exchange_trade" id="contigencies_accepted_by_seller"
-                            style="justify-content: flex-start;" required>
-                            <option value="">Select</option>
-                            @foreach ($outstandingBalance as $item)
-                                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'   {{old('exchange_trade', $auction->get->exchange_trade) == $item['name'] ? 'selected' : ''  }}>
-                                    {{ $item['name'] }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <div class="form-group col-md-12 outstandingBalanceYesAuction d-none">
-                            <label class="fw-bold">What is the outstanding balance on the existing loan?</label>
-                            <input type="number" name="outstandingBalanceYes" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" 
-                                   value="{{ old('outstandingBalanceYes', $auction->get->outstandingBalanceYes ?? '') }}" required>
-                        
-                            <label class="fw-bold">What is the down payment that the buyer would need to pay the seller to bridge the gap
-                            between the asking price and the assumable loan balance?</label>
-                            <input type="number" name="loan_balance_down_payment" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" 
-                                   value="{{ old('loan_balance_down_payment', $auction->get->loan_balance_down_payment ?? '') }}" required>
-                        </div>                        
+                          <label class="fw-bold">What is the outstanding balance on the existing loan?</label>
+                          <input type="number" name="assumable_balance_loan" value="{{isset($auction->get->assumable_balance_loan) ? $auction->get->assumable_balance_loan : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                        </div>
+                        <div class="form-group">
+                          <div class="d-flex justify-content-between aalign-items-center">
+                            <label class="fw-bold">What is the down payment that the buyer would need to pay the seller to bridge the gap between the asking price and the assumable loan balance?</label>
+                            <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                                <button type="button" class="select-btn me-1 active"
+                                    data-type="amount">$</button>
+                                <button type="button" class="select-btn" data-type="percent">%</button>
+                            </div>
+                          </div>
+                          <input type="number" name="loan_balance_down_payment" value="{{isset($auction->get->loan_balance_down_payment) ? $auction->get->loan_balance_down_payment : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                      </div>
                     </div>
+                  </div>            
                 </div>            
-            </div>            
-            {{-- Assumable  --}}
-            {{-- Exchange/trade --}}
-            <div class="form-group row tradeAuction d-none">
-                @php
-                $exchange_trades = [['name' => 'Another home', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Vehicle', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Boat', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Motorhome', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Artwork', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Jewelry', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Other', 'target' => '.otherTradeAuction', 'icon' => 'fa-regular fa-circle-check']];
-                @endphp
-                <div class="form-group">
+                {{-- Assumable  --}}
+                {{-- Exchange/trade --}}
+                <div class="form-group row tradeAuction d-none">
+                  @php
+                  $exchange_trades = [
+                    ['name' => 'Another home', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], 
+                    ['name' => 'Artwork', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], 
+                    ['name' => 'Boat', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], 
+                    ['name' => 'Jewelry', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], 
+                    ['name' => 'Motorhome', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], 
+                    ['name' => 'Vehicle', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], 
+                    ['name' => 'Other', 'target' => '.otherTradeAuction', 'icon' => 'fa-regular fa-circle-check']
+                  ];
+                  @endphp
+                  <div class="form-group">
                     <label class="fw-bold">Acceptable Exchange Item:</label>
                     <select class="grid-picker" name="exchange_trade" id="contigencies_accepted_by_seller"
-                        style="justify-content: flex-start;" required>
-                        <option value="">Select</option>
-                        @foreach ($exchange_trades as $item)
+                      style="justify-content: flex-start;" required>
+                      <option value="">Select</option>
+                      @foreach ($exchange_trades as $item)
                         <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                            style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'    {{old('exchange_trade', $auction->get->exchange_trade) == $item['name'] ? 'selected' : ''   }}>
-                            {{ $item['name'] }}
+                          style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->exchange_trade) && $auction->get->exchange_trade == $item['name'] ? 'selected' : ''}}>
+                          {{ $item['name'] }}
                         </option>
-                        @endforeach
+                      @endforeach
                     </select>
                     <div class="form-group col-md-12 otherTradeAuction d-none">
-                        <label class="fw-bold">Acceptable Exchange Item:</label>
-                        <input type="text" name="otherTrade" class="form-control has-icon" data-icon="fa-regular fa-check-circle" 
-                               value="{{ old('otherTrade', $auction->get->otherTrade ?? '') }}" required>
-                    </div>                    
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What is the estimated value of the acceptable exchange/trade item?</label>
-                    <input type="text" name="estimatedTrade" class="form-control has-icon" data-icon="fa-solid fa-dollar" 
-                           value="{{ old('estimatedTrade', $auction->get->estimatedTrade ?? '') }}" required>
-                </div>
-                <div class="form-group col-md-12">
+                      <label class="fw-bold">Acceptable Exchange Item:</label>
+                      <input type="text" name="otherTrade" value="{{isset($auction->get->otherTrade) ? $auction->get->otherTrade : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label class="fw-bold">What is the estimated value of the acceptable exchange/trade item? </label>
+                    <input type="number" name="estimatedTrade" value="{{isset($auction->get->estimatedTrade) ? $auction->get->estimatedTrade : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
+                  </div>
+                  <div class="form-group col-md-12">
                     <label class="fw-bold">Are there specific criteria or conditions for the type of item the seller is willing to exchange/trade?</label>
-                    <input type="text" name="specificTrade" class="form-control has-icon" 
-                           value="{{ old('specificTrade', $auction->get->specificTrade ?? '') }}" required>
-                </div>
-                <div class="form-group">
+                    <input type="text" name="specificTrade" value="{{isset($auction->get->specificTrade) ? $auction->get->specificTrade : ''}}" class="form-control has-icon" data-icon="fa-regular fa-circle-check" required>
+                  </div>
+                  <div class="form-group">
                     <label class="fw-bold">How much cash does the seller require on top of the exchange/trade item?</label>
-                    <input type="number" name="cashTrade" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" 
-                           value="{{ old('cashTrade', $auction->get->cashTrade ?? '') }}" required>
-                </div>
-                <div class="form-group col-md-12">
+                    <input type="number" name="cashTrade" value="{{isset($auction->get->cashTrade) ? $auction->get->cashTrade : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                  </div>
+                  <div class="form-group col-md-12">
                     <label class="fw-bold">How is the value of the exchange/trade item determined?</label>
-                    <input type="text" name="valueTrade" class="form-control has-icon" data-icon="fa-regular fa-check-circle" 
-                           value="{{ old('valueTrade', $auction->get->valueTrade ?? '') }}" required>
-                </div>                
-            </div>
-            {{-- Exchangetrade --}}
-            <div class="form-group row">
-                @php
-                $sellerOffer = [['name' => 'Yes', 'target' => '.sellerOfferYesAuction','icon'=>'<i class="fa-regular fa-circle-check"></i>'], ['name' => 'No', 'target' => '','icon'=>'<i class="fa-regular fa-circle-xmark"></i>']];
-                @endphp
+                    <input type="text" name="valueTrade" value="{{isset($auction->get->valueTrade) ? $auction->get->valueTrade : ''}}" class="form-control has-icon"
+                      data-icon="fa-regular fa-check-circle" required>
+                  </div>
+                </div>
+                {{-- Exchangetrade --}}
+                <div class="form-group row">
+                  @php
+                    $sellerOffer = [
+                      ['name' => 'Yes', 'target' => '.sellerOfferYesAuction','icon'=>'<i class="fa-regular fa-circle-check"></i>'], 
+                      ['name' => 'No', 'target' => '','icon'=>'<i class="fa-regular fa-circle-xmark"></i>'],
+                      ['name' => 'Only if the buyer meets the Seller’s Sell Terms, which include the List Price, acceptable Escrow Deposit, number of days the Seller will accept for closing, and acceptable Contingencies, will the seller offer a buyer at closing', 'target' => '.sellerOfferYesAuction','icon'=>'<i class="fa-regular fa-circle-check"></i>']
+                    ];
+                  @endphp
                 <label class="fw-bold">Is the seller offering a credit to the buyer at closing?  </label>
                 <select class="grid-picker" name="sellerOffer" style="justify-content: flex-start;">
-                    <option value="">Select</option>
-                    @foreach ($sellerOffer as $item)
+                  <option value="">Select</option>
+                  @foreach ($sellerOffer as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon='{{$item['icon']}}'  {{old('sellerOffer', $auction->get->sellerOffer) == $item['name'] ? 'selected' : '' }}>
-                        {{ $item['name'] }}
+                      style="width:calc(33.3% - 10px);" data-icon='{{$item['icon']}}' {{isset($auction->get->sellerOffer) && $auction->get->sellerOffer == $item['name'] ? 'selected' : ''}}>
+                      {{ $item['name'] }}
                     </option>
-                    @endforeach
+                  @endforeach
                 </select>  
                 <div class="form-group sellerOfferYesAuction d-none">
-                    <label class="fw-bold">What credit amount is the seller offering to the buyer at closing?</label>
-                    <input type="number" name="sellerOfferYes" placeholder=""
-                        class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" 
-                        value="{{ old('sellerOfferYes', $auction->get->sellerOfferYes ?? '') }}" required>
-                </div>
-            </div>
-        </span>
-        <span class="traditionalTime">
-            <h4>Price and Terms:</h4>
-            <div class="form-group">
-                <label class="fw-bold" for="buy_now_price" required>Price:</label>
-                <input type="number" name="price" placeholder="" id="buy_now_price"
-                       class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dollar"
-                       data-msg-required="Please enter Buy Now Price"
-                       value="{{ old('price', $auction->get->price ?? '') }}" required>
-            </div>
-            <div class="form-group">
-                <label class="fw-bold" for="reserve_price" required>List Price Per Sqft:</label>
-                <input type="number" name="price_per_sqfeet" id="reserve_price"
-                       class="form-control has-icon" data-icon="fa-solid fa-dollar-sign"
-                       value="{{ old('price_per_sqfeet', $auction->get->price_per_sqfeet ?? '') }}">
-            </div>
-            <div class="form-group">
-                <label class="fw-bold">Acceptable Escrow Deposit:</label>
-                <input type="number" name="escrow_amount2" id="term_escrow_amount" placeholder=""
-                       class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required
-                       value="{{ old('escrow_amount2', $auction->get->escrow_amount2 ?? '') }}">
-            </div>
-            <div class="form-group">
-                <label class="fw-bold">Number of Days the Seller Will Accept for Closing:</label>
-                <input type="number" name="closing_days2" id="closing_days" placeholder=""
-                       class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required
-                       value="{{ old('closing_days2', $auction->get->closing_days2 ?? '') }}">
-            </div>            
-            <div class="form-group">
-            @php
-                $contigencies = [['name' => 'Inspection contingency', 'target' => '.inspection'], ['name' => 'Appraisal contingency', 'target' => '.appraisal'], ['name' => 'Financing contingency', 'target' => '.financing'], ['name' => 'Sale of a property contingency', 'target' => '.sale'], ['name' => 'None', 'target' => ''],['name' => 'Other', 'target' => '.otherContingency'],];
-            @endphp
-            <label class="fw-bold">Acceptable Contingencies: </label>
-            <select class="grid-picker" name="contigencies_accepted_by_seller" id="contigencies_accepted_by_seller"
-                style="justify-content: flex-start;">
-                <option value="">Select</option>
-                @foreach ($contigencies as $item)
-                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' 
-                    {{old('contigencies_accepted_by_seller', $auction->get->contigencies_accepted_by_seller) == $item['name'] ? 'selected' : ''}}>
-                    {{ $item['name'] }}
-                </option>
-                @endforeach
-            </select>
-            <div class="form-group inspection d-none">
-                <label class="fw-bold">Inspection contingency (days):</label>
-                <input type="number" name="inspection" id="closing_days" class="form-control has-icon"
-                       data-icon="fa-regular fa-calendar-days" required
-                       value="{{ old('inspection', $auction->get->inspection ?? '') }}">
-            </div>
-            <div class="form-group appraisal d-none">
-                <label class="fw-bold">Appraisal contingency (days):</label>
-                <input type="number" name="appraisal" id="closing_days" class="form-control has-icon"
-                       data-icon="fa-regular fa-calendar-days" required
-                       value="{{ old('appraisal', $auction->get->appraisal ?? '') }}">
-            </div>
-            <div class="form-group financing d-none">
-                <label class="fw-bold">Financing contingency (days):</label>
-                <input type="number" name="finance" id="closing_days" class="form-control has-icon"
-                       data-icon="fa-regular fa-calendar-days" required
-                       value="{{ old('finance', $auction->get->finance ?? '') }}">
-            </div>
-            <div class="form-group sale d-none">
-                <label class="fw-bold">Sale of a property contingency (days):</label>
-                <input type="number" name="saleContingency" id="closing_days" class="form-control has-icon"
-                       data-icon="fa-regular fa-calendar-days" required
-                       value="{{ old('saleContingency', $auction->get->saleContingency ?? '') }}">
-            </div>
-            <div class="form-group otherContingency d-none">
-                <label class="fw-bold">Acceptable contingency:</label>
-                <input type="text" name="acceptable" id="closing_days" class="form-control has-icon"
-                       data-icon="fa-regular fa-calendar-days" required
-                       value="{{ old('acceptable', $auction->get->acceptable ?? '') }}">
-            
-                <label class="fw-bold">Acceptable contingency (days):</label>
-                <input type="text" name="acceptable_days" id="" class="form-control has-icon"
-                       data-icon="fa-regular fa-calendar-days" required
-                       value="{{ old('acceptable_days', $auction->get->acceptable_days ?? '') }}">
-            </div>            
-            </div>
-            <div class="form-group">
-                @php
-                $term_financings = [
-                    ['name' => 'Cash', 'target' => ''],
-                    ['name' => 'Conventional', 'target' => ''],
-                    ['name' => 'FHA', 'target' => ''],
-                    ['name' => 'VA', 'target' => ''],
-                    ['name' => 'Non-Fungible Token (NFT)', 'target' => '.nft'],
-                    ['name' => 'Cryptocurrency', 'target' => '.crypto'],
-                    ['name' => 'USDA', 'target' => ''],
-                    ['name' => 'Assumable', 'target' => '.assumable'],
-                    ['name' => 'Exchange/Trade', 'target' => '.custom_exchange_trade'],
-                    ['name' => 'Lease Option', 'target' => '.leaseOption'],
-                    ['name' => 'Lease Purchase', 'target' => '.leasePurchase'],
-                    ['name' => 'Seller Financing', 'target' => '.custom_seller_financing'],
-                    ['name' => 'Jumbo', 'target' => ''],
-                    ['name' => 'Non-QM', 'target' => ''],
-                    ['name' => 'No-Doc', 'target' => ''],
-                    ['name' => 'Other', 'target' => '.otherFinancing'],
-                ];
-                @endphp
-            <label class="fw-bold">Acceptable Currency/ Financing:</label>
-            <select class="grid-picker" name="term_financings" id="term_financings"
-                style="justify-content: flex-start;" required>
-                <option value="">Select</option>
-                @foreach ($term_financings as $item)
-                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                    data-icon='<i class="fa-regular fa-check-circle"></i>' class="card flex-row"
-                    style="width:calc(33.3% - 10px);" 
-                    {{old('term_financings' , $auction->get->term_financings) == $item['name'] ? 'selected' : ''}}>
-                    {{ $item['name'] }}
-                </option>
-                @endforeach
-            </select>
-            </div>
-            {{-- Other --}}
-            <div class="form-group otherFinancing d-none">
-                <label class="fw-bold">Acceptable Currency/Financing:</label>
-                <input type="text" name="otherFinancing" class="form-control has-icon"
-                       data-icon="fa-regular fa-check-circle" required
-                       value="{{ old('otherFinancing', $auction->get->otherFinancing ?? '') }}">
-            </div>
-            {{-- Other --}}
-            {{-- NFT  --}}
-            <div class="form-group nft d-none">
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What type of Non-Fungible Token (NFT) will the seller accept?</label>
-                    <input type="text" name="type_of_NFT_accepted" id="type_of_NFT_accepted" 
-                           class="form-control has-icon" data-icon="fa-regular fa-check-circle" required 
-                           value="{{ old('type_of_NFT_accepted', $auction->get->type_of_NFT_accepted ?? '') }}">
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What percentage of the sales price will the seller accept in the form of a Non-Fungible Token (NFT)?</label>
-                    <input type="number" name="percentage_in_NFT" id="percentage_in_NFT" 
-                           class="form-control has-icon" data-icon="fa-solid fa-percent" required 
-                           value="{{ old('percentage_in_NFT', $auction->get->percentage_in_NFT ?? '') }}">
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What percentage of the sales price will the seller accept in cash?</label>
-                    <input type="number" name="percentage_in_cash" id="percentage_in_cash" 
-                           class="form-control has-icon" data-icon="fa-solid fa-percent" required 
-                           value="{{ old('percentage_in_cash', $auction->get->percentage_in_cash ?? '') }}">
-                </div>                
-            </div>
-            {{-- NFT  --}}
-            {{-- Crypto  --}}
-            <div class="form-group crypto d-none">
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What type of cryptocurrency will the seller accept?</label>
-                    <input type="text" name="cryptocurrency_type" id="cryptocurrency_type" 
-                           class="form-control has-icon" data-icon="fa-regular fa-check-circle" required 
-                           value="{{ old('cryptocurrency_type', $auction->get->cryptocurrency_type ?? '') }}">
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What percentage of the sales price will the seller accept in cryptocurrency?</label>
-                    <input type="number" name="percentage_in_crypto" id="percentage_in_crypto" 
-                           class="form-control has-icon" data-icon="fa-solid fa-percent" required 
-                           value="{{ old('percentage_in_crypto', $auction->get->percentage_in_crypto ?? '') }}">
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What percentage of the sales price will the seller accept in cash?</label>
-                    <input type="number" name="percentage_in_cash" id="percentage_in_cash" 
-                           class="form-control has-icon" data-icon="fa-solid fa-percent" required 
-                           value="{{ old('percentage_in_cash', $auction->get->percentage_in_cash ?? '') }}">
-                </div>                
-                <small>Note: Cryptocurrency can be converted to cash at closing.</small>             
-            </div>
-            {{-- Crypto  --}}
-            {{-- seller financing --}}
-            <div class="form-group row custom_seller_financing d-none">
-                <label class="fw-bold">Please enter the seller’s desired seller financing terms:</label>
-                <div class="form-group col-md-3">
-                    <label class="fw-bold">Purchase Price:</label>
-                    <input type="number" name="purchase_price_seller_financing" id="purchase_price_seller_financing"
-                        class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required
-                        value="{{ old('purchase_price_seller_financing', $auction->get->purchase_price_seller_financing ?? '') }}">
-                </div>            
-                <div class="form-group col-md-3">
-                    <div class="d-flex justify-content-between aalign-items-center">
-                        <label class="fw-bold">Down Payment:</label>
-                        <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
-                            <button type="button" class="select-btn me-1 active"
-                                data-type="amount">$</button>
-                            <button type="button" class="select-btn" data-type="percent">%</button>
-                        </div>
-                    </div>
-                    <input type="number" name="down_payment_seller_financing" id="down_payment_seller_financing"
-                        class="form-control has-icon" data-icon="fa-solid fa-percent" value="{{old('down_payment_seller_financing', $auction->get->down_payment_seller_financing ?? '')}}" required>
-                </div>
-                <div class="form-group col-md-3">
-                    <label class="fw-bold">Seller Financing Amount:</label>
-                    <input type="number" name="seller_financing_amount" id="seller_financing_amount"
-                           class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required
-                           value="{{ old('seller_financing_amount', $auction->get->seller_financing_amount ?? '') }}">
-                </div>
-                
-                <div class="form-group col-md-3">
-                    <label class="fw-bold">Interest Rate:</label>
-                    <input type="number" name="interest_rate_seller_financing" id="interest_rate_seller_financing"
-                           class="form-control has-icon" data-icon="fa-solid fa-percent" required
-                           value="{{ old('interest_rate_seller_financing', $auction->get->interest_rate_seller_financing ?? '') }}">
-                </div>
-                
-                <div class="form-group col-md-3">
-                    <label class="fw-bold">Loan Duration:</label>
-                    <input type="text" name="term_seller_financing" id="term_seller_financing"
-                           class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required
-                           value="{{ old('term_seller_financing', $auction->get->term_seller_financing ?? '') }}">
-                </div>
-                
-                <div class="form-group col-md-3">
-                    <label class="fw-bold">Monthly Payment with Principal and Interest:</label>
-                    <input type="number" name="monthly_payment_seller_financing" id="monthly_payment_seller_financing"
-                           class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required
-                           value="{{ old('monthly_payment_seller_financing', $auction->get->monthly_payment_seller_financing ?? '') }}">
-                </div>                
-                <div class="form-group">
-                    @php
-                    $ballonPenalty = [['name' => 'Yes', 'target' => '.ballonPenaltyYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
-                    @endphp
-                    <label class="fw-bold">Prepayment Penalty:</label>
-                    <select name="ballonPenalty" id="auto_bid" class="grid-picker" style="justify-content: flex-start;"
-                        required>
-                        @foreach ($ballonPenalty as $item)
-                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row" style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{old('ballonPenalty', $auction->get->ballonPenalty) == $item['name'] ? 'selected' : ''}}>
-                                {{ $item['name'] }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <div class="form-group ballonPenaltyYes d-none">
-                        <label class="fw-bold">What is the prepayment penalty amount?</label>
-                        <input type="number" name="ballonPenaltyYes" id="closing_costs" class="form-control has-icon"
-                               data-icon="fa-solid fa-dollar-sign" required
-                               value="{{ old('ballonPenaltyYes', $auction->get->ballonPenaltyYes ?? '') }}">
-                    </div>                    
-                </div>
-            <div class="form-group">
-                @php
-                $balloonPay = [['name' => 'Yes', 'target' => '.balloonPayYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
-                @endphp
-                <label class="fw-bold">Balloon Payment:</label>
-                <select name="balloonPay" id="auto_bid" class="grid-picker" style="justify-content: flex-start;"
-                    required>
-                    @foreach ($balloonPay as $item)
-                        <option value="{{ $item['name'] }}"
-                            data-target="{{ $item['target'] }}" class="card flex-row" style="width:calc(33.3% - 10px);"
-                            data-icon='<i class="{{ $item['icon'] }}"></i>'  {{old('balloonPay', $auction->get->balloonPay) == $item['name'] ? 'selected' : ''}}>
-                            {{ $item['name'] }}
-                        </option>
-                    @endforeach
-                </select>
-                <div class="form-group balloonPayYes d-none">
-                    <div class="form-group">
-                        <label class="fw-bold">How much is the balloon payment?</label>
-                        <input type="number" name="balloonPayment" id="closing_costs" class="form-control has-icon"
-                               data-icon="fa-solid fa-dollar-sign" required
-                               value="{{ old('balloonPayment', $auction->get->balloonPayment ?? '') }}">
-                    </div>
-                    <div class="form-group">
-                        <label class="fw-bold">When is the balloon payment due?</label>
-                        <input type="text" name="balloonDue" id="closing_costs" class="form-control has-icon"
-                               data-icon="fa-regular fa-calendar-days" required
-                               value="{{ old('balloonDue', $auction->get->balloonDue ?? '') }}">
-                    </div>                    
-                </div>
-            </div>
-            </div>
-            {{-- seller financing --}}
-            {{-- Lease Option  --}}
-            <div class="form-group leaseOption d-none">
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What is the seller's desired offering price for a lease option?</label>
-                    <input type="number" name="desired_offering_price" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required
-                           value="{{ old('desired_offering_price', $auction->get->desired_offering_price ?? '') }}">
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What specific terms does the seller propose for the lease option?</label>
-                    <input name="lease_option_terms" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required
-                           value="{{ old('lease_option_terms', $auction->get->lease_option_terms ?? '') }}">
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What is the proposed duration of the lease?</label>
-                    <input type="text" name="proposed_lease_duration" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required
-                           value="{{ old('proposed_lease_duration', $auction->get->proposed_lease_duration ?? '') }}">
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What is the monthly payment amount the seller is seeking?</label>
-                    <input type="number" name="monthly_payment_amount" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required
-                           value="{{ old('monthly_payment_amount', $auction->get->monthly_payment_amount ?? '') }}">
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What are the specific conditions or requirements outlined by the seller for the lease option?</label>
-                    <input name="lease_option_conditions" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required
-                           value="{{ old('lease_option_conditions', $auction->get->lease_option_conditions ?? '') }}">
-                </div>                
-                <div class="form-group">
-                @php
-                    $sellerFeeOption = [['name' => 'Yes', 'target' => '.sellerFeeOptionYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
-                @endphp
-                <label class="fw-bold">Does the seller require an option fee? </label>
-                <select class="grid-picker" name="exchange_trade" style="justify-content: flex-start;" required>
-                    <option value="">Select</option>
-                    @foreach ($sellerFeeOption as $item)
-                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{old('exchange_trade', $auction->get->exchange_trade) == $item['name'] ? 'selected' : ''}}>
-                        {{ $item['name'] }}
-                    </option>
-                    @endforeach
-                </select>
-                <div class="form-group col-md-12 sellerFeeOptionYes d-none">
-                    <label class="fw-bold">How much is the option fee?</label>
-                    <input type="number" name="sellerFeeOptionYes" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required
-                           value="{{ old('sellerFeeOptionYes', $auction->get->sellerFeeOptionYes ?? '') }}">
-                </div>                            
-            </div>
-            </div>
-            {{-- Lease Option  --}}
-            {{-- Lease Purchase  --}}
-            <div class="form-group leasePurchase d-none">
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What is the seller's desired offering price for a lease purchase?</label>
-                    <input type="number" name="desired_offering_price_lease_purchase" class="form-control has-icon" data-icon="fa-solid fa-dollar" required
-                           value="{{ old('desired_offering_price_lease_purchase', $auction->get->desired_offering_price_lease_purchase ?? '') }}">
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What specific terms does the seller propose for the lease purchase?</label>
-                    <input name="lease_purchase_terms" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required
-                           value="{{ old('lease_purchase_terms', $auction->get->lease_purchase_terms ?? '') }}">
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What is the proposed duration of the lease?</label>
-                    <input type="text" name="proposed_lease_duration_lease_purchase" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required
-                           value="{{ old('proposed_lease_duration_lease_purchase', $auction->get->proposed_lease_duration_lease_purchase ?? '') }}">
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What is the monthly payment amount the seller is seeking?</label>
-                    <input type="number" name="monthly_payment_amount_lease_purchase" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required
-                           value="{{ old('monthly_payment_amount_lease_purchase', $auction->get->monthly_payment_amount_lease_purchase ?? '') }}">
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What are the specific conditions or requirements outlined by the seller for the lease purchase?</label>
-                    <input name="lease_purchase_conditions" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required
-                           value="{{ old('lease_purchase_conditions', $auction->get->lease_purchase_conditions ?? '') }}">
-                </div>                
-                <div class="form-group">
-                @php
-                    $sellerFeePurchase = [['name' => 'Yes', 'target' => '.sellerFeePurchaseYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
-                @endphp
-                <label class="fw-bold">Does the seller require an option fee?</label>
-                <select class="grid-picker" name="exchange_trade" style="justify-content: flex-start;" required>
-                    <option value="">Select</option>
-                    @foreach ($sellerFeePurchase as $item)
-                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' 
-                        {{old('exchange_trade', $auction->get->exchange_trade) == $item['name'] ? 'selected' : ''}}>
-                        {{ $item['name'] }}
-                    </option>
-                    @endforeach
-                </select>
-                <div class="form-group col-md-12 sellerFeePurchaseYes d-none">
-                    <label class="fw-bold">How much is the option fee?</label>
-                    <input type="number" name="sellerFeePurchaseYes" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required
-                           value="{{ old('sellerFeePurchaseYes', $auction->get->sellerFeePurchaseYes ?? '') }}">
-                </div>                              
-            </div>
-            </div>
-            {{-- Lease Purchase  --}}
-            {{-- Assumable  --}}
-            <div class="form-group assumable d-none">
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What assumable terms are being offered?</label>
-                    <input type="text" name="assumable_terms_offered" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required
-                           value="{{ old('assumable_terms_offered', $auction->get->assumable_terms_offered ?? '') }}">
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">Are there any restrictions or qualifications for a buyer assuming the existing financing?</label>
-                    <input type="text" name="restrictions_or_qualifications" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required
-                           value="{{ old('restrictions_or_qualifications', $auction->get->restrictions_or_qualifications ?? '') }}">
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What is the interest rate of the assumable loan?</label>
-                    <input type="text" name="assumable_interest" class="form-control has-icon" data-icon="fa-solid fa-percent" required
-                           value="{{ old('assumable_interest', $auction->get->assumable_interest ?? '') }}">
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">What is the monthly payment, including principal and interest, for the assumable loan?</label>
-                    <input type="number" name="assumable_monthly_payment" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required
-                           value="{{ old('assumable_monthly_payment', $auction->get->assumable_monthly_payment ?? '') }}">
-                </div>                
-                <div class="form-group col-md-12">
-                    @php
-                    $outstandingBalance = [['name' => 'Yes', 'target' => '.outstandingBalanceYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
-                @endphp
-                <div class="form-group">
-                    <label class="fw-bold">What is the outstanding balance on the existing loan?</label>
-                    <select class="grid-picker" name="exchange_trade" id="contigencies_accepted_by_seller"
-                        style="justify-content: flex-start;" required>
-                        <option value="">Select</option>
-                        @foreach ($outstandingBalance as $item)
-                            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                                style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' 
-                                {{old('exchange_trade', $auction->get->exchange_trade) == $item['name'] ? 'selected' : ''}}>
-                                {{ $item['name'] }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <div class="form-group col-md-12 outstandingBalanceYes d-none">
-                        <label class="fw-bold">What is the outstanding balance on the existing loan?</label>
-                        <input type="number" name="outstandingBalanceYes" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required
-                               value="{{ old('outstandingBalanceYes', $auction->get->outstandingBalanceYes ?? '') }}">
-                    
-                        <label class="fw-bold">What is the down payment that the buyer would need to pay the seller to bridge the gap between the asking price and the assumable loan balance?</label>
-                        <input type="number" name="loan_balance_down_payment" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required
-                               value="{{ old('loan_balance_down_payment', $auction->get->loan_balance_down_payment ?? '') }}">
-                    </div>                    
-                </div>
-            </div>            
-            </div> 
-            {{-- Assumable --}}
-            {{-- Exchange/trade  --}}
-            <div class="form-group row custom_exchange_trade">
-            @php
-                $exchange_trades = [['name' => 'Another home', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Vehicle', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Boat', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Motorhome', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Artwork', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Jewelry', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Other', 'target' => '.otherTrade', 'icon' => 'fa-regular fa-circle-check']];
-            @endphp
-            <div class="form-group">
-                <label class="fw-bold">Acceptable Exchange Item:</label>
-                <select class="grid-picker" name="exchange_trade" id="contigencies_accepted_by_seller"
-                style="justify-content: flex-start;" required>
-                <option value="">Select</option>
-                    @foreach ($exchange_trades as $item)
-                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                            style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' 
-                            {{old('exchange_trade', $auction->get->exchange_trade) == $item['name'] ? 'selected' : ''}}>
-                            {{ $item['name'] }}
-                        </option>
-                    @endforeach
-                </select>
-                <div class="form-group col-md-12 otherTrade d-none">
-                    <label class="fw-bold">Acceptable Exchange Item:</label>
-                    <input type="text" name="otherTrade" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required
-                           value="{{ old('otherTrade', $auction->get->otherTrade ?? '') }}">
-                </div>                
-            </div>
-            <div class="form-group col-md-12">
-                <label class="fw-bold">What is the estimated value of the acceptable exchange/trade item? </label>
-                <input type="text" name="estimatedTrade" class="form-control has-icon" data-icon="fa-solid fa-dollar" required
-                       value="{{ old('estimatedTrade', $auction->get->estimatedTrade ?? '') }}">
-            </div>
-            <div class="form-group col-md-12">
-                <label class="fw-bold">Are there specific criteria or conditions for the type of item the seller is willing to exchange/trade?</label>
-                <input type="text" name="specificTrade" class="form-control has-icon" data-icon="" required
-                       value="{{ old('specificTrade', $auction->get->specificTrade ?? '') }}">
-            </div>
-            <div class="form-group">
-                <label class="fw-bold">How much cash does the seller require on top of the exchange/trade item?</label>
-                <input type="number" name="cashTrade" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required
-                       value="{{ old('cashTrade', $auction->get->cashTrade ?? '') }}">
-            </div>
-            <div class="form-group col-md-12">
-                <label class="fw-bold">How is the value of the exchange/trade item determined?</label>
-                <input type="text" name="valueTrade" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required
-                       value="{{ old('valueTrade', $auction->get->valueTrade ?? '') }}">
-            </div>            
-            </div>
-            {{-- Exchange/trade --}}
-            <div class="form-group row">
-                @php
-                $sellerOffer = [['name' => 'Yes', 'target' => '.sellerOfferYes','icon'=>'<i class="fa-regular fa-circle-check"></i>'], 
-                                ['name' => 'No', 'target' => '','icon'=>'<i class="fa-regular fa-circle-xmark"></i>'], 
-                                ['name' => 'Only if the buyer meets the Seller’s Sell Terms, which include the List Price, acceptable Escrow Deposit, number of days the Seller will accept for closing, and acceptable Contingencies, will the seller offer a buyer at closing', 'target' => '.sellerOfferYes','icon'=>'<i class="fa-regular fa-circle-check"></i>']];
-                @endphp
-            <label class="fw-bold">Is the seller offering a credit to the buyer at closing?  </label>
-            <select class="grid-picker" name="sellerOffer" style="justify-content: flex-start;">
-                <option value="">Select</option>
-                @foreach ($sellerOffer as $item)
-                <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='{{$item['icon']}}'  {{old('sellerOffer', $auction->get->sellerOffer) == $item['name'] ? 'selected' : '' }}>
-                    {{ $item['name'] }}
-                </option>
-                @endforeach
-            </select>  
-            <div class="form-group sellerOfferYes d-none">
-                <div class="d-flex justify-content-between aalign-items-center">
+                  <div class="d-flex justify-content-between aalign-items-center">
                     <label class="fw-bold">What credit amount is the seller offering to the buyer at closing?</label>
                     <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
                         <button type="button" class="select-btn me-1 active"
                             data-type="amount">$</button>
                         <button type="button" class="select-btn" data-type="percent">%</button>
                     </div>
+                  </div>
+                  <input type="number" name="sellerOfferYes" value="{{isset($auction->get->sellerOfferYes) ? $auction->get->sellerOfferYes : ''}}" placeholder=""
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
                 </div>
-                <input type="number" name="sellerOfferYes" placeholder=""
-                class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" value="{{old('sellerOfferYes' , $auction->get->sellerOfferYes ?? '')}}" required>
-            </div>
-            </div>
-        </span>
-        </div>
+              </div>
+            </span>
+            <span class="traditionalTime">
+              <h4>Price and Terms:</h4>
+                <div class="form-group ">
+                  <label class="fw-bold" for="buy_now_price" required>Price:</label>
+                  <input type="number" name="price" value="{{isset($auction->get->price) ? $auction->get->price : ''}}" placeholder="" id="buy_now_price"
+                    class="form-control has-icon hide_arrow" data-icon="fa-solid fa-dollar"
+                    data-msg-required="Please enter Buy Now Price" required>
+                </div>
+                <div class="form-group ">
+                  <label class="fw-bold" for="reserve_price" required>List Price Per Sqft:</label>
+                  <input type="number" name="price_per_sqfeet" value="{{isset($auction->get->price_per_sqfeet) ? $auction->get->price_per_sqfeet : ''}}" id="reserve_price"
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
+                </div>
+                <div class="form-group">
+                  <div class="d-flex justify-content-between aalign-items-center">
+                    <label class="fw-bold">Acceptable Escrow Deposit:</label>
+                    <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                        <button type="button" class="select-btn me-1 active"
+                            data-type="amount">$</button>
+                        <button type="button" class="select-btn" data-type="percent">%</button>
+                    </div>
+                  </div>
+                  <input type="number" name="escrow_amount2" value="{{isset($auction->get->escrow_amount2) ? $auction->get->escrow_amount2 : ''}}" id="term_escrow_amount" placeholder=""
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                </div>
+                <div class="form-group">
+                  <label class="fw-bold">Number of Days the Seller Will Accept for Closing: </label>
+                  <input type="number" name="closing_days2"  value="{{isset($auction->get->closing_days2) ? $auction->get->closing_days2 : ''}}" id="closing_days" placeholder=""
+                    class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                </div>
+              <div class="form-group">
+                @php
+                  $contigencies = [['name' => 'Inspection contingency', 'target' => '.inspection'], ['name' => 'Appraisal contingency', 'target' => '.appraisal'], ['name' => 'Financing contingency', 'target' => '.financing'], ['name' => 'Sale of a property contingency', 'target' => '.sale'], ['name' => 'None', 'target' => ''],['name' => 'Other', 'target' => '.otherContingency'],];
+                @endphp
+                <label class="fw-bold">Acceptable Contingencies: </label>
+                <select class="grid-picker" name="contigencies_accepted_by_seller[]" id="contigencies_accepted_by_seller"
+                  style="justify-content: flex-start;" multiple>
+                  <option value="">Select</option>
+                  @foreach ($contigencies as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->contigencies_accepted_by_seller) && in_array($item['name'], json_decode($auction->get->contigencies_accepted_by_seller) ?? [])  ? 'selected' : ''}}>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+                <div class="form-group inspection d-none">
+                  <label class="fw-bold">Inspection contingency (days):</label>
+                  <input type="number" name="inspection" value="{{isset($auction->get->inspection) ? $auction->get->inspection : ''}}" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                </div>
+                <div class="form-group appraisal d-none">
+                  <label class="fw-bold">Appraisal contingency (days):</label>
+                  <input type="number" name="appraisal" value="{{isset($auction->get->appraisal) ? $auction->get->appraisal : ''}}" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                </div>
+                <div class="form-group financing d-none">
+                  <label class="fw-bold">Financing contingency (days):</label>
+                  <input type="number" name="finance" value="{{isset($auction->get->finance) ? $auction->get->finance : ''}}" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                </div>
+                <div class="form-group sale d-none">
+                  <label class="fw-bold"> Sale of a property contingency (days): </label>
+                  <input type="number" name="saleContingency" value="{{isset($auction->get->saleContingency) ? $auction->get->saleContingency : ''}}" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                </div>
+                <div class="form-group otherContingency d-none">
+                  <label class="fw-bold">Acceptable contingency: </label>
+                  <input type="text" name="acceptable" value="{{isset($auction->get->acceptable) ? $auction->get->acceptable : ''}}" id="closing_days" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+
+                  <label class="fw-bold">Acceptable contingency (days):</label>
+                  <input type="number" name="acceptable_days" value="{{isset($auction->get->acceptable_days) ? $auction->get->acceptable_days : ''}}" id="" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                </div>
+              </div>
+              <div class="form-group">
+                  @php
+                    $term_financings = [
+                        ['name' => 'Cash', 'target' => ''],
+                        ['name' => 'Conventional', 'target' => ''],
+                        ['name' => 'FHA', 'target' => ''],
+                        ['name' => 'VA', 'target' => ''],
+                        ['name' => 'Non-Fungible Token (NFT)', 'target' => '.nft'],
+                        ['name' => 'Cryptocurrency', 'target' => '.crypto'],
+                        ['name' => 'USDA', 'target' => ''],
+                        ['name' => 'Assumable', 'target' => '.assumable'],
+                        ['name' => 'Exchange/Trade', 'target' => '.custom_exchange_trade'],
+                        ['name' => 'Lease Option', 'target' => '.leaseOption'],
+                        ['name' => 'Lease Purchase', 'target' => '.leasePurchase'],
+                        ['name' => 'Seller Financing', 'target' => '.custom_seller_financing'],
+                        ['name' => 'Jumbo', 'target' => ''],
+                        ['name' => 'Non-QM', 'target' => ''],
+                        ['name' => 'No-Doc', 'target' => ''],
+                        ['name' => 'Other', 'target' => '.otherFinancing'],
+                    ];
+                  @endphp
+                <label class="fw-bold">Acceptable Currency/ Financing:</label>
+                <select class="grid-picker" name="term_financings[]" id="term_financings"
+                  style="justify-content: flex-start;" multiple required>
+                  <option value="">Select</option>
+                  @foreach ($term_financings as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                      data-icon='<i class="fa-regular fa-check-circle"></i>' class="card flex-row"
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->term_financings) && in_array($item['name'], json_decode($auction->get->term_financings) ?? [])  ? 'selected' : ''}}>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+                {{-- Other --}}
+                <div class="form-group otherFinancing d-none">
+                    <label class="fw-bold">Acceptable Currency/Financing:</label>
+                    <input type="text" name="otherFinancing" value="{{isset($auction->get->otherFinancing) ? $auction->get->otherFinancing : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                </div>
+                {{-- Other --}}
+                {{-- NFT  --}}
+                <div class="form-group nft d-none">
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">What type of Non-Fungible Token (NFT) will the seller accept?</label>
+                      <input type="text" name="type_of_NFT_accepted" value="{{isset($auction->get->type_of_NFT_accepted) ? $auction->get->type_of_NFT_accepted : ''}}" id="type_of_NFT_accepted" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">What percentage of the sales price will the seller accept in the form of a Non-Fungible Token (NFT)?</label>
+                      <input type="number" name="percentage_in_NFT" value="{{isset($auction->get->percentage_in_NFT) ? $auction->get->percentage_in_NFT : ''}}" id="percentage_in_NFT" class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">What percentage of the sales price will the seller accept in cash?</label>
+                      <input type="number" name="percentage_in_cash" value="{{isset($auction->get->percentage_in_cash) ? $auction->get->percentage_in_cash : ''}}" id="percentage_in_cash" class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                  </div>
+                </div>
+              {{-- NFT  --}}
+              {{-- Crypto  --}}
+              <div class="form-group crypto d-none">
+                <div class="form-group col-md-12">
+                    <label class="fw-bold">What type of cryptocurrency will the seller accept?</label>
+                    <input type="text" name="cryptocurrency_type" value="{{isset($auction->get->cryptocurrency_type) ? $auction->get->cryptocurrency_type : ''}}" id="cryptocurrency_type" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                </div>
+                <div class="form-group col-md-12">
+                    <label class="fw-bold">What percentage of the sales price will the seller accept in cryptocurrency?</label>
+                    <input type="number" name="percentage_in_crypto" value="{{isset($auction->get->percentage_in_crypto) ? $auction->get->percentage_in_crypto : ''}}" id="percentage_in_crypto" class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                </div>
+                <div class="form-group col-md-12">
+                    <label class="fw-bold">What percentage of the sales price will the seller accept in cash?</label>
+                    <input type="number" name="percentage_in_cash" value="{{isset($auction->get->percentage_in_cash) ? $auction->get->percentage_in_cash : ''}}" id="percentage_in_cash" class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                </div> 
+                <small>Note: Cryptocurrency can be converted to cash at closing.</small>             
+              </div>
+              {{-- Crypto  --}}
+              {{-- seller financing --}}
+              <div class="form-group row custom_seller_financing d-none">
+                <label class="fw-bold">Please enter the seller’s desired seller financing terms:</label>
+                <div class="form-group col-md-3">
+                  <label class="fw-bold">Purchase Price:</label>
+                  <input type="number" name="purchase_price_seller_financing" value="{{isset($auction->get->purchase_price_seller_financing) ? $auction->get->purchase_price_seller_financing : ''}}" id="purchase_price_seller_financing"
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <div class="d-flex justify-content-between aalign-items-center">
+                    <label class="fw-bold">Down Payment:</label>
+                    <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                        <button type="button" class="select-btn me-1 active"
+                            data-type="amount">$</button>
+                        <button type="button" class="select-btn" data-type="percent">%</button>
+                    </div>
+                  </div>
+                  <input type="number" name="down_payment_seller_financing" value="{{isset($auction->get->down_payment_seller_financing) ? $auction->get->down_payment_seller_financing : ''}}" id="down_payment_seller_financing"
+                    class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <div class="d-flex justify-content-between aalign-items-center">
+                    <label class="fw-bold">Seller Financing Amount:</label>
+                    <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                        <button type="button" class="select-btn me-1 active"
+                            data-type="amount">$</button>
+                        <button type="button" class="select-btn" data-type="percent">%</button>
+                    </div>
+                  </div>
+                  <input type="number" name="seller_financing_amount" value="{{isset($auction->get->seller_financing_amount) ? $auction->get->seller_financing_amount : ''}}" id="seller_financing_amount"
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="fw-bold">Interest Rate:</label>
+                  <input type="number" name="interest_rate_seller_financing" value="{{isset($auction->get->interest_rate_seller_financing) ? $auction->get->interest_rate_seller_financing : ''}}" id="interest_rate_seller_financing"
+                    class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="fw-bold">Loan Duration:</label>
+                  <input type="text" name="term_seller_financing" value="{{isset($auction->get->term_seller_financing) ? $auction->get->term_seller_financing : ''}}" id="term_seller_financing"
+                    class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                </div>
+                <div class="form-group col-md-3">
+                  <label class="fw-bold">Monthly Payment with Principal and Interest:</label>
+                  <input type="number" name="monthly_payment_seller_financing" value="{{isset($auction->get->monthly_payment_seller_financing) ? $auction->get->monthly_payment_seller_financing : ''}}" id="monthly_payment_seller_financing"
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                </div>
+                <div class="form-group">
+                  @php
+                    $ballonPenalty = [['name' => 'Yes', 'target' => '.ballonPenaltyYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
+                  @endphp
+                  <label class="fw-bold">Prepayment Penalty:</label>
+                  <select name="ballonPenalty" id="auto_bid" class="grid-picker" style="justify-content: flex-start;"
+                    required>
+                    @foreach ($ballonPenalty as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row" 
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->ballonPenalty) && $auction->get->ballonPenalty == $item['name'] ? 'selected' : ''}}>
+                      {{ $item['name'] }}
+                    </option>
+                    @endforeach
+                  </select>
+                  <div class="form-group  ballonPenaltyYes d-none">
+                    <label class="fw-bold">What is the prepayment penalty amount? </label>
+                    <input type="number" name="ballonPenaltyYes" value="{{isset($auction->get->ballonPenaltyYes) ? $auction->get->ballonPenaltyYes : ''}}" id="closing_costs" class="form-control has-icon"
+                      data-icon="fa-solid fa-dollar-sign" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  @php
+                    $balloonPay = [['name' => 'Yes', 'target' => '.balloonPayYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
+                  @endphp
+                  <label class="fw-bold">Balloon Payment:</label>
+                  <select name="balloonPay" id="auto_bid" class="grid-picker" style="justify-content: flex-start;"
+                    required>
+                    @foreach ($balloonPay as $item)
+                      <option value="{{ $item['name'] }}"
+                        data-target="{{ $item['target'] }}" class="card flex-row" style="width:calc(33.3% - 10px);"
+                        data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->balloonPay) && $auction->get->balloonPay == $item['name'] ? 'selected' : ''}}>
+                        {{ $item['name'] }}
+                    </option>
+                    @endforeach
+                  </select>
+                    <div class="form-group balloonPayYes d-none">
+                      <div class="form-group">
+                        <label class="fw-bold">How much is the balloon payment? </label>
+                        <input type="number" name="balloonPayment" value="{{isset($auction->get->balloonPayment) ? $auction->get->balloonPayment : ''}}" id="closing_costs" class="form-control has-icon"
+                          data-icon="fa-solid fa-dollar-sign" required>
+                      </div>
+                      <div class="form-group">
+                        <label class="fw-bold">When is the balloon payment due? </label>
+                        <input type="text" name="balloonDue" value="{{isset($auction->get->balloonDue) ? $auction->get->balloonDue : ''}}" id="closing_costs" class="form-control has-icon"
+                          data-icon="fa-regular fa-calendar-days" required>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              {{-- seller financing --}}
+              {{-- Lease Option  --}}
+                <div class="form-group leaseOption d-none">
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">What is the seller's desired offering price for a lease option? </label>
+                      <input type="number" name="desired_offering_price" value="{{isset($auction->get->desired_offering_price) ? $auction->get->desired_offering_price : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">What specific terms does the seller propose for the lease option?</label>
+                      <input name="lease_option_terms" value="{{isset($auction->get->lease_option_terms) ? $auction->get->lease_option_terms : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">What is the proposed duration of the lease?</label>
+                      <input type="text" name="proposed_lease_duration" value="{{isset($auction->get->proposed_lease_duration) ? $auction->get->proposed_lease_duration : ''}}" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">What is the monthly payment amount the seller is seeking? </label>
+                      <input type="number" name="monthly_payment_amount" value="{{isset($auction->get->monthly_payment_amount) ? $auction->get->monthly_payment_amount : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">What are the specific conditions or requirements outlined by the seller for the lease option?</label>
+                      <input name="lease_option_conditions" value="{{isset($auction->get->lease_option_conditions) ? $auction->get->lease_option_conditions : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                  </div>
+                  <div class="form-group">
+                    @php
+                      $sellerFeeOption = [['name' => 'Yes', 'target' => '.sellerFeeOptionYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
+                    @endphp
+                    <label class="fw-bold">Does the seller require an option fee? </label>
+                    <select class="grid-picker" name="sellerFeeOption" style="justify-content: flex-start;" required>
+                      <option value="">Select</option>
+                      @foreach ($sellerFeeOption as $item)
+                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                          style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->sellerFeeOption) && $auction->get->sellerFeeOption == $item['name'] ? 'selected' : ''}}>
+                          {{ $item['name'] }}
+                        </option>
+                      @endforeach
+                    </select>
+                    <div class="form-group col-md-12 sellerFeeOptionYes d-none">
+                      <label class="fw-bold">How much is the option fee? </label>
+                      <input type="number" name="sellerFeeOptionYes" value="{{isset($auction->get->sellerFeeOptionYes) ? $auction->get->sellerFeeOptionYes : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                  </div>               
+                </div>
+              </div>
+              {{-- Lease Option  --}}
+              {{-- Lease Purchase  --}}
+                <div class="form-group leasePurchase d-none">
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">What is the seller's desired offering price for a lease purchase?</label>
+                      <input type="number" name="desired_offering_price_lease_purchase" value="{{isset($auction->get->desired_offering_price_lease_purchase) ? $auction->get->desired_offering_price_lease_purchase : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">What specific terms does the seller propose for the lease purchase?</label>
+                      <input name="lease_purchase_terms" value="{{isset($auction->get->lease_purchase_terms) ? $auction->get->lease_purchase_terms : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">What is the proposed duration of the lease?</label>
+                      <input type="text" name="proposed_lease_duration_lease_purchase" value="{{isset($auction->get->proposed_lease_duration_lease_purchase) ? $auction->get->proposed_lease_duration_lease_purchase : ''}}" class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">What is the monthly payment amount the seller is seeking?</label>
+                      <input type="number" name="monthly_payment_amount_lease_purchase" value="{{isset($auction->get->monthly_payment_amount_lease_purchase) ? $auction->get->monthly_payment_amount_lease_purchase : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">What are the specific conditions or requirements outlined by the seller for the lease purchase?</label>
+                      <input name="lease_purchase_conditions" value="{{isset($auction->get->lease_purchase_conditions) ? $auction->get->lease_purchase_conditions : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                  </div>    
+                  <div class="form-group">
+                    @php
+                      $sellerFeePurchase = [['name' => 'Yes', 'target' => '.sellerFeePurchaseYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
+                    @endphp
+                    <label class="fw-bold">Does the seller require an option fee?</label>
+                    <select class="grid-picker" name="exchange_trade" style="justify-content: flex-start;" required>
+                      <option value="">Select</option>
+                      @foreach ($sellerFeePurchase as $item)
+                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                          style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->exchange_trade) && $auction->get->exchange_trade == $item['name'] ? 'selected' : ''}}>
+                          {{ $item['name'] }}
+                        </option>
+                      @endforeach
+                    </select>
+                    <div class="form-group col-md-12 sellerFeePurchaseYes d-none">
+                      <label class="fw-bold">How much is the option fee?  </label>
+                      <input type="number" name="sellerFeePurchaseYes" value="{{isset($auction->get->sellerFeePurchaseYes) ? $auction->get->sellerFeePurchaseYes : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                  </div>               
+                </div>
+              </div>
+              {{-- Lease Purchase  --}}
+              {{-- Assumable  --}}
+                <div class="form-group assumable d-none">
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">What assumable terms are being offered?</label>
+                      <input type="text" name="assumable_terms_offered" value="{{isset($auction->get->assumable_terms_offered) ? $auction->get->assumable_terms_offered : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                      <label class="fw-bold">Are there any restrictions or qualifications for a buyer assuming the existing financing?</label>
+                      <input type="text" name="restrictions_or_qualifications" value="{{isset($auction->get->restrictions_or_qualifications) ? $auction->get->restrictions_or_qualifications : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label class="fw-bold">What is the interest rate of the assumable loan?</label>
+                    <input type="number" name="assumable_interest" value="{{isset($auction->get->assumable_interest) ? $auction->get->assumable_interest : ''}}" class="form-control has-icon" data-icon="fa-solid fa-percent" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label class="fw-bold">What is the monthly payment, including principal and interest, for the assumable loan?</label>
+                    <input type="number" name="assumable_monthly_payment" value="{{isset($auction->get->assumable_monthly_payment) ? $auction->get->assumable_monthly_payment : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                  </div>
+                  <div class="form-group col-md-12">
+                      @php
+                      $outstandingBalance = [['name' => 'Yes', 'target' => '.outstandingBalanceYes', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
+                    @endphp
+                    <div class="form-group">
+                      <div class="form-group">
+                        <label class="fw-bold">What is the outstanding balance on the existing loan?</label>
+                        <input type="number" name="assumable_balance_loan" value="{{isset($auction->get->assumable_balance_loan) ? $auction->get->assumable_balance_loan : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                      </div>
+                      <div class="form-group">
+                        <div class="d-flex justify-content-between aalign-items-center">
+                          <label class="fw-bold">What is the down payment that the buyer would need to pay the seller to bridge the gap between the asking price and the assumable loan balance?</label>
+                          <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                              <button type="button" class="select-btn me-1 active"
+                                  data-type="amount">$</button>
+                              <button type="button" class="select-btn" data-type="percent">%</button>
+                          </div>
+                        </div>
+                        <input type="number" name="loan_balance_down_payment" value="{{isset($auction->get->loan_balance_down_payment) ? $auction->get->loan_balance_down_payment : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                    </div>
+                  </div>
+                </div>            
+              </div> 
+              {{-- Assumable --}}
+              {{-- Exchange/trade  --}}
+              <div class="form-group row custom_exchange_trade">
+                @php
+                  $exchange_trades = [['name' => 'Another home', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Vehicle', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Boat', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Motorhome', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Artwork', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Jewelry', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Other', 'target' => '.otherTrade', 'icon' => 'fa-regular fa-circle-check']];
+                @endphp
+                <div class="form-group">
+                  <label class="fw-bold">Acceptable Exchange Item:</label>
+                  <select class="grid-picker" name="exchange_trade" id="contigencies_accepted_by_seller"
+                    style="justify-content: flex-start;" required>
+                    <option value="">Select</option>
+                    @foreach ($exchange_trades as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                        style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->exchange_trade) && $auction->get->exchange_trade == $item['name'] ? 'selected' : ''}}>
+                        {{ $item['name'] }}
+                      </option>
+                    @endforeach
+                  </select>
+                  <div class="form-group col-md-12 otherTrade d-none">
+                    <label class="fw-bold">Acceptable Exchange Item:</label>
+                    <input type="text" name="otherTrade" value="{{isset($auction->get->otherTrade) ? $auction->get->otherTrade : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                  </div>
+                </div>
+                <div class="form-group col-md-12">
+                  <label class="fw-bold">What is the estimated value of the acceptable exchange/trade item? </label>
+                  <input type="number" name="estimatedTrade" value="{{isset($auction->get->estimatedTrade) ? $auction->get->estimatedTrade : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
+                </div>
+                <div class="form-group col-md-12">
+                  <label class="fw-bold">Are there specific criteria or conditions for the type of item the seller is willing to exchange/trade?</label>
+                  <input type="text" name="specificTrade" value="{{isset($auction->get->specificTrade) ? $auction->get->specificTrade : ''}}" class="form-control has-icon" data-icon="fa-regular fa-circle-check" required>
+                </div>
+                <div class="form-group">
+                  <label class="fw-bold">How much cash does the seller require on top of the exchange/trade item?</label>
+                  <input type="number" name="cashTrade" value="{{isset($auction->get->cashTrade) ? $auction->get->cashTrade : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                </div>
+                <div class="form-group col-md-12">
+                  <label class="fw-bold">How is the value of the exchange/trade item determined?</label>
+                  <input type="text" name="valueTrade" value="{{isset($auction->get->valueTrade) ? $auction->get->valueTrade : ''}}" class="form-control has-icon"
+                    data-icon="fa-regular fa-check-circle" required>
+                </div>
+              </div>
+              {{-- Exchange/trade --}}
+              <div class="form-group row">
+                  @php
+                    $sellerOffer = [
+                      ['name' => 'Yes', 'target' => '.sellerOfferYes','icon'=>'<i class="fa-regular fa-circle-check"></i>'], 
+                      ['name' => 'No', 'target' => '','icon'=>'<i class="fa-regular fa-circle-xmark"></i>'], 
+                      ['name' => 'Only if the buyer meets the Seller’s Sell Terms, which include the List Price, acceptable Escrow Deposit, number of days the Seller will accept for closing, and acceptable Contingencies, will the seller offer a buyer at closing', 'target' => '.sellerOfferYes','icon'=>'<i class="fa-regular fa-circle-check"></i>']
+                    ];
+                  @endphp
+                <label class="fw-bold">Is the seller offering a credit to the buyer at closing?  </label>
+                <select class="grid-picker" name="sellerOffer" style="justify-content: flex-start;">
+                  <option value="">Select</option>
+                  @foreach ($sellerOffer as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                      style="width:calc(33.3% - 10px);" data-icon='{{$item['icon']}}' {{isset($auction->get->sellerOffer) && $auction->get->sellerOffer == $item['name'] ? 'selected' : ''}}>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>  
+                <div class="form-group sellerOfferYes d-none">
+                  <div class="d-flex justify-content-between aalign-items-center">
+                    <label class="fw-bold">What credit amount is the seller offering to the buyer at closing?</label>
+                    <div class="d-flex align-items-center justify-content-center icon-select-btn-div">
+                        <button type="button" class="select-btn me-1 active"
+                            data-type="amount">$</button>
+                        <button type="button" class="select-btn" data-type="percent">%</button>
+                    </div>
+                  </div>
+                  <input type="number" name="sellerOfferYes" value="{{isset($auction->get->sellerOfferYes) ? $auction->get->sellerOfferYes : ''}}" placeholder=""
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+                </div>
+              </div>
+            </span>
+          </div>
           {{-- Slide 6 --}}
           {{-- Slide 7 --}}
           <div class="wizard-step" data-step="7">
             @php
-              $property_types = [['name' => 'Residential Property'], ['name' => 'Income Property'], ['name' => 'Commercial Property'], ['name' => 'Business Opportunity'], ['name' => 'Vacant Land']];
+              $property_types = [
+                ['name' => 'Residential Property'], 
+                ['name' => 'Income Property'], 
+                ['name' => 'Commercial Property'], 
+                ['name' => 'Business Opportunity'], 
+                ['name' => 'Vacant Land']
+              ];
             @endphp
             <div class="form-group">
               <label class="fw-bold">Property Style:</label>
@@ -1580,7 +1453,7 @@
                 <option value="">Select</option>
                 @foreach ($property_types as $row_pt)
                   <option value="{{ $row_pt['name'] }}" class="card flex-column" style="width:calc(24% - 10px);"
-                    data-icon='<i class="fa-solid fa-hotel"></i>'  {{old('property_type', $auction->get->property_type) == $row_pt['name'] ? 'selected' : ''}}>
+                    data-icon='<i class="fa-solid fa-hotel"></i>' {{isset($auction->get->property_type) && $auction->get->property_type == $item['name'] ? 'selected' : ''}}>
                     {{ $row_pt['name'] }}
                   </option>
                 @endforeach
@@ -1610,7 +1483,7 @@
                       @foreach ($propertyStyles as $item)
                           <option value="{{ $item['name'] }}" class="card flex-row"
                               style="width:calc(33.3% - 10px);"
-                              data-icon='<i class="fa-regular fa-circle-check"></i>'   {{old('propertyStyles', $auction->get->propertyStyles) == $item['name'] ? 'selected' : '' }}>
+                              data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->propertyStyles) && $auction->get->propertyStyles == $item['name'] ? 'selected' : ''}}>
                               {{ $item['name'] }}
                           </option>
                       @endforeach
@@ -1622,23 +1495,27 @@
                 @php
                   $property_items = [
                       // Residential Items
-                      ['target'=>'','name' => 'Single Family Residence', 'class' => 'residential-length'],
-                      ['target'=>'','name' => 'Townhouse', 'class' => 'residential-length'],
-                      ['target'=>'','name' => 'Villa', 'class' => 'residential-length'],
-                      ['target'=>'','name' => 'Condominium', 'class' => 'residential-length'],
-                      ['target'=>'','name' => 'Condo-Hotel', 'class' => 'residential-length'],
-                      ['target'=>'','name' => '½ Duplex', 'class' => 'residential-length'],
-                      ['target'=>'','name' => 'Dock-Rackominium', 'class' => 'residential-length'],
-                      ['target'=>'','name' => 'Farm', 'class' => 'residential-length'],
-                      ['target'=>'','name' => 'Garage Condo', 'class' => 'residential-length'],
-                      ['target'=>'','name' => 'Mobile Home- Pre 1976', 'class' => 'residential-length'],
-                      ['target'=>'','name' => 'Manufactured Home- Post 1977', 'class' => 'residential-length'],
-                      ['target'=>'','name' => 'Modular Home', 'class' => 'residential-length'],
+                      ['target' => '', 'name' => '1/3 Triplex', 'class' => 'residential-length'],
+                      ['target' => '', 'name' => '1/4 Quadplex', 'class' => 'residential-length'],
+                      ['target' => '', 'name' => '½ Duplex', 'class' => 'residential-length'],
+                      ['target' => '', 'name' => 'Apartment', 'class' => 'residential-length'],
+                      ['target' => '', 'name' => 'Condominium', 'class' => 'residential-length'],
+                      ['target' => '', 'name' => 'Condo-Hotel', 'class' => 'residential-length'],
+                      ['target' => '', 'name' => 'Dock-Rackominium', 'class' => 'residential-length'],
+                      ['target' => '', 'name' => 'Farm', 'class' => 'residential-length'],
+                      ['target' => '', 'name' => 'Garage Condo', 'class' => 'residential-length'],
+                      ['target' => '', 'name' => 'Manufactured Home- Post 1977', 'class' => 'residential-length'],
+                      ['target' => '', 'name' => 'Mobile Home- Pre 1976', 'class' => 'residential-length'],
+                      ['target' => '', 'name' => 'Modular Home', 'class' => 'residential-length'],
+                      ['target' => '', 'name' => 'Single Family Residence', 'class' => 'residential-length'],
+                      ['target' => '', 'name' => 'Townhouse', 'class' => 'residential-length'],
+                      ['target' => '', 'name' => 'Unimproved', 'class' => 'residential-length'],
+                      ['target' => '', 'name' => 'Villa', 'class' => 'residential-length'],
                       // Income Items
                       ['target'=>'','name' => 'Duplex', 'class' => 'income-length'],
-                      ['target'=>'','name' => 'Triplex', 'class' => 'income-length'],
-                      ['target'=>'','name' => 'Quadplex', 'class' => 'income-length'],
                       ['target'=>'','name' => 'Five or More', 'class' => 'income-length'],
+                      ['target'=>'','name' => 'Quadplex', 'class' => 'income-length'],
+                      ['target'=>'','name' => 'Triplex', 'class' => 'income-length'],                      
                       // Commercial items
                       ['target'=>'','name' => 'Agriculture', 'class' => 'commercial-length'],
                       ['target'=>'','name' => 'Assembly Building', 'class' => 'commercial-length'],
@@ -1704,57 +1581,37 @@
                       ['target'=>'','name' => 'Wholesale', 'class' => 'business-length'],
                       ['target'=>'.otherBusiness','name' => 'Other', 'class' => 'business-length'],
                       // Vacant Land Items
-                      ['target'=>'','name' => 'Aeronautical', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Agriculture', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Arts and Entertainment', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Assembly Hall', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Assisted Living', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Auto Dealer', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Auto Service', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Bar/Tavern/Lounge', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Barber/Beauty', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Car Wash', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Child Care', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Church', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Commercial', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Concession Trailers/Vehicles', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Construction/Contractor', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Convenience Store', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Distribution', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Distributor Routine Ven', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Education/School', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Farm', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Fashion/Specialty', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Flex Space', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Florist/Nursery', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Food & Beverage', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Gas Station', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Grocery', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Heavy Weight Sales Service', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Hotel/Motel', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Industrial', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Light Items Sales Only', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Manufacturing', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Marine/Marina', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Medical', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Mixed', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Mobile/Trailer Park', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Personal Service', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Professional Service', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Professional/Office', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Recreation', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Research & Development', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Residential', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Restaurant', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Retail', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Shopping Center/Strip Center', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Storage', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Theater', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Timberland', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Veterinary', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Warehouse', 'class' => 'vacant_land-length'],
-                      ['target'=>'','name' => 'Wholesale', 'class' => 'vacant_land-length'],
-                      ['target'=>'.otherVacant','name' => 'Other', 'class' => 'vacant_land-length']
+                      ['target' => '', 'name' => 'Aeronautical', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Billboard Site', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Business', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Cattle', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Commercial ', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Farm', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Fishery', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Highway Frontage', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Horses', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Industrial', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Land Fill', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Livestock', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Mixed Use', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Multi family', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Nursery', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Orchard', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Pasture', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Poultry ', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Ranch', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Residential', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Retail', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Row Crops ', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Sod Farm', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Subdivision', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Timber', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Tracts', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Trans/Cell Tower', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Tree Farm', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Unimproved Land', 'class' => 'vacant_land-length'],
+                      ['target' => '', 'name' => 'Well Field ', 'class' => 'vacant_land-length'],
+                      ['target'=>'.otherVacant','name' => 'Other', 'class' => 'vacant_land-length'],
                   ];
                 @endphp
                 <label class="fw-bold currentUse">Current Use:</label>
@@ -1764,22 +1621,19 @@
                   <option value=""></option>
                   @foreach ($property_items as $item)
                     <option value="{{ $item['name'] }}" data-target="{{$item['target']}}" class="card flex-row {{ $item['class'] }}"
-                      style="width:calc(33.33% - 10px);" data-icon='<i class="fa-regular fa-check-circle"></i>' 
-                      {{old('property_items', $auction->get->property_items) == $item['name'] ? 'selected' : ''}}>
+                      style="width:calc(33.33% - 10px);" data-icon='<i class="fa-regular fa-check-circle"></i>' {{isset($auction->get->property_items) && $auction->get->property_items == $item['name'] ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
                 </select>
                 <div class="form-group otherVacant d-none">
-                    <label class="fw-bold">Current Use: </label>
-                    <input type="text" name="otherProperty" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required
-                           value="{{ old('otherProperty', $auction->get->otherProperty ?? '') }}">
+                  <label class="fw-bold">Current Use: </label>
+                  <input type="text" name="otherProperty" value="{{isset($auction->get->otherProperty) ? $auction->get->otherProperty : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
                 </div>
                 <div class="form-group otherBusiness d-none">
-                    <label class="fw-bold">Business Type: </label>
-                    <input type="text" name="businessType" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required
-                           value="{{ old('businessType', $auction->get->businessType ?? '') }}">
-                </div>                
+                  <label class="fw-bold">Business Type: </label>
+                  <input type="text" name="otherProperty" value="{{isset($auction->get->otherProperty) ? $auction->get->otherProperty : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                </div>
               </div>
             </div>
           </div>
@@ -1804,16 +1658,15 @@
                 @foreach ($prop_conditions as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon='<i class="fa-regular fa-check-circle"></i>' class="card flex-row"
-                    style="width:calc(50% - 10px);"  {{old('prop_condition', $auction->get->prop_condition) == $item['name'] ? 'selected' : '' }}>
+                    style="width:calc(50% - 10px);" {{isset($auction->get->prop_condition) && $auction->get->prop_condition == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
-                <div class="form-group otherConditionRes d-none">
-                    <label class="fw-bold">Property Condition: </label>
-                    <input type="text" name="otherCondition" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required
-                        value="{{ old('otherCondition', $auction->get->otherCondition ?? '') }}">
-                </div>            
+              <div class="form-group otherConditionRes d-none">
+                <label class="fw-bold">Property Condition: </label>
+                <input type="text" name="otherCondition" value="{{isset($auction->get->otherCondition) ? $auction->get->otherCondition : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
             </div>
           </div>
           @php
@@ -1826,11 +1679,11 @@
           <div class="wizard-step" data-step="9">
             <div class="form-group">
               <label class="fw-bold">Bedrooms:</label>
-              <select class="grid-picker" name="bedrooms" id="bedrooms" style="">
+              <select class="grid-picker" name="bedrooms" id="bedrooms" style="" required>
                 <option value="">Select</option>
                 @foreach ($bedrooms as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-column"
-                    style="width:calc(20% - 10px);" data-icon='<i class="fa-solid fa-bed"></i>'  {{old('bedrooms', $auction->get->bedrooms) == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(20% - 10px);" data-icon='<i class="fa-solid fa-bed"></i>' {{isset($auction->get->bedrooms) && $auction->get->bedrooms == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -1838,8 +1691,8 @@
             </div>
             <div class="form-group custom_bedrooms d-none">
               <label class="fw-bold">Bedrooms:</label>
-              <input type="number" name="custom_bedrooms" id="custom_bedrooms" class="form-control has-icon"
-                data-icon="fa-solid fa-bed" value="{{old('custom_bedrooms', $auction->get->custom_bedrooms ?? '')}}">
+              <input type="number" name="custom_bedrooms" value="{{isset($auction->get->custom_bedrooms) ? $auction->get->custom_bedrooms : ''}}" id="custom_bedrooms" class="form-control has-icon"
+                data-icon="fa-solid fa-bed">
             </div>
           </div>
           {{-- Slide 9 --}}
@@ -1847,7 +1700,7 @@
           <div class="wizard-step" data-step="10">
             <div class="form-group">
               <label class="fw-bold">Bathrooms:</label>
-              <select class="grid-picker" name="bathrooms" id="bathrooms" style="">
+              <select class="grid-picker" name="bathrooms" id="bathrooms" style="" required>
                 <option value="">Select</option>
                 @foreach ($bathrooms as $item)
                   @php
@@ -1858,7 +1711,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-column"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="fa-solid fa-bath"></i>'   {{old('bathrooms', $auction->get->bathrooms) == $item['name'] ? 'selected' : '' }}>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="fa-solid fa-bath"></i>' {{isset($auction->get->bathrooms) && $auction->get->bathrooms == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -1866,161 +1719,88 @@
             </div>
             <div class="form-group custom_bathroom_residential_and_income d-none">
               <label class="fw-bold">Bathrooms:</label>
-              <input type="number" name="custom_bathrooms" id="custom_bathrooms" class="form-control has-icon"
-                data-icon="fa-solid fa-bath" value="{{old('custom_bathrooms',  $auction->get->custom_bathrooms ?? '')}}">
+              <input type="number" name="custom_bathrooms" value="{{isset($auction->get->custom_bathrooms) ? $auction->get->custom_bathrooms : ''}}" id="custom_bathrooms" class="form-control has-icon"
+                data-icon="fa-solid fa-bath">
             </div>
           </div>
-          @php
-            $unitStructure = [['target' => '', 'name' => '1 Bed/1 Bath'], ['target' => '', 'name' => '1 Bedroom'], ['target' => '', 'name' => '2 Bed/1 Bath'], ['target' => '', 'name' => '2 Bed/2 Bath'], ['target' => '', 'name' => '2 Bedroom'], ['target' => '', 'name' => '3 Bed/1 Bath'], ['target' => '', 'name' => '3 Bed/2 Bath'], ['target' => '', 'name' => '3 Bedroom'], ['target' => '', 'name' => '4 Bedroom or more'], ['target' => '', 'name' => '4+ Bed/1 Bath'], ['target' => '', 'name' => '4 Bed/2 Bath'], ['target' => '', 'name' => 'Apartments'], ['target' => '', 'name' => 'Efficiency'], ['target' => '', 'name' => 'Loft'], ['target' => '', 'name' => "Manager's Unit"]];
-          @endphp
+          
           <div class="wizard-step" data-step="11">
+            @php
+              $unitStructure = [
+                ['target' => '', 'name' => '1 Bed/1 Bath'], 
+                ['target' => '', 'name' => '1 Bedroom'], 
+                ['target' => '', 'name' => '2 Bed/1 Bath'], 
+                ['target' => '', 'name' => '2 Bed/2 Bath'], 
+                ['target' => '', 'name' => '2 Bedroom'], 
+                ['target' => '', 'name' => '3 Bed/1 Bath'], 
+                ['target' => '', 'name' => '3 Bed/2 Bath'], 
+                ['target' => '', 'name' => '3 Bedroom'], 
+                ['target' => '', 'name' => '4 Bedroom or more'], 
+                ['target' => '', 'name' => '4+ Bed/1 Bath'], 
+                ['target' => '', 'name' => '4 Bed/2 Bath'], 
+                ['target' => '', 'name' => 'Apartments'], 
+                ['target' => '', 'name' => 'Efficiency'], 
+                ['target' => '', 'name' => 'Loft'], 
+                ['target' => '', 'name' => "Manager's Unit"]
+              ];
+
+              $unitType = isset($auction->get->unit_type_data) ? json_decode($auction->get->unit_type_data) : null;
+              $unitTypeData = isset($unitType) ? json_decode($unitType, true): null;
+              $unitTypes = [];
+              if(isset($unitTypeData) && is_array($unitTypeData)){
+                foreach ($unitTypeData as $unitName => $values) {
+                  $unitTypes[] = $unitName;
+                }
+              }
+
+            @endphp
             <div class="row">
               <div class="form-group">
                 <label class="fw-bold">Unit Type:</label>
-                <select class="grid-picker" name="unit_type" id="unit_type" style="">
-                    <option value="">Select</option>
-                    @foreach ($unitStructure as $item)
-                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-column"
-                                style="width:calc(20% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'
-                                @if(old('unit_type', $auction->get->unit_type) == $item['name']) selected @endif>
-                            {{ $item['name'] }}
-                        </option>
-                    @endforeach
+                <select class="grid-picker" name="unit_type[]" id="unit_type_1" style="" multiple required>
+                  <option value="">Select</option>
+                  @foreach ($unitStructure as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-column"
+                      style="width:calc(20% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'  {{isset($auction->get->$unitTypes) && in_array($item['name'], $auction->get->$unitTypes) ? 'selected' : ''}}>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
                 </select>
-              </div>
-              <div class="row form-group d-none unit-info">
-                <div class="form-group col-md-4">
-                    <label class="fw-bold">Beds/Unit:</label>
-                    <input type="number" name="beds_unit" id="beds_unit" 
-                           class="form-control has-icon" data-icon="fa-solid fa-hotel"
-                           value="{{ old('beds_unit',  $auction->get->beds_unit ?? '') }}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label class="fw-bold">Baths/Unit:</label>
-                    <input type="number" name="baths_unit" id="baths_unit" 
-                           class="form-control has-icon" data-icon="fa-solid fa-hotel"
-                           value="{{ old('baths_unit',   $auction->get->baths_unit ?? '') }}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label class="fw-bold">Sqft Heated:</label>
-                    <input type="number" name="sqt_ft_heated" id="sqt_ft_heated" 
-                           class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"
-                           value="{{ old('sqt_ft_heated',   $auction->get->sqt_ft_heated ?? '') }}">
-                </div>
-                <div class="form-group col-md-4">
-                    <label class="fw-bold">Number of Units:</label>
-                    <input type="number" name="number_of_units" id="number_of_units" 
-                           class="form-control has-icon" data-icon="fa-solid fa-hotel"
-                           value="{{ old('number_of_units',  $auction->get->number_of_units ?? '') }}">
-                </div>                
-
-                @php
-                  $requires_or_no3 = [['name' => 'Yes', 'target' => '.custom_occupied', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '.custom_occupied_rent', 'icon' => 'fa-regular fa-circle-xmark']];
-                @endphp
-                <div class="form-group">
-                  <label class="fw-bold">Are any units occupied? </label>
-                  <select class="grid-picker" name="occupied" id="occupied" style="justify-content: flex-start;">
-                    <option value="">Select</option>
-                    @foreach ($requires_or_no3 as $item)
-                        <option value="{{ $item['name'] }}" 
-                                data-target="{{ $item['target'] }}" 
-                                class="card flex-row"
-                                style="width:calc(33.3% - 10px);" 
-                                data-icon='<i class="{{ $item['icon'] }}"></i>'
-                                @if (old('occupied', $auction->get->occupied) == $item['name']) selected @endif>
-                            {{ $item['name'] }}
-                        </option>
-                    @endforeach
-                </select>
-                
-                </div>
-                <div class="form-group col-md-4 d-none custom_occupied">
-                    <label class="fw-bold">Number of Occupied Units:</label>
-                    <input type="number" name="custom_occupied" 
-                           class="form-control has-icon" 
-                           data-icon="fa-solid fa-hotel" 
-                           value="{{ old('custom_occupied', $auction->get->custom_occupied ?? '') }}">
-                </div>
-                
-                <div class="form-group col-md-4 d-none custom_occupied">
-                    <label class="fw-bold">Current Rent</label>
-                    <input type="number" name="current_rent" id="current_rent"
-                           class="form-control has-icon" 
-                           data-icon="fa-solid fa-ruler-combined" 
-                           value="{{ old('current_rent',  $auction->get->current_rent ?? '') }}">
-                </div>
-                
-                <div class="form-group col-md-4 custom_occupied_rent d-none">
-                    <label class="fw-bold">Expected Rent</label>
-                    <input type="number" name="expected_rent" id="expected_rent"
-                           class="form-control has-icon" 
-                           data-icon="fa-solid fa-ruler-combined" 
-                           value="{{ old('expected_rent',  $auction->get->expected_rent ?? '') }}">
-                </div>
-                
-                <div class="form-group">
-                    <label class="fw-bold">Garage Spaces</label>
-                    <input type="number" name="garage_spaces_unit" id="garage_spaces_unit"
-                           class="form-control has-icon" 
-                           data-icon="fa-solid fa-warehouse" 
-                           value="{{ old('garage_spaces_unit',  $auction->get->garage_spaces_unit ?? '') }}">
-                </div>
-                
-                <div class="form-group col-md-12">
-                    <label class="fw-bold">Unit Type Description:</label>
-                    <textarea name="unit_type_of_description" id="unit_type_of_description" 
-                              class="form-control" cols="30" rows="10">{{ old('unit_type_of_description',  $auction->get->unit_type_of_description ?? '') }}</textarea>
-                </div>                
+                <input type="hidden" id="unit_type_input" name="unit_type_data[]" value="{{isset($unitTypeData) ? json_decode($unitTypeData) : ''}}" />
+                <div id="dynamicFieldsContainer"></div>
               </div>
 
               <div class="form-group col-md-4">
                 <label class="fw-bold">Annual Gross Income</label>
-                <input type="number" name="annual_gross_income" id="annual_gross_income"
-                       class="form-control has-icon" 
-                       data-icon="fa-solid fa-dollar-sign" 
-                       value="{{ old('annual_gross_income', $auction->get->annual_gross_income ?? '') }}">
-            </div>
-            
-            <div class="form-group col-md-4">
+                <input type="number" name="annual_gross_income" value="{{isset($auction->get->annual_gross_income) ? $auction->get->annual_gross_income : ''}}" id="garage_attribute"
+                   class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
+              </div>
+              <div class="form-group col-md-4">
                 <label class="fw-bold">Total Monthly Rent</label>
-                <input type="number" name="total_monthly_rent" id="total_monthly_rent" 
-                       class="form-control has-icon" 
-                       data-icon="fa-solid fa-dollar-sign" 
-                       value="{{ old('total_monthly_rent', $auction->get->total_monthly_rent ?? '') }}">
-            </div>
-            
-            <div class="form-group col-md-4">
+                <input type="number" name="total_monthly_rent" value="{{isset($auction->get->total_monthly_rent) ? $auction->get->total_monthly_rent : ''}}" id="garage_attribute" 
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
+              </div>
+              <div class="form-group col-md-4">
                 <label class="fw-bold">Total Monthly Expenses</label>
-                <input type="number" name="total_monthly_expenses" id="total_monthly_expenses"
-                       class="form-control has-icon" 
-                       data-icon="fa-solid fa-dollar-sign" 
-                       value="{{ old('total_monthly_expenses', $auction->get->total_monthly_expenses ?? '') }}">
-            </div>
-            
-            <div class="form-group col-md-4">
+                <input type="number" name="total_monthly_expenses" value="{{isset($auction->get->total_monthly_expenses) ? $auction->get->total_monthly_expenses : ''}}" id="garage_attribute"
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
+              </div>
+
+              <div class="form-group col-md-4">
                 <label class="fw-bold">Annual Net Income</label>
-                <input type="number" name="annual_net_income" id="annual_net_income" 
-                       class="form-control has-icon" 
-                       data-icon="fa-solid fa-dollar-sign" 
-                       value="{{ old('annual_net_income', $auction->get->annual_net_income ?? '') }}">
-            </div>
-            
-            <div class="form-group col-md-4">
+                <input type="number" name="annual_net_income" value="{{isset($auction->get->annual_net_income) ? $auction->get->annual_net_income : ''}}" id="garage_attribute" 
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
+              </div>
+              <div class="form-group col-md-4">
                 <label class="fw-bold">Est Annual Market Income</label>
-                <input type="number" name="est_annual_market_income" id="est_annual_market_income"
-                       class="form-control has-icon" 
-                       data-icon="fa-solid fa-dollar-sign" 
-                       value="{{ old('est_annual_market_income', $auction->get->est_annual_market_income ?? '') }}">
-            </div>
-            
-            <div class="form-group col-md-4">
+                <input type="number" name="est_annual_market_income" value="{{isset($auction->get->est_annual_market_income) ? $auction->get->est_annual_market_income : ''}}" id="garage_attribute"
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
+              </div>
+              <div class="form-group col-md-4">
                 <label class="fw-bold">Annual Expenses</label>
-                <input type="number" name="annual_expenses" id="annual_expenses"
-                       class="form-control has-icon" 
-                       data-icon="fa-solid fa-dollar-sign" 
-                       value="{{ old('annual_expenses', $auction->get->annual_expenses ?? '') }}">
-            </div>
-            
+                <input type="number" name="annual_expenses" value="{{isset($auction->get->annual_expenses) ? $auction->get->annual_expenses : ''}}" id="garage_attribute"
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
+              </div>
               @php
                 $terms_of_leases = [['name' => 'Gross Lease', 'target' => ''], ['name' => 'Net Lease', 'target' => ''], ['name' => 'Pass Throughs', 'target' => ''], ['name' => 'Purchase Options', 'target' => ''], ['name' => 'Renewal Option', 'target' => ''], ['name' => 'Other', 'target' => '.otherTermLease']];
 
@@ -2035,7 +1815,7 @@
                   @foreach ($leases_terms as $terms_of_lease)
                     <option value="{{ $terms_of_lease['name'] }}" data-target="{{ $terms_of_lease['target'] }}"
                       class="card flex-row" data-icon='<i class="fa-regular fa-circle-check"></i>'
-                      style="width:calc(33.3% - 10px);"  {{ $auction->get->length_of_lease == $terms_of_lease['name'] ? 'selected' : '' }}>
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->length_of_lease) && in_array($terms_of_lease['name'], json_decode($auction->get->length_of_lease) ?? []) ? 'selected' : ''}}>
                       {{ $terms_of_lease['name'] }}
                     </option>
                   @endforeach
@@ -2043,7 +1823,7 @@
               </div>
               <div class="form-group custom_leases_terms d-none">
                 <label class="fw-bold">Length of Lease:</label>
-                <input type="text" name="custom_leases_length" class="form-control has-icon" value="{{old('custom_leases_length', $auction->get->custom_leases_length ?? '')}}" data-icon="fa-regular fa-check-circle">
+                <input type="text" name="custom_leases_length" value="{{isset($auction->get->custom_leases_length) ? $auction->get->custom_leases_length : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
 
               <div class="form-group">
@@ -2054,38 +1834,35 @@
                   @foreach ($terms_of_leases as $terms_of_lease)
                     <option value="{{ $terms_of_lease['name'] }}" data-target="{{ $terms_of_lease['target'] }}"
                       class="card flex-row" data-icon='<i class="fa-regular fa-circle-check"></i>'
-                      style="width:calc(33.3% - 10px);" {{ $auction->get->terms_of_lease == $terms_of_lease['name'] ?  'selected' : '' }}>
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->terms_of_lease) && $auction->get->terms_of_lease == $terms_of_lease['name'] ? 'selected' : ''}}>
                       {{ $terms_of_lease['name'] }}
                     </option>
                   @endforeach
                 </select>
                 <div class="form-group otherTermLease d-none">
-                    <label class="fw-bold">Terms of Lease:</label>
-                    <input type="text" name="otherTermLease" 
-                           class="form-control has-icon" 
-                           data-icon="fa-regular fa-check-circle" 
-                           value="{{ old('otherTermLease', $auction->get->otherTermLease ?? '') }}">
-                </div>                
+                  <label class="fw-bold">Terms of Lease:</label>
+                  <input type="text" name="otherTermLease" value="{{isset($auction->get->otherTermLease) ? $auction->get->otherTermLease : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                </div>
               </div>
               @php
                 $tenant_pays = [['name' => 'Association Fees', 'target' => ''], ['name' => 'Electricity', 'target' => ''], ['name' => 'Parking Fee', 'target' => ''], ['name' => 'Sewer', 'target' => ''], ['name' => 'Trash Collection', 'target' => ''], ['name' => 'Water', 'target' => ''],['name' => 'Gas', 'target' => ''],['name' => 'Other', 'target' => '.otherTenantPayRes']];
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Tenant Pays:</label>
-                <select class="grid-picker" name="tenant_pays" id="terms_of_lease"
-                  style="justify-content: flex-start;">
+                <select class="grid-picker" name="tenant_pays[]" id="terms_of_lease"
+                  style="justify-content: flex-start;" multiple>
                   <option value="">Select</option>
                   @foreach ($tenant_pays as $tenant_pay)
                     <option value="{{ $tenant_pay['name'] }}" data-target="{{ $tenant_pay['target'] }}"
                       class="card flex-row" data-icon='<i class="fa-regular fa-circle-check"></i>'
-                      style="width:calc(33.3% - 10px);"  {{ $auction->get->tenant_pays == $tenant_pay['name'] ? 'selected' : '' }}>
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->tenant_pays) && in_array($tenant_pay['name'], json_decode($auction->get->tenant_pays) ?? []) ? 'selected' : ''}}>
                       {{ $tenant_pay['name'] }}
                     </option>
                   @endforeach
                 </select>
                 <div class="form-group otherTenantPayRes d-none">
                   <label class="fw-bold">Tenant Pays:</label>
-                  <input type="text" name="otherTenantPay" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"  value="{{ old('otherTenantPay', $auction->get->otherTenantPay ?? '') }}">
+                  <input type="text" name="otherTenantPay" value="{{isset($auction->get->otherTenantPay) ? $auction->get->otherTenantPay : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                 </div>
               </div>
               @php
@@ -2099,7 +1876,7 @@
                   @foreach ($financial_sources as $financial_source)
                     <option value="{{ $financial_source['name'] }}" data-target="{{ $financial_source['target'] }}"
                       class="card flex-row" data-icon='<i class="fa-regular fa-circle-check"></i>'
-                      style="width:calc(33.3% - 10px);"   {{ $auction->get->financial_sources == $financial_source['name'] ? 'selected' : '' }}>
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->financial_sources) && $auction->get->financial_sources == $financial_source['name'] ? 'selected' : ''}}>
                       {{ $financial_source['name'] }}
                     </option>
                   @endforeach
@@ -2108,28 +1885,23 @@
 
               <div class="form-group">
                 <label class="fw-bold">Total Number of Units:</label>
-                <input type="number" name="total_number_of_units" id="total_number_of_units" class="form-control has-icon" data-icon="fa-solid fa-hotel"  value="{{ old('total_number_of_units', $auction->get->total_number_of_units ?? '')  }}">
+                <input type="number" name="total_number_of_units" value="{{isset($auction->get->total_number_of_units) ? $auction->get->total_number_of_units : ''}}" id="total_number_of_units" class="form-control has-icon" data-icon="fa-solid fa-hotel">
               </div>
+
             </div>
           </div>
           <div class="wizard-step" data-step="12">
             <div class="row ">
-                <div class="form-group">
-                    <label class="fw-bold" for="heated_sqft">Heated Sqft:</label>
-                    <input type="number" name="heated_sqft" id="heated_sqft" 
-                           class="form-control has-icon hide_arrow" 
-                           data-icon="fa-solid fa-ruler-combined" 
-                           required 
-                           value="{{ old('heated_sqft', $auction->get->heated_sqft ?? '') }}">
-                </div>
-                <div class="form-group">
-                    <label class="fw-bold" for="sqft">Total Sqft:</label>
-                    <input type="number" name="total_sqft" id="total_sqft" 
-                           class="form-control has-icon hide_arrow" 
-                           data-icon="fa-solid fa-ruler-combined" 
-                           required 
-                           value="{{ old('total_sqft', $auction->get->total_sqft ?? '') }}">
-                </div>                
+              <div class="form-group">
+                <label class="fw-bold" for="heated_sqft">Heated Sqft:</label>
+                <input type="number" name="heated_sqft" value="{{isset($auction->get->heated_sqft) ? $auction->get->heated_sqft : ''}}" id="heated_sqft" class="form-control has-icon hide_arrow"
+                  data-icon="fa-solid fa-ruler-combined" required>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold" for="sqft"> Total Sqft:</label>
+                <input type="number" name="total_sqft" value="{{isset($auction->get->total_sqft) ? $auction->get->total_sqft : ''}}" id="total_sqft" class="form-control has-icon hide_arrow"
+                  data-icon="fa-solid fa-ruler-combined" required>
+              </div>
               @php
                 $heated_sources = [['name' => 'Appraisal', 'target' => ''], ['name' => 'Building', 'target' => ''], ['name' => 'Measured', 'target' => ''], ['name' => 'Owner Provided', 'target' => ''], ['name' => 'Public Records', 'target' => '']];
               @endphp
@@ -2141,7 +1913,7 @@
                   @foreach ($heated_sources as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                       data-icon='<i class="fa-regular fa-check-circle"></i>' class="card flex-column"
-                      style="width:calc(33.3% - 10px);" {{ $auction->get->heated_source == $item['name'] ? 'selected' : '' }}>
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->heated_source) && $auction->get->heated_source == $item['name'] ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -2190,20 +1962,20 @@
             <div class="form-group ">
               <label class="fw-bold">Appliances:</label>
               <select class="grid-picker" name="appliances[]" id="appliances" style="justify-content: flex-start;"
-                multiple>
+                multiple required>
                 <option value="">Select</option>
                 @foreach ($appliances as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon='<i class="fa-regular fa-circle-check"></i>' class="card flex-row"
-                    style="width:calc(33.3% - 10px);" {{$auction->get->appliances == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->appliances) && in_array($item['name'], json_decode($auction->get->appliances) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherAppliancesRes d-none">
                 <label class="fw-bold">Appliances:</label>
-                <input type="text" name="otherAppliances" id="flood_zone_code" placeholder=""
-                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" value="{{$auction->get->otherAppliances}}">
+                <input type="text" name="otherAppliances" value="{{isset($auction->get->otherAppliances) ? $auction->get->otherAppliances : ''}}" id="flood_zone_code" placeholder=""
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
             <div class="form-group fireplace">
@@ -2212,7 +1984,7 @@
                 <option value=""></option>
                 @foreach ($yes_or_nos as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{$auction->get->fireplace == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->fireplace) && $auction->get->fireplace == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -2230,7 +2002,7 @@
                 <option value="">Select</option>
                 @foreach ($furnishingsRes as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='{{ $item['icon'] }}'  {{$auction->get->has_furnishing == $item['name'] ? 'selected' : '' }}>
+                    style="width:calc(33.3% - 10px);" data-icon='{{ $item['icon'] }}' {{isset($auction->get->has_furnishing) && $auction->get->has_furnishing == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -2239,12 +2011,10 @@
             <div class="row " id="has_furnishing_residential_and_income" style="display: none">
               <div class="form-group">
                 <div class="form-group">
-                    <label class="fw-bold">What furnishings are included in the purchase?</label>
-                    <input type="text" name="furnishings_include" id="flood_zone_code" placeholder=""
-                           class="form-control has-icon" 
-                           data-icon="fa-regular fa-check-circle" 
-                           value="{{ old('furnishings_include', $auction->get->furnishings_include ?? '') }}">
-                </div>                
+                  <label class="fw-bold">What furnishings are included in the purchase?</label>
+                  <input type="text" name="furnishings_include" value="{{isset($auction->get->furnishings_include) ? $auction->get->furnishings_include : ''}}" id="flood_zone_code" placeholder=""
+                    class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                </div>
               </div>
               @php
                 $additional_fees = [['name' => 'Additional Fees', 'target' => ''], ['name' => 'Included in Purchase Price', 'target' => '']];
@@ -2266,7 +2036,7 @@
                       }
                     @endphp
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'   {{$auction->get->has_additional_fees == $item['name'] ? 'selected' : '' }}>
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->has_additional_fees) && $auction->get->has_additional_fees == $item['name'] ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -2275,8 +2045,8 @@
               <div class="form-group has_additional_fees1">
                 <div class="form-group">
                   <label class="fw-bold">How much is the listed furniture?</label>
-                  <input type="text" name="listed_furniture_price" id="listed_furniture_price" placeholder=""
-                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign"  value="{{ old('listed_furniture_price', $auction->get->listed_furniture_price ?? '')}}">
+                  <input type="text" name="listed_furniture_price" value="{{isset($auction->get->listed_furniture_price) ? $auction->get->listed_furniture_price : ''}}" id="listed_furniture_price" placeholder=""
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
                 </div>
               </div>
             </div>
@@ -2304,10 +2074,10 @@
                   ['name' => 'Kitchen/Family Room Combo', 'target' => ''],
                   ['name' => 'L Dining', 'target' => ''],
                   ['name' => 'Living Room/Dining Room Combo', 'target' => ''],
-                  ['name' => 'Primary Bedroom Main Floor', 'target' => ''],
-                  ['name' => 'Primary Bedroom Upstairs', 'target' => ''],
                   ['name' => 'Open Floorplan', 'target' => ''],
                   ['name' => 'Pest Guard System', 'target' => ''],
+                  ['name' => 'Primary Bedroom Main Floor', 'target' => ''],
+                  ['name' => 'Primary Bedroom Upstairs', 'target' => ''],
                   ['name' => 'Sauna', 'target' => ''],
                   ['name' => 'Skylight(s)', 'target' => ''],
                   ['name' => 'Smart Home', 'target' => ''],
@@ -2329,19 +2099,19 @@
             <div class="form-group">
               <label class="fw-bold">Interior Features:</label>
               <select class="grid-picker" name="interior_features[]" multiple id="tenant_pays"
-                style="justify-content: flex-start;">
+                style="justify-content: flex-start;" required>
                 <option value="">Select</option>
                 @foreach ($interior_features as $interior_feature)
                   <option value="{{ $interior_feature['name'] }}" data-target="{{ $interior_feature['target'] }}"
                     class="card flex-column" style="width:calc(33.3% - 10px);"
-                    data-icon='<i class="fa-regular fa-circle-check"></i>' {{$auction->get->interior_features == $interior_feature['name'] ? 'selected' : ''}}>
+                    data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->interior_features) && in_array($interior_feature['name'], json_decode($auction->get->interior_features) ?? []) ? 'selected' : ''}}>
                     {{$interior_feature['name']}}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherInterior d-none">
                 <label class="fw-bold">Interior Features:</label>
-                <input type="text" name="otherInterior" class="form-control has-icon" data-icon="fa-regular fa-check-circle" value="{{$auction->get->otherInterior}}">
+                <input type="text" name="otherInterior" value="{{isset($auction->get->otherInterior) ? $auction->get->otherInterior : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
@@ -2373,7 +2143,7 @@
                 @foreach ($additionalRoom as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     class="card flex-column" style="width:calc(33.3% - 10px);"
-                    data-icon='<i class="fa-regular fa-circle-check"></i>'  {{$auction->get->additionalRooms == $item['name'] ? 'selected' : ''}}>
+                    data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->additionalRooms) && in_array($item['name'], json_decode($auction->get->additionalRooms) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -2381,24 +2151,99 @@
             </div>
           </div>
           <div class="wizard-step" data-step="17">
+            @php
+              $accessibilityFeatures = [
+                ['name' => 'Accessible Approach', 'target' => ''],
+                ['name' => 'Accessible Bedroom', 'target' => ''],
+                ['name' => 'Accessible Closets', 'target' => ''],
+                ['name' => 'Accessible Common Room', 'target' => ''],
+                ['name' => 'Accessible Doors', 'target' => ''],
+                ['name' => 'Accessible Electrical and Environmental Controls', 'target' => ''],
+                ['name' => 'Accessible Elevator Installed', 'target' => ''],
+                ['name' => 'Accessible Entrance', 'target' => ''],
+                ['name' => 'Accessible for Hearing-Impairment', 'target' => ''],
+                ['name' => 'Accessible Full Bath', 'target' => ''],
+                ['name' => 'Accessible Guest Bathroom', 'target' => ''],
+                ['name' => 'Accessible Hallway(s)', 'target' => ''],
+                ['name' => 'Accessible Kitchen', 'target' => ''],
+                ['name' => 'Accessible Kitchen Appliances', 'target' => ''],
+                ['name' => 'Accessible Living Area', 'target' => ''],
+                ['name' => 'Accessible Stairway', 'target' => ''],
+                ['name' => 'Accessible Washer/Dryer', 'target' => ''],
+                ['name' => 'Ceiling Track for Chair Lift', 'target' => ''],
+                ['name' => 'Central Living Area', 'target' => ''],
+                ['name' => 'Customized Wheelchair Accessible', 'target' => ''],
+                ['name' => 'Enhanced Accessible', 'target' => ''],
+                ['name' => 'Exterior Wheelchair Lift', 'target' => ''],
+                ['name' => 'Grip-Accessible Features', 'target' => ''],
+                ['name' => 'Stair Lift', 'target' => ''],
+              ];
+            @endphp
             <div class="form-group">
-                <label class="fw-bold">How many floors are in the property?</label>
-                <input type="text" name="number_of_buildings" id="number_of_buildings" placeholder=""
-                       class="form-control has-icon" data-icon="fa-solid fa-building"
-                       value="{{ old('number_of_buildings', $auction->get->number_of_buildings ?? '') }}">
+              <label class="fw-bold">Accessibility Features:</label>
+              <select class="grid-picker" name="accessibilityFeatures[]" style="justify-content: flex-start;" multiple>
+                <option value="">Select</option>
+                @foreach ($accessibilityFeatures as $item)
+                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                    class="card flex-column" style="width:calc(33.3% - 10px);"
+                    data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->accessibilityFeatures) && in_array($item['name'], json_decode($auction->get->accessibilityFeatures) ?? []) ? 'selected' : ''}}>
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+          <div class="wizard-step" data-step="18">
+            @php
+              $laundryFeatures = [
+                ['name' => 'Common Area', 'target' => ''],
+                ['name' => 'Corridor Access', 'target' => ''],
+                ['name' => 'Electric Dryer Hookup', 'target' => ''],
+                ['name' => 'Gas Dryer Hookup', 'target' => ''],
+                ['name' => 'In Garage', 'target' => ''],
+                ['name' => 'In Kitchen', 'target' => ''],
+                ['name' => 'Inside', 'target' => ''],
+                ['name' => 'Laundry Chute', 'target' => ''],
+                ['name' => 'Laundry Closet', 'target' => ''],
+                ['name' => 'Laundry Room', 'target' => ''],
+                ['name' => 'Outside', 'target' => ''],
+                ['name' => 'Same Floor As Condo Unit', 'target' => ''],
+                ['name' => 'Upper Floor', 'target' => ''],
+                ['name' => 'Washer Hookup', 'target' => ''],
+                ['name' => 'None', 'target' => ''],
+                ['name' => 'Other', 'target' => ''],
+              ];
+            @endphp
+            <div class="form-group">
+              <label class="fw-bold">Laundry Features:</label>
+              <select class="grid-picker" name="laundryFeatures[]" style="justify-content: flex-start;" multiple>
+                <option value="">Select</option>
+                @foreach ($laundryFeatures as $item)
+                  <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                    class="card flex-column" style="width:calc(33.3% - 10px);"
+                    data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->laundryFeatures) && in_array($item['name'], json_decode($auction->get->laundryFeatures) ?? []) ? 'selected' : ''}}>
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+          <div class="wizard-step" data-step="19">
+            <div class="form-group">
+              <label class="fw-bold">How many floors are in the property? </label>
+              <input type="number" name="number_of_buildings" value="{{isset($auction->get->number_of_buildings) ? $auction->get->number_of_buildings : ''}}" id="number_of_buildings" placeholder=""
+                class="form-control has-icon" data-icon="fa-solid fa-building" required>
             </div>
             <div class="form-group">
-                <label class="fw-bold">What floor number is the property on?</label>
-                <input type="text" name="floor_number" id="floors_in_unit" placeholder=""
-                       class="form-control has-icon" data-icon="fa-solid fa-hotel"
-                       value="{{ old('floor_number', $auction->get->floor_number ?? '') }}">
+              <label class="fw-bold">What floor number is the property on?</label>
+              <input type="number" name="floor_number" value="{{isset($auction->get->otherAppliances) ? $auction->get->otherAppliances : ''}}" id="floors_in_unit" placeholder=""
+                class="form-control has-icon" data-icon="fa-solid fa-hotel">
             </div>
             <div class="form-group">
-                <label class="fw-bold">How many floors are in the entire building?</label>
-                <input type="text" name="total_floors" id="total_floors" placeholder=""
-                       class="form-control has-icon" data-icon="fa-solid fa-hotel"
-                       value="{{ old('total_floors', $auction->get->total_floors ?? '') }}">
-            </div>            
+              <label class="fw-bold">How many floors are in the entire building?</label>
+              <input type="number" name="total_floors" value="{{isset($auction->get->total_floors) ? $auction->get->total_floors : ''}}" id="total_floors" placeholder=""
+                class="form-control has-icon" data-icon="fa-solid fa-hotel">
+            </div>
             <div class="form-group">
               @php
                 $buildingElevator=[
@@ -2412,14 +2257,14 @@
                 <option value="">Select</option>
                 @foreach ($buildingElevator as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}"  {{ $auction->get->building_elevator == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}" {{isset($auction->get->building_elevator) && $auction->get->building_elevator == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="18">
+          <div class="wizard-step" data-step="20">
             @php
               $floor_coverings = [
                 ['name' => 'Bamboo', 'target' => ''],
@@ -2453,25 +2298,34 @@
             <div class="form-group ">
               <label class="fw-bold">Floor Covering:</label>
               <select class="grid-picker" name="floor_covering[]" id="floor_covering"
-                style="justify-content: flex-start;" multiple>
+                style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($floor_coverings as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);"  {{ $auction->get->floor_covering == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->floor_covering) && in_array($item['name'], json_decode($auction->get->floor_covering) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherFloorCoveringRes d-none">
                 <label class="fw-bold">Floor Covering:</label>
-                <input type="text" name="otherFloorCovering" class="form-control has-icon" data-icon="fa-regular fa-check-circle" value="{{$auction->get->otherFloorCovering}}">
+                <input type="text" name="otherFloorCovering" value="{{isset($auction->get->otherFloorCovering) ? $auction->get->otherFloorCovering : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="19">
+          <div class="wizard-step" data-step="21">
             @php
-              $front_exposures = [['name' => 'North', 'target' => ''], ['name' => 'East', 'target' => ''], ['name' => 'South', 'target' => ''], ['name' => 'West', 'target' => ''], ['name' => 'Southeast', 'target' => ''], ['name' => 'Northeast', 'target' => ''], ['name' => 'Southwest', 'target' => ''], ['name' => 'Northwest', 'target' => ''], ['name' => 'Undetermined', 'target' => '']];
+              $front_exposures = [
+                ['name' => 'East', 'target' => ''], 
+                ['name' => 'North', 'target' => ''], 
+                ['name' => 'Northeast', 'target' => ''], 
+                ['name' => 'Northwest', 'target' => ''], 
+                ['name' => 'South', 'target' => ''], 
+                ['name' => 'Southeast', 'target' => ''], 
+                ['name' => 'Southwest', 'target' => ''], 
+                ['name' => 'West', 'target' => ''],
+              ];
             @endphp
             <div class="form-group">
               <label class="fw-bold">Front Exposure:</label>
@@ -2480,14 +2334,14 @@
                 @foreach ($front_exposures as $front_exposure)
                   <option value="{{ $front_exposure['name'] }}" data-target="{{ $front_exposure['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);"   {{ $auction->get->front_exposure == $front_exposure['name'] ? 'selected' : '' }}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->front_exposure) && $auction->get->front_exposure == $item['name'] ? 'selected' : ''}}>
                     {{ $front_exposure['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="20">
+          <div class="wizard-step" data-step="22">
             @php
               $foundations = [['name' => 'Basement', 'target' => ''], ['name' => 'Block', 'target' => ''], ['name' => 'Brick/Mortar', 'target' => ''], ['name' => 'Concrete Perimeter', 'target' => ''], ['name' => 'Crawlspace', 'target' => ''], ['name' => 'Pillar/Post/Pier', 'target' => ''], ['name' => 'Slab', 'target' => ''], ['name' => 'Stem Wall', 'target' => ''], ['name' => 'Stilt/On Piling', 'target' => ''], ['name' => 'Other', 'target' => '.otherFoundationRes']];
             @endphp
@@ -2499,18 +2353,18 @@
                 @foreach ($foundations as $foundation)
                   <option value="{{ $foundation['name'] }}" data-target="{{ $foundation['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);"   {{ $auction->get->foundation == $foundation['name'] ? 'selected' : '' }}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->foundation) && in_array($foundation['name'], json_decode($auction->get->foundation) ?? []) ? 'selected' : ''}}>
                     {{ $foundation['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherFoundationRes d-none">
                 <label class="fw-bold">Foundation:</label>
-                <input type="text" name="otherFoundation" class="form-control has-icon" data-icon="fa-regular fa-check-circle"  value="{{$auction->get->otherFoundation ?? ''}}">
+                <input type="text" name="otherFoundation" value="{{isset($auction->get->otherFoundation) ? $auction->get->otherFoundation : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="21">
+          <div class="wizard-step" data-step="23">
             @php
               $exterior_constructions = [['name' => 'Asbestos', 'target' => ''], ['name' => 'Block', 'target' => ''], ['name' => 'Brick', 'target' => ''], ['name' => 'Cedar', 'target' => ''], ['name' => 'Cement Siding', 'target' => ''], ['name' => 'Concrete', 'target' => ''], ['name' => 'HardiPlank Type', 'target' => ''], ['name' => 'ICFs (Insulated Concrete Forms)', 'target' => ''], ['name' => 'Log', 'target' => ''], ['name' => 'Metal Frame', 'target' => ''], ['name' => 'Metal Siding', 'target' => ''], ['name' => 'SIP (Structurally Insulated Panel)', 'target' => ''], ['name' => 'Stone', 'target' => ''], ['name' => 'Stucco', 'target' => ''], ['name' => 'Tilt up Walls', 'target' => ''], ['name' => 'Vinyl Siding', 'target' => ''], ['name' => 'Wood Frame', 'target' => ''], ['name' => 'Wood Frame (FSC)', 'target' => ''], ['name' => 'Wood Siding ', 'target' => ''], ['name' => 'Other', 'target' => '.otherConstructionRes']];
             @endphp
@@ -2522,18 +2376,18 @@
                 @foreach ($exterior_constructions as $item)
                   <option value="{{ $item['name'] }}"
                     data-target="{{ $item['target'] }}" class="card flex-row"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);"    {{ $auction->get->exterior_construction == $item['name'] ? 'selected' : '' }}>
+                    data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);" {{isset($auction->get->exterior_construction) && in_array($item['name'], json_decode($auction->get->exterior_construction) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherConstructionRes d-none">
                 <label class="fw-bold">Exterior Construction:</label>
-                <input type="text" name="otherConstruction" class="form-control has-icon" data-icon="fa-regular fa-check-circle"   value="{{$auction->get->otherConstruction ?? ''}}">
+                <input type="text" name="otherConstruction" value="{{isset($auction->get->otherConstruction) ? $auction->get->otherConstruction : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="22">
+          <div class="wizard-step" data-step="24">
             @php
               $exterior_features = [
                   ['name' => 'Awning(s)', 'target' => ''],
@@ -2570,18 +2424,18 @@
                 @foreach ($exterior_features as $exterior_feature)
                   <option value="{{ $exterior_feature['name'] }}" data-target="{{ $exterior_feature['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);"  {{ $auction->get->exterior_feature == $exterior_feature['name'] ? 'selected' : '' }}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->exterior_feature) && in_array($exterior_feature['name'], json_decode($auction->get->exterior_feature) ?? []) ? 'selected' : ''}}>
                     {{ $exterior_feature['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherExteriorRes d-none">
                 <label class="fw-bold">Exterior Features:</label>
-                <input type="text" name="otherExterior" class="form-control has-icon" data-icon="fa-regular fa-check-circle"   value="{{$auction->get->otherExterior ?? ''}}">
+                <input type="text" name="otherExterior" value="{{isset($auction->get->otherExterior) ? $auction->get->otherExterior : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="23">
+          <div class="wizard-step" data-step="25">
             @php
               $lot_features = [
                   ['name' => 'Cleared', 'target' => ''],
@@ -2635,18 +2489,18 @@
                 @foreach ($lot_features as $lot_feature)
                   <option value="{{ $lot_feature['name'] }}" data-target="{{ $lot_feature['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);" {{$auction->get->lot_features == $lot_feature ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->lot_features) && in_array($lot_feature['name'], json_decode($auction->get->lot_features) ?? []) ? 'selected' : ''}}>
                     {{ $lot_feature['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherLotFeaturesRes d-none">
                 <label class="fw-bold">Lot Features:</label>
-                <input type="text" name="otherLotFeature" class="form-control has-icon" data-icon="fa-regular fa-check-circle" value="{{$auction->get->otherLotFeature ?? ''}}">
+                <input type="text" name="otherLotFeature" value="{{isset($auction->get->otherLotFeature) ? $auction->get->otherLotFeature : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="24">
+          <div class="wizard-step" data-step="26">
             <div class="form-group ">
               @php
                 $otherStructureOptRes = [
@@ -2659,7 +2513,7 @@
                 <option value="">Select</option>
                 @foreach ($otherStructureOptRes as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
-                    data-icon="{{$item['icon']}}" class="card flex-row" style="width:calc(33.3% - 10px);"  {{$auction->get->otherStructureOpt == $item['name'] ? 'selected' : ''}}>
+                    data-icon="{{$item['icon']}}" class="card flex-row" style="width:calc(33.3% - 10px);" {{isset($auction->get->otherStructureOpt) && $auction->get->otherStructureOpt == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -2668,8 +2522,8 @@
             <div class="form-group otherStructureResYes d-none">
               @php
                 $otherStructureRes = [
-                    ['name' => 'Additional Single Family Home', 'target' => ''],
-                    ['name' => 'In-Law- Suite', 'target' => ''],
+                    ['name' => 'Additional Single Family Home', 'target' => '.otherUnitRes'],
+                    ['name' => 'In-Law- Suite', 'target' => '.otherUnitRes'],
                     ['name' => 'Airplane Hangar', 'target' => ''],
                     ['name' => 'Barn(s)', 'target' => ''],
                     ['name' => 'Boathouse', 'target' => ''],
@@ -2689,19 +2543,19 @@
                     ['name' => 'Other', 'target' => '.otherStructureRes']
                   ];
               @endphp
-              <select class="grid-picker" name="otherStruct" id="otherStucture" style="justify-content: flex-start;">
+              <select class="grid-picker" name="otherStruct[]" id="otherStucture" style="justify-content: flex-start;" multiple>
                 <option value="">Select</option>
                 @foreach ($otherStructureRes as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);"   {{$auction->get->otherStructure == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->otherStruct) && in_array($item['name'], json_decode($auction->get->otherStruct) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherStructureRes d-none">
                 <label class="fw-bold">Other Structures: </label>
-                <input type="number" name="otherStructure" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" value="{{$auction->get->otherStructure}}">
+                <input type="text" name="otherStructure" value="{{isset($auction->get->otherStructure) ? $auction->get->otherStructure : ''}}" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
               </div>
             </div>
             <div class="form-group " id="otherSturctureUnit" style="display: none">
@@ -2724,23 +2578,23 @@
                     ['name' => '4 Bedroom Or More', 'target' => ''],
                     ['name' => '4 Bed/1 Bath', 'target' => ''],
                     ['name' => '4 Bed/2 Bath', 'target' => ''],
-                    ['name' => 'Appartments', 'target' => ''],
+                    ['name' => 'Apartments', 'target' => ''],
                     ['name' => 'Efficiency', 'target' => ''],
                     ['name' => 'Loft', 'target' => ''],
                     ['name' => "Manager's unit", 'target' => ''],
                     ['name' => 'Multi-Level', 'target' => ''],
                     ['name' => 'Penthouse', 'target' => ''],
                     ['name' => 'Studio', 'target' => ''],
-                    ['name' => 'Other', 'target' => '.otherUnitRes']
+                    ['name' => 'Other', 'target' => '.otherUnitType']
                 ];
               @endphp
               <label class="fw-bold">Unit Type: </label>
-              <select class="grid-picker" name="unitStructure" style="justify-content: flex-start;">
+              <select class="grid-picker" name="unitStructure[]" style="justify-content: flex-start;" multiple>
                 <option value="">Select</option>
                 @foreach ($unitStructureRes as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" {{$auction->get->unitStructure == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->unitStructure) && in_array($item['name'], json_decode($auction->get->unitStructure) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -2748,16 +2602,20 @@
               <div class="form-group otherUnitRes d-none">
                 <div class="form-group">
                   <label class="fw-bold">Heated Sqft of Additional Structure:</label>
-                  <input type="text" name="sqftStructure" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"  value="{{$auction->get->sqftStructure ?? ''}}">
+                  <input type="text" name="sqftStructure" value="{{isset($auction->get->sqftStructure) ? $auction->get->sqftStructure : ''}}" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
                 </div>
                 <div class="form-group">
                   <label class="fw-bold">Total Sqft of Additional Structure: </label>
-                  <input type="text" name="totalSqft" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"  value="{{$auction->get->totalSqft ?? ''}}">
+                  <input type="text" name="totalSqft" value="{{isset($auction->get->totalSqft) ? $auction->get->totalSqft : ''}}" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
                 </div>
+              </div>
+              <div class="form-group d-none otherUnitType">
+                <label class="fw-bold">Unit Type:</label>
+                <input type="text" name="unitStructureOther" value="{{isset($auction->get->unitStructureOther) ? $auction->get->unitStructureOther : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="25">
+          <div class="wizard-step" data-step="27">
             @php
               $roofs = [
                 ['name' => 'Built-Up', 'target' => ''], 
@@ -2774,23 +2632,23 @@
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Roof:</label>
-              <select class="grid-picker" name="roof[]" id="roof" style="justify-content: flex-start;" multiple>
+              <select class="grid-picker" name="roof[]" id="roof" style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($roofs as $roof)
                   <option value="{{ $roof['name'] }}" data-target="{{ $roof['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);"  {{$auction->get->roof == $roof['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->roof) && in_array($roof['name'], json_decode($auction->get->roof) ?? []) ? 'selected' : ''}}>
                     {{ $roof['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherRoofRes d-none" >
                 <label class="fw-bold">Roof:</label>
-                <input type="text" name="otherRoof" class="form-control has-icon" data-icon="fa-regular fa-check-circle"  value="{{$auction->get->otherRoof ?? ''}}">
+                <input type="text" name="otherRoof" value="{{isset($auction->get->otherRoof) ? $auction->get->otherRoof : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="26">
+          <div class="wizard-step" data-step="28">
             @php
               $road_surface_types = [['name' => 'Asphalt', 'target' => ''], ['name' => 'Brick', 'target' => ''], ['name' => 'Chip And Seal', 'target' => ''], ['name' => 'Concrete', 'target' => ''], ['name' => 'Dirt', 'target' => ''], ['name' => 'Gravel', 'target' => ''], ['name' => 'Limerock', 'target' => ''], ['name' => 'Paved', 'target' => ''], ['name' => 'Unimproved', 'target' => ''], ['name' => 'Other', 'target' => '.otherSurfaceRes']];
             @endphp
@@ -2802,18 +2660,18 @@
                 @foreach ($road_surface_types as $road_surface_type)
                   <option value="{{ $road_surface_type['name'] }}"
                     data-target="{{ $road_surface_type['target'] }}" class="card flex-row"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);"   {{$auction->get->road_surface_type == $road_surface_type['name'] ? 'selected' : ''}}>
+                    data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);" {{isset($auction->get->road_surface_type) && in_array($road_surface_type['name'], json_decode($auction->get->road_surface_type) ?? []) ? 'selected' : ''}}>
                     {{ $road_surface_type['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherSurfaceRes d-none" >
                 <label class="fw-bold">Road Surface Type:</label>
-                <input type="text" name="otherSurface" class="form-control has-icon" data-icon="fa-regular fa-check-circle"   value="{{$auction->get->otherSurface ?? ''}}">
+                <input type="text" name="otherSurface" value="{{isset($auction->get->otherSurface) ? $auction->get->otherSurface : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="27">
+          <div class="wizard-step" data-step="29">
             <div class="form-group">
               <label class="fw-bold">Garage:</label>
               <select class="grid-picker" name="garage" id="garage" style="justify-content: flex-start;">
@@ -2828,7 +2686,7 @@
                   @endphp
                   <option value="{{ $yes_or_no['name'] }}" data-target="{{ $target }}"
                     class="card flex-row" style="width:calc(33.3% - 10px);"
-                    data-icon='<i class="{{ $yes_or_no['icon'] }}"></i>'  {{$auction->get->garage == $yes_or_no['name'] ? 'selected' : '' }}>
+                    data-icon='<i class="{{ $yes_or_no['icon'] }}"></i>' {{isset($auction->get->garage) && $auction->get->garage == $yes_or_no['name'] ? 'selected' : ''}}>
                     {{ $yes_or_no['name'] }}
                   </option>
                 @endforeach
@@ -2836,8 +2694,8 @@
             </div>
             <div class="form-group garage_spaces">
               <label class="fw-bold" for="garage_spaces">How many garage spaces?</label>
-              <input type="text"  name="garage_spaces" id="garage_spaces"
-                class="form-control has-icon" data-icon="fa-solid fa-warehouse"  value="{{$auction->get->garage_spaces ?? ''}}">
+              <input type="number" name="garage_spaces" value="{{isset($auction->get->garage_spaces) ? $auction->get->garage_spaces : ''}}" id="garage_spaces"
+                class="form-control has-icon" data-icon="fa-solid fa-warehouse">
             </div>
             <div class="form-group">
               <label class="fw-bold">Carport:</label>
@@ -2853,7 +2711,7 @@
                   @endphp
                   <option value="{{ $yes_or_no['name'] }}" data-target="{{ $target }}"
                     class="card flex-row" style="width:calc(33.3% - 10px);"
-                    data-icon='<i class="{{ $yes_or_no['icon'] }}"></i>'   {{$auction->get->carport == $yes_or_no['name'] ? 'selected' : '' }}>
+                    data-icon='<i class="{{ $yes_or_no['icon'] }}"></i>' {{isset($auction->get->carport) && $auction->get->carport == $yes_or_no['name'] ? 'selected' : ''}}>
                     {{ $yes_or_no['name'] }}
                   </option>
                 @endforeach
@@ -2861,11 +2719,11 @@
             </div>
             <div class="form-group carport_spaces">
               <label class="fw-bold" for="carport_spaces">How many carport spaces?</label>
-              <input type="text"  name="carport_spaces" id="carport_spaces"
-                class="form-control has-icon " data-icon="fa-solid fa-warehouse"   value="{{$auction->get->carport_spaces ?? ''}}">
+              <input type="number" name="carport_spaces" value="{{isset($auction->get->carport_spaces) ? $auction->get->carport_spaces : ''}}" id="carport_spaces"
+                class="form-control has-icon " data-icon="fa-solid fa-warehouse">
             </div>
           </div>
-          <div class="wizard-step" data-step="28">
+          <div class="wizard-step" data-step="30">
             <div class="form-group">
               <label class="fw-bold">Pool:</label>
               <select class="grid-picker" name="pool" id="pool" style="justify-content: flex-start;">
@@ -2880,7 +2738,7 @@
                   @endphp
                   <option value="{{ $yes_or_no['name'] }}" data-target="{{ $target }}"
                     class="card flex-row" style="width:calc(33.3% - 10px);"
-                    data-icon='<i class="{{ $yes_or_no['icon'] }}"></i>'  {{$auction->get->pool == $yes_or_no['name'] ? 'selected' : '' }}>
+                    data-icon='<i class="{{ $yes_or_no['icon'] }}"></i>' {{isset($auction->get->pool) && $auction->get->pool == $yes_or_no['name'] ? 'selected' : ''}}>
                     {{ $yes_or_no['name'] }}
                   </option>
                 @endforeach
@@ -2896,7 +2754,7 @@
                 @foreach ($private_or_community as $yes_or_no)
                   <option value="{{ $yes_or_no['name'] }}" data-target="{{ $target }}"
                     class="card flex-row" style="width:calc(33.3% - 10px);"
-                    data-icon='<i class="{{ $yes_or_no['icon'] }}"></i>'   {{$auction->get->poolOpt == $yes_or_no['name'] ? 'selected' : ''}}>
+                    data-icon='<i class="{{ $yes_or_no['icon'] }}"></i>' {{isset($auction->get->poolOpt) && $auction->get->poolOpt == $yes_or_no['name'] ? 'selected' : ''}}>
                     {{ $yes_or_no['name'] }}
                   </option>
                 @endforeach
@@ -2905,7 +2763,9 @@
 
             <div class="form-group">
               @php
-                $viewOpt = [['name' => 'Yes', 'target' => '.viewYesRes','icon'=>'<i class="fa-regular fa-circle-check"></i>'], ['name' => 'No', 'target' => '','icon'=>'<i class="fa-regular fa-circle-xmark"></i>']];
+                $viewOpt = [
+                  ['name' => 'Yes', 'target' => '.viewYesRes','icon'=>'<i class="fa-regular fa-circle-check"></i>'], 
+                  ['name' => 'No', 'target' => '','icon'=>'<i class="fa-regular fa-circle-xmark"></i>']];
               @endphp
                 <label class="fw-bold">View:</label>
                 <select class="grid-picker" name="viewOpt" id="view" style="justify-content: flex-start;">
@@ -2913,7 +2773,7 @@
                   @foreach ($viewOpt as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                       data-icon="{{$item['icon']}}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);"   {{$auction->get->viewOpt == $item['name'] ? 'selected' : ''}}>
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->viewOpt) && $auction->get->viewOpt == $item['name'] ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -2921,7 +2781,20 @@
             </div>
             <div class="form-group viewYesRes d-none">
                 @php
-                  $view = [['name' => 'City', 'target' => ''], ['name' => 'Garden', 'target' => ''], ['name' => 'Golf Course', 'target' => ''], ['name' => 'Greenbelt', 'target' => ''], ['name' => 'Mountain(s)', 'target' => ''], ['name' => 'Park', 'target' => ''], ['name' => 'Pool', 'target' => ''], ['name' => 'Tennis Court', 'target' => ''], ['name' => 'Trees/Woods', 'target' => ''], ['name' => 'Water', 'target' => ''], ['name' => 'Beach', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherViewRes']];
+                  $view = [
+                    ['name' => 'Beach', 'target' => ''], 
+                    ['name' => 'City', 'target' => ''], 
+                    ['name' => 'Garden', 'target' => ''], 
+                    ['name' => 'Golf Course', 'target' => ''], 
+                    ['name' => 'Greenbelt', 'target' => ''], 
+                    ['name' => 'Mountain(s)', 'target' => ''], 
+                    ['name' => 'Park', 'target' => ''], 
+                    ['name' => 'Pool', 'target' => ''], 
+                    ['name' => 'Tennis Court', 'target' => ''], 
+                    ['name' => 'Trees/Woods', 'target' => ''], 
+                    ['name' => 'Water', 'target' => ''], 
+                    ['name' => 'None', 'target' => ''], 
+                    ['name' => 'Other', 'target' => '.otherViewRes']];
                 @endphp
               <label class="fw-bold">View:</label>
               <select class="grid-picker" name="view[]" id="view" style="justify-content: flex-start;"
@@ -2930,37 +2803,37 @@
                 @foreach ($view as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" {{$auction->get->view == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->view) && in_array($item['name'], json_decode($auction->get->view) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherViewRes d-none">
                 <label class="fw-bold">View:</label>
-                <input type="text" name="otherView" class="form-control has-icon"
-                  data-icon="fa-regular fa-check-circle" value="{{$auction->get->otherView ?? ''}}">
+                <input type="text" name="otherView" value="{{isset($auction->get->otherView) ? $auction->get->otherView : ''}}" class="form-control has-icon"
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="29">
-            <label class="fw-bold">Land and Tax Information: (To find this information check out your
-              local property appraiser website and enter the address of the property you are selling)</label>
+          <div class="wizard-step" data-step="31">
+            <h4>Land and Tax Information: <span style="font-weight: 400; font-size: 14px">(To find this information check out your
+              local property appraiser website and enter the address of the property you are selling)</span></h4>
             
             
             <div class="form-group">
               <label class="fw-bold">Tax ID (Parcel Number):</label>
-              <input type="text" name="tax_id" id="tax_id" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined"  value="{{$auction->get->tax_id ?? ''}}">
+              <input type="text" name="tax_id" value="{{isset($auction->get->tax_id) ? $auction->get->tax_id : ''}}" id="tax_id" class="form-control has-icon"
+                data-icon="fa-solid fa-ruler-combined">
             </div>
             <div class="form-group">
               <label class="fw-bold">Tax Year:</label>
-              <input type="text" name="tax_year" id="tax_year" class="form-control has-icon"
-                data-icon="fa-regular fa-calendar-days"   value="{{$auction->get->tax_year ?? ''}}">
+              <input type="number" name="tax_year" value="{{isset($auction->get->tax_year) ? $auction->get->tax_year : ''}}" id="tax_year" class="form-control has-icon"
+                data-icon="fa-regular fa-calendar-days" required>
             </div>
             <div class="form-group">
               <label class="fw-bold">Taxes (Annual Amount):</label>
-              <input type="text" name="taxes_annual_amount" id="taxes_annual_ammount"
-                class="form-control has-icon" data-icon="fa-solid fa-dollar" value="{{$auction->get->taxes_annual_amount}}" required>
+              <input type="number" name="taxes_annual_amount" value="{{isset($auction->get->taxes_annual_amount) ? $auction->get->taxes_annual_amount : ''}}" id="taxes_annual_ammount"
+                class="form-control has-icon" data-icon="fa-solid fa-dollar" required>
             </div>
             <div class="form-group ">
               @php
@@ -2976,7 +2849,7 @@
                 @foreach ($additialParcelRes as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="{{$item['icon']}}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);"  {{isset($auction->get->additionalParcels) && $auction->get->additionalParcels  == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->additionalParcels) && $auction->get->additionalParcels == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -2984,37 +2857,38 @@
               <div class="form-group additialParcelResYes1 d-none">
                 <div class="form-group">
                   <label class="fw-bold">Total Number of Parcels:</label>
-                  <input type="number" name="total_number_of_parcels" id="total_number_of_parcels"
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"  value="{{$auction->get->total_number_of_parcels ?? ''}}">
+                  <input type="number" name="total_number_of_parcels" value="{{isset($auction->get->total_number_of_parcels) ? $auction->get->total_number_of_parcels : ''}}" id="total_number_of_parcels"
+                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
                 </div>
                 <div class="form-group">
                   <label class="fw-bold">Additional Tax ID's:</label>
-                  <input type="text" name="additional_tax_id" id="additional_tax_id" class="form-control has-icon"
-                    data-icon="fa-solid fa-ruler-combined"   value="{{$auction->get->additional_tax_id ?? ''}}">
+                  <input type="text" name="additional_tax_id" value="{{isset($auction->get->additional_tax_id) ? $auction->get->additional_tax_id : ''}}" id="additional_tax_id" class="form-control has-icon"
+                    data-icon="fa-solid fa-ruler-combined">
                 </div>
                 <div class="form-group">
                   <label class="fw-bold" for="year_built">Year Built:</label>
-                  <input type="text" name="year_built" id="year_built" class="form-control has-icon "
-                    data-icon="fa-solid fa-calendar-day" value="{{$auction->get->year_built ?? ''}}" required>
+                  <input type="number" name="year_built" value="{{isset($auction->get->year_built) ? $auction->get->year_built : ''}}" id="year_built" class="form-control has-icon "
+                    data-icon="fa-solid fa-calendar-day" required>
                 </div>
                 <div class="form-group">
                   <label class="fw-bold">Zoning:</label>
-                  <input type="text" name="zoning" id="zoning"
-                    class="form-control has-icon" data-icon="fa-solid fa-ruler-combined"  value="{{$auction->get->zoning ?? ''}}">
+                  <input type="text" name="zoning" value="{{isset($auction->get->zoning) ? $auction->get->zoning : ''}}" id="zoning"
+                    class="form-control has-icon" data-icon="fa-solid fa-tag">
                 </div>
                 <div class="form-group">
                   <label class="fw-bold">Legal Description:</label>
-                  <input type="text" name="legal_description" id="legal_description" class="form-control has-icon"
-                    data-icon="fa-solid fa-tag"  value="{{$auction->get->legal_description ?? ''}}">
+                  <input type="text" name="legal_description" value="{{isset($auction->get->legal_description) ? $auction->get->legal_description : ''}}" id="legal_description" class="form-control has-icon"
+                    data-icon="fa-solid fa-tag">
                 </div>
                 <div class="form-group">
                   <label class="fw-bold" for="year_built">Legal Subdivison Name:</label>
-                  <input type="text" name="legal_subdivison_name" id="legal_subdivison_name"
-                    class="form-control has-icon " data-icon="fa-solid fa-ruler-combined"  value="{{$auction->get->legal_subdivison_name ?? ''}}" required>
+                  <input type="text" name="legal_subdivison_name" value="{{isset($auction->get->legal_subdivison_name) ? $auction->get->legal_subdivison_name : ''}}" id="legal_subdivison_name"
+                    class="form-control has-icon " data-icon="fa-solid fa-tag"
+                    >
                 </div>
-                <div class="form-group has_flood_zoon d-none">
+                <div class="form-group">
                   <label class="fw-bold">Flood Zone Code:</label>
-                  <input type="text" name="flood_zone_code" id="flood_zone_code" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" value="{{$auction->get->flood_zone_code ?? ''}}">
+                  <input type="text" name="flood_zone_code" value="{{isset($auction->get->flood_zone_code) ? $auction->get->flood_zone_code : ''}}" id="flood_zone_code" class="form-control has-icon" data-icon="fa-solid fa-tag">
                 </div>
                 @php
                   $lot_sizes = [['name' => '0 to less than 1/4', 'target' => ''], ['name' => '1/4 to less than 1/2', 'target' => ''], ['name' => '1/2 to less than 1', 'target' => ''], ['name' => '1 to less than 2', 'target' => ''], ['name' => '2 to less than 5', 'target' => ''], ['name' => '5 to less than 10', 'target' => ''], ['name' => '10 to less than 20', 'target' => ''], ['name' => '20 to less than 50', 'target' => ''], ['name' => '50 to less than 100', 'target' => ''], ['name' => '100 to less than 200', 'target' => ''], ['name' => '200 to less than 500', 'target' => ''], ['name' => '500+ Acers', 'target' => ''], ['name' => 'Non-Applicable', 'target' => '']];
@@ -3026,7 +2900,7 @@
                     @foreach ($lot_sizes as $item)
                       <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                         data-icon='<i class="fa-solid fa-ruler-combined"></i>' class="card flex-column"
-                        style="width:calc(33.3% - 10px);" {{$auction->get->total_aceage == $item['name'] ? 'selected' : ''}}>
+                        style="width:calc(33.3% - 10px);" {{isset($auction->get->total_aceage) && $auction->get->total_aceage == $item['name'] ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                     @endforeach
@@ -3034,13 +2908,13 @@
                 </div>
                 <div class="form-group">
                   <label class="fw-bold" for="lot_size">Lot Size Square Footage:</label>
-                  <input type="text" name="lot_size" id="lot_size" class="form-control has-icon "
-                    data-icon="fa-solid fa-ruler-combined" data-msg-required="Please enter Lot Size"  value="{{$auction->get->lot_size ?? ''}}">
+                  <input type="text" name="lot_size" value="{{isset($auction->get->lot_size) ? $auction->get->lot_size : ''}}" id="lot_size" class="form-control has-icon "
+                    data-icon="fa-solid fa-ruler-combined" data-msg-required="Please enter Lot Size">
                 </div>
                 <div class="form-group">
                   <label class="fw-bold">Lot Size Acres:</label>
-                  <input type="text" name="lot_size_acres" id="lot_size_acres" class="form-control has-icon"
-                    data-icon="fa-solid fa-ruler-combined" value="{{$auction->get->lot_size_acres ?? ''}}">
+                  <input type="text" name="lot_size_acres" value="{{isset($auction->get->lot_size_acres) ? $auction->get->lot_size_acres : ''}}" id="lot_size_acres" class="form-control has-icon"
+                    data-icon="fa-solid fa-ruler-combined">
                 </div>
                 <div class="form-group ">
                   <label class="fw-bold">Homestead:</label>
@@ -3050,7 +2924,7 @@
                     @foreach ($yes_or_nos as $item)
                       <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                         data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                        style="width:calc(33.3% - 10px);"  {{$auction->get->has_homestead == $item['name'] ? 'selected' : '' }}>
+                        style="width:calc(33.3% - 10px);" {{isset($auction->get->has_homestead) && $auction->get->has_homestead == $item['name'] ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                     @endforeach
@@ -3068,7 +2942,7 @@
                     <option value="">Select</option>
                     @foreach ($ccdOpt as $item)
                       <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}"  {{$auction->get->has_cdd == $item['name'] ? 'selected' : ''}}>
+                        style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}" {{isset($auction->get->has_cdd) && $auction->get->has_cdd == $item['name'] ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                     @endforeach
@@ -3076,8 +2950,8 @@
                 </div>
                 <div class="form-group anual_cdd_fee_residential_and_income d-none">
                   <label class="fw-bold">Annual CDD Fee:</label>
-                  <input type="number" name="annual_cdd_fee" id="annual_cdd_fee" class="form-control has-icon"
-                    data-icon="fa-solid fa-dollar " value="{{$auction->get->annual_cdd_fee ?? ''}}">
+                  <input type="number" name="annual_cdd_fee" value="{{isset($auction->get->annual_cdd_fee) ? $auction->get->annual_cdd_fee : ''}}" id="annual_cdd_fee" class="form-control has-icon"
+                    data-icon="fa-solid fa-dollar ">
                 </div>
                 <div class="form-group">
                   @php
@@ -3092,7 +2966,7 @@
                     <option value="">Select</option>
                     @foreach ($landLeaseOpt as $item)
                       <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}" {{$auction->get->has_land_lease == $item['name'] ? 'selected' : ''}}>
+                        style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}" {{isset($auction->get->has_land_lease) && $auction->get->has_land_lease == $item['name'] ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                     @endforeach
@@ -3100,13 +2974,13 @@
                 </div>
                 <div class="form-group land_lease_fee_residential_and_income d-none">
                   <label class="fw-bold">Annual Land Lease Fee:</label>
-                  <input type="text" name="land_lease_fee" id="land_lease_fee" class="form-control has-icon"
-                    data-icon="fa-solid fa-dollar"  value="{{$auction->get->land_lease_fee ?? ''}}">
+                  <input type="number" name="land_lease_fee" value="{{isset($auction->get->land_lease_fee) ? $auction->get->land_lease_fee : ''}}" id="land_lease_fee" class="form-control has-icon"
+                    data-icon="fa-solid fa-dollar ">
                 </div>
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="30">
+          <div class="wizard-step" data-step="32">
             @php
               $utilitiseRes = [
                 ['name' => 'BB/HS Internet Available', 'target' => ''],
@@ -3146,36 +3020,15 @@
                 @foreach ($utilitiseRes as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" {{$auction->get->utilities == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->utilities) && in_array($item['name'], json_decode($auction->get->utilities) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherUtilitiseRes d-none">
                 <label class="fw-bold">Utilities:</label>
-                <input type="text" name="otherUtilitise" id="legal_description" class="form-control has-icon"
-                  data-icon="fa-regular fa-check-circle" value="{{$auction->get->otherUtilitise}}">
-              </div>
-            </div>
-            @php
-              $waterRes = [['name' => 'Canal/Lake For Irrigation', 'target' => ''], ['name' => 'Private', 'target' => ''], ['name' => 'Public', 'target' => ''], ['name' => 'Well', 'target' => ''], ['name' => 'Well Required', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherWaterRes']];
-            @endphp
-            <div class="form-group">
-              <label class="fw-bold">Water:</label>
-              <select class="grid-picker" name="water[]" id="water12" style="justify-content: flex-start;" multiple >
-                <option value="">Select</option>
-                @foreach ($waterRes as $water)
-                  <option value="{{ $water['name'] }}" data-target="{{ $water['target'] }}"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);"  {{$auction->get->water == $water['name'] ? 'selected' : ''}}>
-                    {{ $water['name'] }}
-                  </option>
-                @endforeach
-              </select>
-              <div class="form-group otherWaterRes d-none">
-                <label class="fw-bold">Water:</label>
-                <input type="text" name="otherWater" id="legal_description" class="form-control has-icon"
-                  data-icon="fa-regular fa-check-circle"  value="{{$auction->get->otherWater ?? ''}}">
+                <input type="text" name="otherUtilitise" value="{{isset($auction->get->otherUtilitise) ? $auction->get->otherUtilitise : ''}}" id="legal_description" class="form-control has-icon"
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
 
@@ -3189,43 +3042,86 @@
                 @foreach ($sewerRes as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);"  {{$auction->get->sewer == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->sewer) && in_array($item['name'], json_decode($auction->get->sewer) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherSewerRes d-none">
                 <label class="fw-bold">Sewer:</label>
-                <input type="text" name="otherSewer"  class="form-control has-icon"
-                  data-icon="fa-regular fa-check-circle"  value="{{$auction->get->otherSewer ?? ''}}">
+                <input type="text" name="otherSewer" value="{{isset($auction->get->otherSewer) ? $auction->get->otherSewer : ''}}" class="form-control has-icon"
+                  data-icon="fa-regular fa-check-circle">
+              </div>
+            </div>
+
+            @php
+
+              $waterRes = [['name' => 'Canal/Lake For Irrigation', 'target' => ''], ['name' => 'Private', 'target' => ''], ['name' => 'Public', 'target' => ''], ['name' => 'Well', 'target' => ''], ['name' => 'Well Required', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherWaterRes']];
+            @endphp
+            <div class="form-group">
+              <label class="fw-bold">Water:</label>
+              <select class="grid-picker" name="water[]" id="water12" style="justify-content: flex-start;" multiple >
+                <option value="">Select</option>
+                @foreach ($waterRes as $water)
+                  <option value="{{ $water['name'] }}" data-target="{{ $water['target'] }}"
+                    data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->water) && in_array($water['name'], json_decode($auction->get->water) ?? []) ? 'selected' : ''}}>
+                    {{ $water['name'] }}
+                  </option>
+                @endforeach
+              </select>
+              <div class="form-group otherWaterRes d-none">
+                <label class="fw-bold">Water:</label>
+                <input type="text" name="otherWater" value="{{isset($auction->get->otherWater) ? $auction->get->otherWater : ''}}" id="legal_description" class="form-control has-icon"
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="31">
+          <div class="wizard-step" data-step="33">
             @php
               $air_conditioning = [['name' => 'Central Air', 'target' => ''], ['name' => 'Humidity Control', 'target' => ''], ['name' => 'Mini-Split Unit(s)', 'target' => ''], ['name' => 'Wall/Window Unit(s)', 'target' => ''], ['name' => 'Zoned', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.airConditionRes']];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Air Conditioning:</label>
-              <select class="grid-picker" name="air_conditioning" id="air_conditioning"
-                style="justify-content: flex-start;">
+              <select class="grid-picker" name="air_conditioning[]" id="air_conditioning"
+                style="justify-content: flex-start;" multiple>
                 <option value="">Select</option>
                 @foreach ($air_conditioning as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" {{$auction->get->air_conditioning == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->air_conditioning) && in_array($item['name'], json_decode($auction->get->air_conditioning) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group airConditionRes d-none">
                 <label class="fw-bold">Air Conditioning:</label>
-                <input type="text" name="otherAirCondition"  class="form-control has-icon"
-                  data-icon="fa-regular fa-check-circle" value="{{$auction->get->otherAirCondition ?? ''}}">
+                <input type="text" name="otherAirCondition" value="{{isset($auction->get->otherAirCondition) ? $auction->get->otherAirCondition : ''}}" class="form-control has-icon"
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
             @php
-              $heating_and_fuel = [['name' => 'Baseboard', 'target' => ''], ['name' => 'Central', 'target' => ''], ['name' => 'Electric', 'target' => ''], ['name' => 'Exhaust Fans', 'target' => ''], ['name' => 'Gas', 'target' => ''], ['name' => 'Heat Pump', 'target' => ''], ['name' => 'Heat Recovery Unit', 'target' => ''], ['name' => 'Natural Gas', 'target' => ''], ['name' => 'Oil', 'target' => ''], ['name' => 'Partial', 'target' => ''], ['name' => 'Propane', 'target' => ''], ['name' => 'Radiant Ceiling', 'target' => ''], ['name' => 'Reverse Cycle', 'target' => ''], ['name' => 'Solar', 'target' => ''], ['name' => 'Space Heater', 'target' => ''], ['name' => 'Wall Furnace', 'target' => ''], ['name' => 'Wall Units / Window Unit', 'target' => ''], ['name' => 'Zoned', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherHeatingFuelRes']];
+              $heating_and_fuel = [
+                ['name' => 'Baseboard', 'target' => ''], 
+                ['name' => 'Central', 'target' => ''], 
+                ['name' => 'Electric', 'target' => ''], 
+                ['name' => 'Exhaust Fans', 'target' => ''], 
+                ['name' => 'Gas', 'target' => ''], 
+                ['name' => 'Heat Pump', 'target' => ''], 
+                ['name' => 'Heat Recovery Unit', 'target' => ''], 
+                ['name' => 'Natural Gas', 'target' => ''], 
+                ['name' => 'Oil', 'target' => ''], 
+                ['name' => 'Partial', 'target' => ''], 
+                ['name' => 'Propane', 'target' => ''], 
+                ['name' => 'Radiant Ceiling', 'target' => ''], 
+                ['name' => 'Reverse Cycle', 'target' => ''], 
+                ['name' => 'Solar', 'target' => ''], 
+                ['name' => 'Space Heater', 'target' => ''], 
+                ['name' => 'Wall Furnace', 'target' => ''], 
+                ['name' => 'Wall Units / Window Unit', 'target' => ''], 
+                ['name' => 'Zoned', 'target' => ''], 
+                ['name' => 'None', 'target' => ''], 
+                ['name' => 'Other', 'target' => '.otherHeatingFuelRes']];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Heating and Fuel:</label>
@@ -3235,19 +3131,19 @@
                 @foreach ($heating_and_fuel as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);"  {{$auction->get->heating_and_fuel == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->heating_and_fuel) && in_array($item['name'], json_decode($auction->get->heating_and_fuel) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherHeatingFuelRes d-none">
                 <label class="fw-bold">Heating and Fuel:</label>
-                <input type="text" name="otherHeatingFuel"  class="form-control has-icon"
-                  data-icon="fa-regular fa-check-circle"  value="{{$auction->get->otherHeatingFuel ?? ''}}">
+                <input type="text" name="otherHeatingFuel" value="{{isset($auction->get->otherHeatingFuel) ? $auction->get->otherHeatingFuel : ''}}" class="form-control has-icon"
+                  data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="32">
+          <div class="wizard-step" data-step="34">
             @php
               $room_types = [
                   ['name' => 'Additional Bedroom', 'target' => ''],
@@ -3292,6 +3188,15 @@
                   ['name' => 'Garage Apartment', 'target' => ''],
                   ['name' => 'Double Primary Bedroom', 'target' => ''],
               ];
+
+              $roomType = isset($auction->get->room_details_data) ? json_decode($auction->get->room_details_data) : null;
+              $roomTypeData = isset($roomType) ? json_decode($roomType, true): null;
+              $roomTypes = [];
+              if(isset($roomTypeData) && is_array($roomTypeData)){
+                foreach ($roomTypeData as $roomName => $values) {
+                  $roomTypes[] = $roomName;
+                }
+              }
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Room Type:</label>
@@ -3301,210 +3206,17 @@
                 @foreach ($room_types as $room_type)
                   <option value="{{ $room_type['name'] }}" data-target="{{ $room_type['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);" {{$auction->get->room_type ?? ''}}>
+                    style="width:calc(33.3% - 10px);"  {{isset($roomTypes) && in_array($room_type['name'], json_decode($roomTypes) ?? []) ? 'selected' : ''}}>
                     {{ $room_type['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
-            <div class="form-group d-none room-type-fields">
-              <div class="form-group">
-                <label class="fw-bold">Approximate Room Dimensions:</label>
-                <input type="text" name="approximate_room_dimensions" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" value="{{$auction->get->approximate_room_dimensions ?? ''}}">
-              </div>
-              @php
-                $room_levels = [['name' => 'Upper', 'target' => ''], ['name' => 'Basement', 'target' => ''], ['name' => 'First', 'target' => ''], ['name' => 'Second', 'target' => ''], ['name' => 'Third', 'target' => '']];
-              @endphp
-              <div class="form-group ">
-                <label class="fw-bold">Room Level:</label>
-                <select class="grid-picker" name="room_level[]" id="room_level" style="justify-content: flex-start;"
-                  multiple>
-                  <option value="">Select</option>
-                  @foreach ($room_levels as $room_level)
-                    <option value="{{ $room_level['name'] }}" data-target="{{ $room_level['target'] }}"
-                      class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                      style="width:calc(33.3% - 10px);"  {{$auction->get->room_level ?? ''}}>
-                      {{ $room_level['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-              @php
-                $bed_room_closest_types = [['name' => 'Built-in Closet', 'target' => ''], ['name' => 'Coat Closet', 'target' => ''], ['name' => 'Dual Closets', 'target' => ''], ['name' => 'Linen Closet', 'target' => ''], ['name' => 'No Closet', 'target' => ''], ['name' => 'Storage Closet', 'target' => ''], ['name' => 'Walk-in Closet', 'target' => '']];
-              @endphp
-              <div class="form-group ">
-                <label class="fw-bold">Closet Type:</label>
-                <select class="grid-picker" name="bed_room_closest_type[]" id="bed_room_closest_type"
-                  style="justify-content: flex-start;" multiple>
-                  <option value="">Select</option>
-                  @foreach ($bed_room_closest_types as $bed_room_closest_type)
-                    <option value="{{ $bed_room_closest_type['name'] }}"
-                      data-target="{{ $bed_room_closest_type['target'] }}" class="card flex-row"
-                      data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);" {{$auction->get->bed_room_closest_type ?? ''}}>
-                      {{ $bed_room_closest_type['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-              @php
-                $room_primary_floor_coverings = [
-                    ['name' => 'Bamboo', 'target' => ''],
-                    ['name' => 'Brick/Stone', 'target' => ''],
-                    ['name' => 'Carpet', 'target' => ''],
-                    ['name' => 'Ceramic Tile', 'target' => ''],
-                    ['name' => 'Concrete', 'target' => ''],
-                    ['name' => 'Cork', 'target' => ''],
-                    ['name' => 'Engineered Hardwood', 'target' => ''],
-                    ['name' => 'Epoxy', 'target' => ''],
-                    ['name' => 'Forestry Stewardship Certified', 'target' => ''],
-                    ['name' => 'Granite', 'target' => ''],
-                    ['name' => 'Laminate', 'target' => ''],
-                    ['name' => 'Linoleum', 'target' => ''],
-                    ['name' => 'Marble', 'target' => ''],
-                    ['name' => 'Parquet', 'target' => ''],
-                    ['name' => 'Porcelain Tile', 'target' => ''],
-                    ['name' => 'Quarry Tile', 'target' => ''],
-                    ['name' => 'Reclaimed Wood', 'target' => ''],
-                    ['name' => 'Recycled/Composite Flooring', 'target' => ''],
-                    ['name' => 'Slate', 'target' => ''],
-                    ['name' => 'Terrazzo', 'target' => ''],
-                    ['name' => 'Tile', 'target' => ''],
-                    ['name' => 'Travertine', 'target' => ''],
-                    ['name' => 'Vinyl', 'target' => ''],
-                    ['name' => 'Wood', 'target' => ''],
-                    ['name' => 'Other', 'target' => ''],
-                ];
-              @endphp
-              <div class="form-group ">
-                <label class="fw-bold">Room Primary Floor Covering:</label>
-                <select class="grid-picker" name="room_primary_floor_covering[]" id="room_primary_floor_covering"
-                  style="justify-content: flex-start;" multiple>
-                  <option value="">Select</option>
-                  @foreach ($room_primary_floor_coverings as $room_primary_floor_covering)
-                    <option value="{{ $room_primary_floor_covering['name'] }}"
-                      data-target="{{ $room_primary_floor_covering['target'] }}"
-                      data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                      style="width:calc(33.3% - 10px);"  {{$auction->get->room_primary_floor_covering ?? ''}}>
-                      {{ $room_primary_floor_covering['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-              @php
-                $room_features = [
-                    ['name' => 'Bar', 'target' => ''],
-                    ['name' => 'Bath with Spa/Hydro Massage Tub', 'target' => ''],
-                    ['name' => 'Bath With Whirlpoo', 'target' => ''],
-                    ['name' => 'Bidet', 'target' => ''],
-                    ['name' => 'Breakfast Bar', 'target' => ''],
-                    ['name' => 'Built-In Shelving', 'target' => ''],
-                    ['name' => 'Built-In Shower Bench', 'target' => ''],
-                    ['name' => 'Ceiling Fan(s)', 'target' => ''],
-                    ['name' => 'Claw Foot Tub', 'target' => ''],
-                    ['name' => 'Closet Pantry', 'target' => ''],
-                    ['name' => 'Cooking Island', 'target' => ''],
-                    ['name' => 'Desk Built-In ', 'target' => ''],
-                    ['name' => 'Dual Sinks', 'target' => ''],
-                    ['name' => 'En Suite Bathroom ', 'target' => ''],
-                    ['name' => 'Exhaust Fan', 'target' => ''],
-                    ['name' => 'Garden Bath ', 'target' => ''],
-                    ['name' => 'Granite Counters', 'target' => ''],
-                    ['name' => 'Handicap Accessible', 'target' => ''],
-                    ['name' => 'Heated Floors', 'target' => ''],
-                    ['name' => 'Island', 'target' => ''],
-                    ['name' => 'Jack and Jill Bathroom', 'target' => ''],
-                    ['name' => 'Linen Closet Bath', 'target' => ''],
-                    ['name' => 'Makeup/Vanity Space', 'target' => ''],
-                    ['name' => 'Multiple Shower Heads', 'target' => ''],
-                    ['name' => 'Pantry', 'target' => ''],
-                    ['name' => 'Rain Shower Head', 'target' => ''],
-                    ['name' => 'Sauna', 'target' => ''],
-                    ['name' => 'Shower- No Tub', 'target' => ''],
-                    ['name' => 'Single Vanity', 'target' => ''],
-                    ['name' => 'Sink-Pedestal ', 'target' => ''],
-                    ['name' => 'Split Vanities ', 'target' => ''],
-                    ['name' => 'Steam Shower', 'target' => ''],
-                    ['name' => 'Stone Counters', 'target' => ''],
-                    ['name' => 'Sunken Shower', 'target' => ''],
-                    ['name' => 'Tall Countertops ', 'target' => ''],
-                    ['name' => 'Tile Counters', 'target' => ''],
-                    ['name' => 'Tub with Separate Shower Stall ', 'target' => ''],
-                    ['name' => 'Tub with Shower', 'target' => ''],
-                    ['name' => 'Urinal', 'target' => ''],
-                    ['name' => 'Walk-In Pantry', 'target' => ''],
-                    ['name' => 'Walk-In Tub', 'target' => ''],
-                    ['name' => 'Water Closet/Priv Toliet', 'target' => ''],
-                    ['name' => 'Window/Skylight in Bath', 'target' => ''],
-                    ['name' => 'Wet Bar', 'target' => ''],
-                    ['name' => 'Other', 'target' => ''],
-                ];
-              @endphp
-              <div class="form-group ">
-                <label class="fw-bold">Room Features:</label>
-                <select class="grid-picker" name="room_feature[]" id="room_feature"
-                  style="justify-content: flex-start;" multiple>
-                  <option value="">Select</option>
-                  @foreach ($room_features as $room_feature)
-                    @php
-                      if ($room_feature['name'] == 'Other') {
-                          $target = '.custom_room_features';
-                      } else {
-                          $target = '';
-                      }
-                    @endphp
-                    <option value="{{ $room_feature['name'] }}" data-target="{{ $target }}"
-                      class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                      style="width:calc(33.3% - 10px);" {{isset($auction->get->room_feature) && $auction->get->room_feature == $room_feature['name'] ? 'selected' : ''}}>
-                      {{ $room_feature['name'] }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="form-group custom_room_features">
-                <label class="fw-bold">Room Features:</label>
-                <input type="text" name="custom_room_features" id="custom_room_features"
-                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" value="{{$auction->get->custom_room_features ?? ''}}">
-              </div>
-            </div>
+            <input type="hidden" id="room_type_input" name="room_details_data[]" value="{{isset($roomTypeData) ? $roomTypeData : ''}}" />
+            <div id="dynamicFieldsContainerRoomType"></div>
           </div>
-          <div class="wizard-step" data-step="33">
-            <label class="fw-bold">Water and Dock Information:</label>
-            <div class="form-group">
-              <label class="fw-bold">Water Access:</label>
-              <select class="grid-picker" name="has_water_access" id="has_water_access"
-                style="justify-content: flex-start;">
-                <option value="">Select</option>
-                @foreach ($yes_or_nos as $item)
-                  @php
-                    if ($item['name'] == 'Yes') {
-                        $target = '.water_access_residentail';
-                    } else {
-                        $target = '';
-                    }
-                  @endphp
-                  <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'  {{isset($auction->get->has_water_access) && $auction->get->has_water_access == $item['name'] ? 'selected' : ''}}>
-                    {{ $item['name'] }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
-            @php
-              $water_access = [['name' => 'Bay/Harbor', 'target' => ''], ['name' => 'Bayou', 'target' => ''], ['name' => 'Beach', 'target' => ''], ['name' => 'Beach - Access Deeded', 'target' => ''], ['name' => 'Brackish Water', 'target' => ''], ['name' => 'Canal - Brackish', 'target' => ''], ['name' => 'Canal - Freshwater', 'target' => ''], ['name' => 'Canal - Saltwater', 'target' => ''], ['name' => 'Creek', 'target' => ''], ['name' => 'Freshwater Canal w/Lift to Saltwater Canal', 'target' => ''], ['name' => 'Gulf/Ocean', 'target' => ''], ['name' => 'Gulf/Ocean to Bay', 'target' => ''], ['name' => 'Intracoastal Waterway', 'target' => ''], ['name' => 'Lagoon/Estuary', 'target' => ''], ['name' => 'Lake', 'target' => ''], ['name' => 'Lake - Chain of Lakes', 'target' => ''], ['name' => 'Limited Access', 'target' => ''], ['name' => 'Marina', 'target' => ''], ['name' => 'Pond', 'target' => ''], ['name' => 'River', 'target' => '']];
-            @endphp
-            <div class="form-group water_access_residentail">
-              <select class="grid-picker" name="water_access[]" id="water_access"
-                style="justify-content: flex-start;" multiple>
-                <option value="">Select</option>
-                @foreach ($water_access as $water_access1)
-                  <option value="{{ $water_access1['name'] }}" data-target="{{ $water_access1['target'] }}"
-                    class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);"  {{isset($auction->get->water_access) && $auction->get->water_access == $water_access1['name'] ? 'selected' : ''}}>
-                    {{ $water_access1['name'] }}
-                  </option>
-                @endforeach
-              </select>
-            </div>
+          <div class="wizard-step" data-step="35">
+            <h4>Water and Dock Information:</h4>
             <div class="form-group ">
               <label class="fw-bold">Water View:</label>
               <select class="grid-picker" name="has_water_view" id="has_water_view"
@@ -3519,8 +3231,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' 
-                    {{isset($auction->get->has_water_view) && $auction->get->has_water_view == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_water_view) && $auction->get->has_water_view == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -3536,12 +3247,13 @@
                 @foreach ($water_views as $water_view)
                   <option value="{{ $water_view['name'] }}" data-icon="<i class='fa-regular fa-circle-check'></i>"
                     data-target="{{ $water_view['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" {{isset($auction->get->water_view) && $auction->get->water_view == $water_view['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->water_view) && in_array($water_view['name'], json_decode($auction->get->water_view) ?? []) ? 'selected' : ''}}>
                     {{ $water_view['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
+            
             <div class="form-group">
               <label class="fw-bold">Water Extras:</label>
               <select class="grid-picker" name="has_water_extra" id="has_water_extra"
@@ -3595,7 +3307,7 @@
                 @foreach ($water_extras as $water_extra)
                   <option value="{{ $water_extra['name'] }}" data-target="{{ $water_extra['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);"  {{isset($auction->get->water_extras) && $auction->get->water_extras == $water_extra['name'] ? 'selected' : '' }}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->water_extras) && in_array($water_extras['name'], json_decode($auction->get->water_extras) ?? []) ? 'selected' : ''}}>
                     {{ $water_extra['name'] }}
                   </option>
                 @endforeach
@@ -3615,14 +3327,35 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'  {{isset($auction->get->has_water_fontage) && $auction->get->has_water_fontage == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_water_fontage) && $auction->get->has_water_fontage == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
             @php
-              $water_frontage = [['name' => 'Bay/Harbor', 'target' => ''], ['name' => 'Bayou', 'target' => ''], ['name' => 'Beach', 'target' => ''], ['name' => 'Brackish Water', 'target' => ''], ['name' => 'Canal - Brackish', 'target' => ''], ['name' => 'Canal - Freshwater', 'target' => ''], ['name' => 'Canal - Saltwater', 'target' => ''], ['name' => 'Creek', 'target' => ''], ['name' => 'Freshwater Canal w/Lift to Saltwater Canal', 'target' => ''], ['name' => 'Gulf/Ocean', 'target' => ''], ['name' => 'Gulf/Ocean to Bay', 'target' => ''], ['name' => 'Intracoastal Waterway', 'target' => ''], ['name' => 'Lagoon/Estuary', 'target' => ''], ['name' => 'Lake', 'target' => ''], ['name' => 'Lake - Chain of Lakes', 'target' => ''], ['name' => 'Marina', 'target' => ''], ['name' => 'Pond', 'target' => ''], ['name' => 'River', 'target' => ''], ['name' => 'Canal Front', 'target' => ''], ['name' => 'Riparian Rights', 'target' => '']];
+              $water_frontage = [
+                ['name' => 'Bay/Harbor', 'target' => ''], 
+                ['name' => 'Bayou', 'target' => ''], 
+                ['name' => 'Beach', 'target' => ''], 
+                ['name' => 'Brackish Water', 'target' => ''], 
+                ['name' => 'Canal - Brackish', 'target' => ''], 
+                ['name' => 'Canal - Freshwater', 'target' => ''], 
+                ['name' => 'Canal - Saltwater', 'target' => ''], 
+                ['name' => 'Canal Front', 'target' => ''], 
+                ['name' => 'Creek', 'target' => ''], 
+                ['name' => 'Freshwater Canal w/Lift to Saltwater Canal', 'target' => ''], 
+                ['name' => 'Gulf/Ocean', 'target' => ''], 
+                ['name' => 'Gulf/Ocean to Bay', 'target' => ''], 
+                ['name' => 'Intracoastal Waterway', 'target' => ''], 
+                ['name' => 'Lagoon/Estuary', 'target' => ''], 
+                ['name' => 'Lake', 'target' => ''], 
+                ['name' => 'Lake - Chain of Lakes', 'target' => ''], 
+                ['name' => 'Marina', 'target' => ''], 
+                ['name' => 'Pond', 'target' => ''], 
+                ['name' => 'Riparian Rights', 'target' => ''],
+                ['name' => 'River', 'target' => ''], 
+              ];
             @endphp
             <div class="form-group water_frontage_residential_and_income d-none">
               <select class="grid-picker" name="water_frontage[]" id="water_frontage"
@@ -3631,8 +3364,44 @@
                 @foreach ($water_frontage as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);"   {{isset($auction->get->water_frontage) && $auction->get->water_frontage == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->water_frontage) && in_array($item['name'], json_decode($auction->get->water_frontage) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="fw-bold">Water Access:</label>
+              <select class="grid-picker" name="has_water_access" id="has_water_access"
+                style="justify-content: flex-start;">
+                <option value="">Select</option>
+                @foreach ($yes_or_nos as $item)
+                  @php
+                    if ($item['name'] == 'Yes') {
+                        $target = '.water_access_residentail';
+                    } else {
+                        $target = '';
+                    }
+                  @endphp
+                  <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_water_access) && $auction->get->has_water_access == $item['name'] ? 'selected' : ''}}>
+                    {{ $item['name'] }}
+                  </option>
+                @endforeach
+              </select>
+            </div>
+            @php
+              $water_access = [['name' => 'Bay/Harbor', 'target' => ''], ['name' => 'Bayou', 'target' => ''], ['name' => 'Beach', 'target' => ''], ['name' => 'Beach - Access Deeded', 'target' => ''], ['name' => 'Brackish Water', 'target' => ''], ['name' => 'Canal - Brackish', 'target' => ''], ['name' => 'Canal - Freshwater', 'target' => ''], ['name' => 'Canal - Saltwater', 'target' => ''], ['name' => 'Creek', 'target' => ''], ['name' => 'Freshwater Canal w/Lift to Saltwater Canal', 'target' => ''], ['name' => 'Gulf/Ocean', 'target' => ''], ['name' => 'Gulf/Ocean to Bay', 'target' => ''], ['name' => 'Intracoastal Waterway', 'target' => ''], ['name' => 'Lagoon/Estuary', 'target' => ''], ['name' => 'Lake', 'target' => ''], ['name' => 'Lake - Chain of Lakes', 'target' => ''], ['name' => 'Limited Access', 'target' => ''], ['name' => 'Marina', 'target' => ''], ['name' => 'Pond', 'target' => ''], ['name' => 'River', 'target' => '']];
+            @endphp
+            <div class="form-group water_access_residentail">
+              <select class="grid-picker" name="water_access[]" id="water_access"
+                style="justify-content: flex-start;" multiple>
+                <option value="">Select</option>
+                @foreach ($water_access as $water_access1)
+                  <option value="{{ $water_access1['name'] }}" data-target="{{ $water_access1['target'] }}"
+                    class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->water_access) && in_array($water_access1['name'], json_decode($auction->get->water_access) ?? []) ? 'selected' : ''}}>
+                    {{ $water_access1['name'] }}
                   </option>
                 @endforeach
               </select>
@@ -3651,7 +3420,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'   {{isset($auction->get->has_dock) && $auction->get->has_dock == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_dock) && $auction->get->has_dock == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -3691,46 +3460,41 @@
             <div class="form-group dock_residential_and_income d-none ">
               <label class="fw-bold">Dock Description:</label>
               <select class="grid-picker" name="dock[]" id="dock"
-                style="justify-content: flex-start;" multiple required>
+                style="justify-content: flex-start;" multiple>
                 <option value="">Select</option>
                 @foreach ($dock as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);" {{isset($auction->get->dock) && $auction->get->dock == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" required {{isset($auction->get->dock) && in_array($item['name'], json_decode($auction->get->dock) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group other-dock d-none">
                 <label class="fw-bold">Dock Description:</label>
-                <input type="text" name="custom_dock" id="custom_dock"
-                       class="form-control has-icon" data-icon="fa-regular fa-check-circle" required
-                       value="{{ old('custom_dock', $auction->get->custom_dock ?? '') }}">
-                </div>
-                <div class="form-group">
-                    <label class="fw-bold">Dock Lift Capacity:</label>
-                    <input type="text" name="dock_lift_capacity" id="dock_lift_capacity"
-                        class="form-control has-icon" data-icon="fa-regular fa-check-circle" required
-                        value="{{ old('dock_lift_capacity', $auction->get->dock_lift_capacity ?? '') }}">
-                </div>
-                <div class="form-group">
-                    <label class="fw-bold">Dock Year Built:</label>
-                    <input type="text" name="dock_year_built" id="dock_year_built"
-                        class="form-control has-icon" data-icon="fa-regular fa-check-circle" required
-                        value="{{ old('dock_year_built', $auction->get->dock_year_built ?? '') }}">
-                </div>
-                <div class="form-group">
-                    <label class="fw-bold">Dock Dimension:</label>
-                    <input type="text" name="dock_dimension" id="dock_dimension"
-                        class="form-control has-icon" data-icon="fa-regular fa-check-circle" required
-                        value="{{ old('dock_dimension', $auction->get->dock_dimension ?? '') }}">
-                </div>
-                <div class="form-group">
-                    <label class="fw-bold">Dock Maintenance Fee:</label>
-                    <input type="text" name="dock_maintenance_fee" id="dock_maintenance_fee"
-                        class="form-control has-icon" data-icon="fa-regular fa-check-circle" required
-                        value="{{ old('dock_maintenance_fee', $auction->get->dock_maintenance_fee ?? '') }}">
-                </div>            
+                <input type="text" name="custom_dock" value="{{isset($auction->get->custom_dock) ? $auction->get->custom_dock : ''}}" id="custom_dock"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Dock Lift Capacity:</label>
+                <input type="text" name="dock_lift_capacity" value="{{isset($auction->get->dock_lift_capacity) ? $auction->get->dock_lift_capacity : ''}}" id="dock_lift_capacity"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Dock Year Built:</label>
+                <input type="number" name="dock_year_built" value="{{isset($auction->get->dock_year_built) ? $auction->get->dock_year_built : ''}}" id="dock_year_built"
+                  class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Dock Dimension:</label>
+                <input type="text" name="dock_dimension" value="{{isset($auction->get->dock_dimension) ? $auction->get->dock_dimension : ''}}" id="dock_dimension"
+                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
+              </div>
+              <div class="form-group">
+                <label class="fw-bold">Dock Maintenance Fee:</label>
+                <input type="number" name="dock_maintenance_fee" value="{{isset($auction->get->dock_maintenance_fee) ? $auction->get->dock_maintenance_fee : ''}}" id="dock_maintenance_fee"
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
+              </div>
               @php
                 $feeFrequency = [['name' => 'Annual', 'target' => ''], ['name' => 'Monthly', 'target' => ''], ['name' => 'Quarterly', 'target' => ''], ['name' => 'N/A', 'target' => '']]
               @endphp
@@ -3741,15 +3505,15 @@
                 @foreach ($feeFrequency as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);"  {{isset($auction->get->dock_maintenance_fee_frequency) && $auction->get->dock_maintenance_fee_frequency == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->dock_maintenance_fee_frequency) && $auction->get->dock_maintenance_fee_frequency == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="34">
-            <label class="fw-bold">HOA, Condo Association and/or Master Association Information:</label>
+          <div class="wizard-step" data-step="36">
+            <h4>HOA, Condo Association and/or Master Association Information:</h4>
             <div class="form-group">
               <?php
                   $propsOpt = [
@@ -3764,7 +3528,7 @@
                 <option value="">Select</option>
                 @foreach ($propsOpt as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'  {{isset($auction->get->has_hoa) && $auction->get->has_hoa == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_hoa) && $auction->get->has_hoa == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -3778,13 +3542,12 @@
                 $community_features = [
                     ['name' => 'Airport/Runway', 'target' => ''],
                     ['name' => 'Association Recreation - Lease', 'target' => ''],
-                    ['name' => ' Association Recreation - Owned', 'target' => ''],
+                    ['name' => 'Association Recreation - Owned', 'target' => ''],
                     ['name' => 'Buyer Approval Required', 'target' => ''],
                     ['name' => 'Clubhouse', 'target' => ''],
-                    ['name' => 'Community Boat Ramp', 'target' => ''],
                     ['name' => 'Community Mailbox', 'target' => ''],
                     ['name' => 'Deed Restrictions', 'target' => ''],
-                    ['name' => 'Fishing', 'target' => ''],
+                    ['name' => 'Dog Park', 'target' => ''],
                     ['name' => 'Fitness Center', 'target' => ''],
                     ['name' => 'Gated Community - Guard', 'target' => ''],
                     ['name' => 'Gated Community - No Guard', 'target' => ''],
@@ -3794,22 +3557,17 @@
                     ['name' => 'Horse Stable(s)', 'target' => ''],
                     ['name' => 'Horses Allowed', 'target' => ''],
                     ['name' => 'Irrigation-Reclaimed Water', 'target' => ''],
-                    ['name' => 'Lake', 'target' => ''],
                     ['name' => 'No Truck/RV/Motorcycle Parking', 'target' => ''],
                     ['name' => 'Park', 'target' => ''],
                     ['name' => 'Playground', 'target' => ''],
                     ['name' => 'Pool', 'target' => ''],
-                    ['name' => 'Public Boat Ramp', 'target' => ''],
                     ['name' => 'Racquetball', 'target' => ''],
                     ['name' => 'Restaurant', 'target' => ''],
                     ['name' => 'Sidewalk', 'target' => ''],
                     ['name' => 'Special Community Restrictions', 'target' => ''],
                     ['name' => 'Stream Seasonal', 'target' => ''],
                     ['name' => 'Tennis Courts', 'target' => ''],
-                    ['name' => ' Water Access', 'target' => ''],
-                    ['name' => 'Waterfront', 'target' => ''],
                     ['name' => 'Wheelchair Access', 'target' => ''],
-                    ['name' => 'Dog Park', 'target' => ''],
                     ['name' => 'None', 'target' => ''],
                 ];
               @endphp
@@ -3822,7 +3580,7 @@
                     <option value="{{ $community_feature['name'] }}"
                       data-icon="<i class='fa-regular fa-circle-check'></i>"
                       data-target="{{ $community_feature['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" {{isset($auction->get->community_feature) && $auction->get->community_feature == $community_feature['name'] ? 'selected' : ''}}>
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->community_feature) && in_array($community_feature['name'], json_decode($auction->get->community_feature) ?? []) ? 'selected' : ''}}>
                       {{ $community_feature['name'] }}
                     </option>
                   @endforeach
@@ -3874,14 +3632,14 @@
                     <option value="{{ $association_amenitie['name'] }}"
                       data-icon="<i class='fa-regular fa-circle-check'></i>"
                       data-target="{{ $association_amenitie['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" {{isset($auction->get->association_amenitie) && $auction->get->association_amenitie == $association_amenitie['name'] ? 'selected' : ''}}>
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->association_amenitie) && in_array($association_amenitie['name'], json_decode($auction->get->association_amenitie) ?? []) ? 'selected' : ''}}>
                       {{ $association_amenitie['name'] }}
                     </option>
                   @endforeach
                 </select>
                 <div class="form-group otherAssocAmenitiesRes d-none">
                   <label class="fw-bold">Association Amenities: </label>
-                  <input type="text" name="otherAssocAmenities" class="form-control has-icon" data-icon="fa-regular fa-check-circle" value="{{$auction->get->otherAssocAmenities ?? ''}}">
+                  <input type="text" name="otherAssocAmenities" {{isset($auction->get->otherAssocAmenities) && $auction->get->otherAssocAmenities == $item['name'] ? 'selected' : ''}} class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                 </div>
               </div>
               @php
@@ -3900,7 +3658,6 @@
                     ['name' => 'Maintenance Grounds', 'target' => ''],
                     ['name' => 'Maintenance Repairs', 'target' => ''],
                     ['name' => 'Manager', 'target' => ''],
-                    ['name' => 'None', 'target' => ''],
                     ['name' => 'Pest Control', 'target' => ''],
                     ['name' => 'Pool Maintenance', 'target' => ''],
                     ['name' => 'Private Road', 'target' => ''],
@@ -3909,6 +3666,7 @@
                     ['name' => 'Sewer', 'target' => ''],
                     ['name' => 'Trash', 'target' => ''],
                     ['name' => 'Water', 'target' => ''],
+                    ['name' => 'None', 'target' => ''],
                     ['name' => 'Other', 'target' => '.otherFeeIncludeRes'],
                 ];
               @endphp
@@ -3921,27 +3679,27 @@
                     <option value="{{ $fee_include['name'] }}"
                       data-icon="<i class='fa-regular fa-circle-check'></i>"
                       data-target="{{ $fee_include['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);"  {{isset($auction->get->fee_include) && $auction->get->fee_include == $fee_include['name'] ? 'selected' : ''}}>
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->fee_include) && in_array($fee_include['name'], json_decode($auction->get->fee_include) ?? []) ? 'selected' : ''}}>
                       {{ $fee_include['name'] }}
                     </option>
                   @endforeach
                 </select>
                 <div class="form-group otherFeeIncludeRes d-none">
                   <label class="fw-bold">Fee Includes:</label>
-                  <input type="text" name="otherFeeInclude" class="form-control has-icon" data-icon="fa-regular fa-check-circle"  value="{{$auction->get->otherFeeInclude ?? ''}}">
+                  <input type="text" name="otherFeeInclude" value="{{isset($auction->get->otherFeeInclude) ? $auction->get->otherFeeInclude : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                 </div>
               </div>
               <div class="form-group">
                 <label class="fw-bold">Amenities with Additional Fees:</label>
-                <input type="text" name="amenities_with_additional_fees"
-                  class="form-control has-icon" data-icon="fa-regular fa-check-circle"  value="{{$auction->get->amenities_with_additional_fees ?? ''}}">
+                <input type="text" name="amenities_with_additional_fees" value="{{isset($auction->get->amenities_with_additional_fees) ? $auction->get->amenities_with_additional_fees : ''}}"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
                 <div class="form-group">
                     @php
                       $hoaFeeRequirements = [
                         ['name'=>'None','icon'=>'<i class="fa-regular fa-circle-check"></i>','target'=>''],
-                        ['name'=>'Optional','icon'=>'<i class="fa-regular fa-circle-question"></i>','target'=>''],
+                        ['name'=>'Optional','icon'=>'<i class="fa-regular fa-circle-check"></i>','target'=>''],
                         ['name'=>'Required','icon'=>'<i class="fa-regular fa-circle-check"></i>','target'=>'']
                       ];
                     @endphp
@@ -3950,7 +3708,7 @@
                       <option value="">Select</option>
                       @foreach ($hoaFeeRequirements as $item)
                         <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}"  {{isset($auction->get->hoaFeeRequirements) && $auction->get->hoaFeeRequirements == $item['name'] ? 'selected' : '' }}>
+                        style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}" {{isset($auction->get->hoaFeeRequirements) && $auction->get->hoaFeeRequirements == $item['name'] ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                       @endforeach
@@ -3959,7 +3717,7 @@
 
                 <div class="form-group">
                   <label class="fw-bold">HOA Fee:</label>
-                  <input type="text" name="hoaFeeAmount"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign"  value="{{$auction->get->hoaFeeAmount ?? ''}}">
+                  <input type="number" name="hoaFeeAmount" value="{{isset($auction->get->hoaFeeAmount) ? $auction->get->hoaFeeAmount : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" >
                 </div>
 
                 <div class="form-group">
@@ -3976,7 +3734,7 @@
                     <option value="">Select</option>
                     @foreach ($paymentSchedules as $item)
                       <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'   {{isset($auction->get->paymentSchedules) && $auction->get->paymentSchedules == $item['name'] ? 'selected' : '' }}>
+                        style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->paymentSchedules) && $auction->get->paymentSchedules == $item['name'] ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                     @endforeach
@@ -3985,7 +3743,7 @@
 
                 <div class="form-group">
                   <label class="fw-bold">Condo Fee:</label>
-                  <input type="text" name="condoFeeAmount" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" >
+                  <input type="number" name="condoFeeAmount" value="{{isset($auction->get->condoFeeAmount) ? $auction->get->condoFeeAmount : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" >
                 </div>
 
                 <div class="form-group">
@@ -4002,7 +3760,7 @@
                     <option value="">Select</option>
                     @foreach ($condoPayOpt as $item)
                       <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'    {{isset($auction->get->condoPay) && $auction->get->condoPay == $item['name'] ? 'selected' : ''}}>
+                        style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->condoPay) && $auction->get->condoPay == $item['name'] ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                     @endforeach
@@ -4031,7 +3789,7 @@
                 <div class="form-group masterAssocYesRes d-none">
                   <div class="form-group">
                     <label class="fw-bold">Master Association Fee:</label>
-                    <input type="text" name="masterAssociationFeeAmount" id="masterAssociationFeeAmount" class="form-control has-icon " data-icon="fa-solid fa-dollar-sign" value="{{$auction->get->masterAssociationFeeAmount ?? ''}}">
+                    <input type="number" name="masterAssociationFeeAmount" value="{{isset($auction->get->masterAssociationFeeAmount) ? $auction->get->masterAssociationFeeAmount : ''}}" id="masterAssociationFeeAmount" class="form-control has-icon " data-icon="fa-solid fa-dollar-sign" >
                   </div>
 
                   <div class="form-group">
@@ -4057,12 +3815,12 @@
 
                   <div class="form-group">
                     <label class="fw-bold">Master Association Name:</label>
-                    <input type="text" name="masterAssociationName" id="masterAssociationName" class="form-control has-icon" data-icon="fa-solid fa-user"  value="{{$auction->get->masterAssociationName ?? ''}}">
+                    <input type="text" name="masterAssociationName" value="{{isset($auction->get->masterAssociationName) ? $auction->get->masterAssociationName : ''}}" id="masterAssociationName" class="form-control has-icon" data-icon="fa-solid fa-user">
                   </div>
 
                   <div class="form-group">
                     <label class="fw-bold">Master Association Contact Phone:</label>
-                    <input type="text" name="masterAssociationContactPhone" class="form-control has-icon" data-icon="fa-solid fa-phone"  value="{{$auction->get->masterAssociationContactPhone ?? ''}}">
+                    <input type="text" name="masterAssociationContactPhone" value="{{isset($auction->get->masterAssociationContactPhone) ? $auction->get->masterAssociationContactPhone : ''}}" class="form-control has-icon" data-icon="fa-solid fa-phone">
                   </div>
                 </div>
 
@@ -4078,7 +3836,7 @@
                     <option value="">Select</option>
                     @foreach ($additioalFeeOpt as $item)
                       <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon='{{ $item['icon'] }}'  {{isset($auction->get->additionalFees) && $auction->get->additionalFees == $item['name'] ? 'selected' : ''}}>
+                        style="width:calc(33.3% - 10px);" data-icon='{{ $item['icon'] }}' {{isset($auction->get->additionalFees) && $auction->get->additionalFees == $item['name'] ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                     @endforeach
@@ -4087,11 +3845,11 @@
                 <div class="form-group additionalFeeYesRes d-none">
                   <div class="form-group">
                     <label class="fw-bold">What is the fee for?</label>
-                    <input type="text" name="additionalFeeReason" id="additionalFeeReason" class="form-control has-icon" data-icon=""   value="{{$auction->get->additionalFeeReason ?? ''}}">
+                    <input type="text" name="additionalFeeReason" value="{{isset($auction->get->additionalFeeReason) ? $auction->get->additionalFeeReason : ''}}" id="additionalFeeReason" class="form-control has-icon" data-icon="">
                   </div>
                   <div class="form-group">
                     <label class="fw-bold">Other Fee:</label>
-                    <input type="text" name="otherFeeAmount" id="otherFeeAmount" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign"   value="{{$auction->get->otherFeeAmount ?? ''}}">
+                    <input type="text" name="otherFeeAmount" value="{{isset($auction->get->otherFeeAmount) ? $auction->get->otherFeeAmount : ''}}" id="otherFeeAmount" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
                   </div>
                 </div>
                   <div class="form-group">
@@ -4108,7 +3866,7 @@
                       <option value="">Select</option>
                       @foreach ($otherFeeOpt as $item)
                         <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                          style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'   {{isset($auction->get->otherFee) && $auction->get->otherFee == $item['name'] ? 'selected' : ''}}>
+                          style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->otherFee) && $auction->get->otherFee == $item['name'] ? 'selected' : ''}}>
                           {{ $item['name'] }}
                         </option>
                       @endforeach
@@ -4117,22 +3875,22 @@
 
                 <div class="form-group">
                   <label class="fw-bold">Association/Manager Contact Name:</label>
-                  <input type="text" name="associationManagerContactName"  class="form-control has-icon" data-icon="fa-solid fa-user"  value="{{$auction->get->associationManagerContactName ?? ''}}">
+                  <input type="text" name="associationManagerContactName" value="{{isset($auction->get->associationManagerContactName) ? $auction->get->associationManagerContactName : ''}}" class="form-control has-icon" data-icon="fa-solid fa-user">
                 </div>
 
                 <div class="form-group">
                   <label class="fw-bold">Association/Manager Contact Email:</label>
-                  <input type="email" name="associationManagerContactEmail"  class="form-control has-icon" data-icon="fa-solid fa-envelope"   value="{{$auction->get->associationManagerContactEmail ?? ''}}">
+                  <input type="email" name="associationManagerContactEmail" value="{{isset($auction->get->associationManagerContactEmail) ? $auction->get->associationManagerContactEmail : ''}}" class="form-control has-icon" data-icon="fa-solid fa-envelope">
                 </div>
 
                 <div class="form-group">
                   <label class="fw-bold">Association/Manager Contact Phone:</label>
-                  <input type="text" name="associationManagerContactPhone" class="form-control has-icon" data-icon="fa-solid fa-phone"   value="{{$auction->get->associationManagerContactPhone ?? ''}}">
+                  <input type="text" name="associationManagerContactPhone" value="{{isset($auction->get->associationManagerContactPhone) ? $auction->get->associationManagerContactPhone : ''}}" class="form-control has-icon" data-icon="fa-solid fa-phone">
                 </div>
 
                 <div class="form-group">
                   <label class="fw-bold">Association/Manager Contact Website Address:</label>
-                  <input type="text" name="associationManagerContactWebsite"  class="form-control has-icon" data-icon="fa-regular fa-window-restore"    value="{{$auction->get->associationManagerContactWebsite ?? ''}}">
+                  <input type="text" name="associationManagerContactWebsite" value="{{isset($auction->get->associationManagerContactWebsite) ? $auction->get->associationManagerContactWebsite : ''}}" class="form-control has-icon" data-icon="fa-regular fa-window-restore">
                 </div>
 
                 <div class="form-group">
@@ -4147,15 +3905,15 @@
                     <option value="">Select</option>
                     @foreach ($olderPersonOpt as $item)
                       <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}"    {{isset($auction->get->olderPersons) && $auction->get->olderPersons ==  $item['name'] ? 'selected' : ''}}>
+                        style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}" {{isset($auction->get->olderPersons) && $auction->get->olderPersons == $item['name'] ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                     @endforeach
                   </select>
                 </div>
           </div>
-          <div class="wizard-step" data-step="35">
-            <label class="fw-bold">Ownership, Leasing Restrictions and Pets Information:</label>
+          <div class="wizard-step" data-step="37">
+            <h4>Ownership, Leasing Restrictions and Pets Information:</h4>
             @php
               $ownerships = [
                 ['name' => 'Co-Op', 'target' => ''], 
@@ -4178,7 +3936,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'     {{isset($auction->get->ownership) && $auction->get->ownership ==  $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->ownership) && $auction->get->ownership == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -4186,8 +3944,8 @@
             </div>
             <div class="form-group otherOwnershipRes d-none">
               <label class="fw-bold">Ownership:</label>
-              <input type="text" name="otherOwnership" id="custom_ownership" class="form-control has-icon"
-                data-icon="fa-regular fa-check-circle" value="{{$auction->get->otherOwnership ?? ''}}">
+              <input type="text" name="otherOwnership" value="{{isset($auction->get->otherOwnership) ? $auction->get->otherOwnership : ''}}" id="custom_ownership" class="form-control has-icon"
+                data-icon="fa-regular fa-check-circle">
             </div>
             @php
             $occupant_types = [['name' => 'Owner', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Tenant', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Vacant', 'target' => '', 'icon' => 'fa-regular fa-circle-check']];
@@ -4225,29 +3983,29 @@
                     @foreach ($existingLease as $item)
                       <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                         class="card flex-row" style="width:calc(33.3% - 10px);"
-                        data-icon='<i class="{{ $item['icon'] }}"></i>'  {{isset($auction->get->existing_lease_or_tenant) && $auction->get->existing_lease_or_tenant == $item['name'] ? 'selected' : ''}}>
+                        data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->exiting_lease_or_tenant) && $auction->get->exiting_lease_or_tenant == $item['name'] ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                     @endforeach
                   </select>
                   <div class="form-group existingLeaseyes d-none">
                     <label for="address" class="fw-bold">End Date of Lease:</label>
-                    <input type="date" name="end_of_lease_date" class="form-control has-icon" data-icon="fa-regular fa-calendar-days"  value="{{$auction->get->end_of_lease_date ?? ''}}">
+                    <input type="date" name="end_of_lease_date" value="{{isset($auction->get->end_of_lease_date) ? $auction->get->end_of_lease_date : ''}}" class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
                   </div>
                   <div class="form-group monthToMonth d-none">
                     <label for="address" class="fw-bold">What is the required notice period for the tenant to vacate the property?</label>
-                    <input type="text" name="monthToMonth" class="form-control has-icon" data-icon="fa-regular fa-calendar-days"   value="{{$auction->get->monthToMonth ?? ''}}">
+                    <input type="text" name="monthToMonth" value="{{isset($auction->get->monthToMonth) ? $auction->get->monthToMonth : ''}}" class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="fw-bold">Monthly Rental Amount:</label>
-                  <input type="number" name="monthly_rental_ammount" id="monthly_rental_ammount" 
-                    class="form-control has-icon" data-icon="fa-solid fa-dollar"  value="{{$auction->get->monthly_rental_ammount ?? ''}}">
+                  <input type="number" name="monthly_rental_ammount" value="{{isset($auction->get->monthly_rental_ammount) ? $auction->get->monthly_rental_ammount : ''}}" id="monthly_rental_ammount" 
+                    class="form-control has-icon" data-icon="fa-solid fa-dollar">
                 </div>
                 <div class="form-group">
                   <label class="fw-bold">Days Notice to Tenant if not Renewing:</label>
-                  <input type="text" name="days_notice_to_terminate" id="days_notice_to_terminate"
-                    class="form-control has-icon" data-icon="fa-regular fa-calendar-days"   value="{{$auction->get->days_notice_to_terminate ?? ''}}">
+                  <input type="text" name="days_notice_to_terminate" value="{{isset($auction->get->days_notice_to_terminate) ? $auction->get->days_notice_to_terminate : ''}}" id="days_notice_to_terminate"
+                    class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
                 </div>
               </div>
             </div>
@@ -4265,7 +4023,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'   {{isset($auction->get->has_leasing) && $auction->get->has_leasing  == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_leasing) && $auction->get->has_leasing == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -4306,7 +4064,7 @@
                       }
                     @endphp
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'  {{isset($auction->get->association_approval_required) && $auction->get->association_approval_required == $item['name'] ? 'selected' : ''}}>
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->association_approval_required) && $auction->get->association_approval_required == $item['name'] ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -4323,7 +4081,7 @@
                   @foreach ($minimum_lease_period as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                       data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                      style="width:calc(33.3% - 10px);"  {{isset($auction->get->minimum_lease_period) && $auction->get->minimum_lease_period == $item['name'] ? 'selected' : ''}}>
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->minimum_lease_period) && $auction->get->minimum_lease_period == $item['name'] ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -4331,8 +4089,8 @@
               </div>
               <div class="form-group">
                 <label class="fw-bold">Maximum Lease Times Per Year:</label>
-                <input type="text" name="minimum_lease_per_year"
-                  class="form-control has-icon" data-icon="fa-solid fa-calendar-days"  value="{{ $auction->get->maximum_lease_times_per_year }}">
+                <input type="text" name="minimum_lease_per_year" value="{{isset($auction->get->minimum_lease_per_year) ? $auction->get->minimum_lease_per_year : ''}}"
+                  class="form-control has-icon" data-icon="fa-solid fa-calendar-days">
               </div>
               <div class="form-group">
                 <label class="fw-bold">Years of Ownership Prior to Leasing Required:</label>
@@ -4348,7 +4106,7 @@
                       }
                     @endphp
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'   {{isset($auction->get->years_of_ownership_required) && $auction->get->years_of_ownership_required == $item['name'] ? 'selected' : ''}}>
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->years_of_ownership) && $auction->get->years_of_ownership == $item['name'] ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -4356,14 +4114,14 @@
               </div>
               <div class="form-group">
                 <label class="fw-bold">Number of Ownership Years Prior to Leasing:</label>
-                <input type="text" name="number_of_ownership_prior_lease" class="form-control has-icon"
-                  data-icon="fa-regular fa-calendar-days"  value="{{ $auction->get->number_of_ownership_prior_lease }}">
+                <input type="text" name="number_of_ownership_prior_lease" value="{{isset($auction->get->number_of_ownership_prior_lease) ? $auction->get->number_of_ownership_prior_lease : ''}}" class="form-control has-icon"
+                  data-icon="fa-regular fa-calendar-days">
               </div>
             </div>
             <div class="form-group">
               <label class="fw-bold">Pets Allowed:</label>
               <select class="grid-picker" name="ptes_Allowed" id="has_rental_restrictions"
-                style="justify-content: flex-start;">
+                style="justify-content: flex-start;" required>
                 <option value="">Select</option>
                 @foreach ($yes_or_nos as $item)
                   @php
@@ -4374,20 +4132,20 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->pets_allowed) && $auction->get->pets_allowed ==  $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->ptes_Allowed) && $auction->get->ptes_Allowed == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="row ">
-                <div class="form-group">
-                  <label class="fw-bold">Acceptable Pet Types:</label>
-                  <input type="text" name="acceptablePet" class="form-control has-icon" data-icon="fa-solid fa-dog"  value="{{ $auction->get->acceptablePet ?? ''}}">
-                </div>
                 @php
                   $total_pets_allowed = [['target' => '', 'name' => '1'], ['target' => '', 'name' => '2'], ['target' => '', 'name' => '3'], ['target' => '', 'name' => '4'], ['target' => '', 'name' => '5'], ['target' => '', 'name' => '6'], ['target' => '', 'name' => '7'], ['target' => '', 'name' => '8'], ['target' => '', 'name' => '9'], ['target' => '', 'name' => '10'], ['target' => '.custom_pets_allowed', 'name' => 'Other']];
                 @endphp
                 <div class="form-group pets_allowed_question12 d-none">
+                  <div class="form-group">
+                    <label class="fw-bold">Acceptable Pet Types:</label>
+                    <input type="text" name="acceptablePet" value="{{isset($auction->get->acceptablePet) ? $auction->get->acceptablePet : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dog">
+                  </div>
                   <div class="form-group">
                     <label class="fw-bold">Number of Pets Allowed:</label>
                     <select class="grid-picker" name="total_pets_allowed" id="total_pets_allowed"
@@ -4396,7 +4154,7 @@
                       @foreach ($total_pets_allowed as $item)
                         <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                           class="card flex-column" style="width:calc(10% - 10px);"
-                          data-icon='<i class="fa-solid fa-dog"></i>'  {{isset($auction->get->total_pets_allowed) && $auction->get->total_pets_allowed == $item['name'] ? 'selected' : ''}}>
+                          data-icon='<i class="fa-solid fa-dog"></i>' {{isset($auction->get->total_pets_allowed) && $auction->get->total_pets_allowed == $item['name'] ? 'selected' : ''}}>
                           {{ $item['name'] }}
                         </option>
                       @endforeach
@@ -4404,24 +4162,24 @@
                   </div>
                   <div class="form-group custom_pets_allowed d-none">
                     <label class="fw-bold">Number of Pets Allowed:</label>
-                    <input type="text" name="custom_pets_allowed" id="custom_pets_allowed"
-                      class="form-control has-icon" data-icon="fa-solid fa-dog"   value="{{ $auction->get->custom_pets_allowed ?? ''}}">
+                    <input type="text" name="custom_pets_allowed" value="{{isset($auction->get->custom_pets_allowed) ? $auction->get->custom_pets_allowed : ''}}" id="custom_pets_allowed"
+                      class="form-control has-icon" data-icon="fa-solid fa-dog">
                   </div>
                   <div class="form-group">
                     <label class="fw-bold">Max Pet Weight:</label>
-                    <input type="text" name="max_pet_weight" id="max_pet_weight" class="form-control has-icon"
-                      data-icon="fa-solid fa-dog"  value="{{ $auction->get->max_pet_weight ?? ''}}">
+                    <input type="text" name="max_pet_weight" value="{{isset($auction->get->max_pet_weight) ? $auction->get->max_pet_weight : ''}}" id="max_pet_weight" class="form-control has-icon"
+                      data-icon="fa-solid fa-dog">
                   </div>
                   <div class="form-group">
                     <label class="fw-bold">Pet Restrictions:</label>
-                    <textarea name="pet_restrictions" id="pet_restrictions" class="form-control" cols="30" rows="5">{{old($auction->get->pet_restrictions,  $auction->get->pet_restrictions ?? '')}}</textarea>
+                    <textarea name="pet_restrictions" id="pet_restrictions" class="form-control" cols="30" rows="5">{{isset($auction->get->pet_restrictions) ? $auction->get->pet_restrictions : ''}}</textarea>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="36">
-            <label class="fw-bold">Green Features:</label>
+          <div class="wizard-step" data-step="38">
+            <h4>Green Features:</h4>
             @php
               $greenOpt = [
                 ['name'=>'Yes','icon'=>'<i class="fa-regular fa-circle-check"></i>','target'=>'.green-field-opts'],
@@ -4434,7 +4192,7 @@
                 <option value="">Select</option>
                 @foreach ($greenOpt as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon="{{$item['icon']}}"  {{isset($auction->get->green_features) && $auction->get->green_features == $item['name'] ? 'selected' : ''}}>
+                    style="width:calc(33.3% - 10px);" data-icon="{{$item['icon']}}" {{isset($auction->get->green_features) && $auction->get->green_features == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -4471,11 +4229,11 @@
                 ['name'=>'NGBS New Construction','target'=>''],
                 ['name'=>'NGBS Small Projects Remodel','target'=>''],
                 ['name'=>'NGBS Whole-Home Remodel','target'=>''],
-                ['name'=>'Other - Specify in Remarks','target'=>''],
                 ['name'=>'Pearl Certification','target'=>''],
                 ['name'=>'PHIUS+','target'=>''],
                 ['name'=>'WaterSense','target'=>''],
-                ['name'=>'Zero Energy Ready Home','target'=>'']
+                ['name'=>'Zero Energy Ready Home','target'=>''],
+                ['name'=>'Other','target'=>'.buildingVerOther']
               ];
               @endphp
               <div class="form-group">
@@ -4484,11 +4242,15 @@
                   <option value="">Select</option>
                   @foreach ($buildingVerificationOpt as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" {{isset($auction->get->building_verification) &&  $auction->get->building_verification == $item['name'] ? 'selected' : '' }}>
+                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" {{isset($auction->get->building_verification) && $auction->get->building_verification == $item['name'] ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
                 </select>
+              </div>
+              <div class="form-group buildingVerOther d-none">
+                <label class="fw-bold">Building Verification:</label>
+                <input type="text" name="building_verification_other" value="{{isset($auction->get->building_verification_other) ? $auction->get->building_verification_other : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle"/>
               </div>
               @php
               $statusOpt = [
@@ -4502,7 +4264,7 @@
                   <option value="">Select</option>
                   @foreach ($statusOpt as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>"  {{isset($auction->get->green_status) &&  $auction->get->green_status ==  $item['name'] ? 'selected' : '' }}>
+                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" {{isset($auction->get->green_status) && $auction->get->green_status == $item['name'] ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -4510,23 +4272,23 @@
               </div>
               <div class="form-group">
                 <label class="fw-bold">Year:</label>
-                <input type="text" name="green_year" class="form-control has-icon" data-icon="fa-regular fa-check-circle"  value="{{isset($auction->get->green_year) ? $auction->get->green_year : ''}}">
+                <input type="text" name="green_year" value="{{isset($auction->get->green_year) ? $auction->get->green_year : ''}}" class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
               </div>
               <div class="form-group">
                 <label class="fw-bold">Version:</label>
-                <input type="text" name="green_version" class="form-control has-icon" data-icon="fa-regular fa-check-circle"   value="{{isset($auction->get->green_version) ? $auction->get->green_version : ''}}">
+                <input type="text" name="green_version" value="{{isset($auction->get->green_version) ? $auction->get->green_version : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
               <div class="form-group">
                 <label class="fw-bold">Body:</label>
-                <input type="text" name="green_body" class="form-control has-icon" data-icon="fa-regular fa-check-circle"   value="{{isset($auction->get->green_body) ? $auction->get->green_body  : ''}}">
+                <input type="text" name="green_body" value="{{isset($auction->get->green_body) ? $auction->get->green_body : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
               <div class="form-group">
                 <label class="fw-bold">Metric:</label>
-                <input type="text" name="green_metric" class="form-control has-icon" data-icon="fa-regular fa-check-circle"    value="{{isset($auction->get->green_metric) ? $auction->get->green_metric  : ''}}">
+                <input type="text" name="green_metric" value="{{isset($auction->get->green_metric) ? $auction->get->green_metric : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
               <div class="form-group">
                 <label class="fw-bold">Rating:</label>
-                <input type="text" name="green_rating" class="form-control has-icon" data-icon="fa-regular fa-check-circle"     value="{{isset($auction->get->green_rating) ? $auction->get->green_rating   : ''}}">
+                <input type="text" name="green_rating" value="{{isset($auction->get->green_rating) ? $auction->get->green_rating : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
               @php
               $sourceOpt = [
@@ -4534,11 +4296,11 @@
                 ['name'=>'Assessor','target'=>''],
                 ['name'=>'Builder','target'=>''],
                 ['name'=>'Contractor or Installer','target'=>''],
-                ['name'=>'Other - see Remarks','target'=>''],
                 ['name'=>'Owner','target'=>''],
                 ['name'=>'Program Sponser','target'=>''],
                 ['name'=>'Program Verifier','target'=>''],
-                ['name'=>'Public Records','target'=>'']
+                ['name'=>'Public Records','target'=>''],
+                ['name'=>'Other','target'=>'.sourceOther'],
               ];
               @endphp
               <div class="form-group">
@@ -4547,15 +4309,19 @@
                   <option value="">Select</option>
                   @foreach ($sourceOpt as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" >
+                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" {{isset($auction->get->green_source) && $auction->get->green_source == $item['name'] ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
                 </select>
+                <div class="form-group sourceOther d-none">
+                  <label class="fw-bold">Source:</label>
+                  <input type="text" name="green_source_other" value="{{isset($auction->get->green_source_other) ? $auction->get->green_source_other : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                </div>
               </div>
               <div class="form-group">
                 <label class="fw-bold">Green Verification URL:</label>
-                <input type="text" name="green_url" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                <input type="text" name="green_url" value="{{isset($auction->get->green_url) ? $auction->get->green_url : ''}}" class="form-control has-icon" data-icon="fa-solid fa-link">
               </div>
               @php
               $sustainabilityOpt = [
@@ -4570,11 +4336,11 @@
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Green Sustainability:</label>
-                <select class="grid-picker" name="green_sustainability" id="green_sustainability" style="justify-content: flex-start;">
+                <select class="grid-picker" name="green_sustainability[]" id="green_sustainability" style="justify-content: flex-start;" multiple>
                   <option value="">Select</option>
                   @foreach ($sustainabilityOpt as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" >
+                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" {{isset($auction->get->green_sustainability) && in_array($item['name'], json_decode($auction->get->green_sustainability) ?? []) ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -4589,11 +4355,11 @@
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Green Energy Generation:</label>
-                <select class="grid-picker" name="green_generation" id="green_generation" style="justify-content: flex-start;">
+                <select class="grid-picker" name="green_generation[]" id="green_generation" style="justify-content: flex-start;" multiple>
                   <option value="">Select</option>
                   @foreach ($generationOpt as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" >
+                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" {{isset($auction->get->green_generation) && in_array($item['name'], json_decode($auction->get->green_generation) ?? []) ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -4616,11 +4382,11 @@
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Green Water Features:</label>
-                <select class="grid-picker" name="green_water_features" id="green_water" style="justify-content: flex-start;">
+                <select class="grid-picker" name="green_water_features[]" id="green_water" style="justify-content: flex-start;" multiple multiple>
                   <option value="">Select</option>
                   @foreach ($waterOpt as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" >
+                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" {{isset($auction->get->green_water_features) && in_array($item['name'], json_decode($auction->get->green_water_features) ?? []) ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -4646,11 +4412,11 @@
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Green Energy Features:</label>
-                <select class="grid-picker" name="green_energy_features" id="green_energy" style="justify-content: flex-start;">
+                <select class="grid-picker" name="green_energy_features[]" id="green_energy" style="justify-content: flex-start;" multiple>
                   <option value="">Select</option>
                   @foreach ($energyOpt as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" >
+                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" {{isset($auction->get->green_energy_features) && in_array($item['name'], json_decode($auction->get->green_energy_features) ?? []) ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -4667,11 +4433,11 @@
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Green Landscaping:</label>
-                <select class="grid-picker" name="green_landscaping" id="green_landscaping" style="justify-content: flex-start;">
+                <select class="grid-picker" name="green_landscaping[]" id="green_landscaping" style="justify-content: flex-start;" multiple>
                   <option value="">Select</option>
                   @foreach ($landscapingOpt as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" >
+                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" {{isset($auction->get->green_landscaping) && in_array($item['name'], json_decode($auction->get->green_landscaping) ?? []) ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -4686,11 +4452,11 @@
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Solar Panel Ownership:</label>
-                <select class="grid-picker" name="green_solar" id="green_solar" style="justify-content: flex-start;">
+                <select class="grid-picker" name="green_solar[]" id="green_solar" style="justify-content: flex-start;" multiple>
                   <option value="">Select</option>
                   @foreach ($solarOpt as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" >
+                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" {{isset($auction->get->green_solar) && in_array($item['name'], json_decode($auction->get->green_solar) ?? []) ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -4709,11 +4475,11 @@
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Disaster Mitigation:</label>
-                <select class="grid-picker" name="green_disaster" id="green_disaster" style="justify-content: flex-start;">
+                <select class="grid-picker" name="green_disaster[]" id="green_disaster" style="justify-content: flex-start;" multiple>
                   <option value="">Select</option>
                   @foreach ($disasterOpt as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" >
+                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" {{isset($auction->get->green_disaster) && in_array($item['name'], json_decode($auction->get->green_disaster) ?? []) ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -4741,11 +4507,11 @@
               @endphp
               <div class="form-group">
                 <label class="fw-bold">Indoor Air Quality:</label>
-                <select class="grid-picker" name="green_air" id="green_air" style="justify-content: flex-start;">
+                <select class="grid-picker" name="green_air[]" id="green_air" style="justify-content: flex-start;" multiple>
                   <option value="">Select</option>
                   @foreach ($airOpt as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" >
+                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" {{isset($auction->get->green_air) && in_array($item['name'], json_decode($auction->get->green_air) ?? []) ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -4753,18 +4519,18 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="37">
+          <div class="wizard-step" data-step="39">
             <div class="form-group">
               <label class="fw-bold"> Description:</label>
-              <textarea name="description" id="description" class="form-control" cols="30" rows="10" required></textarea>
+              <textarea name="description" value="{{isset($auction->get->description) ? $auction->get->description : ''}}" id="description" class="form-control" cols="30" rows="10" required></textarea>
             </div>
             <div class="form-group">
-              <label class="fw-bold">Legal Disclamers:</label>
-              <textarea name="disclamer" id="keywords" class="form-control" cols="30" rows="10" ></textarea>  
+              <label class="fw-bold">Legal Disclaimers:</label>
+              <textarea name="disclamer" value="{{isset($auction->get->disclamer) ? $auction->get->disclamer : ''}}" id="keywords" class="form-control" cols="30" rows="10" ></textarea>  
             </div>
             <div class="form-group">
               <label class="fw-bold">Driving Directions:</label>
-              <textarea name="driving_directions" id="keywords" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" cols="30" rows="10" ></textarea>    
+              <textarea name="driving_directions" value="{{isset($auction->get->driving_directions) ? $auction->get->driving_directions : ''}}" id="keywords" class="form-control" cols="30" rows="10" ></textarea>    
             </div>
             <div class="form-group">
                   @php
@@ -4777,7 +4543,7 @@
                   <option value="">Select</option>
                   @foreach ($sellerCompRes as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                      style="width:calc(33% - 10px);" data-icon="{{ $item['icon'] }}">
+                      style="width:calc(33% - 10px);" data-icon="{{ $item['icon'] }}" {{isset($auction->get->looking_other_property) && $auction->get->looking_other_property == $item['name'] ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -4791,12 +4557,12 @@
                         <button type="button" class="select-btn" data-type="percent">%</button>
                     </div>
                   </div>
-                  <input type="text" name="compensation_amount" class="form-control has-icon"
+                  <input type="text" name="compensation_amount" value="{{isset($auction->get->compensation_amount) ? $auction->get->compensation_amount : ''}}" class="form-control has-icon"
                     data-icon="fa-solid fa-percent">
                 </div>
               </div>
           </div>
-          <div class="wizard-step" data-step="38">
+          <div class="wizard-step" data-step="40">
             <div class="form-group">
               <label class="fw-bold">Is the Seller actively seeking to purchase another property?
               </label>
@@ -4812,7 +4578,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(50% - 10px);" data-icon="<i class='{{ $item['icon'] }}'></i>">
+                    style="width:calc(50% - 10px);" data-icon="<i class='{{ $item['icon'] }}'></i>" {{isset($auction->get->looking_other_property) && $auction->get->looking_other_property == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -4820,36 +4586,36 @@
             </div>
             <div class="form-group link_residential_and_income">
               <label class="fw-bold">Link to the listing on the Bid Your Offer platform:</label>
-              <input type="text" name="listing_link" id="listing_link" placeholder=""
+              <input type="text" name="listing_link"  value="{{isset($auction->get->listing_link) ? $auction->get->listing_link : ''}}" id="listing_link" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-link">
             </div>
           </div>
-          <div class="wizard-step" data-step="39">
+          <div class="wizard-step" data-step="41">
             <h4> Title Company Information:</h4>
             <div class="form-group">
               <label class="fw-bold">Name:</label>
-              <input type="text" name="title_company_name" id="title_company_name" placeholder=""
+              <input type="text" name="title_company_name" value="{{isset($auction->get->title_company_name) ? $auction->get->title_company_name : ''}}" id="title_company_name" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-user">
             </div>
             <div class="form-group">
               <label class="fw-bold">Address:</label>
-              <input type="text" name="title_company_address" id="title_company_address" placeholder=""
+              <input type="text" name="title_company_address" value="{{isset($auction->get->title_company_address) ? $auction->get->title_company_address : ''}}" id="title_company_address" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-location-dot">
             </div>
             <div class="form-group">
               <label class="fw-bold">Phone Number:</label>
-              <input type="text" name="title_company_phone" id="title_company_phone" placeholder=""
+              <input type="text" name="title_company_phone" value="{{isset($auction->get->title_company_phone) ? $auction->get->title_company_phone : ''}}" id="title_company_phone" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-phone">
             </div>
 
             <div class="form-group">
               <label class="fw-bold">Email:</label>
-              <input type="text" name="title_company_email" id="titl_company_email" placeholder=""
+              <input type="text" name="title_company_email" value="{{isset($auction->get->title_company_email) ? $auction->get->title_company_email : ''}}" id="titl_company_email" placeholder=""
               data-icon="fa-solid fa-envelope" class="form-control has-icon">
             </div>
         
           </div>
-          <div class="wizard-step" data-step="40">
+          <div class="wizard-step" data-step="42">
             @if (auth()->user()->user_type == 'agent')
               <h4>Listing Agent Information:</h4>
             @else
@@ -4860,13 +4626,13 @@
               <div class="form-group col-md-6">
                 <label class="fw-bold">First Name:</label>
                 <input type="text" name="agent_first_name" id="first_name" placeholder=""
-                  value="{{ Auth::user()->first_name }}" class="form-control has-icon"
+                value="{{isset($auction->get->agent_first_name) ? $auction->get->agent_first_name : ''}}" class="form-control has-icon"
                   data-icon="fa-solid fa-user" required>
               </div>
               <div class="form-group col-md-6">
                 <label class="fw-bold">Last Name:</label>
                 <input type="text" name="agent_last_name" id="last_name" placeholder=""
-                  value="{{ Auth::user()->last_name }}" class="form-control has-icon"
+                  value="{{isset($auction->get->agent_last_name) ? $auction->get->agent_last_name : ''}}" class="form-control has-icon"
                   data-icon="fa-solid fa-user" required>
               </div>
             </div>
@@ -4874,14 +4640,14 @@
               <div class="form-group col-md-6">
                 <label class="fw-bold">Phone Number:</label>
                 <input type="text" name="agent_phone" id="agent_phone" placeholder=""
-                  value="{{ optional(Auth::user())->phone }}" class="form-control has-icon"
+                  value="{{isset($auction->get->agent_phone) ? $auction->get->agent_phone : ''}}" class="form-control has-icon"
                   data-icon="fa-solid fa-phone" required>
               </div>
               <div class="form-group col-md-6 ">
                 <label class="fw-bold">Email:</label>
                 <input type="text" name="agent_email" id="agent_email" placeholder=""
                   class="form-control has-icon" data-icon="fa-solid fa-envelope"
-                  value="{{ Auth::user()->email }}" required>
+                  value="{{isset($auction->get->agent_email) ? $auction->get->agent_email : ''}}" required>
               </div>
             </div>
             @if (auth()->user()->user_type == 'agent')
@@ -4889,13 +4655,13 @@
               <div class="form-group col-md-6">
                 <label class="fw-bold">Brokerage:</label>
                 <input type="text" name="agent_brokerage" id="agent_brokerage" placeholder=""
-                  value="{{ optional(Auth::user())->brokerage }}" class="form-control has-icon"
+                  value="{{isset($auction->get->agent_brokerage) ? $auction->get->agent_brokerage : ''}}" class="form-control has-icon"
                   data-icon="fa-solid fa-handshake" required>
               </div>
               <div class="form-group col-md-6">
                 <label class="fw-bold">Real Estate License #:</label>
                 <input type="text" name="agent_license_no" id="agent_license_no" placeholder=""
-                  value="{{ optional(Auth::user())->license_no }}" class="form-control has-icon"
+                  value="{{isset($auction->get->agent_license_no) ? $auction->get->agent_license_no : ''}}" class="form-control has-icon"
                   data-icon="fa-solid fa-id-card" required>
               </div>
             </div>
@@ -4903,16 +4669,16 @@
               <div class="form-group col-md-6">
                 <label class="fw-bold">NAR Member ID (NRDS ID):</label>
                 <input type="text" name="agent_mls_id" id="agent_mls_id" placeholder=""
-                  class="form-control has-icon" data-icon="fa-solid fa-id-badge"
-                  value="{{ optional(Auth::user())->mls_id }}" required>
+                  class="form-control has-icon" data-icon="fa-solid fa-id-card-clip"
+                  value="{{isset($auction->get->agent_mls_id) ? $auction->get->agent_mls_id : ''}}" required>
               </div>
             </div>
             @endif
           </div>
-          <div class="wizard-step" data-step="41">
+          <div class="wizard-step" data-step="43">
             <div class="form-group">
               <label class="fw-bold">3D Tour (Link):</label>
-              <input type="text" name="three_d_tour" id="three_d_tour" placeholder=""
+              <input type="text" name="three_d_tour" value="{{isset($auction->get->three_d_tour) ? $auction->get->three_d_tour : ''}}" id="three_d_tour" placeholder=""
               class="form-control has-icon" data-icon="fa-solid fa-link">
             </div>
             <div class="form-group">
@@ -4921,8 +4687,7 @@
             </div>
             <div class="form-group">
               <label class="fw-bold">Addendums/Disclosures:</label>
-              <input type="file" name="disclosures[]" id="upload_file" placeholder="" class="form-control documents-input"
-              multiple>
+              <input type="file" name="disclosures[]" id="upload_file" placeholder="" class="form-control documents-input" multiple>
             </div>
             <span class="resFields">
               <div class="row">
@@ -4949,7 +4714,7 @@
                       </div>
                   </div>
                   <div class="video-upload video-type-element">
-                      <label class="fw-bold mt-1"> Property Video:</label>
+                      <label class="fw-bold mt-1">Property Video:</label>
                       <div class="videoBox ">
                           <div class="video bgImg"></div>
                           <div class="form-group videoDiv">
@@ -4962,14 +4727,14 @@
                       </div>
                   </div>
                   <div class="youtube-video video-type-element form-group d-none">
-                      <label class="fw-bold mt-1"> Youtube Video:</label>
+                      <label class="fw-bold mt-1">Youtube Video:</label>
                       <input type="text" name="youtube_video_link" class="form-control" placeholder="Youtube video link i.e. https://youtube.com/embed/videoId">
                   </div>
                   <div class="vimeo-video video-type-element form-group d-none">
                       <label class="fw-bold mt-1">Vimeo Video:</label>
                       <input type="text" name="vimeo_video_link" class="form-control" placeholder="Vimeo video link i.e. https://player.vimeo.com/video/videoId">
                   </div>
-              </div>
+                </div>
                 <div class="col-6">
                     <div class="upload form-group">
                         <label class="fw-bold">Property Photos:</label>
@@ -4992,7 +4757,7 @@
           </div>
           {{-- residential/income end --}}
           {{-- commercial/business Start --}}
-          <div class="wizard-step" data-step="42">
+          <div class="wizard-step" data-step="44">
             <div class="form-group">
               <label class="fw-bold">Bathrooms:</label>
               <select class="grid-picker" name="bathroomsCom" id="bathrooms" style="">
@@ -5000,43 +4765,43 @@
                 @foreach ($bathrooms as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     class="card flex-column" style="width:calc(20% - 10px);"
-                    data-icon='<i class="fa-solid fa-bath"></i>'>
+                    data-icon='<i class="fa-solid fa-bath"></i>' {{isset($auction->get->bathroomsCom) && $auction->get->bathroomsCom == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
-            <div class="form-group custom_bathrooms d-none">
+            <div class="form-group main custom_bathrooms d-none">
               <label class="fw-bold">Bathrooms:</label>
-              <input type="text" name="custom_bathrooms_com" id="custom_bathrooms" class="form-control has-icon"
+              <input type="number" name="custom_bathrooms_com" value="{{isset($auction->get->custom_bathrooms_com) ? $auction->get->custom_bathrooms_com : ''}}" id="custom_bathrooms" class="form-control has-icon"
                 data-icon="fa-solid fa-bath">
             </div>
           </div>
-          <div class="wizard-step" data-step="43">
+          <div class="wizard-step" data-step="45">
             <div class="row">
               <div class="form-group col-md-4">
                 <label class="fw-bold">Unit Type</label>
-                <input type="text" name="unit_type" id="unit_type" class="form-control has-icon"
+                <input type="text" name="unit_type" value="{{isset($auction->get->unit_type) ? $auction->get->unit_type : ''}}" id="unit_type" class="form-control has-icon"
                   placeholder="Unit Type" data-icon="fa-solid fa-ruler-combined">
               </div>
               <div class="form-group col-md-4">
                 <label class="fw-bold">Sqt Ft Heated</label>
-                <input type="number" name="sqt_ft_heated" id="sqt_ft_heated" placeholder="Sqt Ft Heated"
+                <input type="number" name="sqt_ft_heated" value="{{isset($auction->get->sqt_ft_heated) ? $auction->get->sqt_ft_heated : ''}}" id="sqt_ft_heated" placeholder="Sqt Ft Heated"
                   class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
               </div>
               <div class="form-group col-md-4">
                 <label class="fw-bold">Number of Units</label>
-                <input type="number" name="number_of_units" id="number_of_units" placeholder="Number of Units"
+                <input type="number" name="number_of_units" value="{{isset($auction->get->number_of_units) ? $auction->get->number_of_units : ''}}" id="number_of_units" placeholder="Number of Units"
                   class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
               </div>
               <div class="form-group col-md-4">
                 <label class="fw-bold">Expected Rent</label>
-                <input type="number" name="expected_rent" id="expected_rent" placeholder="Expected Rent"
+                <input type="number" name="expected_rent" value="{{isset($auction->get->expected_rent) ? $auction->get->expected_rent : ''}}" id="expected_rent" placeholder="Expected Rent"
                   class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
               </div>
               <div class="form-group col-md-4">
                 <label class="fw-bold">Garage Spaces</label>
-                <input type="number" name="garage_spaces_unit" id="garage_spaces_unit"
+                <input type="number" name="garage_spaces_unit" value="{{isset($auction->get->garage_spaces_unit) ? $auction->get->garage_spaces_unit : ''}}" id="garage_spaces_unit"
                   placeholder="Garage Spaces" class="form-control has-icon" data-icon="fa-solid fa-warehouse">
               </div>
               <div class="form-group ">
@@ -5046,7 +4811,7 @@
                   <option value="">Select</option>
                   @foreach ($yes_or_nos as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->garage_attribute) && $auction->get->garage_attribute == $item['name'] ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -5055,43 +4820,43 @@
               <div class="form-group col-md-12">
                 <label class="fw-bold">Unit Type of Description:</label>
                 <textarea name="unit_type_of_description" id="unit_type_of_description" class="form-control" cols="30"
-                  rows="10"></textarea>
+                  rows="10">{{isset($auction->get->unit_type_of_description) ? $auction->get->unit_type_of_description : ''}}</textarea>
               </div>
 
               <div class="form-group col-md-4">
                 <label class="fw-bold">Annual Gross Income</label>
-                <input type="number" name="annual_gross_income" id="garage_attribute"
+                <input type="number" name="annual_gross_income" value="{{isset($auction->get->annual_gross_income) ? $auction->get->annual_gross_income : ''}}" id="garage_attribute"
                   placeholder="Annual Gross Income" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
               </div>
               <div class="form-group col-md-4">
                 <label class="fw-bold">Total Monthly Rent</label>
-                <input type="number" name="total_monthly_rent" id="garage_attribute"
+                <input type="number" name="total_monthly_rent" value="{{isset($auction->get->total_monthly_rent) ? $auction->get->total_monthly_rent : ''}}" id="garage_attribute"
                   placeholder="Total Monthly Rent" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
               </div>
               <div class="form-group col-md-4">
                 <label class="fw-bold">Total Monthly Expenses</label>
-                <input type="number" name="total_monthly_expenses" id="garage_attribute"
+                <input type="number" name="total_monthly_expenses" value="{{isset($auction->get->total_monthly_expenses) ? $auction->get->total_monthly_expenses : ''}}" id="garage_attribute"
                   placeholder="Total Monthly Expenses" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
               </div>
               <div class="form-group col-md-4">
                 <label class="fw-bold">Length of Lease</label>
-                <input type="text" name="lease_terms" id="garage_attribute" placeholder="Length of Lease"
+                <input type="text" name="lease_terms" value="{{isset($auction->get->lease_terms) ? $auction->get->lease_terms : ''}}" id="garage_attribute" placeholder="Length of Lease"
                   class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
               </div>
               <div class="form-group col-md-4">
                 <label class="fw-bold">Annual Net Income</label>
-                <input type="number" name="annual_net_income" id="garage_attribute"
+                <input type="number" name="annual_net_income" value="{{isset($auction->get->annual_net_income) ? $auction->get->annual_net_income : ''}}" id="garage_attribute"
                   placeholder="Annual Net Income" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
               </div>
               <div class="form-group col-md-4">
                 <label class="fw-bold">Est Annual Market Income</label>
-                <input type="text" name="est_annual_market_income" id="garage_attribute"
+                <input type="text" name="est_annual_market_income" value="{{isset($auction->get->est_annual_market_income) ? $auction->get->est_annual_market_income : ''}}" id="garage_attribute"
                   placeholder="Est Annual Market Income" class="form-control has-icon"
                   data-icon="fa-solid fa-ruler-combined">
               </div>
               <div class="form-group col-md-4">
                 <label class="fw-bold">Annual Expenses</label>
-                <input type="text" name="annual_expenses" id="garage_attribute"
+                <input type="text" name="annual_expenses" value="{{isset($auction->get->annual_expenses) ? $auction->get->annual_expenses : ''}}" id="garage_attribute"
                   class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
               </div>
               @php
@@ -5105,14 +4870,14 @@
                   @foreach ($terms_of_leases as $terms_of_lease)
                     <option value="{{ $terms_of_lease['name'] }}" data-target="{{ $terms_of_lease['target'] }}"
                       class="card flex-row" data-icon='<i class="fa-regular fa-circle-check"></i>'
-                      style="width:calc(33.3% - 10px);">
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->terms_of_lease) && $auction->get->terms_of_lease == $terms_of_lease['name'] ? 'selected' : ''}}>
                       {{ $terms_of_lease['name'] }}
                     </option>
                   @endforeach
                 </select>
                 <div class="form-group otherTermLeaseVacant d-none">
                   <label class="fw-bold">Terms of Lease:</label>
-                  <input type="text" name="otherTermLease" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                  <input type="text" name="otherTermLease" value="{{isset($auction->get->otherTermLease) ? $auction->get->otherTermLease : ''}}" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
                 </div>
               </div>
               @php
@@ -5126,14 +4891,14 @@
                   @foreach ($tenant_pays as $tenant_pay)
                     <option value="{{ $tenant_pay['name'] }}" data-target="{{ $tenant_pay['target'] }}"
                       class="card flex-row" data-icon='<i class="fa-regular fa-circle-check"></i>'
-                      style="width:calc(33.3% - 10px);">
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->tenant_pays) && $auction->get->tenant_pays == $tenant_pay['name'] ? 'selected' : ''}}>
                       {{ $tenant_pay['name'] }}
                     </option>
                   @endforeach
                 </select>
                 <div class="form-group otherTenantPayVacant d-none">
                   <label class="fw-bold">Tenant Pays:</label>
-                  <input type="text" name="otherTenantPay" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                  <input type="text" name="otherTenantPay" value="{{isset($auction->get->otherTenantPay) ? $auction->get->otherTenantPay : ''}}" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
                 </div>
               </div>
 
@@ -5148,7 +4913,7 @@
                   @foreach ($financial_sources as $financial_source)
                     <option value="{{ $financial_source['name'] }}"
                       data-target="{{ $financial_source['target'] }}" class="card flex-row"
-                      data-icon='<i class="fa-regular fa-circle-check"></i>' style="width:calc(33.3% - 10px);">
+                      data-icon='<i class="fa-regular fa-circle-check"></i>' style="width:calc(33.3% - 10px);"{{isset($auction->get->financial_sources) && $auction->get->financial_sources == $financial_source['name'] ? 'selected' : ''}}>
                       {{ $financial_source['name'] }}
                     </option>
                   @endforeach
@@ -5160,7 +4925,7 @@
                   <option value="">Select</option>
                   @foreach ($yes_or_nos as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->occupied) && $auction->get->occupied == $item['name'] ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -5168,22 +4933,22 @@
               </div>
               <div class="form-group">
                 <label class="fw-bold">Total Number of Units:</label>
-                <input type="number" name="total_number_of_units" placeholder="Total Number of Units"
+                <input type="number" name="total_number_of_units" value="{{isset($auction->get->total_number_of_units) ? $auction->get->total_number_of_units : ''}}" placeholder="Total Number of Units"
                   id="total_number_of_units" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
               </div>
 
             </div>
           </div>
-          <div class="wizard-step" data-step="44">
+          <div class="wizard-step" data-step="46">
             <div class="row ">
-              <div class="form-group">
+              <div class="form-group main">
                 <label class="fw-bold" for="heated_sqft">Heated Sqft:</label>
-                <input type="number" name="heated_sqft_com" placeholder="Heated sqft" id="heated_sqft"
+                <input type="number" name="heated_sqft_com" value="{{isset($auction->get->heated_sqft_com) ? $auction->get->heated_sqft_com : ''}}" id="heated_sqft"
                   class="form-control has-icon hide_arrow" data-icon="fa-solid fa-ruler-combined" required>
               </div>
               <div class="form-group">
                 <label class="fw-bold" for="sqft">Total Sqft:</label>
-                <input type="number" name="total_sqft_com" placeholder="Heated sqft" id="heated_sqft"
+                <input type="number" name="total_sqft_com" value="{{isset($auction->get->total_sqft_com) ? $auction->get->total_sqft_com : ''}}" id="heated_sqft"
                   class="form-control has-icon hide_arrow" data-icon="fa-solid fa-ruler-combined" required>
               </div>
               @php
@@ -5197,7 +4962,7 @@
                   @foreach ($heated_sources as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                       data-icon='<i class="fa-regular fa-check-circle"></i>' class="card flex-column"
-                      style="width:calc(33.3% - 10px);">
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->heated_source_com) && $auction->get->heated_source_com == $item['name'] ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -5205,7 +4970,7 @@
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="45">
+          <div class="wizard-step" data-step="47">
             @php
               $appliances = [
                   ['name' => 'Bar Fridge', 'target' => ''],
@@ -5247,24 +5012,24 @@
             <div class="form-group ">
               <label class="fw-bold">Appliances:</label>
               <select class="grid-picker" name="appliances[]" id="appliances" style="justify-content: flex-start;"
-                multiple>
+                multiple required>
                 <option value="">Select</option>
                 @foreach ($appliances as $item)
                   <option value="{{ $item['name'] }}" data-icon='<i class="fa-regular fa-check-circle"></i>'
                     data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->appliances) && in_array($item['name'], json_decode($auction->get->appliances, true) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherAppliancesIncome d-none">
                 <label class="fw-bold">Appliances:</label>
-                <input type="text" name="otherAppliancesCom" id="flood_zone_code" placeholder=""
+                <input type="text" name="otherAppliancesCom" value="{{isset($auction->get->otherAppliancesCom) ? $auction->get->otherAppliancesCom : ''}}" id="flood_zone_code" placeholder=""
                   class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="46">
+          <div class="wizard-step" data-step="48">
             <div class="form-group ">
               @php
                 $furnishingsIncome = [['name' => 'Yes', 'target' => '','target'=>'','icon'=>'<i class="fa-regular fa-circle-check"></i>'], ['name' => 'No', 'target' => '','target'=>'','icon'=>'<i class="fa-regular fa-circle-xmark"></i>'],['name' => 'Optional', 'target' => '','target'=>'','icon'=>'<i class="fa-regular fa-circle-question"></i>']];
@@ -5275,7 +5040,7 @@
                 <option value="">Select</option>
                 @foreach ($furnishingsIncome as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}">
+                    style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}" {{isset($auction->get->has_furnishing_com) && $auction->get->has_furnishing_com == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -5285,7 +5050,7 @@
               <div class="form-group">
                 <div class="form-group">
                   <label class="fw-bold">What furnishings are included in the purchase?</label>
-                  <input type="text" name="furnishings_include_com" id="flood_zone_code" placeholder=""
+                  <input type="text" name="furnishings_include_com" value="{{isset($auction->get->furnishings_include_com) ? $auction->get->furnishings_include_com : ''}}" id="flood_zone_code" placeholder=""
                     class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                 </div>
               </div>
@@ -5306,7 +5071,7 @@
                       }
                     @endphp
                     <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                      style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->has_additional_fees_com) && $auction->get->has_additional_fees_com == $item['name'] ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -5315,24 +5080,24 @@
               <div class="form-group has_additional_fees_commercial_and_business">
                 <div class="form-group">
                   <label class="fw-bold">How much is the listed furniture?</label>
-                  <input type="text" name="listed_furniture_price_com" id="listed_furniture_price" placeholder=""
+                  <input type="text" name="listed_furniture_price_com" value="{{isset($auction->get->listed_furniture_price_com) ? $auction->get->listed_furniture_price_com : ''}}" id="listed_furniture_price" placeholder=""
                     class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
                 </div>
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="47">
+          <div class="wizard-step" data-step="49">
             @php
               $yes_or_nos = [['name' => 'Yes', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
             @endphp
             <div class="form-group">
               <label class="fw-bold">Real Estate Include:</label>
-              <select class="grid-picker" name="has_real_estate_include" id="bathrooms" style="">
+              <select class="grid-picker" name="has_real_estate_include" id="bathrooms" style="" required>
                 <option value="">Select</option>
                 @foreach ($yes_or_nos as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     class="card flex-column" style="width:calc(33.3% - 10px);"
-                    data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_real_estate_include) && $auction->get->has_real_estate_include == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -5340,52 +5105,59 @@
             </div>
             <div class="form-group">
               <label class="fw-bold">Business Name:</label>
-              <input type="text" name="business_name" id="custom_bathrooms" class="form-control has-icon"
-                data-icon="fa-regular fa-circle-check">
+              <input type="text" name="business_name" value="{{isset($auction->get->business_name) ? $auction->get->business_name : ''}}" id="custom_bathrooms" class="form-control has-icon"
+                data-icon="fa-regular fa-circle-check" required>
             </div>
             <div class="form-group">
               <label class="fw-bold">Year Established:</label>
-              <input type="text" name="year_established" id="year_established" class="form-control has-icon"
-                data-icon="fa-regular fa-circle-check">
+              <input type="text" name="year_established" value="{{isset($auction->get->year_established) ? $auction->get->year_established : ''}}" id="year_established" class="form-control has-icon"
+                data-icon="fa-regular fa-calendar-days" required>
             </div>
             @php
-              $licenses = [['name' => 'Beer/Wine', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Liquor', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'None', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Off Site', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'On Site', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Other', 'target' => '', 'icon' => 'fa-regular fa-circle-check']];
+              $licenses = [
+                ['name' => 'Beer/Wine', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], 
+                ['name' => 'Liquor', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], 
+                ['name' => 'None', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], 
+                ['name' => 'Off Site', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], 
+                ['name' => 'On Site', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], 
+                ['name' => 'Other', 'target' => '.licensesOther', 'icon' => 'fa-regular fa-circle-check']
+              ];
             @endphp
             <div class="form-group">
               <label class="fw-bold">Licenses:</label>
-              <select class="grid-picker" name="licenses" id="bathrooms" style="">
+              <select class="grid-picker" name="licenses" id="bathrooms" style="" required>
                 <option value="">Select</option>
                 @foreach ($licenses as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     class="card flex-column" style="width:calc(33.3% - 10px);"
-                    data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                    data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->licenses) && $auction->get->licenses == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
-            <div class="form-group">
+            <div class="form-group licensesOther d-none">
               <div class="form-group">
                 <label class="fw-bold">Licenses:</label>
-                <input type="text" name="custom_licenses" id="custom_licenses" placeholder=""
-                  class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                <input type="text" name="custom_licenses" value="{{isset($auction->get->custom_licenses) ? $auction->get->custom_licenses : ''}}" id="custom_licenses" placeholder=""
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="48">
+          <div class="wizard-step" data-step="50">
             <div class="form-group">
               <label class="fw-bold">How many floors are in the property?</label>
-              <input type="text" name="number_of_buildings_com" id="number_of_buildings" placeholder=""
-                class="form-control has-icon" data-icon="fa-solid fa-hotel">
+              <input type="number" name="number_of_buildings_com" value="{{isset($auction->get->number_of_buildings_com) ? $auction->get->number_of_buildings_com : ''}}" id="number_of_buildings" placeholder=""
+                class="form-control has-icon" data-icon="fa-solid fa-hotel" required>
             </div>
             <div class="form-group">
               <label class="fw-bold">What floor number is the property on?</label>
-              <input type="number" name="floors_in_unit_com" id="floors_in_unit" placeholder=""
+              <input type="number" name="floors_in_unit_com" value="{{isset($auction->get->floors_in_unit_com) ? $auction->get->floors_in_unit_com : ''}}" id="floors_in_unit" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-building">
             </div>
             <div class="form-group">
               <label class="fw-bold">How many floors are in the entire building?</label>
-              <input type="number" name="total_floors_com" id="total_floors" placeholder=""
+              <input type="number" name="total_floors_com" value="{{isset($auction->get->total_floors_com) ? $auction->get->total_floors_com : ''}}" id="total_floors" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-building">
             </div>
             <div class="form-group">
@@ -5395,16 +5167,17 @@
                 <option value="">Select</option>
                 @foreach ($yes_or_nos as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(25% - 10px);" data-icon='<i class="fa-solid fa-building"></i>'>
+                    style="width:calc(25% - 10px);" data-icon='<i class="fa-solid fa-building"></i>' {{isset($auction->get->building_elevator_com) && $auction->get->building_elevator_com == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="49">
+          <div class="wizard-step" data-step="51">
             @php
               $floor_coverings = [
+                  ['name' => 'Bamboo', 'target' => ''],
                   ['name' => 'Brick/Stone', 'target' => ''],
                   ['name' => 'Carpet', 'target' => ''],
                   ['name' => 'Ceramic Tile', 'target' => ''],
@@ -5416,6 +5189,7 @@
                   ['name' => 'Granite', 'target' => ''],
                   ['name' => 'Laminate', 'target' => ''],
                   ['name' => 'Linoleum', 'target' => ''],
+                  ['name' => 'Luxury Vinyl', 'target' => ''],
                   ['name' => 'Marble', 'target' => ''],
                   ['name' => 'Other', 'target' => ''],
                   ['name' => 'Parquet', 'target' => ''],
@@ -5429,12 +5203,6 @@
                   ['name' => 'Travertine', 'target' => ''],
                   ['name' => 'Vinyl', 'target' => ''],
                   ['name' => 'Wood', 'target' => ''],
-                  ['name' => 'Washer', 'target' => ''],
-                  ['name' => 'Water Filtration System', 'target' => ''],
-                  ['name' => 'Water Purifier', 'target' => ''],
-                  ['name' => 'Water Softener', 'target' => ''],
-                  ['name' => 'Whole House R.O. System', 'target' => ''],
-                  ['name' => 'Wine Refrigerator', 'target' => ''],
                   ['name' => 'None', 'target' => ''],
                   ['name' => 'Other', 'target' => '.otherFloorCoveringCom'],
               ];
@@ -5442,12 +5210,12 @@
             <div class="form-group ">
               <label class="fw-bold">Floor Covering:</label>
               <select class="grid-picker" name="floor_covering[]" id="floor_covering"
-                style="justify-content: flex-start;" multiple>
+                style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($floor_coverings as $floor_covering)
                   <option value="{{ $floor_covering['name'] }}" data-target="{{ $floor_covering['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->floor_covering) && in_array($floor_covering['name'], json_decode($auction->get->floor_covering, true) ?? []) ? 'selected' : ''}}>
                     {{ $floor_covering['name'] }}
                   </option>
                 @endforeach
@@ -5455,31 +5223,51 @@
             </div>
             <div class="form-group otherFloorCoveringCom d-none">
               <label class="fw-bold">Floor Covering:</label>
-              <input type="text" name="otherFloorCoveringCom" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+              <input type="text" name="otherFloorCoveringCom" value="{{isset($auction->get->otherFloorCoveringCom) ? $auction->get->otherFloorCoveringCom : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
             </div>
           </div>
-          <div class="wizard-step" data-step="50">
+          <div class="wizard-step" data-step="52">
             @php
-              $front_exposures = [['name' => 'North', 'target' => ''], ['name' => 'East', 'target' => ''], ['name' => 'South', 'target' => ''], ['name' => 'West', 'target' => ''], ['name' => 'Southeast', 'target' => ''], ['name' => 'Northeast', 'target' => ''], ['name' => 'Southwest', 'target' => ''], ['name' => 'Northwest', 'target' => '']];
+              $front_exposures = [
+                ['name' => 'East', 'target' => ''], 
+                ['name' => 'North', 'target' => ''], 
+                ['name' => 'Northeast', 'target' => ''], 
+                ['name' => 'Northwest', 'target' => ''],
+                ['name' => 'South', 'target' => ''], 
+                ['name' => 'Southeast', 'target' => ''], 
+                ['name' => 'Southwest', 'target' => ''],
+                ['name' => 'West', 'target' => ''], 
+              ];
             @endphp
             <div class="form-group">
               <label class="fw-bold">Front Exposure:</label>
               <select class="grid-picker" name="front_exposure_com" id="front_exposure"
-                style="justify-content: flex-start;">
+                style="justify-content: flex-start;" required>
                 <option value="">Select</option>
                 @foreach ($front_exposures as $front_exposure)
                   <option value="{{ $front_exposure['name'] }}" data-target="{{ $front_exposure['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->front_exposure_com) && $auction->get->front_exposure_com == $front_exposure['name'] ? 'selected' : ''}}>
                     {{ $front_exposure['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="51">
+          <div class="wizard-step" data-step="53">
             @php
-              $foundations = [['name' => 'Basement', 'target' => ''], ['name' => 'Block', 'target' => ''], ['name' => 'Brick/Mortar', 'target' => ''], ['name' => 'Concrete Perimeter', 'target' => ''], ['name' => 'Crawlspace', 'target' => ''], ['name' => 'Other', 'target' => ''], ['name' => 'Pillar/Post/Pier', 'target' => ''], ['name' => 'Slab', 'target' => ''], ['name' => 'Stem Wall', 'target' => ''], ['name' => 'Stilt/On Piling', 'target' => ''], ['name' => 'Other', 'target' => '.otherFoundationCom']];
+              $foundations = [
+                ['name' => 'Basement', 'target' => ''], 
+                ['name' => 'Block', 'target' => ''], 
+                ['name' => 'Brick/Mortar', 'target' => ''], 
+                ['name' => 'Concrete Perimeter', 'target' => ''], 
+                ['name' => 'Crawlspace', 'target' => ''],
+                ['name' => 'Pillar/Post/Pier', 'target' => ''], 
+                ['name' => 'Slab', 'target' => ''], 
+                ['name' => 'Stem Wall', 'target' => ''], 
+                ['name' => 'Stilt/On Piling', 'target' => ''], 
+                ['name' => 'Other', 'target' => '.otherFoundationCom']
+              ];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Foundation:</label>
@@ -5489,7 +5277,7 @@
                 @foreach ($foundations as $foundation)
                   <option value="{{ $foundation['name'] }}" data-target="{{ $foundation['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->foundation) && in_array($foundation['name'], json_decode($auction->get->foundation, true) ?? []) ? 'selected' : ''}}>
                     {{ $foundation['name'] }}
                   </option>
                 @endforeach
@@ -5497,10 +5285,10 @@
             </div>
             <div class="form-group otherFoundationCom d-none">
               <label class="fw-bold">Foundation:</label>
-              <input type="text" name="otherFoundationCom" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+              <input type="text" name="otherFoundationCom" value="{{isset($auction->get->otherFoundationCom) ? $auction->get->otherFoundationCom : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
             </div>
           </div>
-          <div class="wizard-step" data-step="52">
+          <div class="wizard-step" data-step="54">
             @php
               $exterior_constructions = [['name' => 'Asbestos', 'target' => ''], ['name' => 'Block', 'target' => ''], ['name' => 'Brick', 'target' => ''], ['name' => 'Cedar', 'target' => ''], ['name' => 'Cement Siding', 'target' => ''], ['name' => 'Concrete', 'target' => ''], ['name' => 'HardiPlank Type', 'target' => ''], ['name' => 'ICFs (Insulated Concrete Forms)', 'target' => ''], ['name' => 'Log', 'target' => ''], ['name' => 'Metal Frame', 'target' => ''], ['name' => 'Metal Siding', 'target' => ''], ['name' => 'SIP (Structurally Insulated Panel)', 'target' => ''], ['name' => 'Stone', 'target' => ''], ['name' => 'Stucco', 'target' => ''], ['name' => 'Tilt up Walls', 'target' => ''], ['name' => 'Vinyl Siding', 'target' => ''], ['name' => 'Wood Frame', 'target' => ''], ['name' => 'Wood Frame (FSC)', 'target' => ''], ['name' => 'Wood Siding ', 'target' => ''], ['name' => 'Other ', 'target' => '.otherExteriorCon']];
             @endphp
@@ -5512,19 +5300,19 @@
                 @foreach ($exterior_constructions as $exterior_construction)
                   <option value="{{ $exterior_construction['name'] }}"
                     data-target="{{ $exterior_construction['target'] }}" class="card flex-row"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);">
+                    data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);" {{isset($auction->get->exterior_construction) && in_array($exterior_construction['name'], json_decode($auction->get->exterior_construction, true) ?? []) ? 'selected' : ''}}>
                     {{ $exterior_construction['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherExteriorCon d-none">
                 <label class="fw-bold">Exterior Construction:</label>
-                <input type="text" name="otherConstructionCom" id="max_pet_weight" class="form-control has-icon"
-                  data-icon="fa-regular fa-check-circle">
+                <input type="text" name="otherConstructionCom" value="{{isset($auction->get->otherConstructionCom) ? $auction->get->otherConstructionCom : ''}}" id="max_pet_weight" class="form-control has-icon"
+                  data-icon="fa-regular fa-check-circle" required>
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="53">
+          <div class="wizard-step" data-step="55">
             @php
               $lot_features = [
                   ['name' => 'Central Business District', 'target' => ''],
@@ -5536,11 +5324,12 @@
                   ['name' => 'Fire Hydrant', 'target' => ''],
                   ['name' => 'Flood Insurance Required', 'target' => ''],
                   ['name' => 'Flood Zone', 'target' => ''],
+                  ['name' => 'Fuel Pump', 'target' => ''],
                   ['name' => 'Historic District', 'target' => ''],
                   ['name' => 'In City Limits', 'target' => ''],
                   ['name' => 'Industrial Condo', 'target' => ''],
                   ['name' => 'Industrial Park', 'target' => ''],
-                  ['name' => 'Infrastructure', 'target' => ''],
+                  ['name' => 'Infrastructure In', 'target' => ''],
                   ['name' => 'Interior Lot', 'target' => ''],
                   ['name' => 'Landscaped', 'target' => ''],
                   ['name' => 'Near Golf Course', 'target' => ''],
@@ -5580,18 +5369,18 @@
                 @foreach ($lot_features as $lot_feature)
                   <option value="{{ $lot_feature['name'] }}" data-target="{{ $lot_feature['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->lot_features) && in_array($lot_feature['name'], json_decode($auction->get->lot_features, true) ?? []) ? 'selected' : ''}}>
                     {{ $lot_feature['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherLotFeatureCommercial d-none">
                 <label class="fw-bold">Lot Features:</label>
-                <input type="text" name="otherLotFeatureCom" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                <input type="text" name="otherLotFeatureCom" value="{{isset($auction->get->otherLotFeatureCom) ? $auction->get->otherLotFeatureCom : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="54">
+          <div class="wizard-step" data-step="56">
             @php
               $otherStructures = [
                   ['name' => 'Airplane Hangar', 'target' => ''],
@@ -5614,18 +5403,18 @@
                 @foreach ($otherStructures as $structure)
                   <option value="{{ $structure['name'] }}" data-target="{{ $structure['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->other_structures) && in_array($structure['name'], json_decode($auction->get->other_structures, true) ?? []) ? 'selected' : ''}}>
                     {{ $structure['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherStructures d-none">
-                <label class="fw-bold">Other Structures::</label>
-                <input type="text" name="custom_other_structures" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                <label class="fw-bold">Other Structures:</label>
+                <input type="text" name="custom_other_structures" value="{{isset($auction->get->custom_other_structures) ? $auction->get->custom_other_structures : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="55">
+          <div class="wizard-step" data-step="57">
             @php
               $building_features = [
                   ['name' => 'Bathrooms', 'target' => ''],
@@ -5674,18 +5463,18 @@
                   <option value="{{ $item['name'] }}"
                     data-icon='<i class="fa-regular fa-circle-check"></i>'
                     data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->building_features) && in_array($item['name'], json_decode($auction->get->building_features, true) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherBuildingCommercial d-none">
                 <label class="fw-bold">Building Features:</label>
-                <input type="text" name="otherBuilding" placeholder="" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                <input type="text" name="otherBuilding" value="{{isset($auction->get->otherBuilding) ? $auction->get->otherBuilding : ''}}" placeholder="" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="56">
+          <div class="wizard-step" data-step="58">
             @php
               $adjoining_properties = [['name' => 'Airport', 'target' => ''], ['name' => 'Church', 'target' => ''], ['name' => 'Commercial', 'target' => ''], ['name' => 'Hotel/Motel', 'target' => ''], ['name' => 'Industrial', 'target' => ''], ['name' => 'Multi-Family', 'target' => ''], ['name' => 'Natural State', 'target' => ''], ['name' => 'Professional Office', 'target' => ''], ['name' => 'Railroad', 'target' => ''], ['name' => 'Residential', 'target' => ''], ['name' => 'School', 'target' => ''], ['name' => 'Undeveloped', 'target' => ''], ['name' => 'Vacant', 'target' => ''], ['name' => 'Waterway', 'target' => ''], ['name' => 'Other', 'target' => '.otherAdjoiningCommercial']];
             @endphp
@@ -5698,63 +5487,63 @@
                   <option value="{{ $item['name'] }}"
                     data-icon='<i class="fa-regular fa-circle-check"></i>'
                     data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->adjoining_property) && in_array($item['name'], json_decode($auction->get->adjoining_property, true) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherAdjoiningCommercial d-none">
                 <label class="fw-bold">Adjoining Property:</label>
-                <input type="text" name="otherAdjoining" placeholder="" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                <input type="text" name="otherAdjoining" value="{{isset($auction->get->otherAdjoining) ? $auction->get->otherAdjoining : ''}}" placeholder="" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="57">
+          <div class="wizard-step" data-step="59">
             @php
               $roofs = [['name' => 'Built-Up', 'target' => ''], ['name' => 'Cement', 'target' => ''], ['name' => 'Concrete', 'target' => ''], ['name' => 'Membrane', 'target' => ''], ['name' => 'Metal', 'target' => ''], ['name' => 'Roof Over', 'target' => ''], ['name' => 'Shake', 'target' => ''], ['name' => 'Shingle', 'target' => ''], ['name' => 'Slate', 'target' => ''], ['name' => 'Tile', 'target' => ''], ['name' => 'Other', 'target' => '.otherRoofCommercial']];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Roof:</label>
-              <select class="grid-picker" name="roof[]" id="roof" style="justify-content: flex-start;" multiple>
+              <select class="grid-picker" name="roof[]" id="roof" style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($roofs as $roof)
                   <option value="{{ $roof['name'] }}" data-target="{{ $roof['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->roof) && in_array($roof['name'], json_decode($auction->get->roof, true) ?? []) ? 'selected' : ''}}>
                     {{ $roof['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherRoofCommercial d-none" >
                 <label class="fw-bold">Roof:</label>
-                <input type="text" name="otherRoofCom" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                <input type="text" name="otherRoofCom" value="{{isset($auction->get->otherRoofCom) ? $auction->get->otherRoofCom : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="58">
+          <div class="wizard-step" data-step="60">
             @php
               $road_surface_types = [['name' => 'Asphalt', 'target' => ''], ['name' => 'Brick', 'target' => ''], ['name' => 'Chip And Seal', 'target' => ''], ['name' => 'Concrete', 'target' => ''], ['name' => 'Dirt', 'target' => ''], ['name' => 'Gravel', 'target' => ''], ['name' => 'Limerock', 'target' => ''], ['name' => 'Paved', 'target' => ''], ['name' => 'Unimproved', 'target' => ''], ['name' => 'Other', 'target' => '.otherSurfaceCommercial']];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Road Surface Type:</label>
               <select class="grid-picker" name="road_surface_type[]" id="road_surface_type"
-                style="justify-content: flex-start;" multiple>
+                style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($road_surface_types as $road_surface_type)
                   <option value="{{ $road_surface_type['name'] }}"
                     data-target="{{ $road_surface_type['target'] }}" class="card flex-row"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);">
+                    data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);" {{isset($auction->get->road_surface_type) && in_array($road_surface_type['name'], json_decode($auction->get->road_surface_type, true) ?? []) ? 'selected' : ''}}>
                     {{ $road_surface_type['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherSurfaceCommercial d-none" >
                 <label class="fw-bold">Road Surface Type:</label>
-                <input type="text" name="otherSurfaceCom" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                <input type="text" name="otherSurfaceCom" value="{{isset($auction->get->otherSurfaceCom) ? $auction->get->otherSurfaceCom : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="59">
+          <div class="wizard-step" data-step="61">
             @php
               $road_frontage = [['name' => 'Access Road', 'target' => ''], ['name' => 'Alley', 'target' => ''], ['name' => 'Business District', 'target' => ''], ['name' => 'City Street', 'target' => ''], ['name' => 'County Road', 'target' => ''], ['name' => 'Divided Highway', 'target' => ''], ['name' => 'Easement', 'target' => ''], ['name' => 'Highway', 'target' => ''], ['name' => 'Interchange', 'target' => ''], ['name' => 'Interstate', 'target' => ''], ['name' => 'Main Thoroughfare', 'target' => ''], ['name' => 'Private Road', 'target' => ''], ['name' => 'Rail', 'target' => ''], ['name' => 'State Road', 'target' => ''], ['name' => 'Turn Lanes', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherFrontageCommercial']];
             @endphp
@@ -5765,18 +5554,18 @@
                 <option value="">Select</option>
                 @foreach ($road_frontage as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);">
+                    data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);" {{isset($auction->get->road_frontage) && in_array($item['name'], json_decode($auction->get->road_frontage, true) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherFrontageCommercial d-none" >
                 <label class="fw-bold">Road Frontage:</label>
-                <input type="text" name="otherFrontage" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                <input type="text" name="otherFrontage" value="{{isset($auction->get->otherFrontage) ? $auction->get->otherFrontage : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="60">
+          <div class="wizard-step" data-step="62">
             @php
               $garage_parking_feature = [['name' => '1 to 5 Spaces', 'target' => ''], ['name' => '6 to 12 Spaces', 'target' => ''], ['name' => '13 to 18 Spaces', 'target' => ''], ['name' => '19 to 30 Spaces', 'target' => ''], ['name' => 'Airplane Hangar', 'target' => ''], ['name' => 'Common', 'target' => ''], ['name' => 'Curb Parking', 'target' => ''], ['name' => 'Deeded', 'target' => ''], ['name' => 'Electric Vehicle Charging Station(s)', 'target' => ''], ['name' => 'Ground Level', 'target' => ''], ['name' => 'Lighted', 'target' => ''], ['name' => 'Over 30 Spaces', 'target' => ''], ['name' => 'Secured', 'target' => ''], ['name' => 'Under Building', 'target' => ''], ['name' => 'Underground', 'target' => ''], ['name' => 'Valet', 'target' => ''],['name' => 'RV Parking', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherGarageFeatureCommercial']];
             @endphp
@@ -5784,41 +5573,44 @@
             <div class="form-group ">
               <label class="fw-bold">Garage/Parking Features:</label>
               <select class="grid-picker" name="garage_parking_feature[]" id="garage_parking_feature"
-                style="justify-content: flex-start;" multiple>
+                style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($garage_parking_feature as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    data-icon="<i class='fa-solid fa-warehouse'></i>" style="width:calc(33.3% - 10px);">
+                    data-icon="<i class='fa-solid fa-warehouse'></i>" style="width:calc(33.3% - 10px);" {{isset($auction->get->garage_parking_feature) && in_array($item['name'], json_decode($auction->get->garage_parking_feature, true) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherGarageFeatureCommercial d-none" >
                 <label class="fw-bold">Garage/Parking Features:</label>
-                <input type="text" name="otherGarageFeature" class="form-control has-icon" data-icon="fa-solid fa-warehouse">
+                <input type="text" name="otherGarageFeature" value="{{isset($auction->get->otherGarageFeature) ? $auction->get->otherGarageFeature : ''}}" class="form-control has-icon" data-icon="fa-solid fa-warehouse" required>
               </div>
             </div>
           </div>  
-          <div class="wizard-step" data-step="61">
+          <div class="wizard-step" data-step="63">
             <h4>Land and Tax Information:</h4>
             <div class="form-group">
               <label class="fw-bold">Tax ID (Parcel Number):</label>
-              <input type="text" name="tax_id_com" id="tax_id" class="form-control has-icon"
+              <input type="text" name="tax_id_com" value="{{isset($auction->get->tax_id_com) ? $auction->get->tax_id_com : ''}}" id="tax_id" class="form-control has-icon"
                 data-icon="fa-solid fa-ruler-combined">
             </div>
             <div class="form-group">
               <label class="fw-bold">Tax Year:</label>
-              <input type="text" name="tax_year_com" id="tax_year" class="form-control has-icon"
+              <input type="text" name="tax_year_com" value="{{isset($auction->get->tax_year_com) ? $auction->get->tax_year_com : ''}}" id="tax_year" class="form-control has-icon"
                 data-icon="fa-regular fa-calendar-days" >
             </div>
             <div class="form-group">
               <label class="fw-bold">Taxes (Annual Amount):</label>
-              <input type="text" name="taxes_annual_amount_com" id="taxes_annual_ammount"
+              <input type="text" name="taxes_annual_amount_com" value="{{isset($auction->get->taxes_annual_amount_com) ? $auction->get->taxes_annual_amount_com : ''}}" id="taxes_annual_ammount"
                 class="form-control has-icon" data-icon="fa-solid fa-dollar">
             </div>
             <div class="form-group ">
               @php
-                $additionalParcelsCommercial = [['name' => 'Yes', 'target' => '.parcelYesCommercial', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
+                $additionalParcelsCommercial = [
+                  ['name' => 'Yes', 'target' => '.additionalYes', 'icon' => 'fa-regular fa-circle-check'], 
+                  ['name' => 'No', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']
+                ];
               @endphp
               <label class="fw-bold">Additional Parcels:</label>
               <select class="grid-picker" name="additionalParcelsCom" style="justify-content: flex-start;">
@@ -5826,42 +5618,38 @@
                 @foreach ($additionalParcelsCommercial as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->additionalParcelsCom) && $auction->get->additionalParcelsCom == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
-              <div class="form-group parcelYesCommercial d-none">
-                <label class="fw-bold">Additional Parcels: </label>
-                <input type="text" name="parcelYes" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
-              </div>
             </div>
             <div class="form-group">
               <label class="fw-bold">Total Number of Parcels:</label>
-              <input type="text" name="total_number_of_parcels_com" id="total_number_of_parcels"
+              <input type="text" name="total_number_of_parcels_com" value="{{isset($auction->get->total_number_of_parcels_com) ? $auction->get->total_number_of_parcels_com : ''}}" id="total_number_of_parcels"
                 class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
             </div>
-            <div class="form-group">
+            <div class="form-group additionalYes d-none">
               <label class="fw-bold">Additional Tax ID's:</label>
-              <input type="text" name="additional_tax_id_com" id="additional_tax_id" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+              <input type="text" name="additional_tax_id_com" value="{{isset($auction->get->additional_tax_id_com) ? $auction->get->additional_tax_id_com : ''}}" id="additional_tax_id" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
             </div>
             <div class="form-group">
               <label class="fw-bold" for="year_built">Year Built:</label>
-              <input type="text" name="year_built_com" id="year_built"
+              <input type="number" name="year_built_com" value="{{isset($auction->get->year_built_com) ? $auction->get->year_built_com : ''}}" id="year_built"
                 class="form-control has-icon " data-icon="fa-solid fa-calendar-day">
             </div>
             <div class="form-group">
               <label class="fw-bold">Zoning:</label>
-              <input type="text" name="zoning_com" id="zoning" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+              <input type="text" name="zoning_com" value="{{isset($auction->get->zoning_com) ? $auction->get->zoning_com : ''}}" id="zoning" class="form-control has-icon" data-icon="fa-solid fa-tag">
             </div>
             <div class="form-group">
               <label class="fw-bold">Legal Description:</label>
-              <input type="text" name="legal_description_com" id="legal_description" class="form-control has-icon" data-icon="fa-solid fa-tag">
+              <input type="text" name="legal_description_com" value="{{isset($auction->get->legal_description_com) ? $auction->get->legal_description_com : ''}}" id="legal_description" class="form-control has-icon" data-icon="fa-solid fa-tag">
             </div>
             <div class="form-group">
               <label class="fw-bold" for="year_built">Legal Subdivison:</label>
-              <input type="text" name="legal_subdivison_name_com" id="legal_subdivison_name"
-                class="form-control has-icon " data-icon="fa-solid fa-ruler-combined" >
+              <input type="text" name="legal_subdivison_name_com" value="{{isset($auction->get->legal_subdivison_name_com) ? $auction->get->legal_subdivison_name_com : ''}}" id="legal_subdivison_name"
+                class="form-control has-icon " data-icon="fa-solid fa-tag" >
             </div>
             @php
             $lot_sizes = [['name' => '0 to less than 1/4', 'target' => ''], ['name' => '1/4 to less than 1/2', 'target' => ''], ['name' => '1/2 to less than 1', 'target' => ''], ['name' => '1 to less than 2', 'target' => ''], ['name' => '2 to less than 5', 'target' => ''], ['name' => '5 to less than 10', 'target' => ''], ['name' => '10 to less than 20', 'target' => ''], ['name' => '20 to less than 50', 'target' => ''], ['name' => '50 to less than 100', 'target' => ''], ['name' => '100 to less than 200', 'target' => ''], ['name' => '200 to less than 500', 'target' => ''], ['name' => '500+ Acers', 'target' => ''], ['name' => 'Non-Applicable', 'target' => '']];
@@ -5874,7 +5662,7 @@
                 @foreach ($lot_sizes as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon='<i class="fa-solid fa-ruler-combined"></i>' class="card flex-column"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->total_aceage_com) && $auction->get->total_aceage_com == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -5882,21 +5670,21 @@
             </div>
             <div class="form-group">
               <label class="fw-bold">Flood Zone Code:</label>
-              <input type="text" name="flood_zone_code_com"
-                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+              <input type="text" name="flood_zone_code_com" value="{{isset($auction->get->flood_zone_code_com) ? $auction->get->flood_zone_code_com : ''}}"
+                class="form-control has-icon" data-icon="fa-solid fa-tag">
             </div>
             <div class="form-group">
               <label class="fw-bold" for="lot_size">Lot Size Square Footage:</label>
-              <input type="text" name="lot_size_com" id="lot_size" class="form-control has-icon "
+              <input type="text" name="lot_size_com" value="{{isset($auction->get->lot_size_com) ? $auction->get->lot_size_com : ''}}" id="lot_size" class="form-control has-icon "
                 data-icon="fa-solid fa-ruler-combined" data-msg-required="Please enter Lot Size">
             </div>
             <div class="form-group">
               <label class="fw-bold">Lot Size Acres:</label>
-              <input type="text" name="lot_size_acres_com" id="lot_size_acres" class="form-control has-icon"
+              <input type="text" name="lot_size_acres_com" value="{{isset($auction->get->lot_size_acres_com) ? $auction->get->lot_size_acres_com : ''}}" id="lot_size_acres" class="form-control has-icon"
                 data-icon="fa-solid fa-ruler-combined">
             </div>     
           </div>
-          <div class="wizard-step" data-step="62">
+          <div class="wizard-step" data-step="64">
             <div class="form-group">
               <label class="fw-bold">Is the property in a flood zone?</label>
               <select class="grid-picker" name="is_in_flood_zone" id="is_in_flood_zone"
@@ -5911,7 +5699,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->is_in_flood_zone) && $auction->get->is_in_flood_zone == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -5919,9 +5707,10 @@
             </div>
             
           </div>
-          <div class="wizard-step" data-step="63">
+          <div class="wizard-step" data-step="65">
             @php
               $utilitiseCommercial = [
+                ['name' => 'BB/HS Internet Capable', 'target' => ''],
                 ['name' => 'Electrical Nearby', 'target' => ''],
                 ['name' => 'Electricity Available', 'target' => ''],
                 ['name' => 'Emergency Power', 'target' => ''],
@@ -5947,82 +5736,88 @@
                 @foreach ($utilitiseCommercial as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->utilities) && in_array($item['name'], json_decode($auction->get->utilities, true) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherUtilitiseCommercial d-none">
                 <label class="fw-bold">Utilities:</label>
-                <input type="text" name="otherUtilitiseCom" id="legal_description" class="form-control has-icon"
+                <input type="text" name="otherUtilitiseCom" value="{{isset($auction->get->otherUtilitiseCom) ? $auction->get->otherUtilitiseCom : ''}}" id="legal_description" class="form-control has-icon"
                   data-icon="fa-regular fa-check-circle">
               </div>
             </div>
             @php
-
-              $waterCommercial = [['name' => 'Canal/Lake For Irrigation', 'target' => ''], ['name' => 'Private', 'target' => ''], ['name' => 'Public', 'target' => ''], ['name' => 'Well', 'target' => ''],['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherWaterCommercial']];
-            @endphp
-            <div class="form-group">
-              <label class="fw-bold">Water:</label>
-              <select class="grid-picker" name="water" id="water12" style="justify-content: flex-start;">
-                <option value="">Select</option>
-                @foreach ($waterCommercial as $water)
-                  <option value="{{ $water['name'] }}" data-target="{{ $water['target'] }}"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
-                    {{ $water['name'] }}
-                  </option>
-                @endforeach
-              </select>
-              <div class="form-group otherWaterCommercial d-none">
-                <label class="fw-bold">Water:</label>
-                <input type="text" name="otherWaterCom" id="legal_description" class="form-control has-icon"
-                  data-icon="fa-regular fa-check-circle">
-              </div>
-            </div>
-
-            @php
-              $sewerCommercial = [['name' => 'Aerobic Septic', 'target' => ''],['name' => 'PEP-Holding Tank', 'target' => ''], ['name' => 'Private Sewer', 'target' => ''], ['name' => 'Public Sewer', 'target' => ''], ['name' => 'Septic Needed', 'target' => ''], ['name' => 'Septic Tank', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherSewerCommercial']];
+            $sewerCommercial = [['name' => 'Aerobic Septic', 'target' => ''],['name' => 'PEP-Holding Tank', 'target' => ''], ['name' => 'Private Sewer', 'target' => ''], ['name' => 'Public Sewer', 'target' => ''], ['name' => 'Septic Needed', 'target' => ''], ['name' => 'Septic Tank', 'target' => ''], ['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherSewerCommercial']];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Sewer:</label>
-              <select class="grid-picker" name="sewer[]" id="sewer" style="justify-content: flex-start;">
+              <select class="grid-picker" name="sewer[]" id="sewer" style="justify-content: flex-start;" multiple>
                 <option value="">Select</option>
                 @foreach ($sewerCommercial as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->sewer) && in_array($item['name'], json_decode($auction->get->sewer, true) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherSewerCommercial d-none">
                 <label class="fw-bold">Sewer:</label>
-                <input type="text" name="otherSewerCom"  class="form-control has-icon"
+                <input type="text" name="otherSewerCom" value="{{isset($auction->get->otherSewerCom) ? $auction->get->otherSewerCom : ''}}" class="form-control has-icon"
+                  data-icon="fa-regular fa-check-circle">
+              </div>
+            </div>
+            @php
+              $waterCommercial = [
+                ['name' => 'Canal/Lake For Irrigation', 'target' => ''], 
+                ['name' => 'Private', 'target' => ''], 
+                ['name' => 'Public', 'target' => ''], 
+                ['name' => 'Well', 'target' => ''],
+                ['name' => 'Well Required', 'target' => ''],
+                ['name' => 'None', 'target' => ''], 
+                ['name' => 'Other', 'target' => '.otherWaterCommercial']
+              ];
+            @endphp
+            <div class="form-group">
+              <label class="fw-bold">Water:</label>
+              <select class="grid-picker" name="water[]" id="water12" style="justify-content: flex-start;" multiple>
+                <option value="">Select</option>
+                @foreach ($waterCommercial as $water)
+                  <option value="{{ $water['name'] }}" data-target="{{ $water['target'] }}"
+                    data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->water) && in_array($water['name'], json_decode($auction->get->water, true) ?? []) ? 'selected' : ''}}>
+                    {{ $water['name'] }}
+                  </option>
+                @endforeach
+              </select>
+              <div class="form-group otherWaterCommercial d-none">
+                <label class="fw-bold">Water:</label>
+                <input type="text" name="otherWaterCom" value="{{isset($auction->get->otherWaterCom) ? $auction->get->otherWaterCom : ''}}" id="legal_description" class="form-control has-icon"
                   data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="64">
+          <div class="wizard-step" data-step="66">
             @php
               $air_conditioning = [['name' => 'A/C Office Only', 'target' => ''], ['name' => 'Central Air', 'target' => ''], ['name' => 'Humidity Control', 'target' => ''], ['name' => 'Mini-Split Unit(s)', 'target' => ''],  ['name' => 'Wall/Window Unit(s)', 'target' => ''], ['name' => 'Zoned', 'target' => ''],['name' => 'None', 'target' => ''], ['name' => 'Other', 'target' => '.otherAirConditionCom']];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Air Conditioning:</label>
-              <select class="grid-picker" name="air_conditioning_com" id="air_conditioning"
-                style="justify-content: flex-start;" required>
+              <select class="grid-picker" name="air_conditioning_com[]" id="air_conditioning"
+                style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($air_conditioning as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->air_conditioning_com) && in_array($item['name'], json_decode($auction->get->air_conditioning_com, true) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherAirConditionCom d-none">
                 <label class="fw-bold">Air Conditioning:</label>
-                <input type="text" name="otherAirConditionCom"  class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                <input type="text" name="otherAirConditionCom" value="{{isset($auction->get->otherAirConditionCom) ? $auction->get->otherAirConditionCom : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
             @php
@@ -6053,23 +5848,24 @@
             <div class="form-group ">
               <label class="fw-bold">Heating and Fuel:</label>
               <select class="grid-picker" name="heating_and_fuel[]" id="heating_and_fuel"
-                style="justify-content: flex-start;">
+                style="justify-content: flex-start;" multiple>
                 <option value="">Select</option>
                 @foreach ($heating_and_fuel as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->heating_and_fuel) && in_array($item['name'], json_decode($auction->get->heating_and_fuel, true) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherHeatingFuelCom d-none">
-                <input type="text" name="otherHeatingFuelCom"  class="form-control has-icon"
+                <label class="fw-bold">Heating and Fuel:</label>
+                <input type="text" name="otherHeatingFuelCom" value="{{isset($auction->get->otherHeatingFuelCom) ? $auction->get->otherHeatingFuelCom : ''}}" class="form-control has-icon"
                     data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="65">
+          <div class="wizard-step" data-step="67">
             <h4>Water and Dock Information:</h4>
             <div class="form-group ">
               <label class="fw-bold">Water View:</label>
@@ -6085,7 +5881,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_water_view_com) && $auction->get->has_water_view_com == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -6101,7 +5897,7 @@
                 @foreach ($water_views as $water_view)
                   <option value="{{ $water_view['name'] }}" data-icon="<i class='fa-regular fa-circle-check'></i>"
                     data-target="{{ $water_view['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->water_view) && in_array($water_view['name'], json_decode($auction->get->water_view, true) ?? []) ? 'selected' : ''}}>
                     {{ $water_view['name'] }}
                   </option>
                 @endforeach
@@ -6121,7 +5917,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_water_extra_com) && $auction->get->has_water_extra_com == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -6160,7 +5956,7 @@
                 @foreach ($water_extras as $water_extra)
                   <option value="{{ $water_extra['name'] }}" data-target="{{ $water_extra['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->water_extras) && in_array($water_extras['name'], json_decode($auction->get->water_extras, true) ?? []) ? 'selected' : ''}}>
                     {{ $water_extra['name'] }}
                   </option>
                 @endforeach
@@ -6180,7 +5976,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_water_fontage_com) && $auction->get->has_water_fontage_com == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -6195,6 +5991,7 @@
                 ['name' => 'Canal - Brackish', 'target' => ''], 
                 ['name' => 'Canal - Freshwater', 'target' => ''], 
                 ['name' => 'Canal - Saltwater', 'target' => ''], 
+                ['name' => 'Canal Front', 'target' => ''],
                 ['name' => 'Creek', 'target' => ''], 
                 ['name' => 'Freshwater Canal w/Lift to Saltwater Canal', 'target' => ''], 
                 ['name' => 'Gulf/Ocean', 'target' => ''], 
@@ -6205,9 +6002,9 @@
                 ['name' => 'Lake - Chain of Lakes', 'target' => ''], 
                 ['name' => 'Marina', 'target' => ''], 
                 ['name' => 'Pond', 'target' => ''], 
+                ['name' => 'Riparian Rights', 'target' => ''],
                 ['name' => 'River', 'target' => ''], 
-                ['name' => 'Canal Front', 'target' => ''],
-                ['name' => 'Riparian Rights', 'target' => '']];
+              ];
 
             @endphp
             <div class="form-group water_frontage_commercial_and_business d-none">
@@ -6217,7 +6014,7 @@
                 @foreach ($water_frontage as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->water_frontage) && in_array($item['name'], json_decode($auction->get->water_frontage, true) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -6237,7 +6034,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_water_access_com) && $auction->get->has_water_access_com == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -6253,7 +6050,7 @@
                 @foreach ($water_access as $water_access1)
                   <option value="{{ $water_access1['name'] }}" data-target="{{ $water_access1['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->water_access) && in_array($water_access1['name'], json_decode($auction->get->water_access, true) ?? []) ? 'selected' : ''}}>
                     {{ $water_access1['name'] }}
                   </option>
                 @endforeach
@@ -6273,7 +6070,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_dock_com) && $auction->get->has_dock_com == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -6318,34 +6115,34 @@
                 @foreach ($dock as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);" required>
+                    style="width:calc(33.3% - 10px);" required {{isset($auction->get->dock) && in_array($item['name'], json_decode($auction->get->dock, true) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group other-dock-com d-none">
                 <label class="fw-bold">Dock Description:</label>
-                <input type="text" name="custom_dock" id="custom_dock"
+                <input type="text" name="custom_dock" value="{{isset($auction->get->custom_dock) ? $auction->get->custom_dock : ''}}" id="custom_dock"
                   class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
               </div>
               <div class="form-group">
                 <label class="fw-bold">Dock Lift Capacity:</label>
-                <input type="text" name="dock_lift_capacity" id="dock_lift_capacity"
+                <input type="text" name="dock_lift_capacity" value="{{isset($auction->get->dock_lift_capacity) ? $auction->get->dock_lift_capacity : ''}}" id="dock_lift_capacity"
                   class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
               </div>
               <div class="form-group">
                 <label class="fw-bold">Dock Year Built:</label>
-                <input type="text" name="dock_year_built" id="dock_year_built"
-                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                <input type="number" name="dock_year_built" value="{{isset($auction->get->dock_year_built) ? $auction->get->dock_year_built : ''}}" id="dock_year_built"
+                  class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
               </div>
               <div class="form-group">
                 <label class="fw-bold">Dock Dimension:</label>
-                <input type="text" name="dock_dimension" id="dock_dimension"
-                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                <input type="text" name="dock_dimension" value="{{isset($auction->get->dock_dimension) ? $auction->get->dock_dimension : ''}}" id="dock_dimension"
+                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
               </div>
               <div class="form-group">
                 <label class="fw-bold">Dock Maintenance Fee:</label>
-                <input type="text" name="dock_maintenance_fee" id="dock_maintenance_fee"
+                <input type="number" name="dock_maintenance_fee" value="{{isset($auction->get->dock_maintenance_fee) ? $auction->get->dock_maintenance_fee : ''}}" id="dock_maintenance_fee"
                   class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
               </div>
               @php
@@ -6358,14 +6155,14 @@
                 @foreach ($feeFrequency as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->dock_maintenance_fee_frequency) && $auction->get->dock_maintenance_fee_frequency == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="66">
+          <div class="wizard-step" data-step="68">
             <h4>Ownership and Occupant Type:</h4>
             @php
               $ownerships = [
@@ -6381,7 +6178,7 @@
             <div class="form-group">
               <label class="fw-bold">Ownership:</label>
               <select class="grid-picker" name="ownership_com" id="ownership"
-                style="justify-content: flex-start;">
+                style="justify-content: flex-start;" required>
                 <option value="">Select</option>
                 @foreach ($ownerships as $item)
                   @php
@@ -6392,7 +6189,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->ownership_com) && $auction->get->ownership_com == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -6400,8 +6197,8 @@
             </div>
             <div class="form-group otherOwnershipCommercial">
               <label class="fw-bold">Ownership:</label>
-              <input type="text" name="otherOwnership" id="custom_ownership" class="form-control has-icon"
-                data-icon="fa-regular fa-check-circle">
+              <input type="text" name="otherOwnership" value="{{isset($auction->get->otherOwnership) ? $auction->get->otherOwnership : ''}}" id="custom_ownership" class="form-control has-icon"
+                data-icon="fa-regular fa-check-circle" required>
             </div>
             @php
               $occupantCommercial = [['name' => 'Owner', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Tenant', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Vacant', 'target' => '', 'icon' => 'fa-regular fa-circle-check']];
@@ -6409,7 +6206,7 @@
             <div class="form-group">
               <label class="fw-bold">Occupant Type:</label>
               <select class="grid-picker" name="occupant_type_com" id="occupant_type"
-                style="justify-content: flex-start;">
+                style="justify-content: flex-start;" required>
                 <option value="">Select</option>
                 @foreach ($occupantCommercial as $item)
                   @php
@@ -6420,7 +6217,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->occupant_type_com) && $auction->get->occupant_type_com == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -6439,48 +6236,48 @@
                     @foreach ($existingLease as $item)
                       <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                         class="card flex-row" style="width:calc(33.3% - 10px);"
-                        data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                        data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->exiting_lease_or_tenant_com) && $auction->get->exiting_lease_or_tenant_com == $item['name'] ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                     @endforeach
                   </select>
                   <div class="form-group existingLeaseyesCommercial d-none">
                     <label for="address" class="fw-bold">End Date of Lease:</label>
-                    <input type="date" name="end_of_lease_date_com" class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
+                    <input type="date" name="end_of_lease_date_com" value="{{isset($auction->get->end_of_lease_date_com) ? $auction->get->end_of_lease_date_com : ''}}" class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
                   </div>
                   <div class="form-group monthToMonthCommercial d-none">
                     <label for="address" class="fw-bold">What is the required notice period for the tenant to vacate the property?</label>
-                    <input type="text" name="monthToMonth_com" class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
+                    <input type="text" name="monthToMonth_com" value="{{isset($auction->get->monthToMonth_com) ? $auction->get->monthToMonth_com : ''}}" class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="fw-bold">Monthly Rental Amount:</label>
-                  <input type="number" name="monthly_rental_ammount_com" id="monthly_rental_ammount" 
+                  <input type="number" name="monthly_rental_ammount_com" value="{{isset($auction->get->monthly_rental_ammount_com) ? $auction->get->monthly_rental_ammount_com : ''}}" id="monthly_rental_ammount" 
                     class="form-control has-icon" data-icon="fa-solid fa-dollar">
                 </div>
                 <div class="form-group">
                   <label class="fw-bold">Days Notice to Tenant if not Renewing:</label>
-                  <input type="text" name="days_notice_to_terminate_com" id="days_notice_to_terminate"
+                  <input type="text" name="days_notice_to_terminate_com" value="{{isset($auction->get->days_notice_to_terminate_com) ? $auction->get->days_notice_to_terminate_com : ''}}" id="days_notice_to_terminate"
                      class="form-control has-icon" data-icon="fa-regular fa-calendar-days">
                 </div>
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="67"></div>
-          <div class="wizard-step" data-step="68">
+          <div class="wizard-step" data-step="69"></div>
+          <div class="wizard-step" data-step="70">
             <h4>Financial Information:</h4>
             @php
               $acutual_or_projected = [['name' => 'Actual', 'target' => '', 'icon' => 'fa-regular fa-circle-check'], ['name' => 'Projected', 'target' => '', 'icon' => 'fa-regular fa-circle-xmark']];
             @endphp
             <div class="form-group">
               <label class="fw-bold">Operating Expenses:</label>
-              <input type="text" name="operating_expenses" id="operating_expenses"
-                class="form-control has-icon" data-icon="fa-solid fa-dollar ">
+              <input type="number" name="operating_expenses" value="{{isset($auction->get->operating_expenses) ? $auction->get->operating_expenses : ''}}" id="operating_expenses"
+                class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
             </div>
             <div class="form-group">
               <label class="fw-bold">Net Operating Income:</label>
-              <input type="text" name="net_operating_income" id="net_operating_income"
-                class="form-control has-icon" data-icon="fa-solid fa-dollar">
+              <input type="number" name="net_operating_income" value="{{isset($auction->get->net_operating_income) ? $auction->get->net_operating_income : ''}}" id="net_operating_income"
+                class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
             </div>
             <div class="form-group">
               <label class="fw-bold">Net Operating Income Type:</label>
@@ -6496,7 +6293,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->net_operating_income_type) && $auction->get->net_operating_income_type == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -6504,12 +6301,12 @@
             </div>
             <div class="form-group">
               <label class="fw-bold">Annual Expense:</label>
-              <input type="text" name="annual_expenses" id="annual_expenses" class="form-control has-icon"
+              <input type="number" name="annual_expenses" value="{{isset($auction->get->annual_expenses) ? $auction->get->annual_expenses : ''}}" id="annual_expenses" class="form-control has-icon"
                 data-icon="fa-solid fa-dollar" >
             </div>
             <div class="form-group">
               <label class="fw-bold">Annual TTL Schedule Income:</label>
-              <input type="text" name="annual_ttl_schedule_income" id="annual_ttl_schedule_income"
+              <input type="number" name="annual_ttl_schedule_income" value="{{isset($auction->get->annual_ttl_schedule_income) ? $auction->get->annual_ttl_schedule_income : ''}}" id="annual_ttl_schedule_income"
                 class="form-control has-icon" data-icon="fa-solid fa-dollar">
             </div>
             <div class="form-group">
@@ -6526,7 +6323,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->annual_income_type) && $auction->get->annual_income_type == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -6544,33 +6341,37 @@
                     <option value="{{ $item['name'] }}"
                       data-icon='<i class="fa-regular fa-circle-check"></i>'
                       data-target="{{ $item['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);">
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->saleInclude) && in_array($item['name'], json_decode($auction->get->saleInclude, true) ?? []) ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
                 </select>
                 <div class="form-group otherSaleCommercial d-none">
                   <label class="fw-bold">Sale Includes:</label>
-                  <input type="text" name="otherSale" class="form-control has-icon"
+                  <input type="text" name="otherSale" value="{{isset($auction->get->otherSale) ? $auction->get->otherSale : ''}}" class="form-control has-icon"
                     data-icon="fa-regular fa-check-circle">
                 </div>
               </div>
             </div>
             <div class="form-group">
               <label class="fw-bold">Number of Tenants:</label>
-              <input type="text" name="number_of_tenants" class="form-control has-icon"
+              <input type="number" name="number_of_tenants" value="{{isset($auction->get->number_of_tenants) ? $auction->get->number_of_tenants : ''}}" class="form-control has-icon"
                 data-icon="fa-solid fa-person">
             </div>
           </div>
-          <div class="wizard-step" data-step="69">
+          <div class="wizard-step" data-step="71">
             <h4>Space:</h4>
             @php
-              $space_type = [['name' => 'New', 'target' => ''], ['name' => 'Re Let', 'target' => ''], ['name' => 'Sub Let', 'target' => '']];
+              $space_type = [
+                ['name' => 'New', 'target' => ''], 
+                ['name' => 'Re Let', 'target' => ''], 
+                ['name' => 'Sub Let', 'target' => '']
+              ];
             @endphp
             <div class="form-group">
               <label class="fw-bold">Class of Space:</label>
-              <input type="text" name="class_of_space" id="operating_expenses" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined">
+              <input type="text" name="class_of_space" value="{{isset($auction->get->class_of_space) ? $auction->get->class_of_space : ''}}" id="operating_expenses" class="form-control has-icon"
+                data-icon="fa-solid fa-hotel">
             </div>
             <div class="row ">
               <div class="form-group">
@@ -6581,7 +6382,7 @@
                   @foreach ($space_type as $space)
                     <option value="{{ $space['name'] }}" data-icon='<i class="fa-regular fa-circle-check"></i>'
                       data-target="{{ $space['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);">
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->sale_include) && $auction->get->sale_include == $space['name'] ? 'selected' : ''}}>
                       {{ $space['name'] }}
                     </option>
                   @endforeach
@@ -6590,37 +6391,37 @@
             </div>
             <div class="form-group">
               <label class="fw-bold"> # of Hotel/Motel Rooms:</label>
-              <input type="text" name="number_of_hotel" id="number_of_hotel" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined">
+              <input type="text" name="number_of_hotel" value="{{isset($auction->get->number_of_hotel) ? $auction->get->number_of_hotel : ''}}" id="number_of_hotel" class="form-control has-icon"
+                data-icon="fa-solid fa-hotel">
             </div>
             <div class="form-group">
               <label class="fw-bold"># of Conference/Meeting Rooms:</label>
-              <input type="text" name="number_of_conference" id="annual_expenses" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined">
+              <input type="text" name="number_of_conference" value="{{isset($auction->get->number_of_conference) ? $auction->get->number_of_conference : ''}}" id="annual_expenses" class="form-control has-icon"
+                data-icon="fa-solid fa-hotel">
             </div>
             <div class="form-group">
               <label class="fw-bold"># of Restrooms:</label>
-              <input type="text" name="number_of_restrooms" id="annual_ttl_schedule_income"
+              <input type="text" name="number_of_restrooms" value="{{isset($auction->get->number_of_restrooms) ? $auction->get->number_of_restrooms : ''}}" id="annual_ttl_schedule_income"
                 class="form-control has-icon" data-icon="fa-solid fa-restroom">
             </div>
 
             <div class="form-group">
               <label class="fw-bold"># of Bays(Dock High) :</label>
-              <input type="text" name="number_of_bays_high" id="number_of_tenants"
-                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+              <input type="text" name="number_of_bays_high" value="{{isset($auction->get->number_of_bays_high) ? $auction->get->number_of_bays_high : ''}}" id="number_of_tenants"
+                class="form-control has-icon" data-icon="fa-solid fa-hotel">
             </div>
             <div class="form-group">
               <label class="fw-bold"># of Bays(Grade Level):</label>
-              <input type="text" name="number_of_bays_level" id="number_of_tenants"
-                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+              <input type="text" name="number_of_bays_level" value="{{isset($auction->get->number_of_bays_level) ? $auction->get->number_of_bays_level : ''}}" id="number_of_tenants"
+                class="form-control has-icon" data-icon="fa-solid fa-hotel">
             </div>
             <div class="form-group">
               <label class="fw-bold"># of Offices:</label>
-              <input type="text" name="number_of_offices" id="number_of_tenants" class="form-control has-icon"
-                data-icon="fa-solid fa-ruler-combined">
+              <input type="text" name="number_of_offices" value="{{isset($auction->get->number_of_offices) ? $auction->get->number_of_offices : ''}}" id="number_of_tenants" class="form-control has-icon"
+                data-icon="fa-solid fa-hotel">
             </div>
           </div>
-          <div class="wizard-step" data-step="70">
+          <div class="wizard-step" data-step="72">
             <h4>Condo Environment:</h4>
             <div class="form-group">
               <label class="fw-bold"> Is the property in a condo environment?</label>
@@ -6636,7 +6437,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_condo_enviornment) && $auction->get->has_condo_enviornment == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -6645,7 +6446,7 @@
             <div class="row has_condo d-none">
               <div class="form-group ">
                 <label class="fw-bold">Condo Fee:</label>
-                <input type="text" name="condoFeeAmount_com" id="condo_fee" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
+                <input type="number" name="condoFeeAmount_com" value="{{isset($auction->get->condoFeeAmount_com) ? $auction->get->condoFeeAmount_com : ''}}" id="condo_fee" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
               </div>
               @php
                 $condo_fee_terms = [['target' => '', 'name' => 'Annual', 'icon' => 'fa-regular fa-circle-check'], ['target' => '', 'name' => 'Monthly', 'icon' => 'fa-regular fa-circle-check'], ['target' => '', 'name' => 'Quarterly', 'icon' => 'fa-regular fa-circle-check'], ['target' => '', 'name' => 'Semi Annual ', 'icon' => 'fa-regular fa-circle-check']];
@@ -6658,7 +6459,7 @@
                   @foreach ($condo_fee_terms as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                       class="card flex-row" style="width:calc(33.3% - 10px);"
-                      data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                      data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->condo_fee_terms) && $auction->get->condo_fee_terms == $item['name'] ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -6666,22 +6467,22 @@
               </div>
               <div class="form-group ">
                 <label class="fw-bold">Association/Manager Name:</label>
-                <input type="text" name="association_manager_contact_name" id="condo_fee"
+                <input type="text" name="association_manager_contact_name" value="{{isset($auction->get->association_manager_contact_name) ? $auction->get->association_manager_contact_name : ''}}" id="condo_fee"
                   class="form-control has-icon" data-icon="fa-solid fa-user">
               </div>
               <div class="form-group ">
                 <label class="fw-bold">Association/Manager Email:</label>
-                <input type="text" name="association_manager_contact_name" id="condo_fee"
+                <input type="text" name="association_manager_contact_email" value="{{isset($auction->get->association_manager_contact_email) ? $auction->get->association_manager_contact_email : ''}}" id="condo_fee"
                   class="form-control has-icon" data-icon="fa-solid fa-envelope">
               </div>
               <div class="form-group ">
                 <label class="fw-bold">Association/Manager Phone Number:</label>
-                <input type="text" name="association_manager_contact_name" id="condo_fee"
+                <input type="text" name="association_manager_contact_number" value="{{isset($auction->get->association_manager_contact_number) ? $auction->get->association_manager_contact_number : ''}}" id="condo_fee"
                   class="form-control has-icon" data-icon="fa-solid fa-phone">
               </div>
               <div class="form-group ">
                 <label class="fw-bold">Association/Manager Website: </label>
-                <input type="text" name="association_manager_contact_name" id="condo_fee"
+                <input type="text" name="association_manager_contact_website" value="{{isset($auction->get->association_manager_contact_website) ? $auction->get->association_manager_contact_website : ''}}" id="condo_fee"
                   class="form-control has-icon" data-icon="fa-solid fa-link">
               </div>
 
@@ -6693,7 +6494,9 @@
                   ['name' => 'Curbs', 'target' => ''], 
                   ['name' => 'Expressway', 'target' => ''], 
                   ['name' => 'Sidewalk', 'target' => ''], 
-                  ['name' => 'Stream Seasonal', 'target' => '']];
+                  ['name' => 'Stream Seasonal', 'target' => ''],
+                  ['name' => 'Other', 'target' => '.community_features_other'],
+                ];
               @endphp
               <div class="form-group ">
                 <label class="fw-bold">Community Features:</label>
@@ -6703,11 +6506,15 @@
                   @foreach ($community_features as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                       class="card flex-row" style="width:calc(33.3% - 10px);"
-                      data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                      data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->community_features) && in_array($item['name'], json_decode($auction->get->community_features, true) ?? []) ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
                 </select>
+                <div class="form-group community_features_other d-none">
+                  <label class="fw-bold">Community Features:</label>
+                  <input type="text" name="community_features_other" value="{{isset($auction->get->community_features_other) ? $auction->get->community_features_other : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dog">
+                </div>
               </div>
             </div>
             <label class="fw-bold">Pets Allowed:</label>
@@ -6717,32 +6524,83 @@
               @foreach ($yes_or_nos as $item)
                 @php
                   if ($item['name'] == 'Yes') {
-                      $target = '';
+                      $target = '.pets_allowed_question_com';
                   } else {
                       $target = '';
                   }
                 @endphp
                 <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                  style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                  style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->ptes_Allowed_vac) && $auction->get->ptes_Allowed_vac == $item['name'] ? 'selected' : ''}}>
                   {{ $item['name'] }}
                 </option>
               @endforeach
             </select>
+            <div class="row ">
+              @php
+                $total_pets_allowed = [
+                  ['target' => '', 'name' => '1'], 
+                  ['target' => '', 'name' => '2'], 
+                  ['target' => '', 'name' => '3'], 
+                  ['target' => '', 'name' => '4'], 
+                  ['target' => '', 'name' => '5'], 
+                  ['target' => '', 'name' => '6'], 
+                  ['target' => '', 'name' => '7'], 
+                  ['target' => '', 'name' => '8'], 
+                  ['target' => '', 'name' => '9'], 
+                  ['target' => '', 'name' => '10'], 
+                  ['target' => '.custom_pets_allowed_com', 'name' => 'Other']
+                ];
+              @endphp
+              <div class="form-group pets_allowed_question_com d-none">
+                <div class="form-group">
+                  <label class="fw-bold">Acceptable Pet Types:</label>
+                  <input type="text" name="acceptablePet" value="{{isset($auction->get->acceptablePet) ? $auction->get->acceptablePet : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dog">
+                </div>
+                <div class="form-group">
+                  <label class="fw-bold">Number of Pets Allowed:</label>
+                  <select class="grid-picker" name="total_pets_allowed" id="total_pets_allowed"
+                    style="justify-content: flex-start;">
+                    <option value="">Select</option>
+                    @foreach ($total_pets_allowed as $item)
+                      <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
+                        class="card flex-column" style="width:calc(10% - 10px);"
+                        data-icon='<i class="fa-solid fa-dog"></i>' {{isset($auction->get->total_pets_allowed) && $auction->get->total_pets_allowed == $item['name'] ? 'selected' : ''}}>
+                        {{ $item['name'] }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="form-group custom_pets_allowed_com d-none">
+                  <label class="fw-bold">Number of Pets Allowed:</label>
+                  <input type="text" name="custom_pets_allowed" value="{{isset($auction->get->custom_pets_allowed) ? $auction->get->custom_pets_allowed : ''}}" id="custom_pets_allowed"
+                    class="form-control has-icon" data-icon="fa-solid fa-dog">
+                </div>
+                <div class="form-group">
+                  <label class="fw-bold">Max Pet Weight:</label>
+                  <input type="text" name="max_pet_weight" value="{{isset($auction->get->max_pet_weight) ? $auction->get->max_pet_weight : ''}}" id="max_pet_weight" class="form-control has-icon"
+                    data-icon="fa-solid fa-dog">
+                </div>
+                <div class="form-group">
+                  <label class="fw-bold">Pet Restrictions:</label>
+                  <textarea name="pet_restrictions" value="{{isset($auction->get->pet_restrictions) ? $auction->get->pet_restrictions : ''}}" id="pet_restrictions" class="form-control" cols="30" rows="5"></textarea>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="wizard-step" data-step="71">
+          <div class="wizard-step" data-step="73">
             <div class="form-group">
               <label class="fw-bold"> Description:</label>
-              <textarea name="descriptionCom" id="description" class="form-control" cols="30" rows="10"></textarea>
+              <textarea name="descriptionCom" id="description" class="form-control" cols="30" rows="10">{{isset($auction->get->descriptionCom) ? $auction->get->descriptionCom : ''}}</textarea>
             </div>
             <div class="form-group">
-              <label class="fw-bold">Legal Disclamers:</label>
-              <input type="text" name="disclamer_com" id="keywords" class="form-control has-icon"
+              <label class="fw-bold">Legal Disclaimers:</label>
+              <input type="text" name="disclamer_com" value="{{isset($auction->get->disclamer_com) ? $auction->get->disclamer_com : ''}}" id="keywords" class="form-control has-icon"
                 data-icon="fa-solid fa-tag">
             </div>
             <div class="form-group">
               <label class="fw-bold">Driving Directions:</label>
-              <input type="text" name="driving_directions_com" id="keywords" class="form-control has-icon"
-                data-icon="fa-solid fa-tag">
+              <input type="text" name="driving_directions_com" value="{{isset($auction->get->driving_directions_com) ? $auction->get->driving_directions_com : ''}}" id="keywords" class="form-control has-icon"
+                data-icon="fa-solid fa-car">
             </div>
             <div class="form-group">
               @php
@@ -6754,7 +6612,7 @@
                 <option value="">Select</option>
                 @foreach ($sellerCompCommercial as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33% - 10px);" data-icon="{{ $item['icon'] }}">
+                    style="width:calc(33% - 10px);" data-icon="{{ $item['icon'] }}" {{isset($auction->get->looking_other_property) && $auction->get->looking_other_property == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -6769,12 +6627,12 @@
                       <button type="button" class="select-btn" data-type="amount">$</button>
                   </div>
                 </div>
-                <input type="text" name="compensation_amount_com" class="form-control has-icon"
+                <input type="text" name="compensation_amount_com" value="{{isset($auction->get->compensation_amount_com) ? $auction->get->compensation_amount_com : ''}}" class="form-control has-icon"
                   data-icon="fa-solid fa-percent">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="72">
+          <div class="wizard-step" data-step="74">
             <div class="form-group">
               <label class="fw-bold">Is the Seller actively seeking to purchase another property?
               </label>
@@ -6790,7 +6648,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(50% - 10px);" data-icon="<i class='{{ $item['icon'] }}'></i>">
+                    style="width:calc(50% - 10px);" data-icon="<i class='{{ $item['icon'] }}'></i>" {{isset($auction->get->looking_other_property_com) && $auction->get->looking_other_property_com == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -6798,36 +6656,36 @@
             </div>
             <div class="form-group link_commercial">
               <label class="fw-bold">Link to the listing on the Bid Your Offer platform:</label>
-              <input type="text" name="listing_link" id="listing_link" placeholder=""
+              <input type="text" name="listing_link" value="{{isset($auction->get->listing_link) ? $auction->get->listing_link : ''}}" id="listing_link" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-link">
             </div>
           </div>
-          <div class="wizard-step" data-step="73">
+          <div class="wizard-step" data-step="75">
             <h4>Title Company Information:</h4>
             <div class="form-group">
               <label class="fw-bold">Name:</label>
-              <input type="text" name="title_company_name_com" id="title_company_name" placeholder=""
+              <input type="text" name="title_company_name_com" value="{{isset($auction->get->title_company_name_com) ? $auction->get->title_company_name_com : ''}}" id="title_company_name" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-user">
             </div>
             <div class="form-group">
               <label class="fw-bold">Address:</label>
-              <input type="text" name="title_company_address_com" id="title_company_address" placeholder=""
+              <input type="text" name="title_company_address_com" value="{{isset($auction->get->title_company_address_com) ? $auction->get->title_company_address_com : ''}}" id="title_company_address" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-location-dot">
             </div>
             <div class="form-group">
               <label class="fw-bold">Phone Number:</label>
-              <input type="text" name="title_company_phone_com" id="title_company_phone" placeholder=""
+              <input type="text" name="title_company_phone_com" value="{{isset($auction->get->title_company_phone_com) ? $auction->get->title_company_phone_com : ''}}" id="title_company_phone" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-phone">
             </div>
 
             <div class="form-group">
               <label class="fw-bold">Email:</label>
-              <input type="text" name="title_company_email_com" id="titl_company_email" placeholder=""
+              <input type="text" name="title_company_email_com" value="{{isset($auction->get->title_company_email_com) ? $auction->get->title_company_email_com : ''}}" id="titl_company_email" placeholder=""
                 value="{{ @$auction->get->title_company_email }}" data-icon="fa-solid fa-envelope"
                 class="form-control has-icon">
             </div>
           </div>
-          <div class="wizard-step" data-step="74">
+          <div class="wizard-step" data-step="76">
             @if (auth()->user()->user_type == 'agent')
               <h4>Listing Agent Information:</h4>
             @else
@@ -6837,13 +6695,13 @@
               <div class="form-group col-md-6">
                 <label class="fw-bold">First Name:</label>
                 <input type="text"  name="agent_first_name_com" id="first_name" placeholder=""
-                  value="{{ Auth::user()->first_name }}" class="form-control has-icon"
+                  value="{{isset($auction->get->agent_first_name_com) ? $auction->get->agent_first_name_com : ''}}" class="form-control has-icon"
                   data-icon="fa-solid fa-user" required>
               </div>
               <div class="form-group col-md-6">
                 <label class="fw-bold">Last Name:</label>
                 <input type="text" name="agent_last_name_com" id="last_name" placeholder=""
-                  value="{{ Auth::user()->last_name }}" class="form-control has-icon"
+                  value="{{isset($auction->get->agent_last_name_com) ? $auction->get->agent_last_name_com : ''}}" class="form-control has-icon"
                   data-icon="fa-solid fa-user" required>
               </div>
             </div>
@@ -6851,14 +6709,14 @@
               <div class="form-group col-md-6">
                 <label class="fw-bold">Phone Number:</label>
                 <input type="text" name="agent_phone_com" id="agent_phone" placeholder=""
-                  value="{{ optional(Auth::user())->phone }}" class="form-control has-icon"
+                  value="{{isset($auction->get->agent_phone_com) ? $auction->get->agent_phone_com : ''}}" class="form-control has-icon"
                   data-icon="fa-solid fa-phone" required>
               </div>
               <div class="form-group col-md-6">
                 <label class="fw-bold">Email:</label>
                 <input type="text" name="agent_email_com" id="agent_email" placeholder=""
                   class="form-control has-icon" data-icon="fa-solid fa-envelope"
-                  value="{{ Auth::user()->email }}" required>
+                  value="{{isset($auction->get->agent_email_com) ? $auction->get->agent_email_com : ''}}" required>
               </div>
             </div>
             @if (auth()->user()->user_type == 'user')
@@ -6871,36 +6729,30 @@
               <div class="form-group col-md-6">
                 <label class="fw-bold">Brokerage:</label>
                 <input type="text" name="agent_brokerage_com" id="agent_brokerage" placeholder=""
-                  value="{{ optional(Auth::user())->brokerage }}" class="form-control has-icon"
+                  value="{{isset($auction->get->agent_brokerage_com) ? $auction->get->agent_brokerage_com : ''}}" class="form-control has-icon"
                   data-icon="fa-solid fa-handshake" required>
               </div>
               <div class="form-group col-md-6">
                 <label class="fw-bold">Real Estate License #:</label>
                 <input type="text" name="agent_license_no_com" id="agent_license_no" placeholder=""
-                  value="{{ optional(Auth::user())->license_no }}" class="form-control has-icon"
+                  value="{{isset($auction->get->agent_license_no_com) ? $auction->get->agent_license_no_com : ''}}" class="form-control has-icon"
                   data-icon="fa-solid fa-id-card" required>
               </div>
             </div>
             <div class="form-group row">
               <div class="form-group col-md-6">
                 <label class="fw-bold">NAR Member ID (NRDS ID):</label>
-                <input type="number" name="agent_mls_id_com" id="agent_mls_id" placeholder=""
+                <input type="text" name="agent_mls_id_com" id="agent_mls_id" placeholder=""
                   class="form-control has-icon" data-icon="fa-solid fa-id-card-clip"
-                  value="{{ optional(Auth::user())->mls_id }}" required>
-              </div>
-              <div class="form-group col-md-6">
-                <label class="fw-bold">Listed By: Real Estate Agent:</label>
-                {{-- <input type="number" name="agent_mls_id" id="agent_mls_id" placeholder=""
-                  class="form-control has-icon" data-icon="fa-solid fa-id-badge"
-                  value="{{ optional(Auth::user())->mls_id }}"> --}}
+                  value="{{isset($auction->get->agent_mls_id_com) ? $auction->get->agent_mls_id_com : ''}}" required>
               </div>
             </div>
             @endif
           </div>
-          <div class="wizard-step" data-step="75">
+          <div class="wizard-step" data-step="77">
             <div class="form-group">
               <label class="fw-bold">3D Tour (Link):</label>
-              <input type="text" name="three_d_tour" id="three_d_tour" placeholder=""
+              <input type="text" name="three_d_tour" value="{{isset($auction->get->three_d_tour) ? $auction->get->three_d_tour : ''}}" id="three_d_tour" placeholder=""
                   class="form-control has-icon" data-icon="fa-solid fa-link">
               </div>
               <div class="form-group">
@@ -6980,27 +6832,36 @@
           </div>
           {{-- Commercial/Business End --}}
           {{-- Vacant Start --}}
-          <div class="wizard-step" data-step="76">
+          <div class="wizard-step" data-step="78">
             @php
-              $front_exposures1 = [['name' => 'North', 'target' => ''], ['name' => 'East', 'target' => ''], ['name' => 'South', 'target' => ''], ['name' => 'West', 'target' => ''], ['name' => 'Southeast', 'target' => ''], ['name' => 'Northeast', 'target' => ''], ['name' => 'Southwest', 'target' => ''], ['name' => 'Northwest', 'target' => ''], ['name' => 'Undetermined', 'target' => '']];
+              $front_exposures1 = [
+                ['name' => 'East', 'target' => ''], 
+                ['name' => 'North', 'target' => ''], 
+                ['name' => 'Northeast', 'target' => ''], 
+                ['name' => 'Northwest', 'target' => ''], 
+                ['name' => 'South', 'target' => ''], 
+                ['name' => 'Southeast', 'target' => ''],
+                ['name' => 'Southwest', 'target' => ''], 
+                ['name' => 'West', 'target' => ''], 
+              ];
             @endphp
             <div class="form-group  ">
               <label class="fw-bold">Front Exposure:</label>
               <select class="grid-picker" name="front_exposure_vac" onchange="changeFrontExposure(this.value);"
-                id="front_exposure" style="justify-content: flex-start;">
+                id="front_exposure" style="justify-content: flex-start;" required>
                 <option value="">Select</option>
                 @foreach ($front_exposures1 as $front_exposure12)
                   <option value="{{ $front_exposure12['name'] }}"
                     data-icon='<i class="fa-regular fa-circle-check"></i>'
                     data-target="{{ $front_exposure12['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->front_exposure_vac) && $auction->get->front_exposure_vac == $front_exposure12['name'] ? 'selected' : ''}}>
                     {{ $front_exposure12['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="77">
+          <div class="wizard-step" data-step="79">
             @php
               $lot_features = [
                   ['name' => 'Brownfield', 'target' => ''],
@@ -7085,18 +6946,18 @@
                 @foreach ($lot_features as $lot_feature)
                 <option value="{{ $lot_feature['name'] }}" data-target="{{ $lot_feature['target'] }}"
                 class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                style="width:calc(33.3% - 10px);">
+                style="width:calc(33.3% - 10px);" {{isset($auction->get->lot_features) && in_array($lot_feature['name'], json_decode($auction->get->lot_features, true) ?? []) ? 'selected' : ''}}>
                 {{ $lot_feature['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherLotFeatureVacant d-none">
                 <label class="fw-bold">Lot Features:</label>
-                <input type="text" name="otherLotFeatureVac" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                <input type="text" name="otherLotFeatureVac" value="{{isset($auction->get->otherLotFeatureVac) ? $auction->get->otherLotFeatureVac : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="78">
+          <div class="wizard-step" data-step="80">
             @php
               $otherStructures = [
                   ['name' => 'Barn(s)', 'target' => ''],
@@ -7117,18 +6978,18 @@
                 @foreach ($otherStructures as $structure)
                   <option value="{{ $structure['name'] }}" data-target="{{ $structure['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->other_structures) && in_array($structure['name'], json_decode($auction->get->other_structures, true) ?? []) ? 'selected' : ''}}>
                     {{ $structure['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherStructuresVac d-none">
-                <label class="fw-bold">Other Structures::</label>
-                <input type="text" name="custom_other_structures" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                <label class="fw-bold">Other Structures:</label>
+                <input type="text" name="custom_other_structures" value="{{isset($auction->get->custom_other_structures) ? $auction->get->custom_other_structures : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="79">
+          <div class="wizard-step" data-step="81">
             <div class="form-group">
               <label class="fw-bold">Current Adjacent Use:</label>
               @php
@@ -7150,14 +7011,14 @@
                 <option value="">Select</option>
                 @foreach ($current_adjacent_use as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);">
+                    data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);" {{isset($auction->get->current_adjacent_use) && in_array($item['name'], json_decode($auction->get->current_adjacent_use, true) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="80">
+          <div class="wizard-step" data-step="82">
             @php
               $road_frontages = [
                 ['name' => 'Access Road', 'target' => ''], 
@@ -7181,24 +7042,24 @@
             <div class="form-group">
               <label class="fw-bold">Road Frontage:</label>
               <select class="grid-picker" onclick="changeRoadFrontage(this.value);" name="road_frontage"
-                id="road_frontage" style="justify-content: flex-start;" multiple>
+                id="road_frontage" style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($road_frontages as $item)
                   <option value="{{ $item['name'] }}"
                     data-icon='<i class="fa-regular fa-circle-check"></i>'
                     data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->road_frontage) && $auction->get->road_frontage == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherFrontageVacant d-none">
                 <label class="fw-bold">Road Frontage:</label>
-                <input type="text" name="otherFrontage" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                <input type="text" name="otherFrontage" value="{{isset($auction->get->otherFrontage) ? $auction->get->otherFrontage : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="81">
+          <div class="wizard-step" data-step="83">
             @php
               $road_surface_types = [
                 ['name' => 'Asphalt', 'target' => ''], 
@@ -7215,104 +7076,76 @@
             <div class="form-group ">
               <label class="fw-bold">Road Surface Type:</label>
               <select class="grid-picker" name="road_surface_type[]" id="road_surface_type"
-                style="justify-content: flex-start;" multiple>
+                style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($road_surface_types as $road_surface_type)
                   <option value="{{ $road_surface_type['name'] }}"
                     data-target="{{ $road_surface_type['target'] }}" class="card flex-row"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);">
+                    data-icon="<i class='fa-regular fa-circle-check'></i>" style="width:calc(33.3% - 10px);" {{isset($auction->get->road_surface_type) && in_array($road_surface_type['name'], json_decode($auction->get->road_surface_type, true) ?? []) ? 'selected' : ''}}>
                     {{ $road_surface_type['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherSurfaceVacant d-none">
                 <label class="fw-bold">Road Surface Type:</label>
-                <input type="text" name="otherSurfaceVac" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                <input type="text" name="otherSurfaceVac" value="{{isset($auction->get->otherSurfaceVac) ? $auction->get->otherSurfaceVac : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
               </div>
             </div>
           </div>
-          <div class="wizard-step" data-step="82">
+          <div class="wizard-step" data-step="84">
             @php
               $utilitiseRes = [
                 ['name' => 'BB/HS Internet Available', 'target' => ''],
-                ['name' => 'BB/HS Internet Connected', 'target' => ''],
+                ['name' => 'BB/HS Internet Capable', 'target' => ''],
                 ['name' => 'Cable Available', 'target' => ''],
                 ['name' => 'Cable Connected', 'target' => ''],
-                ['name' => 'Electric - Multiple Meters', 'target' => ''],
+                ['name' => 'Electrical Nearby', 'target' => ''],
                 ['name' => 'Electricity Available', 'target' => ''],
-                ['name' => 'Electricity Connected', 'target' => ''],
-                ['name' => 'Emergency Power', 'target' => ''],
                 ['name' => 'Fiber Optics', 'target' => ''],
                 ['name' => 'Fire Hydrant', 'target' => ''],
                 ['name' => 'Mini Sewer', 'target' => ''],
                 ['name' => 'Natural Gas Available', 'target' => ''],
-                ['name' => 'Natural Gas Connected', 'target' => ''],
                 ['name' => 'Phone Available', 'target' => ''],
                 ['name' => 'Private', 'target' => ''],
                 ['name' => 'Propane', 'target' => ''],
                 ['name' => 'Public', 'target' => ''],
                 ['name' => 'Sewer Available', 'target' => ''],
                 ['name' => 'Sewer Connected', 'target' => ''],
-                ['name' => 'Solar', 'target' => ''],
+                ['name' => 'Sewer Nearby', 'target' => ''],
                 ['name' => 'Sprinkler Meter', 'target' => ''],
                 ['name' => 'Sprinkler Recycled', 'target' => ''],
                 ['name' => 'Sprinkler Well', 'target' => ''],
                 ['name' => 'Street Lights', 'target' => ''],
+                ['name' => 'Telephone Nearby', 'target' => ''],
                 ['name' => 'Underground Utilities', 'target' => ''],
+                ['name' => 'Utility Pole', 'target' => ''],
                 ['name' => 'Water - Multiple Meters', 'target' => ''],
                 ['name' => 'Water Available', 'target' => ''],
                 ['name' => 'Water Connected', 'target' => ''],
                 ['name' => 'Water Nearby', 'target' => ''],
-                ['name' => 'None', 'target' => ''],
                 ['name' => 'Other', 'target' => '.otherUtilitiseVacant'],
               ];
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Utilities:</label>
               <select class="grid-picker" name="utilities[]" id="utilities" style="justify-content: flex-start;"
-                multiple>
+                multiple required>
                 <option value="">Select</option>
                 @foreach ($utilitiseRes as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->utilities) && in_array($item['name'], json_decode($auction->get->utilities, true) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherUtilitiseVacant d-none">
                 <label class="fw-bold">Utilities:</label>
-                <input type="text" name="otherUtilitiseVac" id="legal_description" class="form-control has-icon"
-                  data-icon="fa-regular fa-check-circle">
+                <input type="text" name="otherUtilitiseVac" value="{{isset($auction->get->otherUtilitiseVac) ? $auction->get->otherUtilitiseVac : ''}}" id="legal_description" class="form-control has-icon"
+                  data-icon="fa-regular fa-check-circle" required>
               </div>
             </div>
-            @php
-              $waterVacant = [
-                ['name' => 'Canal/Lake For Irrigation', 'target' => ''], 
-                ['name' => 'Private', 'target' => ''], 
-                ['name' => 'Public', 'target' => ''], 
-                ['name' => 'Well', 'target' => ''],
-                ['name' => 'None', 'target' => ''], 
-                ['name' => 'Other', 'target' => '.otherWaterVacant']];
-            @endphp
-            <div class="form-group">
-              <label class="fw-bold">Water:</label>
-              <select class="grid-picker" name="water" id="water12" style="justify-content: flex-start;">
-                <option value="">Select</option>
-                @foreach ($waterVacant as $water)
-                  <option value="{{ $water['name'] }}" data-target="{{ $water['target'] }}"
-                    data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
-                    {{ $water['name'] }}
-                  </option>
-                @endforeach
-              </select>
-              <div class="form-group otherWaterVacant d-none">
-                <label class="fw-bold">Water:</label>
-                <input type="text" name="otherWaterVac" id="legal_description" class="form-control has-icon"
-                  data-icon="fa-regular fa-check-circle">
-              </div>
-            </div>
+
             @php
               $sewerVacant = [
                 ['name' => 'PEP-Holding Tank', 'target' => ''], 
@@ -7325,38 +7158,69 @@
             @endphp
             <div class="form-group ">
               <label class="fw-bold">Sewer:</label>
-              <select class="grid-picker" name="sewer[]" id="sewer" style="justify-content: flex-start;">
+              <select class="grid-picker" name="sewer[]" id="sewer" style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($sewerVacant as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->sewer) && in_array($item['name'], json_decode($auction->get->sewer, true) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group otherSewerVacant d-none">
                 <label class="fw-bold">Sewer:</label>
-                <input type="text" name="otherSewerVac"  class="form-control has-icon"
-                  data-icon="fa-regular fa-check-circle">
+                <input type="text" name="otherSewerVac" value="{{isset($auction->get->otherSewerVac) ? $auction->get->otherSewerVac : ''}}" class="form-control has-icon"
+                  data-icon="fa-regular fa-check-circle" required>
               </div>
             </div>
+
+            @php
+              $waterVacant = [
+                ['name' => 'Canal/Lake For Irrigation', 'target' => ''], 
+                ['name' => 'Private', 'target' => ''], 
+                ['name' => 'Public', 'target' => ''], 
+                ['name' => 'Well', 'target' => ''],
+                ['name' => 'Well Required ', 'target' => ''],
+                ['name' => 'None', 'target' => ''], 
+                ['name' => 'Other', 'target' => '.otherWaterVacant']];
+            @endphp
+            <div class="form-group">
+              <label class="fw-bold">Water:</label>
+              <select class="grid-picker" name="water[]" id="water12" style="justify-content: flex-start;" multiple required>
+                <option value="">Select</option>
+                @foreach ($waterVacant as $water)
+                  <option value="{{ $water['name'] }}" data-target="{{ $water['target'] }}"
+                    data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->water) && in_array($water['name'], json_decode($auction->get->water, true) ?? []) ? 'selected' : ''}}>
+                    {{ $water['name'] }}
+                  </option>
+                @endforeach
+              </select>
+              <div class="form-group otherWaterVacant d-none">
+                <label class="fw-bold">Water:</label>
+                <input type="text" name="otherWaterVac" value="{{isset($auction->get->otherWaterVac) ? $auction->get->otherWaterVac : ''}}" id="legal_description" class="form-control has-icon"
+                  data-icon="fa-regular fa-check-circle" required>
+              </div>
+            </div>
+
+            
           </div>
-          <div class="wizard-step" data-step="83">
+          <div class="wizard-step" data-step="85">
             <h4>Land and Tax Information:</h4>
             <div class="form-group">
               <label class="fw-bold">Tax ID (Parcel Number):</label>
-              <input type="text" name="tax_id_vac" id="tax_id" class="form-control has-icon"
+              <input type="text" name="tax_id_vac" value="{{isset($auction->get->tax_id_vac) ? $auction->get->tax_id_vac : ''}}" id="tax_id" class="form-control has-icon"
                 data-icon="fa-solid fa-ruler-combined">
             </div>
             <div class="form-group">
               <label class="fw-bold">Tax Year:</label>
-              <input type="text" name="tax_year_vac" id="tax_year" class="form-control has-icon"
+              <input type="number" name="tax_year_vac" value="{{isset($auction->get->tax_year_vac) ? $auction->get->tax_year_vac : ''}}" id="tax_year" class="form-control has-icon"
                 data-icon="fa-regular fa-calendar-days" >
             </div>
             <div class="form-group">
               <label class="fw-bold">Taxes (Annual Amount):</label>
-              <input type="text" name="taxes_annual_amount_vac" id="taxes_annual_ammount"
+              <input type="number" name="taxes_annual_amount_vac" value="{{isset($auction->get->taxes_annual_amount_vac) ? $auction->get->taxes_annual_amount_vac : ''}}" id="taxes_annual_ammount"
                 class="form-control has-icon" data-icon="fa-solid fa-dollar">
             </div>
             <div class="form-group ">
@@ -7374,7 +7238,7 @@
                 @foreach ($additialParcelVacant as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="{{$item['icon']}}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->additionalParcelsVac) && $auction->get->additionalParcelsVac == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -7382,30 +7246,30 @@
               <div class="form-group additialParcelVacantYes d-none">
                 <div class="form-group">
                   <label class="fw-bold">Additional Tax ID's:</label>
-                  <input type="text" name="additional_tax_id_vac" id="additional_tax_id" class="form-control has-icon"
+                  <input type="text" name="additional_tax_id_vac" value="{{isset($auction->get->additional_tax_id_vac) ? $auction->get->additional_tax_id_vac : ''}}" id="additional_tax_id" class="form-control has-icon"
                     data-icon="fa-solid fa-ruler-combined">
                 </div>
               </div>
             </div>
             <div class="form-group">
               <label class="fw-bold">Total Number of Parcels:</label>
-              <input type="number" name="total_number_of_parcels_vac" id="total_number_of_parcels"
+              <input type="number" name="total_number_of_parcels_vac" value="{{isset($auction->get->total_number_of_parcels_vac) ? $auction->get->total_number_of_parcels_vac : ''}}" id="total_number_of_parcels"
                 class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
             </div>
             <div class="form-group">
               <label class="fw-bold">Zoning:</label>
-              <input type="text" name="zoning_vac" id="zoning"
-                class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+              <input type="text" name="zoning_vac" value="{{isset($auction->get->zoning_vac) ? $auction->get->zoning_vac : ''}}" id="zoning"
+                class="form-control has-icon" data-icon="fa-solid fa-tag">
             </div>
             <div class="form-group">
               <label class="fw-bold">Legal Description:</label>
-              <input type="text" name="legal_description_vac" id="legal_description" class="form-control has-icon"
+              <input type="text" name="legal_description_vac" value="{{isset($auction->get->legal_description_vac) ? $auction->get->legal_description_vac : ''}}" id="legal_description" class="form-control has-icon"
                 data-icon="fa-solid fa-tag">
             </div>
             <div class="form-group">
               <label class="fw-bold" for="year_built">Legal Subdivison Name:</label>
-              <input type="text" name="legal_subdivison_name_vac" id="legal_subdivison_name"
-                class="form-control has-icon " data-icon="fa-solid fa-ruler-combined"
+              <input type="text" name="legal_subdivison_name_vac" value="{{isset($auction->get->legal_subdivison_name_vac) ? $auction->get->legal_subdivison_name_vac : ''}}" id="legal_subdivison_name"
+                class="form-control has-icon " data-icon="fa-solid fa-tag"
                 >
             </div>
             @php
@@ -7418,38 +7282,41 @@
                 @foreach ($lot_sizes as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon='<i class="fa-solid fa-ruler-combined"></i>' class="card flex-column"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->total_aceage_vac) && $auction->get->total_aceage_vac == $item['name'] ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
-            <div class="form-group has_flood_zoon d-none">
+            <div class="form-group">
               <label class="fw-bold">Flood Zone Code:</label>
-              <input type="text" name="flood_zone_code_vac" id="flood_zone_code" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+              <input type="text" name="flood_zone_code_vac" value="{{isset($auction->get->flood_zone_code_vac) ? $auction->get->flood_zone_code_vac : ''}}" id="flood_zone_code" class="form-control has-icon" data-icon="fa-solid fa-tag">
             </div>
             <div class="form-group">
-              <label class="fw-bold" for="lot_size">Lot Size Square Footage:</label>
-              <input type="text" name="lot_size_vac" id="lot_size" class="form-control has-icon "
-                data-icon="fa-solid fa-ruler-combined" data-msg-required="Please enter Lot Size">
+              <label class="fw-bold">Front Footage:</label>
+              <input type="text" name="front_footage" value="{{isset($auction->get->front_footage) ? $auction->get->front_footage : ''}}" id="flood_zone_code" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+            </div>
+            <div class="form-group">
+              <label class="fw-bold">Lot Size Square Footage:</label>
+              <textarea name="lot_size_vac" value="{{isset($auction->get->lot_size_vac) ? $auction->get->lot_size_vac : ''}}" class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" rows="3"></textarea>
             </div>
             <div class="form-group">
               <label class="fw-bold">Lot Size Acres:</label>
-              <input type="text" name="lot_size_acres_vac" id="lot_size_acres" class="form-control has-icon"
+              <input type="text" name="lot_size_acres_vac" value="{{isset($auction->get->lot_size_acres_vac) ? $auction->get->lot_size_acres_vac : ''}}" id="lot_size_acres" class="form-control has-icon"
                 data-icon="fa-solid fa-ruler-combined">
             </div>
             <div class="form-group">
               <label class="fw-bold">Lot Dimensions:</label>
-              <input type="text" name="lot_dimensions" id="lot_dimensions" class="form-control has-icon"
+              <input type="text" name="lot_dimensions" value="{{isset($auction->get->lot_dimensions) ? $auction->get->lot_dimensions : ''}}" id="lot_dimensions" class="form-control has-icon"
                 data-icon="fa-solid fa-ruler-combined">
             </div>
           </div>
-          <div class="wizard-step" data-step="84">
+          <div class="wizard-step" data-step="86">
             <h4>Water and Dock Information:</h4>
             <div class="form-group ">
               <label class="fw-bold">Water View:</label>
               <select class="grid-picker" name="has_water_view_vac" id="has_water_view"
-                style="justify-content: flex-start;">
+                style="justify-content: flex-start;" required>
                 <option value="">Select</option>
                 @foreach ($yes_or_nos as $item)
                   @php
@@ -7460,7 +7327,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_water_view_vac) && $item['name'] == $auction->get->has_water_view_vac ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -7471,12 +7338,12 @@
             @endphp
             <div class="form-group water_view_vacant d-none">
               <select class="grid-picker" name="water_view[]" id="water_view" style="justify-content: flex-start;"
-                multiple>
+                multiple required>
                 <option value="">Select</option>
                 @foreach ($water_views as $water_view)
                   <option value="{{ $water_view['name'] }}" data-icon="<i class='fa-regular fa-circle-check'></i>"
                     data-target="{{ $water_view['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->water_view) && in_array($water_view['name'], json_decode($auction->get->water_view, true) ?? []) ? 'selected' : ''}}>
                     {{ $water_view['name'] }}
                   </option>
                 @endforeach
@@ -7485,7 +7352,7 @@
             <div class="form-group">
               <label class="fw-bold">Water Extras:</label>
               <select class="grid-picker" name="has_water_extra_vac" id="has_water_extra"
-                style="justify-content: flex-start;">
+                style="justify-content: flex-start;" required>
                 <option value="">Select</option>
                 @foreach ($yes_or_nos as $item)
                   @php
@@ -7496,7 +7363,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_water_extra_vac) &&  $item['name'] == $auction->get->has_water_extra_vac  ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -7530,12 +7397,12 @@
             @endphp
             <div class="form-group water_extras_vacant d-none ">
               <select class="grid-picker" name="water_extras[]" id="water_extras"
-                style="justify-content: flex-start;" multiple>
+                style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($water_extras as $water_extra)
                   <option value="{{ $water_extra['name'] }}" data-target="{{ $water_extra['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->water_extras) && in_array($water_extra['name'], json_decode($auction->get->water_extras, true) ?? []) ? 'selected' : ''}}>
                     {{ $water_extra['name'] }}
                   </option>
                 @endforeach
@@ -7544,7 +7411,7 @@
             <div class="form-group">
               <label class="fw-bold">Water Frontage:</label>
               <select class="grid-picker" name="has_water_fontage_vac" id="has_water_fontage"
-                style="justify-content: flex-start;">
+                style="justify-content: flex-start;" required>
                 <option value="">Select</option>
                 @foreach ($yes_or_nos as $item)
                   @php
@@ -7555,7 +7422,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_water_fontage_vac) && $item['name'] == $auction->get->has_water_fontage_vac  ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -7570,6 +7437,7 @@
                 ['name' => 'Canal - Brackish', 'target' => ''], 
                 ['name' => 'Canal - Freshwater', 'target' => ''], 
                 ['name' => 'Canal - Saltwater', 'target' => ''], 
+                ['name' => 'Canal Front', 'target' => ''],
                 ['name' => 'Creek', 'target' => ''], 
                 ['name' => 'Freshwater Canal w/Lift to Saltwater Canal', 'target' => ''], 
                 ['name' => 'Gulf/Ocean', 'target' => ''], 
@@ -7580,19 +7448,19 @@
                 ['name' => 'Lake - Chain of Lakes', 'target' => ''], 
                 ['name' => 'Marina', 'target' => ''], 
                 ['name' => 'Pond', 'target' => ''], 
+                ['name' => 'Riparian Rights', 'target' => ''],
                 ['name' => 'River', 'target' => ''], 
-                ['name' => 'Canal Front', 'target' => ''],
-                ['name' => 'Riparian Rights', 'target' => '']];
+              ];
 
             @endphp
             <div class="form-group water_frontage_vacant d-none">
               <select class="grid-picker" name="water_frontage[]" id="water_frontage"
-                style="justify-content: flex-start;" multiple>
+                style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($water_frontage as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->water_frontage) && in_array($item['name'], json_decode($auction->get->water_frontage, true) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -7601,7 +7469,7 @@
             <div class="form-group">
               <label class="fw-bold">Water Access:</label>
               <select class="grid-picker" name="has_water_access_vac" id="has_water_access"
-                style="justify-content: flex-start;">
+                style="justify-content: flex-start;" required>
                 <option value="">Select</option>
                 @foreach ($yes_or_nos as $item)
                   @php
@@ -7612,7 +7480,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_water_access_vac) && $item['name'] == $auction->get->has_water_access_vac ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -7623,12 +7491,12 @@
             @endphp
             <div class="form-group water_access_vacant">
               <select class="grid-picker" name="water_access[]" id="water_access"
-                style="justify-content: flex-start;" multiple>
+                style="justify-content: flex-start;" multiple required>
                 <option value="">Select</option>
                 @foreach ($water_access as $water_access1)
                   <option value="{{ $water_access1['name'] }}" data-target="{{ $water_access1['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->water_access) && in_array($water_access1['name'], json_decode($auction->get->water_access, true) ?? []) ? 'selected' : ''}}>
                     {{ $water_access1['name'] }}
                   </option>
                 @endforeach
@@ -7648,7 +7516,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->has_dock_vac) && $item['name'] == $auction->get->has_dock_vac ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -7693,35 +7561,35 @@
                 @foreach ($dock as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);" required>
+                    style="width:calc(33.3% - 10px);" required {{isset($auction->get->dock) && in_array($item['name'], json_decode($auction->get->dock, true) ?? []) ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
               <div class="form-group other-dock-vacant d-none">
                 <label class="fw-bold">Dock Description:</label>
-                <input type="text" name="custom_dock" id="custom_dock"
+                <input type="text" name="custom_dock" value="{{isset($auction->get->custom_dock) ? $auction->get->custom_dock : ''}}" id="custom_dock"
                   class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
               </div>
               <div class="form-group">
                 <label class="fw-bold">Dock Lift Capacity:</label>
-                <input type="text" name="dock_lift_capacity" id="dock_lift_capacity"
+                <input type="text" name="dock_lift_capacity" value="{{isset($auction->get->dock_lift_capacity) ? $auction->get->dock_lift_capacity : ''}}" id="dock_lift_capacity"
                   class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
               </div>
               <div class="form-group">
                 <label class="fw-bold">Dock Year Built:</label>
-                <input type="text" name="dock_year_built" id="dock_year_built"
-                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                <input type="number" name="dock_year_built" value="{{isset($auction->get->dock_year_built) ? $auction->get->dock_year_built : ''}}" id="dock_year_built"
+                  class="form-control has-icon" data-icon="fa-regular fa-calendar-days" required>
               </div>
               <div class="form-group">
                 <label class="fw-bold">Dock Dimension:</label>
-                <input type="text" name="dock_dimension" id="dock_dimension"
-                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                <input type="text" name="dock_dimension" value="{{isset($auction->get->dock_dimension) ? $auction->get->dock_dimension : ''}}" id="dock_dimension"
+                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined" required>
               </div>
               <div class="form-group">
                 <label class="fw-bold">Dock Maintenance Fee:</label>
-                <input type="text" name="dock_maintenance_fee" id="dock_maintenance_fee"
-                  class="form-control has-icon" data-icon="fa-regular fa-check-circle" required>
+                <input type="number" name="dock_maintenance_fee" value="{{isset($auction->get->dock_maintenance_fee) ? $auction->get->dock_maintenance_fee : ''}}" id="dock_maintenance_fee"
+                  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" required>
               </div>
               @php
                 $feeFrequency = [
@@ -7737,14 +7605,14 @@
                 @foreach ($feeFrequency as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                     class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-                    style="width:calc(33.3% - 10px);">
+                    style="width:calc(33.3% - 10px);" {{isset($auction->get->dock_maintenance_fee_frequency) && $item['name'] == $auction->get->dock_maintenance_fee_frequency ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
               </select>
             </div>
           </div>
-          <div class="wizard-step" data-step="85">
+          <div class="wizard-step" data-step="87">
             <h4>Ownership Information:</h4>
             @php
               $ownerships = [
@@ -7757,7 +7625,7 @@
             <div class="form-group">
               <label class="fw-bold">Ownership:</label>
               <select class="grid-picker" name="ownership_vac" id="ownership"
-                style="justify-content: flex-start;">
+                style="justify-content: flex-start;" required>
                 <option value="">Select</option>
                 @foreach ($ownerships as $item)
                   @php
@@ -7768,7 +7636,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                    style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->ownership_vac) && $item['name'] == $auction->get->ownership_vac ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -7776,11 +7644,11 @@
             </div>
             <div class="form-group otherOwnershipVacant">
               <label class="fw-bold">Ownership:</label>
-              <input type="text" name="otherOwnership" class="form-control has-icon"
-                data-icon="fa-regular fa-check-circle" >
+              <input type="text" name="otherOwnership" value="{{isset($auction->get->otherOwnership) ? $auction->get->otherOwnership : ''}}" class="form-control has-icon"
+                data-icon="fa-regular fa-check-circle" required>
             </div>
           </div>
-          <div class="wizard-step" data-step="86">
+          <div class="wizard-step" data-step="88">
             <h4>HOA, Condo Association and/or Master Association Information:</h4>
             <div class="form-group">
               @php
@@ -7790,11 +7658,11 @@
                 ];
               @endphp
               <label class="fw-bold">Does the property have an HOA, condo association, master association, and/or community fee?</label>
-              <select class="grid-picker" name="has_hoa_vac" id="has_hoa" style="justify-content: flex-start;">
+              <select class="grid-picker" name="has_hoa_vac" id="has_hoa" style="justify-content: flex-start;" required>
                 <option value="">Select</option>
                 @foreach ($propsOptVacant as $item)
                   <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                    style="width:calc(33.3% - 10px);" data-icon='{{ $item['icon'] }}'>
+                    style="width:calc(33.3% - 10px);" data-icon='{{ $item['icon'] }}' {{isset($auction->get->has_hoa_vac) && $item['name'] == $auction->get->has_hoa_vac ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -7811,12 +7679,10 @@
                     ['name' => 'Association Recreation - Lease', 'target' => ''],
                     ['name' => 'Association Recreation - Owned', 'target' => ''],
                     ['name' => 'Beach Area', 'target' => ''],
-                    ['name' => 'Community Boat Ramp', 'target' => ''],
                     ['name' => 'Curbs', 'target' => ''],
                     ['name' => 'Deed Restrictions', 'target' => ''],
                     ['name' => 'Dog Park', 'target' => ''],
                     ['name' => 'Expressway', 'target' => ''],
-                    ['name' => 'Fishing', 'target' => ''],
                     ['name' => 'Fitness Center', 'target' => ''],
                     ['name' => 'Gated Community - Guard', 'target' => ''],
                     ['name' => 'Gated Community - No Guard', 'target' => ''],
@@ -7827,20 +7693,16 @@
                     ['name' => 'Horses Allowed', 'target' => ''],
                     ['name' => 'Irrigation-Reclaimed Water', 'target' => ''],
                     ['name' => 'No Truck/RV/Motorcycle Parking', 'target' => ''],
-                    ['name' => 'None', 'target' => ''],
                     ['name' => 'Park', 'target' => ''],
                     ['name' => 'Playground', 'target' => ''],
                     ['name' => 'Pool', 'target' => ''],
-                    ['name' => 'Public Boat Ramp', 'target' => ''],
                     ['name' => 'Racquetball', 'target' => ''],
                     ['name' => 'Shopping Center', 'target' => ''],
                     ['name' => 'Sidewalk', 'target' => ''],
                     ['name' => 'Special Community Restrictions', 'target' => ''],
                     ['name' => 'Stream Seasonal', 'target' => ''],
                     ['name' => 'Tennis Courts', 'target' => ''],
-                    ['name' => 'Water Access', 'target' => ''],
-                    ['name' => 'Waterfront', 'target' => ''],
-                    ['name' => 'Waterfront Complex', 'target' => '']
+                    ['name' => 'None', 'target' => ''],
                 ];
               @endphp
               <div class="form-group ">
@@ -7852,7 +7714,7 @@
                     <option value="{{ $item['name'] }}"
                       data-icon="<i class='fa-regular fa-circle-check'></i>"
                       data-target="{{ $item['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);">
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->community_feature) && in_array($item['name'], json_decode($auction->get->community_feature, true) ?? []) ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -7874,8 +7736,6 @@
                     ['name' => 'Laundry', 'target' => ''],
                     ['name' => 'Lobby Key Required', 'target' => ''],
                     ['name' => 'Maintenance', 'target' => ''],
-                    ['name' => 'Marina', 'target' => ''],
-                    ['name' => 'Optional Additional Fees', 'target' => ''],
                     ['name' => 'Park', 'target' => ''],
                     ['name' => 'Pickleball Court(s)', 'target' => ''],
                     ['name' => 'Playground', 'target' => ''],
@@ -7903,14 +7763,14 @@
                     <option value="{{ $item['name'] }}"
                       data-icon="<i class='fa-regular fa-circle-check'></i>"
                       data-target="{{ $item['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);">
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->association_amenitie) && in_array($item['name'], json_decode($auction->get->association_amenitie, true) ?? []) ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
                 </select>
                 <div class="form-group otherAssocAmenitiesVacant d-none">
                   <label class="fw-bold">Association Amenities: </label>
-                  <input type="text" name="otherAssocAmenities_vac" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                  <input type="text" name="otherAssocAmenities_vac" value="{{isset($auction->get->otherAssocAmenities_vac) ? $auction->get->otherAssocAmenities_vac : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                 </div>
               </div>
               @php
@@ -7929,7 +7789,6 @@
                     ['name' => 'Maintenance Grounds', 'target' => ''],
                     ['name' => 'Maintenance Repairs', 'target' => ''],
                     ['name' => 'Manager', 'target' => ''],
-                    ['name' => 'None', 'target' => ''],
                     ['name' => 'Pest Control', 'target' => ''],
                     ['name' => 'Pool Maintenance', 'target' => ''],
                     ['name' => 'Private Road', 'target' => ''],
@@ -7939,6 +7798,7 @@
                     ['name' => 'Trash', 'target' => ''],
                     ['name' => 'Water', 'target' => ''],
                     ['name' => 'Other', 'target' => '.otherFeeIncludeVacant'],
+                    ['name' => 'None', 'target' => ''],
                 ];
               @endphp
               <div class="form-group ">
@@ -7950,20 +7810,51 @@
                     <option value="{{ $item['name'] }}"
                       data-icon="<i class='fa-regular fa-circle-check'></i>"
                       data-target="{{ $item['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);">
+                      style="width:calc(33.3% - 10px);" {{isset($auction->get->fee_include) && in_array($item['name'], json_decode($auction->get->fee_include, true) ?? []) ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
                 </select>
                 <div class="form-group otherFeeIncludeVacant d-none">
                   <label class="fw-bold">Fee Includes:</label>
-                  <input type="text" name="otherFeeInclude_vac" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+                  <input type="text" name="otherFeeInclude_vac" value="{{isset($auction->get->otherFeeInclude_vac) ? $auction->get->otherFeeInclude_vac : ''}}" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                 </div>
               </div>
               <div class="form-group">
                 <label class="fw-bold">Amenities with Additional Fees:</label>
-                <input type="text" name="amenities_with_additional_fees_vac"
-                  class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
+                <input type="text" name="amenities_with_additional_fees_vac" value="{{isset($auction->get->amenities_with_additional_fees_vac) ? $auction->get->amenities_with_additional_fees_vac : ''}}"
+                  class="form-control has-icon" data-icon="fa-regular fa-check-circle">
+              </div>
+              <div class="form-group">
+                @php
+                  $communityAssociationWaterFeatures = [
+                    ['name' => 'Bay/Harbor Front', 'target' => ''],
+                    ['name' => 'Boat Slip', 'target' => ''],
+                    ['name' => 'Canal Front', 'target' => ''],
+                    ['name' => 'Community Boat Ramp', 'target' => ''],
+                    ['name' => 'Dock', 'target' => ''],
+                    ['name' => 'Fishing', 'target' => ''],
+                    ['name' => 'Gulf/Ocean Front', 'target' => ''],
+                    ['name' => 'Intracoastal Waterway', 'target' => ''],
+                    ['name' => 'Lake', 'target' => ''],
+                    ['name' => 'Marina', 'target' => ''],
+                    ['name' => 'Private Boat Ramp', 'target' => ''],
+                    ['name' => 'Public Boat Ramp', 'target' => ''],
+                    ['name' => 'River', 'target' => ''],
+                    ['name' => 'Water Access', 'target' => ''],
+                    ['name' => 'Waterfront', 'target' => ''],
+                  ];
+                @endphp
+                <label class="fw-bold">Community/Association Water Features:</label>
+                <select class="grid-picker" name="comm_assoc_water_features" id="has_cdd" style="justify-content: flex-start;">
+                  <option value="">Select</option>
+                  @foreach ($communityAssociationWaterFeatures as $item)
+                    <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                      style="width:calc(33.3% - 10px);" data-icon="<i class='fa-regular fa-check-circle'></i>" {{isset($auction->get->comm_assoc_water_features) && $item['name'] == $auction->get->comm_assoc_water_features ? 'selected' : ''}}>
+                      {{ $item['name'] }}
+                    </option>
+                  @endforeach
+                </select>
               </div>
               <div class="form-group">
                 @php
@@ -7977,7 +7868,7 @@
                   <option value="">Select</option>
                   @foreach ($ccdOptVacant as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}">
+                      style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}" {{isset($auction->get->has_cdd_vac) && $item['name'] == $auction->get->has_cdd_vac ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -7985,7 +7876,7 @@
               </div>
               <div class="form-group ccdVacant d-none">
                 <label class="fw-bold">Annual CDD Fee:</label>
-                <input type="text" name="annual_cdd_fee_vac" id="annual_cdd_fee" class="form-control has-icon"
+                <input type="number" name="annual_cdd_fee_vac" value="{{isset($auction->get->annual_cdd_fee_vac) ? $auction->get->annual_cdd_fee_vac : ''}}" id="annual_cdd_fee" class="form-control has-icon"
                   data-icon="fa-solid fa-dollar ">
               </div>
               <div class="form-group">
@@ -8001,7 +7892,7 @@
                   <option value="">Select</option>
                   @foreach ($landLeaseOptVacant as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                      style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}">
+                      style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}" {{isset($auction->get->has_land_lease_vac) && $item['name'] == $auction->get->has_land_lease_vac ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -8009,7 +7900,7 @@
               </div>
               <div class="form-group landLeaseVacant d-none">
                 <label class="fw-bold">Annual Land Lease Fee:</label>
-                <input type="text" name="land_lease_fee_vac" id="land_lease_fee" class="form-control has-icon"
+                <input type="number" name="land_lease_fee_vac" value="{{isset($auction->get->land_lease_fee_vac) ? $auction->get->land_lease_fee_vac : ''}}" id="land_lease_fee" class="form-control has-icon"
                   data-icon="fa-solid fa-dollar ">
               </div>
             </div>
@@ -8017,8 +7908,8 @@
                     @php
                       $hoaFeeRequirementsVacant = [
                         ['name'=>'None','icon'=>'<i class="fa-regular fa-circle-check"></i>','target'=>''],
-                        ['name'=>'Optional','icon'=>'<i class="fa-regular fa-circle-question"></i>','target'=>''],
-                        ['name'=>'Required','icon'=>'<i class="fa-regular fa-circle-check"></i>','target'=>'']
+                        ['name'=>'Optional','icon'=>'<i class="fa-regular fa-circle-question"></i>','target'=>'.hoa_yes_vac'],
+                        ['name'=>'Required','icon'=>'<i class="fa-regular fa-circle-check"></i>','target'=>'.hoa_yes_vac']
                       ];
                     @endphp
                   <label class="fw-bold">Hoa Fee Requirement:</label>
@@ -8026,43 +7917,64 @@
                       <option value="">Select</option>
                       @foreach ($hoaFeeRequirementsVacant as $item)
                         <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}">
+                        style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}" {{isset($auction->get->hoaFeeRequirements_vac) && $item['name'] == $auction->get->hoaFeeRequirements_vac ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                       @endforeach
                     </select>
                 </div>
 
-                <div class="form-group">
-                  <label class="fw-bold">HOA Fee:</label>
-                  <input type="text" name="hoaFeeAmount_vac"  class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" >
+                <div class="form-group hoa_yes_vac d-none">
+                  <div class="form-group">
+                    <label class="fw-bold">HOA Fee:</label>
+                    <input type="number" name="hoaFeeAmount_vac" value="{{isset($auction->get->hoaFeeAmount_vac) ? $auction->get->hoaFeeAmount_vac : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
+                  </div>
+                  <div class="form-group">
+                    @php
+                      $paymentSchedulesVacant = [
+                              ['name'=>'Annually','target'=>''],
+                              ['name'=>'Monthly','target'=>''],
+                              ['name'=>'Quarterly','target'=>''],
+                              ['name'=>'Semi-Annually','target'=>'']
+                            ];
+                    @endphp
+                    <label class="fw-bold">HOA Payment Schedule:</label>
+                    <select name="paymentSchedules_vac" id="hoaPaymentSchedule" class="grid-picker">
+                      <option value="">Select</option>
+                      @foreach ($paymentSchedulesVacant as $item)
+                        <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
+                          style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->paymentSchedules_vac) && $item['name'] == $auction->get->paymentSchedules_vac ? 'selected' : ''}}>
+                          {{ $item['name'] }}
+                        </option>
+                      @endforeach
+                    </select>
+                  </div>
                 </div>
 
                 <div class="form-group">
                   @php
-                    $paymentSchedulesVacant = [
-                            ['name'=>'Annually','target'=>''],
-                            ['name'=>'Monthly','target'=>''],
-                            ['name'=>'Quarterly','target'=>''],
-                            ['name'=>'Semi-Annually','target'=>'']
+                    $condoFee = [
+                            ['name'=>'Yes','target'=>'.condo_yes'],
+                            ['name'=>'No','target'=>''],
                           ];
                   @endphp
-                  <label class="fw-bold">HOA Payment Schedule:</label>
-                  <select name="paymentSchedules_vac" id="hoaPaymentSchedule" class="grid-picker">
+                  <label class="fw-bold">Condo Fee:</label>
+                  <select name="condoFee_vac" class="grid-picker">
                     <option value="">Select</option>
-                    @foreach ($paymentSchedulesVacant as $item)
+                    @foreach ($condoFee as $item)
                       <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                        style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->condoFee_vac) && $item['name'] == $auction->get->condoFee_vac ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                     @endforeach
                   </select>
-                </div>
 
-                <div class="form-group">
-                  <label class="fw-bold">Condo Fee:</label>
-                  <input type="text" name="condoFeeAmount_vac" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" >
+                  <div class="form-group condo_yes d-none">
+                    <label class="fw-bold">Condo Fee:</label>
+                    <input type="number" name="condoFeeAmount_vac" value="{{isset($auction->get->condoFeeAmount_vac) ? $auction->get->condoFeeAmount_vac : ''}}" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign" >
+                  </div>
                 </div>
+                
 
                 <div class="form-group">
                   @php
@@ -8078,7 +7990,7 @@
                     <option value="">Select</option>
                     @foreach ($condoPayOptVacant as $item)
                       <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                        style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->condoPay_vac) && $item['name'] == $auction->get->condoPay_vac ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                     @endforeach
@@ -8097,7 +8009,7 @@
                     <option value="">Select</option>
                     @foreach ($masterAssocOptVacant as $item)
                       <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}">
+                        style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}" {{isset($auction->get->masterAssoc) && $item['name'] == $auction->get->masterAssoc ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                     @endforeach
@@ -8107,7 +8019,7 @@
                 <div class="form-group masterAssocYesVacant d-none">
                   <div class="form-group">
                     <label class="fw-bold">Master Association Fee:</label>
-                    <input type="text" name="masterAssociationFeeAmount_vac" id="masterAssociationFeeAmount" class="form-control has-icon " data-icon="fa-solid fa-dollar-sign" >
+                    <input type="text" name="masterAssociationFeeAmount_vac" value="{{isset($auction->get->masterAssociationFeeAmount_vac) ? $auction->get->masterAssociationFeeAmount_vac : ''}}" id="masterAssociationFeeAmount" class="form-control has-icon " data-icon="fa-solid fa-dollar-sign" >
                   </div>
 
                   <div class="form-group">
@@ -8124,7 +8036,7 @@
                       <option value="">Select</option>
                       @foreach ($assocScheduleOptVacant as $item)
                         <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                          style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                          style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->assocSchedule_vac) && $item['name'] == $auction->get->assocSchedule_vac ? 'selected' : ''}}>
                           {{ $item['name'] }}
                         </option>
                       @endforeach
@@ -8133,12 +8045,12 @@
 
                   <div class="form-group">
                     <label class="fw-bold">Master Association Name:</label>
-                    <input type="text" name="masterAssociationName_vac" id="masterAssociationName" class="form-control has-icon" data-icon="fa-solid fa-user">
+                    <input type="text" name="masterAssociationName_vac" value="{{isset($auction->get->masterAssociationName_vac) ? $auction->get->masterAssociationName_vac : ''}}" id="masterAssociationName" class="form-control has-icon" data-icon="fa-solid fa-user">
                   </div>
 
                   <div class="form-group">
                     <label class="fw-bold">Master Association Contact Phone:</label>
-                    <input type="text" name="masterAssociationContactPhone_vac" class="form-control has-icon" data-icon="fa-solid fa-phone">
+                    <input type="text" name="masterAssociationContactPhone_vac" value="{{isset($auction->get->masterAssociationContactPhone_vac) ? $auction->get->masterAssociationContactPhone_vac : ''}}" class="form-control has-icon" data-icon="fa-solid fa-phone">
                   </div>
                 </div>
 
@@ -8154,7 +8066,7 @@
                     <option value="">Select</option>
                     @foreach ($additioalFeeOptVacant as $item)
                       <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon='{{ $item['icon'] }}'>
+                        style="width:calc(33.3% - 10px);" data-icon='{{ $item['icon'] }}' {{isset($auction->get->additionalFees_vac) && $item['name'] == $auction->get->additionalFees_vac ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                     @endforeach
@@ -8163,11 +8075,11 @@
                 <div class="form-group additionalFeeYesVacant d-none">
                   <div class="form-group">
                     <label class="fw-bold">What is the fee for?</label>
-                    <input type="text" name="additionalFeeReason" id="additionalFeeReason" class="form-control has-icon" data-icon="">
+                    <input type="text" name="additionalFeeReason" value="{{isset($auction->get->additionalFeeReason) ? $auction->get->additionalFeeReason : ''}}" id="additionalFeeReason" class="form-control has-icon" data-icon="fa-regular fa-check-circle">
                   </div>
                   <div class="form-group">
                     <label class="fw-bold">Other Fee:</label>
-                    <input type="text" name="otherFeeAmount_vac" id="otherFeeAmount" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
+                    <input type="number" name="otherFeeAmount_vac" value="{{isset($auction->get->otherFeeAmount_vac) ? $auction->get->otherFeeAmount_vac : ''}}" id="otherFeeAmount" class="form-control has-icon" data-icon="fa-solid fa-dollar-sign">
                   </div>
                 </div>
                   <div class="form-group">
@@ -8184,7 +8096,7 @@
                       <option value="">Select</option>
                       @foreach ($otherFeeOptVacant as $item)
                         <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                          style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'>
+                          style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->otherFee) && $item['name'] == $auction->get->otherFee ? 'selected' : ''}}>
                           {{ $item['name'] }}
                         </option>
                       @endforeach
@@ -8193,22 +8105,22 @@
 
                 <div class="form-group">
                   <label class="fw-bold">Association/Manager Contact Name:</label>
-                  <input type="text" name="associationManagerContactName_vac"  class="form-control has-icon" data-icon="fa-solid fa-user">
+                  <input type="text" name="associationManagerContactName_vac" value="{{isset($auction->get->associationManagerContactName_vac) ? $auction->get->associationManagerContactName_vac : ''}}" class="form-control has-icon" data-icon="fa-solid fa-user">
                 </div>
 
                 <div class="form-group">
                   <label class="fw-bold">Association/Manager Contact Email:</label>
-                  <input type="email" name="associationManagerContactEmail_vac"  class="form-control has-icon" data-icon="fa-solid fa-envelope">
+                  <input type="email" name="associationManagerContactEmail_vac" value="{{isset($auction->get->associationManagerContactEmail_vac) ? $auction->get->associationManagerContactEmail_vac : ''}}" class="form-control has-icon" data-icon="fa-solid fa-envelope">
                 </div>
 
                 <div class="form-group">
                   <label class="fw-bold">Association/Manager Contact Phone:</label>
-                  <input type="text" name="associationManagerContactPhone_vac" class="form-control has-icon" data-icon="fa-solid fa-phone">
+                  <input type="text" name="associationManagerContactPhone_vac" value="{{isset($auction->get->associationManagerContactPhone_vac) ? $auction->get->associationManagerContactPhone_vac : ''}}" class="form-control has-icon" data-icon="fa-solid fa-phone">
                 </div>
 
                 <div class="form-group">
                   <label class="fw-bold">Association/Manager Contact Website Address:</label>
-                  <input type="text" name="associationManagerContactWebsite_vac"  class="form-control has-icon" data-icon="fa-regular fa-window-restore">
+                  <input type="text" name="associationManagerContactWebsite_vac" value="{{isset($auction->get->associationManagerContactWebsite_vac) ? $auction->get->associationManagerContactWebsite_vac : ''}}" class="form-control has-icon" data-icon="fa-regular fa-window-restore">
                 </div>
 
                 <div class="form-group">
@@ -8223,25 +8135,25 @@
                     <option value="">Select</option>
                     @foreach ($olderPersonOptVacant as $item)
                       <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                        style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}">
+                        style="width:calc(33.3% - 10px);" data-icon="{{ $item['icon'] }}" {{isset($auction->get->olderPersons_vac) && $item['name'] == $auction->get->olderPersons_vac ? 'selected' : ''}}>
                         {{ $item['name'] }}
                       </option>
                     @endforeach
                   </select>
                 </div>
           </div>
-          <div class="wizard-step" data-step="87">
+          <div class="wizard-step" data-step="89">
             <div class="form-group">
               <label class="fw-bold"> Description:</label>
-              <textarea name="descriptionVac" id="description" class="form-control" cols="30" rows="10" required></textarea>
+              <textarea name="descriptionVac" value="{{isset($auction->get->descriptionVac) ? $auction->get->descriptionVac : ''}}" id="description" class="form-control" cols="30" rows="10" required></textarea>
             </div>
             <div class="form-group">
-              <label class="fw-bold">Legal Disclamers:</label>
-              <textarea name="disclamer_vac" id="keywords" class="form-control" cols="30" rows="10" required></textarea>
+              <label class="fw-bold">Legal Disclaimers:</label>
+              <textarea name="disclamer_vac" value="{{isset($auction->get->disclamer_vac) ? $auction->get->disclamer_vac : ''}}" id="keywords" class="form-control has-icon" data-icon="fa-solid fa-tag" cols="30" rows="1"></textarea>
             </div>
             <div class="form-group">
               <label class="fw-bold">Driving Directions:</label>
-              <input type="text" name="driving_directions_vac" id="keywords" class="form-control has-icon"
+              <input type="text" name="driving_directions_vac" value="{{isset($auction->get->driving_directions_vac) ? $auction->get->driving_directions_vac : ''}}" id="keywords" class="form-control has-icon"
                 data-icon="fa-solid fa-car">
             </div>
             <div class="form-group">
@@ -8255,7 +8167,7 @@
                   <option value="">Select</option>
                   @foreach ($sellerCompVacant as $item)
                     <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-                      style="width:calc(33% - 10px);" data-icon="{{ $item['icon'] }}">
+                      style="width:calc(33% - 10px);" data-icon="{{ $item['icon'] }}" {{isset($auction->get->looking_other_property) && $item['name'] == $auction->get->looking_other_property ? 'selected' : ''}}>
                       {{ $item['name'] }}
                     </option>
                   @endforeach
@@ -8270,12 +8182,12 @@
                         <button type="button" class="select-btn" data-type="amount">$</button>
                     </div>
                   </div>
-                  <input type="text" name="compensation_amount_vac" class="form-control has-icon"
+                  <input type="text" name="compensation_amount_vac" value="{{isset($auction->get->compensation_amount_vac) ? $auction->get->compensation_amount_vac : ''}}" class="form-control has-icon"
                     data-icon="fa-solid fa-percent">
                 </div>
               </div>
           </div>
-          <div class="wizard-step" data-step="88">
+          <div class="wizard-step" data-step="90">
             <div class="form-group">
               <label class="fw-bold">Is the Seller actively seeking to purchase another property?
               </label>
@@ -8291,7 +8203,7 @@
                     }
                   @endphp
                   <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
-                    style="width:calc(50% - 10px);" data-icon="<i class='{{ $item['icon'] }}'></i>">
+                    style="width:calc(50% - 10px);" data-icon="<i class='{{ $item['icon'] }}'></i>" {{isset($auction->get->looking_other_property_vac) && $item['name'] == $auction->get->looking_other_property_vac ? 'selected' : ''}}>
                     {{ $item['name'] }}
                   </option>
                 @endforeach
@@ -8299,36 +8211,36 @@
             </div>
             <div class="form-group anotherPropVacant">
               <label class="fw-bold">Link to the listing on the Bid Your Offer platform:</label>
-              <input type="text" name="listing_link" id="listing_link" placeholder=""
+              <input type="text" name="listing_link" value="{{isset($auction->get->listing_link) ? $auction->get->listing_link : ''}}" id="listing_link" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-link">
             </div>
           </div>
-          <div class="wizard-step" data-step="89">
+          <div class="wizard-step" data-step="91">
             <h4>Title Company Information:</h4>
             <div class="form-group">
               <label class="fw-bold">Name:</label>
-              <input type="text" name="title_company_name_vac" id="title_company_name" placeholder=""
+              <input type="text" name="title_company_name_vac" value="{{isset($auction->get->title_company_name_vac) ? $auction->get->title_company_name_vac : ''}}" id="title_company_name" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-user">
             </div>
             <div class="form-group">
               <label class="fw-bold">Address:</label>
-              <input type="text" name="title_company_address_vac" id="title_company_address" placeholder=""
+              <input type="text" name="title_company_address_vac" value="{{isset($auction->get->title_company_address_vac) ? $auction->get->title_company_address_vac : ''}}" id="title_company_address" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-location-dot">
             </div>
             <div class="form-group">
               <label class="fw-bold">Phone Number:</label>
-              <input type="text" name="title_company_phone_vac" id="title_company_phone" placeholder=""
+              <input type="text" name="title_company_phone_vac" value="{{isset($auction->get->title_company_phone_vac) ? $auction->get->title_company_phone_vac : ''}}" id="title_company_phone" placeholder=""
                 class="form-control has-icon" data-icon="fa-solid fa-phone">
             </div>
 
             <div class="form-group">
               <label class="fw-bold">Email:</label>
-              <input type="text" name="title_company_email_vac" id="titl_company_email" placeholder=""
+              <input type="text" name="title_company_email_vac" value="{{isset($auction->get->title_company_email_vac) ? $auction->get->title_company_email_vac : ''}}" id="titl_company_email" placeholder=""
               data-icon="fa-solid fa-envelope" class="form-control has-icon">
             </div>
         
           </div>
-          <div class="wizard-step" data-step="90">
+          <div class="wizard-step" data-step="92">
             @if (auth()->user()->user_type == 'agent')
               <h4>Listing Agent Information:</h4>
             @else
@@ -8338,13 +8250,13 @@
               <div class="form-group col-md-6">
                 <label class="fw-bold">First Name:</label>
                 <input type="text" name="agent_first_name_vac" id="first_name" placeholder=""
-                  value="{{ Auth::user()->first_name }}" class="form-control has-icon"
+                  value="{{isset($auction->get->agent_first_name_vac) ? $auction->get->agent_first_name_vac : ''}}" class="form-control has-icon"
                   data-icon="fa-solid fa-user" required>
               </div>
               <div class="form-group col-md-6">
                 <label class="fw-bold">Last Name:</label>
                 <input type="text" name="agent_last_name_vac" id="last_name" placeholder=""
-                  value="{{ Auth::user()->last_name }}" class="form-control has-icon"
+                  value="{{isset($auction->get->agent_last_name_vac) ? $auction->get->agent_last_name_vac : ''}}" class="form-control has-icon"
                   data-icon="fa-solid fa-user" required>
               </div>
             </div>
@@ -8352,14 +8264,14 @@
               <div class="form-group col-md-6">
                 <label class="fw-bold">Phone Number:</label>
                 <input type="text" name="agent_phone_vac" id="agent_phone" placeholder=""
-                  value="{{ optional(Auth::user())->phone }}" class="form-control has-icon"
+                  value="{{isset($auction->get->agent_phone_vac) ? $auction->get->agent_phone_vac : ''}}" class="form-control has-icon"
                   data-icon="fa-solid fa-phone" required>
               </div>
               <div class="form-group col-md-6 ">
                 <label class="fw-bold">Email:</label>
                 <input type="text" name="agent_email_vac" id="agent_email" placeholder=""
                   class="form-control has-icon" data-icon="fa-solid fa-envelope"
-                  value="{{ Auth::user()->email }}" required>
+                  value="{{isset($auction->get->agent_email_vac) ? $auction->get->agent_email_vac : ''}}" required>
               </div>
             </div>
             @if (auth()->user()->user_type == 'user')
@@ -8372,13 +8284,13 @@
               <div class="form-group col-md-6">
                 <label class="fw-bold">Brokerage:</label>
                 <input type="text" name="agent_brokerage_vac" id="agent_brokerage" placeholder=""
-                  value="{{ optional(Auth::user())->brokerage }}" class="form-control has-icon"
+                  value="{{isset($auction->get->agent_brokerage_vac) ? $auction->get->agent_brokerage_vac : ''}}" class="form-control has-icon"
                   data-icon="fa-solid fa-handshake" required>
               </div>
               <div class="form-group col-md-6">
                 <label class="fw-bold">Real Estate License #:</label>
                 <input type="text" name="agent_license_no_vac" id="agent_license_no" placeholder=""
-                  value="{{ optional(Auth::user())->license_no }}" class="form-control has-icon"
+                  value="{{isset($auction->get->agent_license_no_vac) ? $auction->get->agent_license_no_vac : ''}}" class="form-control has-icon"
                   data-icon="fa-solid fa-id-card" required>
               </div>
             </div>
@@ -8386,24 +8298,21 @@
               <div class="form-group col-md-6">
                 <label class="fw-bold">NAR Member ID (NRDS ID):</label>
                 <input type="text" name="agent_mls_id_vac" id="agent_mls_id" placeholder=""
-                  class="form-control has-icon" data-icon="fa-solid fa-id-badge"
-                  value="{{ optional(Auth::user())->mls_id }}" required>
-              </div>
-              <div class="form-group  col-md-6">
-                <label class="fw-bold">Listed By: Real Estate Agent:</label>
+                  class="form-control has-icon" data-icon="fa-solid fa-id-card-clip"
+                  value="{{isset($auction->get->agent_mls_id_vac) ? $auction->get->agent_mls_id_vac : ''}}" required>
               </div>
             </div>
             @endif
           </div>
-          <div class="wizard-step" data-step="91">
+          <div class="wizard-step" data-step="93">
             <div class="form-group">
               <label class="fw-bold">3D Tour (Link):</label>
-              <input type="text" name="three_d_tour" id="three_d_tour" placeholder=""
+              <input type="text" name="three_d_tour" value="{{isset($auction->get->three_d_tour) ? $auction->get->three_d_tour : ''}}" id="three_d_tour" placeholder=""
                   class="form-control has-icon" data-icon="fa-solid fa-ruler-combined">
                 </div>
               <div class="form-group">
                 <label class="fw-bold">Plot Plan:</label>
-                <input type="file" name="floor_plan[]" id="floor_plan_1" class="form-control">
+                <input type="file" name="floor_plan[]" id="floor_plan_1" class="form-control" accept="image/*" >
               </div>
               <div class="form-group">
                 <label class="fw-bold">Addendums/Disclosures:</label>
@@ -8491,15 +8400,17 @@
       </div>
     </div>
   </div>
+  @php
+    $roomDataBackend = json_decode($auction->get->room_details_data);
+    $unitDataBackend = json_decode($auction->get->unit_type_data);
+  @endphp
 @endsection
 @push('scripts')
 <script>
-// Video Preview
-  $(document).ready(function($) {
-    $('select').trigger('change');
-
+  // Video Preview
+  async function initializeVideoPicker() {
     // Click button to activate hidden file input
-    $('.fileuploader-btn').on('click', function() {
+    $(document).on('click','.fileuploader-btn', function() {
       $('.fileuploader').click();
     });
 
@@ -8507,8 +8418,8 @@
     // Once something is selected the change function will run
     $('.fileuploader').change(function() {
       $('#errorDiv').remove();
-      if (this.files[0].size > 30000000) {
-        $(this).parent().after('<span id="errorDiv" style="color: red;">Please upload a file less than 30MB. Thanks!!</span>');
+      if (this.files[0].size > 50000000) {
+        $(this).parent().after('<span id="errorDiv" style="color: red;">Please upload a file less than 50MB. Thanks!!</span>');
         $(this).val('');
         $('#saveBtn').prop('disabled', true);
       } else {
@@ -8558,8 +8469,7 @@
         }
       }
     });
-  });
-
+  };
 
 
 
@@ -8599,15 +8509,18 @@
   }
 
   // initialize box-scope
-  var boxes = document.querySelectorAll('.box');
+  function initializeImagePicker(){
+    var boxes = document.querySelectorAll('.box');
 
-  for (let i = 0; i < boxes.length; i++) {
-    let box = boxes[i];
-    initDropEffect(box);
-    initImageUpload(box);
+    for (let i = 0; i < boxes.length; i++) {
+      let box = boxes[i];
+      initDropEffect(box);
+      initImageUpload(box);
+    }
   }
 
-
+  initializeVideoPicker();
+  initializeImagePicker();
 
   /// drop-effect
   function initDropEffect(box) {
@@ -8678,9 +8591,6 @@
       $('.garage_opt').hide();
     }
   }
-//   $(function() {
-//     show_garage_opt("");
-//   });
 </script>
 <script>
   $('#auction_type').change(function(){
@@ -8717,80 +8627,41 @@
       $('.business_oportunity_remove').remove();
     }
   }
-//   $(function() {
-//     changePropertyStyle("");
-//   });
 </script>
 <script>
   function changeCurrentUse(p) {
-
-
     $('.current_use_next_hide').addClass('d-none');
   }
-//   $(function() {
-//     changePropertyStyle("");
-//   });
 </script>
 <script>
   function changeFrontExposure(p) {
-
-
     $('.front_exposure_next_hide').addClass('d-none');
-
   }
-//   $(function() {
-//     changePropertyStyle("");
-//   });
 </script>
 <script>
   function changeLotFeature(p) {
-
-
     $('.lot_feature_next_hide').addClass('d-none');
-
   }
-//   $(function() {
-//     changeLotFeature("");
-//   });
 </script>
 <script>
   function change_adjacent_use(p) {
-
-
     $('.adjacent_use_next_hide').addClass('d-none');
-
   }
-//   $(function() {
-//     change_adjacent_use("");
-//   });
 </script>
 <script>
   function changeRoadFrontage(p) {
     $('.road_frontage_next_hide').addClass('d-none');
   }
-//   $(function() {
-//     changeRoadFrontage("");
-//   });
 </script>
 <script>
   function changeRoadSurfaceType(p) {
     $('.road_surface_type_next_hide').addClass('d-none');
-
   }
-//   $(function() {
-//     changeRoadSurfaceType("");
-//   });
 </script>
 <script>
   function Utilities_Water_Sewer(p) {
-
-
     $('.utilities_water_sewer_next_hide').addClass('d-none');
-
   }
-//   $(function() {
-//     Utilities_Water_Sewer("");
-//   });
 </script>
 <script>
   function changePropertyType(p) {
@@ -8935,12 +8806,9 @@
 
     }
   }
-//   $(function() {
-//     changePropertyType("");
-//   });
 </script>
 <script>
-  $(function() {
+  function initializeIcons(){
     $('.has-icon').each(function(i) {
       var cover = `<div class="input-cover input-cover-${i}"></div>`;
       $(this).before(cover);
@@ -8950,7 +8818,8 @@
       var htm = `<label for="${id}" class="input-icon"><i class="${iconClass} " ></i></label>`;
       $(this).before(htm);
     });
-
+  }
+  function initializeFields(){
     $('.grid-picker').each(function(index, elm) {
       var st = $(elm).attr('style');
       var html =
@@ -8977,14 +8846,15 @@
       });
 
     });
+  }
 
-
-
-  });
+  initializeIcons();
+  initializeFields();
 
   function checkselect(elm) {
     var i = $(elm).data('index');
     var mult = $(elm).parent().children('select').attr('multiple') || false;
+    // console.log(mult);
     if (mult == false) {
       var option = $(elm).parent().children('select').children(`option:eq(${i})`);
       var ov = option.val();
@@ -9002,6 +8872,8 @@
         option.attr('selected', 'selected');
       }
     }
+
+    // console.log(op);
     var v = $(elm).parent().children('select').val();
     $(elm).parent().children('select').trigger('change');
     check_custom();
@@ -9020,10 +8892,6 @@
       }
     });
   }
-
-  $('#room_type').change(function(){
-    $('.room-type-fields').removeClass('d-none');
-  })
 </script>
 <script>
   $(function() {
@@ -9033,7 +8901,7 @@
   var StepWizard = {
     init: function() {
       StepWizard.total_steps = $('.wizard-step').length;
-
+      var property_type;
       var v = $(".mainform").validate({
         errorClass: "text-error text-danger w-100",
         onkeyup: false,
@@ -9044,18 +8912,30 @@
       property_type;
       $('#property_type').on('change', function() {
         property_type = $(this).val();
+        // Count the remaining steps without removing them
+
+
+
       });
 
 
       $('.wizard-step-next').click(function(e) {
+        //   console.log(StepWizard.currentStep)
+
         if (v.form()) {
           if ($('.wizard-step.active').next().is('.wizard-step')) {
+
+            // $('.wizard-step.active').removeClass('active').next().addClass('active');
             $('.wizard-step.active').removeClass('active');
             console.log(StepWizard.currentStep)
             if (StepWizard.currentStep == 7 && property_type == 'Vacant Land') {
-              StepWizard.nextStep = 76;
+              StepWizard.nextStep = 78;
               StepWizard.backStep = 7;
             } 
+            // else if (StepWizard.currentStep == 34 && property_type ==
+            //   'Residential Property') {
+            //   StepWizard.nextStep = 36;
+            // } 
             else if (StepWizard.currentStep == 7 && (property_type == 'Residential Property' ||
                 property_type ==
                 'Income Property')) {
@@ -9073,44 +8953,87 @@
                 'Commercial Property' || property_type == 'Business Opportunity')
 
             ) {
-              StepWizard.nextStep = 42;
-              StepWizard.backStep = 8;
-            } 
-            else if (StepWizard.currentStep == 42 && (property_type ==
-                'Commercial Property' || property_type == 'Business Opportunity')
-
-            ) {
               StepWizard.nextStep = 44;
-              StepWizard.backStep = 42;
+              StepWizard.backStep = 8;
+            } else if(StepWizard.currentStep == 28 && property_type == 'Income Property'){
+              StepWizard.nextStep = 30;
+              StepWizard.backStep = 28;
+            }
+            else if (StepWizard.currentStep == 44 && (property_type ==
+                'Commercial Property' || property_type == 'Business Opportunity')
+            ) {
+              StepWizard.nextStep = 46;
+              StepWizard.backStep = 44;
             } 
-            else if (StepWizard.currentStep == 61 && (property_type ==
+            else if (StepWizard.currentStep == 47 &&  property_type == 'Business Opportunity' ) {
+              StepWizard.nextStep = 49;
+              StepWizard.backStep = 47;
+            }else if (StepWizard.currentStep == 47 &&  property_type == 'Commercial Opportunity' ) {
+              StepWizard.nextStep = 50;
+              StepWizard.backStep = 47;
+            }
+            else if (StepWizard.currentStep == 63 && (property_type ==
                 'Commercial Property' || property_type == 'Business Opportunity')
 
             ) {
-              StepWizard.nextStep = 63;
-              StepWizard.backStep = 61;
+              StepWizard.nextStep = 65;
+              StepWizard.backStep = 63;
             }
-            else if (StepWizard.currentStep == 66 && (property_type ==
+            else if (StepWizard.currentStep == 68 && (property_type ==
                 'Commercial Property' || property_type == 'Business Opportunity')
 
             ) {
-              StepWizard.nextStep = 68;
-              StepWizard.backStep = 66;
+              StepWizard.nextStep = 70;
+              StepWizard.backStep = 68;
             }
+            // else if (StepWizard.currentStep == 14 && (property_type ==
+            //     'Commercial Property' || property_type == 'Business Opportunity')
+
+            // ) {
+            //   StepWizard.nextStep = 47;
+            //   StepWizard.backStep = 14;
+            // } 
+            // else if (StepWizard.currentStep == 47 && (property_type ==
+            //     'Commercial Property' || property_type == 'Business Opportunity')
+
+            // ) {
+            //   StepWizard.nextStep = 17;
+            //   StepWizard.backStep = 47;
+            // } 
+            
+            // else if (StepWizard.currentStep == 21 && (property_type ==
+            //     'Commercial Property' || property_type == 'Business Opportunity')
+
+            // ) {
+            //   StepWizard.nextStep = 52;
+            //   StepWizard.backStep = 21;
+            // }  else if (StepWizard.currentStep == 10 && (property_type ==
+            //     'Commercial Property' || property_type == 'Business Opportunity')
+
+            // ) {
+            //   StepWizard.nextStep = 12;
+            //   StepWizard.backStep = 10;
+            // } else if (StepWizard.currentStep == 20 && (property_type ==
+            //     'Commercial Property' || property_type == 'Business Opportunity')
+
+            // ) {
+            //   StepWizard.nextStep = 21;
+            //   StepWizard.backStep = 20;
+            // } 
             
             else {
               StepWizard.backStep = StepWizard.currentStep;
             }
             $('[ data-step="' + StepWizard.nextStep + '"]').addClass("active");
             StepWizard.setStep();
-            if (StepWizard.currentStep == 41 &&
+            if (StepWizard.currentStep == 43 &&
               (property_type == 'Residential Property' || property_type ==
                 'Income Property')
             ) {
               $('.wizard-step-next').hide();
               $('.wizard-step-finish').show();
             }
-            if (StepWizard.currentStep == 75 &&
+            if (StepWizard.currentStep == 77 &&
               (property_type == 'Commercial Property' || property_type ==
                 'Business Opportunity')
             ) {
@@ -9129,6 +9052,10 @@
           $('[ data-step="' + StepWizard.backStep + '"]').addClass("active");
           StepWizard.setStep();
           console.log(StepWizard.currentStep)
+          // if (StepWizard.currentStep == 48 && property_type ==
+          //   'Commercial Property') {
+          //   StepWizard.backStep = 46;
+          // }
           
           if (StepWizard.currentStep == 11 && property_type == 'Income Property') {
               StepWizard.backStep = 8
@@ -9136,22 +9063,62 @@
             }else if (StepWizard.currentStep == 12 && property_type == 'Residential Property') {
               StepWizard.backStep = 10
               StepWizard.nextStep = 12;
-            }else if (StepWizard.currentStep == 42 && (property_type == 'Business Opportunity' || property_type == 'Commercial Property')){
-              StepWizard.backStep = 8;
-              StepWizard.nextStep = 42;
+            }else if (StepWizard.currentStep == 30 && property_type == 'Income Property') {
+              StepWizard.backStep = 28
+              StepWizard.nextStep = 30;
             }else if (StepWizard.currentStep == 44 && (property_type == 'Business Opportunity' || property_type == 'Commercial Property')){
-              StepWizard.backStep = 42;
+              StepWizard.backStep = 8;
               StepWizard.nextStep = 44;
-            }else if (StepWizard.currentStep == 63 && (property_type == 'Business Opportunity' || property_type == 'Commercial Property')){
-              StepWizard.backStep = 61;
-              StepWizard.nextStep = 63;
-            }else if (StepWizard.currentStep == 68 && (property_type == 'Business Opportunity' || property_type == 'Commercial Property')){
-              StepWizard.backStep = 66;
-              StepWizard.nextStep = 68;
+            }else if (StepWizard.currentStep == 46 && (property_type == 'Business Opportunity' || property_type == 'Commercial Property')){
+              StepWizard.backStep = 44;
+              StepWizard.nextStep = 46;
+            }else if (StepWizard.currentStep == 49 && property_type == 'Business Opportunity'){
+              StepWizard.backStep = 47;
+              StepWizard.nextStep = 49;
+            }else if (StepWizard.currentStep == 50 &&  property_type == 'Commercial Property'){
+              StepWizard.backStep = 47;
+              StepWizard.nextStep = 50;
+            }else if (StepWizard.currentStep == 65 && (property_type == 'Business Opportunity' || property_type == 'Commercial Property')){
+              StepWizard.backStep = 63;
+              StepWizard.nextStep = 65;
+            }else if (StepWizard.currentStep == 70 && (property_type == 'Business Opportunity' || property_type == 'Commercial Property')){
+              StepWizard.backStep = 68;
+              StepWizard.nextStep = 70;
             } 
+            
+          //   else if (StepWizard.currentStep == 13 && (property_type == 'Commercial Property' || property_type == 'Business Opportunity')) {
+          //   StepWizard.backStep = 11;
+          //   StepWizard.nextStep = 13;
+          // } else if (StepWizard.currentStep == 47 && (property_type == 'Commercial Property' ||
+          //     property_type ==
+          //     'Business Opportunity')) {
+          //   StepWizard.backStep = 14;
+          //   StepWizard.nextStep = 47;
+          // } else if (StepWizard.currentStep == 17 && (property_type == 'Commercial Property' ||
+          //     property_type ==
+          //     'Business Opportunity')) {
+          //   StepWizard.backStep = 47;
+          //   StepWizard.nextStep = 17;
+          // } else if (StepWizard.currentStep == 10 && (property_type ==
+          //     'Commercial Property' || property_type == 'Business Opportunity')
+
+          // ) {
+          //   StepWizard.backStep = 8;
+          //   StepWizard.nextStep = 10;
+          // } else if (StepWizard.currentStep == 21 && (property_type ==
+          //     'Commercial Property' || property_type == 'Business Opportunity')
+
+          // ) {
+          //   StepWizard.nextStep = 21;
+          //   StepWizard.backStep = 20;
+          // } 
+          // else if (StepWizard.currentStep == 36 && property_type ==
+          //   'Residential Property') {
+          //   StepWizard.backStep = 34;
+          // } 
           else if (StepWizard.currentStep == 8 && (property_type == 'Residential Property' || property_type == 'Income Property')) {
             StepWizard.backStep = 7;
-          } else if (StepWizard.currentStep == 76 && property_type == 'Vacant Land') {
+          } else if (StepWizard.currentStep == 78 && property_type == 'Vacant Land') {
             StepWizard.backStep = 7;
           } else {
             StepWizard.backStep = StepWizard.currentStep - 1;
@@ -9162,6 +9129,34 @@
       // Assuming the code provided is within a function or a document.ready block
 
       $('.wizard-step-finish').click(function(e) {
+
+        //Remove All the SLides Except THe Vacant Land
+        //   if (property_type === 'Vacant Land') {
+        //     var $stepsToRemove = $('.wizard-step[data-step]').filter(function() {
+        //       return parseInt($(this).attr('data-step')) >= 8 && parseInt($(this)
+        //         .attr('data-step')) <= 76;
+        //     });
+        //     $stepsToRemove.each(function() {
+        //       $(this).closest('div[data-step]').remove();
+        //     });
+        //   }
+        //Remove All the SLides Except THe Residential and Commercial Property
+      
+        //Remove All the SLides Except THe Commercial and Business Opportunity
+        // if (property_type === 'Commercial Property' || property_type ===
+        //   'Business Opportunity') {
+        //   var $stepsToRemove = $('.wizard-step[data-step]').filter(function() {
+        //     var stepValue = parseInt($(this).attr('data-step'));
+        //     return (stepValue >= 8 && stepValue <= 41) || (stepValue >= 77 &&
+        //       stepValue <= 91);
+        //   });
+
+        //   $stepsToRemove.each(function() {
+        //     $(this).closest('div[data-step]').remove();
+        //   });
+        // }
+        //Remove All the SLides Except THe Commercial and Business Opportunity
+        // Submitting The Form After Removing the Extra slide to get rid of null Data
         $('.mainform').submit();
       });
 
@@ -9280,8 +9275,7 @@
   })
 </script>
 <script>
-  // google.maps.event.addDomListener(window, 'load', initialize);
-  function initialize() {
+  function initializeMap() {
     var inputField = document.getElementsByClassName('search_places');
 
     for (var i = 0; i < inputField.length; i++) {
@@ -9346,7 +9340,8 @@
       });
     }
   }
-  $('#has_furnishing').change(function(){
+
+  $(document).on('change', '#has_furnishing', function(){
     let w=$(this).val();
     if (w == "Yes" || w == "Optional") {
       $('#has_furnishing_residential_and_income').show();
@@ -9354,7 +9349,7 @@
       $('#has_furnishing_residential_and_income').hide();
     }
   })
-  $('#otherStucture').change(function(){
+  $(document).on('change', '#otherStucture', function(){
     let w=$(this).val();
     if (w == "Additional Single Family Home" || w == "In-Law- Suite") {
       $('#otherSturctureUnit').show();
@@ -9363,7 +9358,516 @@
     }
   })
 </script>
-<script
-  src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_PLACES_API_KEY') }}&libraries=places&callback=initialize">
+<script>
+  function initializeUnitTypeDetailsFields(){
+      const unitTypeSelect = $('#unit_type_1');
+      const fieldsContainer = $('#dynamicFieldsContainer');
+      const unitTypeData = $('#unit_type_input');
+      const unitData = @json($unitDataBackend);
+      const unitDetailsData = JSON.parse(unitData);
+
+      const fieldData = {}; // object to store field data
+
+      function sanitizeId(optionName) {
+          return optionName
+              .toLowerCase() // Optional: make it lowercase for consistency
+              .replace(/[^a-z0-9]/g, '-'); // Replace invalid characters with underscores
+      }
+
+      // Handle changes in the select element
+      $(unitTypeSelect).change(function () {
+          const selectedOptions = $(this).val(); // Get selected options
+
+          // Add fields for new options
+          selectedOptions.forEach(option => { 
+            const unitTypeBackendData = unitDetailsData[option];
+            let sanitizedOpt = sanitizeId(option);
+            if (!fieldData[option]) {
+                createFields(sanitizedOpt, option, unitTypeBackendData);
+            }
+          });
+
+          // Remove fields for unselected options
+          Object.keys(fieldData).forEach(option => {
+              const sanitizedIds = selectedOptions.map((option) => {
+                  const sanitizedOption = sanitizeId(option);
+                  return `${sanitizedOption}`; // Create unique ID for each
+              });
+              if (!selectedOptions.includes(option)) {
+                  let sanitizedOpt = sanitizeId(option);
+                  removeFields(sanitizedOpt, option);
+              }
+          });
+
+          updateHiddenField(); // Update the hidden field after changes
+      });
+
+
+      // Create fields for a selected option
+      function createFields(option, optionName, unitTypeBackendData) {
+
+              $(fieldsContainer).append(`<div id="${option}-fields-container"></div`)
+
+              const unitDimensionHtml = `
+                  <hr data-room-type="${option}">
+                  <h5 data-room-type="${option}">Unit Type: ${optionName}</h5>
+
+                  <div class="form-group" data-option="${optionName}>
+                    <label class="fw-bold">Beds/Unit:</label>
+                    <input type="number" name="beds_unit" value="${unitTypeBackendData[beds_unit]}" data-option="${optionName}" id="dynamic-room-input-beds_unit-${option}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
+                  </div>
+
+                  <div class="form-group" data-option="${optionName}>
+                    <label class="fw-bold">Baths/Unit:</label>
+                    <input type="number" name="baths_unit" value="${unitTypeBackendData[baths_unit]}" id="dynamic-room-input-baths_unit-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
+                  </div>
+
+                  <div class="form-group" data-option="${optionName}>
+                    <label class="fw-bold">Sqft Heated:</label>
+                    <input type="number" name="sqt_ft_heated" value="${unitTypeBackendData[sqt_ft_heated]}" id="dynamic-room-input-sqt_ft_heated-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-ruler-combined">
+                  </div>
+
+                  <div class="form-group" data-option="${optionName}>
+                    <label class="fw-bold">Number of Units:</label>
+                    <input type="number" name="number_of_units" value="${unitTypeBackendData[number_of_units]}" id="dynamic-room-input-number_of_units-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
+                  </div>
+              `;
+
+              $(`#${option}-fields-container`).append(unitDimensionHtml);
+              const inputSelectors = [
+                `#dynamic-room-input-beds_unit-${option}`,
+                `#dynamic-room-input-baths_unit-${option}`,
+                `#dynamic-room-input-sqt_ft_heated-${option}`,
+                `#dynamic-room-input-number_of_units-${option}`
+              ];
+
+              inputSelectors.forEach(selector => {
+                $(selector).trigger('input');
+              });
+
+              // Add Room Levels dropdown
+              const unitsOccupied = [
+                  { name: "Yes", target: `.custom_occupied-${option}`, icon: 'fa-regular fa-circle-check' },
+                  { name: "No", target: `.custom_occupied_rent-${option}`, icon: 'fa-regular fa-circle-xmark' },
+              ];
+              appendDropdown("Are any units occupied?", "occupied", unitsOccupied, 1, false, false);
+
+              // Function to append dropdowns dynamically
+              function appendDropdown(labelText, name, options, index, multiple = false, otherFields = false) {
+                  let optionsHtml = options
+                      .map(
+                          (opt) =>
+                              `<option value="${opt.name}" data-target="${opt.target}" data-icon="<i class='${opt.icon}'></i>" 
+                                  style="width:calc(33.3% - 10px);" class="card flex-row" 
+                                  ${Array.isArray(unitTypeBackendData[name]) 
+                                    ? (unitTypeBackendData[name].includes(opt.name) ? 'selected' : '') 
+                                    : (unitTypeBackendData[name] === opt.name ? 'selected' : '')}>
+                                  ${opt.name}
+                              </option>`
+                      )
+                      .join("");
+
+                  const dropdownHtml = `
+                      <div class="form-group data-option="${optionName}" data-index="${index}">
+                          <label class="fw-bold">${labelText}</label>
+                          <select class="grid-picker dynamic-room-select" id="dynamic-select-${name}-${optionName}" name="${name}" data-option="${optionName}" style="justify-content: flex-start;" ${multiple ? 'multiple': ''}>
+                              <option value="">Select</option>
+                              ${optionsHtml}
+                          </select>
+
+                          <div class="form-group d-none custom_occupied-${option} data-option="${optionName}"">
+                            <label class="fw-bold">Number of Occupied Units:  </label>
+                            <input type="number" name="custom_occupied" value="${unitTypeBackendData[custom_occupied]}" id="dynamic-room-input-custom_occupied-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
+                          </div>
+                          <div class="form-group d-none custom_occupied-${option}" data-option="${optionName}">
+                            <label class="fw-bold">Current Rent</label>
+                            <input type="number" name="current_rent" value="${unitTypeBackendData[current_rent]}" id="dynamic-room-input-current_rent-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-dollar-sign">
+                          </div>
+                          <div class="form-group custom_occupied_rent-${option} d-none" data-option="${optionName}">
+                            <label class="fw-bold">Expected Rent</label>
+                            <input type="number" name="expected_rent" value="${unitTypeBackendData[expected_rent]}" id="dynamic-room-input-expected_rent-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-dollar-sign">
+                          </div>
+                      </div>
+
+                      <div class="form-group" data-option="${optionName}">
+                        <label class="fw-bold">Garage Spaces:</label>
+                        <input type="number" name="garage_spaces_unit" value="${unitTypeBackendData[garage_spaces_unit]}" id="dynamic-room-input-garage_spaces_unit-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-warehouse">
+                      </div>
+
+                      <div class="form-group" data-option="${optionName}">
+                        <label class="fw-bold">Carport Spaces:</label>
+                        <input type="number" name="carport_spaces_unit" value="${unitTypeBackendData[carport_spaces_unit]}" id="dynamic-room-input-carport_spaces_unit-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-warehouse">
+                      </div>
+
+                      <div class="form-group col-md-12" data-option="${optionName}">
+                        <label class="fw-bold">Unit Type Description:</label>
+                        <textarea name="unit_type_of_description" value="${unitTypeBackendData[unit_type_of_description]}" id="dynamic-room-input-unit_type_of_description-${option}" data-option="${optionName}" class="form-control dynamic-room-input" cols="30" rows="10"></textarea>
+                      </div>
+                  `;
+
+                  $(`#${option}-fields-container`).append(dropdownHtml);
+                  const inputSelectorsTwo = [
+                    `#dynamic-room-input-custom_occupied-${option}`,
+                    `#dynamic-room-input-current_rent-${option}`,
+                    `#dynamic-room-input-expected_rent-${option}`,
+                    `#dynamic-room-input-garage_spaces_unit-${option}`,
+                    `#dynamic-room-input-carport_spaces_unit-${option}`,
+                    `#dynamic-room-input-unit_type_of_description-${option}`
+                  ]
+                  inputSelectorsTwo.forEach(selector => {
+                    $(selector).trigger('input');
+                  })
+
+                  $(`#dynamic-select-${name}-${optionName}`).trigger('change');
+              }
+
+          initializeNewIcons(option); //Initialize icons for the option
+          initializeNewSelectFields(option); // Initialize select fields for the option
+          fieldData[`${optionName}`] = {}; // Initialize data for the option
+      }
+
+      // Remove fields for an unselected option
+      function removeFields(option, optionName) {
+          $(`[data-option="${option}"]`).remove(); // Remove field group
+          $(`[data-room-type="${option}"]`).remove(); // Remove field group
+          $(`#${option}-fields-container`).remove(); // Remove field container
+          delete fieldData[`${optionName}`]; // Remove data for the option
+      }
+
+      // Update the hidden field whenever inputs change
+      $(document).on('input', '.dynamic-room-input', function () {
+          const option = $(this).data('option');
+          const name = $(this).attr('name');
+          const value = $(this).val();
+
+          if (!fieldData[option]) fieldData[option] = {}; // Initialize key
+          fieldData[option][name] = value; // Update value
+
+          updateHiddenField(); // Update hidden field
+      });
+
+      $(document).on('change', '.dynamic-room-select', function () {
+          const option = $(this).data('option');
+          const name = $(this).attr('name');
+          const value = $(this).val();
+
+          if (!fieldData[option]) fieldData[option] = {}; // Initialize key
+          fieldData[option][name] = value; // Update value
+
+          updateHiddenField(); // Update hidden field
+      });
+
+      // Update the hidden field with the current data
+      function updateHiddenField() {
+          unitTypeData.val(JSON.stringify(fieldData)); // Update hidden field
+          console.log('unitTypeDataVal', unitTypeData.val());
+      }
+
+  };
+
+  initializeUnitTypeDetailsFields();
+</script>
+<script>
+  function initializeRoomDetailsFields(){
+      const roomTypeSelect = $('#room_type');
+      const fieldsContainer = $('#dynamicFieldsContainerRoomType');
+      const roomTypeData = $('#room_type_input');
+      const roomData = @json($roomDataBackend);
+      const roomDetailsData = JSON.parse(roomData);
+
+      const fieldData = {}; // object to store field data
+
+      function sanitizeId(optionName) {
+          return optionName
+              .toLowerCase() // Optional: make it lowercase for consistency
+              .replace(/[^a-z0-9]/g, '-'); // Replace invalid characters with underscores
+      }
+
+      // Handle changes in the select element
+      $(roomTypeSelect).change(function () {
+          const selectedOptions = $(this).val(); // Get selected options
+          if(!selectedOptions) return;
+          // Add fields for new options
+          selectedOptions.forEach(option => { 
+            const roomTypeBackendData = roomDetailsData[option];
+            let sanitizedOpt = sanitizeId(option);
+            if (!fieldData[option]) {
+                createFields(sanitizedOpt, option, roomTypeBackendData);
+            }
+          });
+
+          // Remove fields for unselected options
+          Object.keys(fieldData).forEach(option => {
+              const sanitizedIds = selectedOptions.map((option) => {
+                  const sanitizedOption = sanitizeId(option);
+                  return `${sanitizedOption}`; // Create unique ID for each
+              });
+              if (!selectedOptions.includes(option)) {
+                  let sanitizedOpt = sanitizeId(option);
+                  removeFields(sanitizedOpt, option);
+              }
+          });
+
+          updateHiddenField(); // Update the hidden field after changes
+      });
+
+
+      // Create fields for a selected option
+      function createFields(option, optionName, roomTypeBackendData) {
+
+              $(fieldsContainer).append(`<div id="${option}-fields-container"></div`)
+
+              const roomDimensionHtml = `
+                  <hr data-room-type="${option}">
+                  <h5 data-room-type="${option}">Room Type: ${optionName}</h5>
+                  <div class="form-group roomDet" data-option="${optionName}">
+                      <label class="fw-bold">Approximate Room Dimensions:</label>
+                      <input type="text" name="approximate_room_dimensions" id="dynamic-input-roomDimensions-${optionName}" data-option="${optionName}" value="${roomTypeBackendData['approximate_room_dimensions']}" data-icon="fa-solid fa-ruler-combined"  class="form-control dynamic-room-input form-control has-icon" required>
+                  </div>
+              `;
+
+              $(`#${option}-fields-container`).append(roomDimensionHtml);
+              $(`#dynamic-input-roomDimensions-${optionName}`).trigger('input');
+
+              // Add Room Levels dropdown
+              const roomLevels = [
+                  { name: "Basement", target: "" },
+                  { name: "First", target: "" },
+                  { name: "Second", target: "" },
+                  { name: "Third", target: "" },
+                  { name: "Upper", target: "" },
+              ];
+              appendDropdown("Room Level:", "room_level[]", roomLevels, 1, 'fa-regular fa-circle-check', true);
+
+              // Add Bedroom Closets dropdown
+              const bedroomClosets = [
+                  { name: "Built-in Closet", target: "" },
+                  { name: "Coat Closet", target: "" },
+                  { name: "Dual Closets", target: "" },
+                  { name: "Linen Closet", target: "" },
+                  { name: "No Closet", target: "" },
+                  { name: "Storage Closet", target: "" },
+                  { name: 'Walk-in Closet', target: ""},
+              ];
+              appendDropdown("Closet Type:", "bedroomCloset", bedroomClosets, 2, 'fa-regular fa-circle-check');
+
+              // Add Room Primary Floor Covering dropdown
+              const roomPrimary = [
+                  { name: "Bamboo", target: "" },
+                  { name: "Brick/Stone", target: "" },
+                  { name: "Carpet", target: "" },
+                  { name: "Ceramic Tile", target: "" },
+                  { name: "Concrete", target: "" },
+                  { name: "Cork", target: "" },
+                  { name: "Engineered Hardwood", target: "" },
+                  { name: "Epoxy", target: "" },
+                  { name: "Forestry Stewardship Certified", target: "" },
+                  { name: "Granite", target: "" },
+                  { name: "Laminate", target: "" },
+                  { name: "Linoleum", target: "" },
+                  { name: "Marble", target: "" },
+                  { name: "Parquet", target: "" },
+                  { name: "Porcelain Tile", target: "" },
+                  { name: "Quarry Tile", target: "" },
+                  { name: "Reclaimed Wood", target: "" },
+                  { name: "Recycled/Composite Flooring", target: "" },
+                  { name: "Slate", target: "" },
+                  { name: "Terrazzo", target: "" },
+                  { name: "Tile", target: "" },
+                  { name: "Travertine", target: "" },
+                  { name: "Vinyl", target: "" },
+                  { name: "Wood", target: "" },
+                  { name: "Other", target: `.floor_covering_other-${option}` },
+              ];
+              appendDropdown("Room Primary Floor Covering:", "roomPrimary", roomPrimary, 3, 'fa-regular fa-circle-check', false, true);
+
+              // Add Room Features dropdown
+              const roomFeatures = [
+                  { name: "Bar", target: "" },
+                  { name: "Bath with Spa/Hydro Massage Tub", target: "" },
+                  { name: "Bath With Whirlpool", target: "" },
+                  { name: "Bidet", target: "" },
+                  { name: "Breakfast Bar", target: "" },
+                  { name: "Built-In Shelving", target: "" },
+                  { name: "Built-In Shower Bench", target: "" },
+                  { name: "Ceiling Fan(s)", target: "" },
+                  { name: "Claw Foot Tub", target: "" },
+                  { name: "Closet Pantry", target: "" },
+                  { name: "Cooking Island", target: "" },
+                  { name: "Desk Built-In", target: "" },
+                  { name: "Dual Sinks", target: "" },
+                  { name: "En Suite Bathroom", target: "" },
+                  { name: "Exhaust Fan", target: "" },
+                  { name: "Garden Bath", target: "" },
+                  { name: "Granite Counters", target: "" },
+                  { name: "Handicap Accessible", target: "" },
+                  { name: "Heated Floors", target: "" },
+                  { name: "Island", target: "" },
+                  { name: "Jack and Jill Bathroom", target: "" },
+                  { name: "Makeup/Vanity Space", target: "" },
+                  { name: "Multiple Shower Heads", target: "" },
+                  { name: "Pantry", target: "" },
+                  { name: "Rain Shower Head", target: "" },
+                  { name: "Sauna", target: "" },
+                  { name: "Shower- No Tub", target: "" },
+                  { name: "Single Vanity", target: "" },
+                  { name: "Sink-Pedestal", target: "" },
+                  { name: "Split Vanities", target: "" },
+                  { name: "Steam Shower", target: "" },
+                  { name: "Stone Counters", target: "" },
+                  { name: "Sunken Shower", target: "" },
+                  { name: "Tall Countertops", target: "" },
+                  { name: "Tile Counters", target: "" },
+                  { name: "Tub with Separate Shower Stall", target: "" },
+                  { name: "Tub with Shower", target: "" },
+                  { name: "Urinal", target: "" },
+                  { name: "Walk-In Pantry", target: "" },
+                  { name: "Walk-In Tub", target: "" },
+                  { name: "Water Closet/Priv Toliet", target: "" },
+                  { name: "Wet Bar", target: "" },
+                  { name: "Window/Skylight in Bath", target: "" },
+                  { name: "Other", target: `.roomFeatureOther-${option}` },
+              ];
+              appendDropdown("Room Features:", "room_feature", roomFeatures, 4, 'fa-regular fa-circle-check', false, tru);
+
+              // Function to append dropdowns dynamically
+              function appendDropdown(labelText, name, options, index, icon, multiple = false, otherFields = false) {
+                  let optionsHtml = options
+                      .map(
+                          (opt) =>
+                              `<option value="${opt.name}" data-target="${opt.target}" data-icon="<i class='${icon}'></i>" 
+                                  style="width:calc(33.3% - 10px);" class="card flex-row" style="width:calc(33.3% - 10px);"
+                                  ${Array.isArray(roomTypeBackendData[name]) 
+                                    ? (roomTypeBackendData[name].includes(opt.name) ? 'selected' : '') 
+                                    : (roomTypeBackendData[name] === opt.name ? 'selected' : '')}>
+                                  ${opt.name}
+                              </option>`
+                      )
+                      .join("");
+
+                  const targetName = options.find(item => item.name === 'Other' ? item : null);
+
+                  const dropdownHtml = `
+                      <div class="form-group roomDet" data-option="${optionName}" data-index="${index}">
+                          <label class="fw-bold">${labelText}</label>
+                          <select class="grid-picker dynamic-room-select" id="dynamic-select-${name}-${optionName}" name="${name}" data-option="${optionName}" style="justify-content: flex-start;" ${multiple ? 'multiple': ''} required>
+                              <option value="">Select</option>
+                              ${optionsHtml}
+                          </select>
+                          ${otherFields ? 
+                          `<div class="form-group ${targetName?.target?.slice(1)}-${option} ${roomTypeBackendData[name] === 'Other' ? '' : 'd-none'}">
+                              <label class="fw-bold">${labelText}</label>
+                              <input type="text" name="${name}Other" data-option="${optionName}" value="${roomTypeBackendData[name + 'Other']}" class="form-control has-icon dynamic-room-input" id="dynamic-input-${name}-${optionName}"
+                                  data-icon="fa-regular fa-check-circle" required>
+                          </div>` : ''
+                          }
+                      </div>
+                  `;
+
+                  $(`#${option}-fields-container`).append(dropdownHtml);
+                  $(`#dynamic-select-${name}-${optionName}`).trigger('change');
+                  $(`#dynamic-input-${name}-${optionName}`).trigger('input');
+              }
+
+          initializeNewIcons(option); //Initialize icons for the option
+          initializeNewSelectFields(option); // Initialize select fields for the option
+          fieldData[`${optionName}`] = {}; // Initialize data for the option
+      }
+
+      // Remove fields for an unselected option
+      function removeFields(option, optionName) {
+          $(`[data-option="${option}"]`).remove(); // Remove field group
+          $(`[data-room-type="${option}"]`).remove(); // Remove field group
+          $(`#${option}-fields-container`).remove(); // Remove field container
+          delete fieldData[`${optionName}`]; // Remove data for the option
+      }
+
+      // Update the hidden field whenever inputs change
+      $(document).on('input', '.dynamic-room-input', function () {
+          const option = $(this).data('option');
+          const name = $(this).attr('name');
+          const value = $(this).val();
+
+          if (!fieldData[option]) fieldData[option] = {}; // Initialize key
+          fieldData[option][name] = value; // Update value
+
+          updateHiddenField(); // Update hidden field
+      });
+
+      $(document).on('change', '.dynamic-room-select', function () {
+          const option = $(this).data('option');
+          const name = $(this).attr('name');
+          const value = $(this).val();
+
+          if (!fieldData[option]) fieldData[option] = {}; // Initialize key
+          fieldData[option][name] = value; // Update value
+
+          updateHiddenField(); // Update hidden field
+      });
+
+      // Update the hidden field with the current data
+      function updateHiddenField() {
+          roomTypeData.val(JSON.stringify(fieldData)); // Update hidden field
+          console.log('roomTypeDataVal', roomTypeData.val());
+      }
+
+  }
+
+  initializeRoomDetailsFields();
+</script>
+<script>
+    function initializeNewIcons(option){
+      $(`#${option}-fields-container .has-icon`).each(function(i) {
+          var cover = `<div class="input-cover input-cover-${i}-${option}"></div>`;
+          $(this).before(cover);
+          $(this).appendTo(`.input-cover-${i}-${option}`);
+          var iconClass = $(this).data('icon');
+          var id = $(this).attr('id');
+          var htm = `<label for="${id}" class="input-icon"><i class="${iconClass}"></i></label>`;
+          $(this).before(htm);
+        }
+      );
+    }
+
+    function initializeNewSelectFields(option){
+      $(`#${option}-fields-container .grid-picker`).each(function(index, elm) {
+        var st = $(elm).attr('style');
+        var html =
+            `<div class="options-container options-container-${option}-${index}" style="${st}"></div>`;
+        $(elm).after(html);
+        $(elm).appendTo(`.options-container-${option}-${index}`);
+        $(elm).children('option').each(function(i) {
+          var val = $(this).val();
+          if (val != "") {
+            var text = $(this).text();
+            var classes = $(this).attr('class');
+            var styles = $(this).attr('style') || "";
+            var icon = $(this).data('icon') || "";
+            var selected = $(this).attr('selected') || "";
+            var target = $(this).data('target') || "";
+            selected = selected && "active";
+            icon = icon && icon + " ";
+            var htm = `<div onclick="checkselect(this);" style="${styles}" class="${classes} ${selected} option-container" data-index="${i}" data-target="${target}">
+            <div class="option-icon">${icon}</div>
+            <div class="option-text">${text}</div>
+            </div>`;
+            $(`.options-container-${option}-${index}`).append(htm);
+          }
+        });
+      })
+    }
+
+    $('select').trigger('change');
+</script>
+<script>
+  function loadGoogleMapsScript() {
+      var script = document.createElement('script');
+      let googlePlacesApiKey = "{{env('GOOGLE_PLACES_API_KEY')}}";
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${googlePlacesApiKey}&libraries=places&callback=initializeMap`;
+      script.async = true;
+      script.defer = true;
+
+      document.body.appendChild(script);
+  }
 </script>
 @endpush
