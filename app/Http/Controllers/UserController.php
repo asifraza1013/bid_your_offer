@@ -73,7 +73,8 @@ class UserController extends Controller
     {
         $request->validate([
             'old_pass' => [
-                'required', function ($attribute, $value, $fail) {
+                'required',
+                function ($attribute, $value, $fail) {
                     if (!Hash::check($value, Auth::user()->password)) {
                         $fail('Invalid Old Password!');
                     }
@@ -106,7 +107,8 @@ class UserController extends Controller
         return redirect()->to($uri);
     }
 
-    public function fetchPatches(Request $request){
+    public function fetchPatches(Request $request)
+    {
 
         $yes_or_nos = [
             ['name' => 'Yes', 'target' => '', 'icon' => 'fa-regular fa-circle-check'],
@@ -128,20 +130,26 @@ class UserController extends Controller
             $page_data['property_types'] = PropertyType::orderBy('sort', 'asc')->get();
         }
 
-        if($request->moduleName == 'edit-landlord-agent-auction') {
+        if ($request->moduleName == 'edit-landlord-agent-auction') {
             $auction = LandlordAgentAuction::find($request->id);
             $page_data['auction'] = $auction;
             $page_data['financings'] = Financing::orderBy('sort', 'asc')->get();
         }
-        
+
+        if ($request->moduleName == 'edit-property-auction') {
+            $auction = PropertyAuction::find($request->id);
+            $page_data['auction'] = $auction;
+            $page_data['property_types'] = PropertyType::orderBy('sort', 'ASC')->get();
+        }
+
         // Pass $auction to the view, ensuring it's always available
         $html = view($request->patch, [
-            'yes_or_nos' => $yes_or_nos, 
+            'yes_or_nos' => $yes_or_nos,
             'yes_or_nos_opt' => $yes_or_nos_opt,
             'page_data' => $page_data,
             'auction' => $auction
         ])->render();
-        
+
 
         return response()->json(['status' => true, 'html' => $html]);
     }
