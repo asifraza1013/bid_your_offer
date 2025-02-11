@@ -1407,8 +1407,8 @@
     <div class="row">
       <div class="form-group">
         @php
-          $unitType = json_decode($auction->get->unit_type_data, true);
-          $unitTypeData = json_decode($unitType, true);
+          $unitType = isset($auction->get->unit_type_data) && !is_array($auction->get->unit_type_data) ? json_decode($auction->get->unit_type_data, true) : [];
+          $unitTypeData = isset($unitType) && !is_array($unitType) ? json_decode($unitType, true) : [];
           $unitTypes = [];
           foreach ($unitTypeData as $unitName => $values) {
               $unitTypes[] = $unitName;

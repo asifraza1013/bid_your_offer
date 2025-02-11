@@ -112,8 +112,8 @@
     @endphp
     <div class="form-group ">
       @php
-        $roomData = json_decode($auction->get->room_details_data, true);
-        $roomDetailsData = json_decode($roomData, true);
+        $roomData = isset($auction->get->room_details_data) && !is_array($auction->get->room_details_data) ? json_decode($auction->get->room_details_data, true) : [];
+        $roomDetailsData = isset($roomData) && $auction->get->property_type == 'Residential Property' ? json_decode($roomData, true) : [];
         $roomTypes = [];
         foreach ($roomDetailsData as $roomName => $values) {
             $roomTypes[] = $roomName;

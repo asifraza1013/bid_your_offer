@@ -1193,7 +1193,12 @@
         const fieldsContainer = $('#dynamicFieldsContainer');
         const unitTypeData = $('#unit_type_input');
         const unitDetails = @json($unitDataBackend);
-        const unitDetailsData = JSON.parse(unitDetails);
+        let unitDetailsData;
+        if (Array.isArray(unitDetails) && unitDetails.length === 1 && unitDetails[0] === null || !unitDetails){
+          unitDetailsData = null;
+        }else{
+          unitDetailsData = JSON.parse(unitDetails);
+        };
         console.log('unitDetailsData',unitDetailsData);
 
         const fieldData = {}; // object to store field data
@@ -1210,7 +1215,7 @@
 
             // Add fields for new options
             selectedOptions.forEach(option => { 
-              const unitTypeBackendData = unitDetailsData[option];
+              const unitTypeBackendData = unitDetailsData ? unitDetailsData[option] : null;
               let sanitizedOpt = sanitizeId(option);
               if (!fieldData[option]) {
                   createFields(sanitizedOpt, option, unitTypeBackendData);
@@ -1244,22 +1249,22 @@
 
                     <div class="form-group" data-option="${optionName}>
                       <label class="fw-bold">Beds/Unit:</label>
-                      <input type="number" name="beds_unit" value="${unitTypeBackendData[beds_unit]}" data-option="${optionName}" id="dynamic-room-input-beds_unit-${option}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
+                      <input type="number" name="beds_unit" value="${unitTypeBackendData ? unitTypeBackendData[beds_unit] : ''}" data-option="${optionName}" id="dynamic-room-input-beds_unit-${option}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
                     </div>
 
                     <div class="form-group" data-option="${optionName}>
                       <label class="fw-bold">Baths/Unit:</label>
-                      <input type="number" name="baths_unit" value="${unitTypeBackendData[baths_unit]}" id="dynamic-room-input-baths_unit-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
+                      <input type="number" name="baths_unit" value="${unitTypeBackendData ? unitTypeBackendData[baths_unit] : ''}" id="dynamic-room-input-baths_unit-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
                     </div>
 
                     <div class="form-group" data-option="${optionName}>
                       <label class="fw-bold">Sqft Heated:</label>
-                      <input type="number" name="sqt_ft_heated" value="${unitTypeBackendData[sqt_ft_heated]}" id="dynamic-room-input-sqt_ft_heated-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-ruler-combined">
+                      <input type="number" name="sqt_ft_heated" value="${unitTypeBackendData ? unitTypeBackendData[sqt_ft_heated] : ''}" id="dynamic-room-input-sqt_ft_heated-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-ruler-combined">
                     </div>
 
                     <div class="form-group" data-option="${optionName}>
                       <label class="fw-bold">Number of Units:</label>
-                      <input type="number" name="number_of_units" value="${unitTypeBackendData[number_of_units]}" id="dynamic-room-input-number_of_units-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
+                      <input type="number" name="number_of_units" value="${unitTypeBackendData ? unitTypeBackendData[number_of_units] : ''}" id="dynamic-room-input-number_of_units-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
                     </div>
                 `;
 
@@ -1289,9 +1294,9 @@
                             (opt) =>
                                 `<option value="${opt.name}" data-target="${opt.target}" data-icon="<i class='${opt.icon}'></i>" 
                                     style="width:calc(33.3% - 10px);" class="card flex-row" 
-                                    ${Array.isArray(unitTypeBackendData[name]) 
+                                    ${unitTypeBackendData ? (Array.isArray(unitTypeBackendData[name]) 
                                       ? (unitTypeBackendData[name].includes(opt.name) ? 'selected' : '') 
-                                      : (unitTypeBackendData[name] === opt.name ? 'selected' : '')}>
+                                      : (unitTypeBackendData[name] === opt.name ? 'selected' : '')) : ''}>
                                     ${opt.name}
                                 </option>`
                         )
@@ -1307,31 +1312,31 @@
 
                             <div class="form-group d-none custom_occupied-${option} data-option="${optionName}"">
                               <label class="fw-bold">Number of Occupied Units:  </label>
-                              <input type="number" name="custom_occupied" value="${unitTypeBackendData[custom_occupied]}" id="dynamic-room-input-custom_occupied-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
+                              <input type="number" name="custom_occupied" value="${unitTypeBackendData ? unitTypeBackendData[custom_occupied] : ''}" id="dynamic-room-input-custom_occupied-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
                             </div>
                             <div class="form-group d-none custom_occupied-${option}" data-option="${optionName}">
                               <label class="fw-bold">Current Rent</label>
-                              <input type="number" name="current_rent" value="${unitTypeBackendData[current_rent]}" id="dynamic-room-input-current_rent-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-dollar-sign">
+                              <input type="number" name="current_rent" value="${unitTypeBackendData ? unitTypeBackendData[current_rent] : ''}" id="dynamic-room-input-current_rent-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-dollar-sign">
                             </div>
                             <div class="form-group custom_occupied_rent-${option} d-none" data-option="${optionName}">
                               <label class="fw-bold">Expected Rent</label>
-                              <input type="number" name="expected_rent" value="${unitTypeBackendData[expected_rent]}" id="dynamic-room-input-expected_rent-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-dollar-sign">
+                              <input type="number" name="expected_rent" value="${unitTypeBackendData ? unitTypeBackendData[expected_rent] : ''}" id="dynamic-room-input-expected_rent-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-dollar-sign">
                             </div>
                         </div>
 
                         <div class="form-group" data-option="${optionName}">
                           <label class="fw-bold">Garage Spaces:</label>
-                          <input type="number" name="garage_spaces_unit" value="${unitTypeBackendData[garage_spaces_unit]}" id="dynamic-room-input-garage_spaces_unit-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-warehouse">
+                          <input type="number" name="garage_spaces_unit" value="${unitTypeBackendData ? unitTypeBackendData[garage_spaces_unit] : ''}" id="dynamic-room-input-garage_spaces_unit-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-warehouse">
                         </div>
 
                         <div class="form-group" data-option="${optionName}">
                           <label class="fw-bold">Carport Spaces:</label>
-                          <input type="number" name="carport_spaces_unit" value="${unitTypeBackendData[carport_spaces_unit]}" id="dynamic-room-input-carport_spaces_unit-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-warehouse">
+                          <input type="number" name="carport_spaces_unit" value="${unitTypeBackendData ? unitTypeBackendData[carport_spaces_unit] : ''}" id="dynamic-room-input-carport_spaces_unit-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-warehouse">
                         </div>
 
                         <div class="form-group col-md-12" data-option="${optionName}">
                           <label class="fw-bold">Unit Type Description:</label>
-                          <textarea name="unit_type_of_description" value="${unitTypeBackendData[unit_type_of_description]}" id="dynamic-room-input-unit_type_of_description-${option}" data-option="${optionName}" class="form-control dynamic-room-input" cols="30" rows="10"></textarea>
+                          <textarea name="unit_type_of_description" value="${unitTypeBackendData ? unitTypeBackendData[unit_type_of_description] : ''}" id="dynamic-room-input-unit_type_of_description-${option}" data-option="${optionName}" class="form-control dynamic-room-input" cols="30" rows="10"></textarea>
                         </div>
                     `;
 
@@ -1401,7 +1406,12 @@
         const fieldsContainer = $('#dynamicFieldsContainerRoomType');
         const roomTypeData = $('#room_type_input');
         const roomDetails = @json($roomDataBackend);
-        const roomDetailsData = JSON.parse(roomDetails);
+        let roomDetailsData;
+        if (Array.isArray(roomDetails) && roomDetails.length === 1 && roomDetails[0] === null || !roomDetails){
+          roomDetailsData = null;
+        }else{
+          roomDetailsData = JSON.parse(roomDetails);
+        };
         console.log('roomData', roomDetailsData);
 
         const fieldData = {}; // object to store field data
@@ -1418,7 +1428,7 @@
             if(!selectedOptions) return;
             // Add fields for new options
             selectedOptions.forEach(option => { 
-              const roomTypeBackendData = roomDetailsData[option];
+              const roomTypeBackendData = roomDetailsData ? roomDetailsData[option] : null;
               let sanitizedOpt = sanitizeId(option);
               if (!fieldData[option]) {
                   createFields(sanitizedOpt, option, roomTypeBackendData);
@@ -1451,7 +1461,7 @@
                     <h5 data-room-type="${option}">Room Type: ${optionName}</h5>
                     <div class="form-group roomDet" data-option="${optionName}">
                         <label class="fw-bold">Approximate Room Dimensions:</label>
-                        <input type="text" name="approximate_room_dimensions" id="dynamic-input-roomDimensions-${optionName}" data-option="${optionName}" value="${roomTypeBackendData['approximate_room_dimensions']}" data-icon="fa-solid fa-ruler-combined"  class="form-control dynamic-room-input form-control has-icon" required>
+                        <input type="text" name="approximate_room_dimensions" id="dynamic-input-roomDimensions-${optionName}" data-option="${optionName}" value="${roomDetailsData ? roomTypeBackendData['approximate_room_dimensions'] : ''}" data-icon="fa-solid fa-ruler-combined"  class="form-control dynamic-room-input form-control has-icon" required>
                     </div>
                 `;
 
@@ -1566,9 +1576,9 @@
                             (opt) =>
                                 `<option value="${opt.name}" data-target="${opt.target}" data-icon="<i class='${icon}'></i>" 
                                     style="width:calc(33.3% - 10px);" class="card flex-row" style="width:calc(33.3% - 10px);"
-                                    ${Array.isArray(roomTypeBackendData[name]) 
+                                    ${roomDetailsData ? (Array.isArray(roomTypeBackendData[name]) 
                                       ? (roomTypeBackendData[name].includes(opt.name) ? 'selected' : '') 
-                                      : (roomTypeBackendData[name] === opt.name ? 'selected' : '')}>
+                                      : (roomTypeBackendData[name] === opt.name ? 'selected' : '')) : ''}>
                                     ${opt.name}
                                 </option>`
                         )
@@ -1584,9 +1594,9 @@
                                 ${optionsHtml}
                             </select>
                             ${otherFields ? 
-                            `<div class="form-group ${targetName?.target?.slice(1)}-${option} ${roomTypeBackendData[name] === 'Other' ? '' : 'd-none'}">
+                            `<div class="form-group ${targetName?.target?.slice(1)}-${option} ${roomDetailsData ? (roomTypeBackendData[name] === 'Other' ? '' : 'd-none') : ''}">
                                 <label class="fw-bold">${labelText}</label>
-                                <input type="text" name="${name}Other" data-option="${optionName}" value="${roomTypeBackendData[name + 'Other']}" class="form-control has-icon dynamic-room-input" id="dynamic-input-${name}-${optionName}"
+                                <input type="text" name="${name}Other" data-option="${optionName}" value="${roomDetailsData ? roomTypeBackendData[name + 'Other'] : ''}" class="form-control has-icon dynamic-room-input" id="dynamic-input-${name}-${optionName}"
                                     data-icon="fa-regular fa-check-circle" required>
                             </div>` : ''
                             }
