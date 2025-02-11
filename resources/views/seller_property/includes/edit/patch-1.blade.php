@@ -38,7 +38,7 @@
     <div class="form-group">
       <label for="address" class="fw-bold">Expiration Date:</label>
       <input type="date" name="expiration_date" value="{{isset($expirationDate) ? $expirationDate : ''}}" id="expiration_date"
-        class="form-control has-icon search_places" data-icon="fa-regular fa-calendar-days" min="{{ date('Y-m-d') }}" required>
+        class="form-control has-icon search_places" data-icon="fa-regular fa-calendar-days" required>
     </div>
   </div>
   {{-- Slide 2 --}}
@@ -244,7 +244,7 @@
           <option value="">Select</option>
           @foreach ($contigencies as $item)
             <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-              style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->representation) && in_array($item['name'] , json_decode($auction->get->representation) ?? []) ? 'selected' : ''}}>
+              style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->contigencies_accepted_by_seller) && in_array($item['name'] , json_decode($auction->get->contigencies_accepted_by_seller) ?? []) ? 'selected' : ''}}>
               {{ $item['name'] }}
             </option>
           @endforeach
@@ -295,13 +295,13 @@
           ];
         @endphp
           <label class="fw-bold">Acceptable Currency/ Financing:</label>
-          <select class="grid-picker" name="term_financings" id="term_financings"
-            style="justify-content: flex-start;" required>
+          <select class="grid-picker" name="term_financings[]" id="term_financings"
+            style="justify-content: flex-start;" multiple required>
             <option value="">Select</option>
             @foreach ($term_financings as $item)
               <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
                 data-icon='<i class="fa-regular fa-check-circle"></i>' class="card flex-row"
-                style="width:calc(33.3% - 10px);" {{isset($auction->get->term_financings) && $auction->get->term_financings === $item['name'] ? 'selected' : ''}}>
+                style="width:calc(33.3% - 10px);" {{isset($auction->get->term_financings) && in_array($item['name'], json_decode($auction->get->term_financings) ?? [])  ? 'selected' : ''}}>
                 {{ $item['name'] }}
               </option>
             @endforeach
@@ -694,7 +694,7 @@
           <option value="">Select</option>
           @foreach ($contigencies as $item)
             <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
-              style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->contigencies_accepted_by_seller) && in_array($item['name'], $auction->get->contigencies_accepted_by_seller)  ? 'selected' : ''}}>
+              style="width:calc(33.3% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>' {{isset($auction->get->contigencies_accepted_by_seller) && in_array($item['name'], json_decode($auction->get->contigencies_accepted_by_seller) ?? [])  ? 'selected' : ''}}>
               {{ $item['name'] }}
             </option>
           @endforeach
@@ -751,7 +751,7 @@
           @foreach ($term_financings as $item)
             <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
               data-icon='<i class="fa-regular fa-check-circle"></i>' class="card flex-row"
-              style="width:calc(33.3% - 10px);" {{isset($auction->get->term_financings) && in_array($item['name'], json_decode($auction->get->term_financings, true) ?? [])  ? 'selected' : ''}}>
+              style="width:calc(33.3% - 10px);" {{isset($auction->get->term_financings) && in_array($item['name'], json_decode($auction->get->term_financings) ?? [])  ? 'selected' : ''}}>
               {{ $item['name'] }}
             </option>
           @endforeach
@@ -1114,7 +1114,7 @@
         <option value="">Select</option>
         @foreach ($property_types as $row_pt)
           <option value="{{ $row_pt['name'] }}" class="card flex-column" style="width:calc(24% - 10px);"
-            data-icon='<i class="fa-solid fa-hotel"></i>' {{isset($auction->get->property_type) && $auction->get->property_type == $item['name'] ? 'selected' : ''}}>
+            data-icon='<i class="fa-solid fa-hotel"></i>' {{isset($auction->get->property_type) && $auction->get->property_type == $row_pt['name'] ? 'selected' : ''}}>
             {{ $row_pt['name'] }}
           </option>
         @endforeach
@@ -1138,8 +1138,7 @@
       @endphp
       <div class="form-group">
           <label class="fw-bold">Property Style:</label>
-          <select class="grid-picker" name="propertyStyles" id=""
-              style="justify-content: flex-start;" required>
+          <select class="grid-picker" name="propertyStyles" id="" style="justify-content: flex-start;" required>
               <option value="">Select</option>
               @foreach ($propertyStyles as $item)
                   <option value="{{ $item['name'] }}" class="card flex-row"
@@ -1404,30 +1403,28 @@
         ['target' => '', 'name' => 'Loft'], 
         ['target' => '', 'name' => "Manager's Unit"]
       ];
-
-      $unitType = isset($auction->get->unit_type_data) ? json_decode($auction->get->unit_type_data) : null;
-      $unitTypeData = isset($unitType) ? json_decode($unitType, true): null;
-      $unitTypes = [];
-      if(isset($unitTypeData) && is_array($unitTypeData)){
-        foreach ($unitTypeData as $unitName => $values) {
-          $unitTypes[] = $unitName;
-        }
-      }
-
     @endphp
     <div class="row">
       <div class="form-group">
+        @php
+          $unitType = json_decode($auction->get->unit_type_data, true);
+          $unitTypeData = json_decode($unitType, true);
+          $unitTypes = [];
+          foreach ($unitTypeData as $unitName => $values) {
+              $unitTypes[] = $unitName;
+          }
+        @endphp
         <label class="fw-bold">Unit Type:</label>
         <select class="grid-picker" name="unit_type[]" id="unit_type_1" style="" multiple required>
           <option value="">Select</option>
           @foreach ($unitStructure as $item)
             <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-column"
-              style="width:calc(20% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'  {{isset($auction->get->$unitTypes) && in_array($item['name'], $auction->get->$unitTypes) ? 'selected' : ''}}>
+              style="width:calc(20% - 10px);" data-icon='<i class="fa-regular fa-circle-check"></i>'  {{isset($unitTypes) && in_array($item['name'], $unitTypes) ? 'selected' : ''}}>
               {{ $item['name'] }}
             </option>
           @endforeach
         </select>
-        <input type="hidden" id="unit_type_input" name="unit_type_data[]" value="{{isset($unitTypeData) ? json_decode($unitTypeData) : ''}}" />
+        <input type="hidden" id="unit_type_input" name="unit_type_data[]" />
         <div id="dynamicFieldsContainer"></div>
       </div>
 
@@ -1466,6 +1463,7 @@
         $terms_of_leases = [['name' => 'Gross Lease', 'target' => ''], ['name' => 'Net Lease', 'target' => ''], ['name' => 'Pass Throughs', 'target' => ''], ['name' => 'Purchase Options', 'target' => ''], ['name' => 'Renewal Option', 'target' => ''], ['name' => 'Other', 'target' => '.otherTermLease']];
 
         $leases_terms = [['name' => 'Month to Month', 'target' => ''], ['name' => '12 Months', 'target' => ''], ['name' => '24 Months', 'target' => ''], ['name' => '3-5 Years', 'target' => ''], ['name' => '6+ Years', 'target' => ''], ['name' => 'Other', 'target' => '.custom_leases_terms']];
+        
       @endphp
 
       <div class="form-group ">
@@ -1476,7 +1474,7 @@
           @foreach ($leases_terms as $terms_of_lease)
             <option value="{{ $terms_of_lease['name'] }}" data-target="{{ $terms_of_lease['target'] }}"
               class="card flex-row" data-icon='<i class="fa-regular fa-circle-check"></i>'
-              style="width:calc(33.3% - 10px);" {{isset($auction->get->length_of_lease) && in_array($terms_of_lease['name'], json_decode($auction->get->length_of_lease) ?? []) ? 'selected' : ''}}>
+              style="width:calc(33.3% - 10px);" {{isset($auction->get->length_of_lease) && in_array($terms_of_lease['name'],  json_decode($auction->get->length_of_lease) ?? []) ? 'selected' : ''}}>
               {{ $terms_of_lease['name'] }}
             </option>
           @endforeach
@@ -1516,7 +1514,7 @@
           @foreach ($tenant_pays as $tenant_pay)
             <option value="{{ $tenant_pay['name'] }}" data-target="{{ $tenant_pay['target'] }}"
               class="card flex-row" data-icon='<i class="fa-regular fa-circle-check"></i>'
-              style="width:calc(33.3% - 10px);" {{isset($auction->get->tenant_pays) && in_array($tenant_pay['name'], json_decode($auction->get->tenant_pays) ?? []) ? 'selected' : ''}}>
+              style="width:calc(33.3% - 10px);" {{isset($auction->get->tenant_pays) && in_array($tenant_pay['name'], $auction->get->tenant_pays) ? 'selected' : ''}}>
               {{ $tenant_pay['name'] }}
             </option>
           @endforeach

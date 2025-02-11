@@ -79,12 +79,13 @@ class PropertyAuction extends Model
         $data = [];
         $metas = PropertyAuctionMeta::where('property_auction_id', $this->id)->get();
         foreach ($metas as $row) {
-            if (gettype(json_decode($row->meta_value)) == 'array') {
-                $value = json_decode($row->meta_value);
-            } else {
-                $value = $row->meta_value;
-            }
-            $data[$row->meta_key] = $value;
+            // $decoded = json_decode($row->meta_value, true);
+            // if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+            //     $value = $decoded;
+            // } else {
+            //     $value = $row->meta_value;
+            // }
+            $data[$row->meta_key] = $row->meta_value;
         }
         $collection = new Collection();
         $collection->push((object) $data);

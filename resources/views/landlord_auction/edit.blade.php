@@ -1,314 +1,314 @@
 @extends('layouts.main')
 @push('styles')
-<style>
-    .choices__list {
-        z-index: 999;
-    }
+    <style>
+        .choices__list {
+            z-index: 999;
+        }
 
-    .wizard-steps-progress {
-        height: 5px;
-        width: 100%;
-        background-color: #CCC;
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
+        .wizard-steps-progress {
+            height: 5px;
+            width: 100%;
+            background-color: #CCC;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
 
-    .steps-progress-percent {
-        height: 100%;
-        width: 0%;
-        background-color: #11b7cf;
-    }
+        .steps-progress-percent {
+            height: 100%;
+            width: 0%;
+            background-color: #11b7cf;
+        }
 
-    .wizard-step {
-        display: none;
-    }
+        .wizard-step {
+            display: none;
+        }
 
-    .wizard-step.active {
-        display: block;
-    }
+        .wizard-step.active {
+            display: block;
+        }
 
-    label.warning {
-        color: #f00;
-    }
+        label.warning {
+            color: #f00;
+        }
 
-    ::placeholder {
-        color: #cacaca !important;
-        opacity: 1;
+        ::placeholder {
+            color: #cacaca !important;
+            opacity: 1;
+            /* Firefox */
+        }
+
+        :-ms-input-placeholder {
+            /* Internet Explorer 10-11 */
+            color: #cacaca !important;
+        }
+
+        ::-ms-input-placeholder {
+            /* Microsoft Edge */
+            color: #cacaca !important;
+        }
+
+        .hide_arrow::-webkit-outer-spin-button,
+        .hide_arrow::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
         /* Firefox */
-    }
+        .hide_arrow {
+            -moz-appearance: textfield;
+        }
 
-    :-ms-input-placeholder {
-        /* Internet Explorer 10-11 */
-        color: #cacaca !important;
-    }
+        .input-cover {
+            align-items: center;
+            position: relative;
+        }
 
-    ::-ms-input-placeholder {
-        /* Microsoft Edge */
-        color: #cacaca !important;
-    }
+        .input-cover .input-icon {
+            position: absolute;
+            left: 10px;
+            font-size: 30px;
+            color: #11b7cf;
+        }
 
-    .hide_arrow::-webkit-outer-spin-button,
-    .hide_arrow::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
+        .input-cover .form-control {
+            padding-left: 50px;
+        }
 
-    /* Firefox */
-    .hide_arrow {
-        -moz-appearance: textfield;
-    }
+        .form-control {
+            min-height: 50px;
+        }
 
-    .input-cover {
-        align-items: center;
+        .form-group {
+            margin-top: 15px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+
+        .option-container {
+            align-items: center;
+            cursor: pointer;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 15px;
+            margin: 10px;
+            margin-left: 0;
+            margin-bottom: 0;
+        }
+
+        .option-container.active {
+            border-color: #006e9f;
+            color: #006e9f;
+        }
+
+        .option-container .option-icon {
+            font-size: 40px;
+            color: #11b7cf;
+        }
+
+        .option-container .option-text {
+            padding-left: 10px;
+        }
+
+        .text-error {
+            width: 100%;
+        }
+
+        .text-error {
+            border-color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
+        }
+
+        .grid-picker {
+            width: 100%;
+            height: 0px;
+            visibility: hidden;
+        }
+
+
+        .box {
+            display: block;
+            width: 400px;
+            height: auto;
+            background-color: white;
+            border-radius: 5px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            /* overflow: hidden; */
+            position: relative;
+        }
+
+        .js--image-preview {
+        width: 200px;
+        height: 160px;
+        }
+
+        .upload {
+        margin-bottom: 100px;
+        }
+
+        .upload-options {
         position: relative;
-    }
-
-    .input-cover .input-icon {
-        position: absolute;
-        left: 10px;
-        font-size: 30px;
-        color: #11b7cf;
-    }
-
-    .input-cover .form-control {
-        padding-left: 50px;
-    }
-
-    .form-control {
-        min-height: 50px;
-    }
-
-    .form-group {
-        margin-top: 15px;
-    }
-
-    .options-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-    }
-
-    .option-container {
-        align-items: center;
+        /* height: 65px; */
+        background-color: $base-color;
         cursor: pointer;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        padding: 15px;
-        margin: 10px;
-        margin-left: 0;
-        margin-bottom: 0;
-    }
-
-    .option-container.active {
-        border-color: #006e9f;
-        color: #006e9f;
-    }
-
-    .option-container .option-icon {
-        font-size: 40px;
-        color: #11b7cf;
-    }
-
-    .option-container .option-text {
-        padding-left: 10px;
-    }
-
-    .text-error {
+        overflow: hidden;
+        text-align: center;
+        transition: background-color ease-in-out 150ms;
+        color: red;
         width: 100%;
-    }
+        border: 1px solid #dedddd;
+        border-radius: 0px 0px 5px 5px;
 
-    .text-error {
-        border-color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
-    }
+        &:hover {
+            background-color: lighten($base-color, 10%);
+        }
 
-    .grid-picker {
+        & input {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+
+        & label {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            font-weight: 400;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: pointer;
+            overflow: hidden;
+
+            &::after {
+            content: "+";
+            font-family: "Material Icons";
+            z-index: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 50px;
+            font-size: 28px;
+            color: #e6e6e6;
+            }
+
+            & span {
+            display: inline-block;
+            width: 50%;
+            height: 100%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            vertical-align: middle;
+            text-align: center;
+
+            &:hover i.material-icons {
+                color: lightgray;
+            }
+            }
+        }
+        }
+
+        .js--image-preview {
+        height: 100%;
         width: 100%;
-        height: 0px;
-        visibility: hidden;
-    }
-
-
-    .box {
-        display: block;
-        width: 400px;
-        height: auto;
+        /* position: relative; */
+        overflow: hidden;
+        background-image: url('/images/image.png');
         background-color: white;
-        border-radius: 5px;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        /* overflow: hidden; */
+        /* background-position: center center; */
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        &.js--no-default::after {
+            display: none;
+        }
+
+        &:nth-child(2) {
+            background-image: url("http://bastianandre.at/giphy.gif");
+        }
+        }
+
+        i.material-icons {
+        transition: color 100ms ease-in-out;
+        font-size: 2.25em;
+        line-height: 55px;
+        color: white;
+        display: block;
+        }
+
+        .drop {
+        display: block;
+        position: absolute;
+        background: transparentize($base-color, 0.8);
+        border-radius: 100%;
+        transform: scale(0);
+        }
+
+        .animate {
+        animation: ripple 0.4s linear;
+        }
+
+        @keyframes ripple {
+        100% {
+            opacity: 0;
+            transform: scale(2.5);
+        }
+        }
+
+        .video {
+        height: 160px;
+        width: 200px;
         position: relative;
-    }
+        /* overflow: hidden; */
 
-.js--image-preview {
-  width: 200px;
-  height: 160px;
-}
+        background-color: white;
+        /* background-position: center center; */
+        background-repeat: no-repeat;
+        background-size: cover;
+        margin-bottom: 60px;
 
-.upload {
-  margin-bottom: 100px;
-}
+        }
 
-.upload-options {
-  position: relative;
-  /* height: 65px; */
-  background-color: $base-color;
-  cursor: pointer;
-  overflow: hidden;
-  text-align: center;
-  transition: background-color ease-in-out 150ms;
-  color: red;
-  width: 100%;
-  border: 1px solid #dedddd;
-  border-radius: 0px 0px 5px 5px;
+        .bgImg {
+        background-image: url('/images/play.png');
+        }
 
-  &:hover {
-    background-color: lighten($base-color, 10%);
-  }
+        span.upload-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 198px;
+        height: 50px;
+        font-size: 28px;
+        color: #e6e6e6;
+        }
 
-  & input {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
-  }
+        .videoBox {
+        width: 200px;
+        border-radius: 5px;
 
-  & label {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    font-weight: 400;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    cursor: pointer;
-    overflow: hidden;
+        }
 
-    &::after {
-      content: "+";
-      font-family: "Material Icons";
-      z-index: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 50px;
-      font-size: 28px;
-      color: #e6e6e6;
-    }
+        .videoDiv {
+        margin-top: -60px;
+        }
 
-    & span {
-      display: inline-block;
-      width: 50%;
-      height: 100%;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-      vertical-align: middle;
-      text-align: center;
-
-      &:hover i.material-icons {
-        color: lightgray;
-      }
-    }
-  }
-}
-
-.js--image-preview {
-  height: 100%;
-  width: 100%;
-  /* position: relative; */
-  overflow: hidden;
-  background-image: url('/images/image.png');
-  background-color: white;
-  /* background-position: center center; */
-  background-repeat: no-repeat;
-  background-size: cover;
-
-  &.js--no-default::after {
-    display: none;
-  }
-
-  &:nth-child(2) {
-    background-image: url("http://bastianandre.at/giphy.gif");
-  }
-}
-
-i.material-icons {
-  transition: color 100ms ease-in-out;
-  font-size: 2.25em;
-  line-height: 55px;
-  color: white;
-  display: block;
-}
-
-.drop {
-  display: block;
-  position: absolute;
-  background: transparentize($base-color, 0.8);
-  border-radius: 100%;
-  transform: scale(0);
-}
-
-.animate {
-  animation: ripple 0.4s linear;
-}
-
-@keyframes ripple {
-  100% {
-    opacity: 0;
-    transform: scale(2.5);
-  }
-}
-
-.video {
-  height: 160px;
-  width: 200px;
-  position: relative;
-  /* overflow: hidden; */
-
-  background-color: white;
-  /* background-position: center center; */
-  background-repeat: no-repeat;
-  background-size: cover;
-  margin-bottom: 60px;
-
-}
-
-.bgImg {
-  background-image: url('/images/play.png');
-}
-
-span.upload-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 198px;
-  height: 50px;
-  font-size: 28px;
-  color: #e6e6e6;
-}
-
-.videoBox {
-  width: 200px;
-  border-radius: 5px;
-
-}
-
-.videoDiv {
-  margin-top: -60px;
-}
-
-label.fileuploader-btn {
-  /* position: absolute; */
-  top: 100%;
-  border-radius: 0px 0px 5px 5px;
-  border: 1px solid #e2e2e2;
-}
-</style>
+        label.fileuploader-btn {
+        /* position: absolute; */
+        top: 100%;
+        border-radius: 0px 0px 5px 5px;
+        border: 1px solid #e2e2e2;
+        }
+    </style>
 @endpush
 @section('content')
     <div class="container p-4">

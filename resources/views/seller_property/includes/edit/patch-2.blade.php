@@ -380,7 +380,7 @@
         @foreach ($floor_coverings as $item)
           <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
             class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-            style="width:calc(33.3% - 10px);" {{isset($auction->get->floor_covering) && in_array($item['name'], json_decode($auction->get->floor_covering) ?? []) ? 'selected' : ''}}>
+            style="width:calc(33.3% - 10px);" {{isset($auction->get->floor_covering) && in_array($item['name'], json_decode($auction->get->floor_covering) ??[]) ? 'selected' : ''}}>
             {{ $item['name'] }}
           </option>
         @endforeach

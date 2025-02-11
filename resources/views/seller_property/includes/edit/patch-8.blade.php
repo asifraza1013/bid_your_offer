@@ -30,7 +30,7 @@
         @foreach ($water_views as $water_view)
           <option value="{{ $water_view['name'] }}" data-icon="<i class='fa-regular fa-circle-check'></i>"
             data-target="{{ $water_view['target'] }}" class="card flex-row"
-            style="width:calc(33.3% - 10px);" {{isset($auction->get->water_view) && in_array($water_view['name'], json_decode($auction->get->water_view, true) ?? []) ? 'selected' : ''}}>
+            style="width:calc(33.3% - 10px);" {{isset($auction->get->water_view) && in_array($water_view['name'], json_decode($auction->get->water_view) ?? []) ? 'selected' : ''}}>
             {{ $water_view['name'] }}
           </option>
         @endforeach
@@ -89,7 +89,7 @@
         @foreach ($water_extras as $water_extra)
           <option value="{{ $water_extra['name'] }}" data-target="{{ $water_extra['target'] }}"
             class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-            style="width:calc(33.3% - 10px);" {{isset($auction->get->water_extras) && in_array($water_extra['name'], json_decode($auction->get->water_extras, true) ?? []) ? 'selected' : ''}}>
+            style="width:calc(33.3% - 10px);" {{isset($auction->get->water_extras) && in_array($water_extra['name'], json_decode($auction->get->water_extras) ?? []) ? 'selected' : ''}}>
             {{ $water_extra['name'] }}
           </option>
         @endforeach
@@ -147,7 +147,7 @@
         @foreach ($water_frontage as $item)
           <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}"
             data-icon="<i class='fa-regular fa-circle-check'></i>" class="card flex-row"
-            style="width:calc(33.3% - 10px);" {{isset($auction->get->water_frontage) && in_array($item['name'], json_decode($auction->get->water_frontage, true) ?? []) ? 'selected' : ''}}>
+            style="width:calc(33.3% - 10px);" {{isset($auction->get->water_frontage) && in_array($item['name'], json_decode($auction->get->water_frontage) ?? []) ? 'selected' : ''}}>
             {{ $item['name'] }}
           </option>
         @endforeach
@@ -183,7 +183,7 @@
         @foreach ($water_access as $water_access1)
           <option value="{{ $water_access1['name'] }}" data-target="{{ $water_access1['target'] }}"
             class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-            style="width:calc(33.3% - 10px);" {{isset($auction->get->water_access) && in_array($water_access1['name'], json_decode($auction->get->water_access, true) ?? []) ? 'selected' : ''}}>
+            style="width:calc(33.3% - 10px);" {{isset($auction->get->water_access) && in_array($water_access1['name'], json_decode($auction->get->water_access) ?? []) ? 'selected' : ''}}>
             {{ $water_access1['name'] }}
           </option>
         @endforeach

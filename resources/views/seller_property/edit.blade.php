@@ -335,15 +335,15 @@
         <div class="wizard-steps-progress">
           <div class="steps-progress-percent"></div>
         </div>
-        <form class="p-4 pt-0 mainform" id="edit-property-auction" action="{{ route('add-listing') }}" method="POST" enctype="multipart/form-data">
+        <form class="p-4 pt-0 mainform" id="edit-property-auction" action="{{ route('update-seller-property-listing', $auction->id) }}" method="POST" enctype="multipart/form-data">
           @csrf
         </form>
       </div>
     </div>
   </div>
   @php
-    $roomDataBackend = $auction->get->room_details_data;
-    $unitDataBackend = $auction->get->unit_type_data;
+    $roomDataBackend = json_decode($auction->get->room_details_data, true);
+    $unitDataBackend = json_decode($auction->get->unit_type_data, true);
   @endphp
 @endsection
 @push('scripts')
@@ -761,89 +761,90 @@
   }
 </script>
 <script>
-  function initializeIcons(){
-    $('.has-icon').each(function(i) {
-      var cover = `<div class="input-cover input-cover-${i}"></div>`;
-      $(this).before(cover);
-      $(this).appendTo(`.input-cover-${i}`);
-      var iconClass = $(this).data('icon');
-      var id = $(this).attr('id');
-      var htm = `<label for="${id}" class="input-icon"><i class="${iconClass} " ></i></label>`;
-      $(this).before(htm);
-    });
-  }
-  function initializeFields(){
-    $('.grid-picker').each(function(index, elm) {
-      var st = $(elm).attr('style');
-      var html =
-        `<div class="options-container options-container-${index}" style="${st}"></div>`;
-      $(elm).after(html);
-      $(elm).appendTo(`.options-container-${index}`);
-      $(elm).children('option').each(function(i) {
-        var val = $(this).val();
-        if (val != "") {
-          var text = $(this).text();
-          var classes = $(this).attr('class');
-          var styles = $(this).attr('style') || "";
-          var icon = $(this).data('icon') || "";
-          var selected = $(this).attr('selected') || "";
-          var target = $(this).data('target') || "";
-          selected = selected && "active";
-          icon = icon && icon + " ";
-          var htm = `<div onclick="checkselect(this);" style="${styles}" class="${classes} ${selected} option-container" data-index="${i}" data-target="${target}">
-                      <div class="option-icon">${icon}</div>
-                      <div class="option-text">${text}</div>
-                      </div>`;
-          $(`.options-container-${index}`).append(htm);
-        }
+    function initializeIcons(){
+      $('.has-icon').each(function(i) {
+        var cover = `<div class="input-cover input-cover-${i}"></div>`;
+        $(this).before(cover);
+        $(this).appendTo(`.input-cover-${i}`);
+        var iconClass = $(this).data('icon');
+        var id = $(this).attr('id');
+        var htm = `<label for="${id}" class="input-icon"><i class="${iconClass} " ></i></label>`;
+        $(this).before(htm);
       });
+    }
+    function initializeFields(){
+      $('.grid-picker').each(function(index, elm) {
+        var st = $(elm).attr('style');
+        var html =
+          `<div class="options-container options-container-${index}" style="${st}"></div>`;
+        $(elm).after(html);
+        $(elm).appendTo(`.options-container-${index}`);
+        $(elm).children('option').each(function(i) {
+          var val = $(this).val();
+          if (val != "") {
+            var text = $(this).text();
+            var classes = $(this).attr('class');
+            var styles = $(this).attr('style') || "";
+            var icon = $(this).data('icon') || "";
+            var selected = $(this).attr('selected') || "";
+            var target = $(this).data('target') || "";
+            selected = selected && "active";
+            icon = icon && icon + " ";
+            var htm = `<div onclick="checkselect(this);" style="${styles}" class="${classes} ${selected} option-container" data-index="${i}" data-target="${target}">
+                        <div class="option-icon">${icon}</div>
+                        <div class="option-text">${text}</div>
+                        </div>`;
+            $(`.options-container-${index}`).append(htm);
+          }
+        });
 
-    });
-  }
-
-  function checkselect(elm) {
-    var i = $(elm).data('index');
-    var mult = $(elm).parent().children('select').attr('multiple') || false;
-    // console.log(mult);
-    if (mult == false) {
-      var option = $(elm).parent().children('select').children(`option:eq(${i})`);
-      var ov = option.val();
-      $(elm).parent().children('.option-container').removeClass('active');
-      $(elm).addClass('active');
-      $(elm).parent().children('select').val(ov);
-    } else {
-      $(elm).toggleClass('active');
-      var option = $(elm).parent().children('select').children(`option:eq(${i})`);
-      var ov = option.val();
-      var vals = $(elm).parent().children('select').val();
-      if (vals.includes(ov)) {
-        option.removeAttr('selected');
-      } else {
-        option.attr('selected', 'selected');
-      }
+      });
     }
 
-    // console.log(op);
-    var v = $(elm).parent().children('select').val();
-    $(elm).parent().children('select').trigger('change');
-    check_custom();
-  }
-
-  function check_custom() {
-    $('.option-container').each(function(i, elm) {
-      var target = $(elm).data('target') || "";
-      var is_active = $(elm).hasClass('active');
-      if (target != "") {
-        if (is_active) {
-          $(target).removeClass("d-none");
+    function checkselect(elm) {
+      var i = $(elm).data('index');
+      var mult = $(elm).parent().children('select').attr('multiple') || false;
+      // console.log(mult);
+      if (mult == false) {
+        var option = $(elm).parent().children('select').children(`option:eq(${i})`);
+        var ov = option.val();
+        $(elm).parent().children('.option-container').removeClass('active');
+        $(elm).addClass('active');
+        $(elm).parent().children('select').val(ov);
+      } else {
+        $(elm).toggleClass('active');
+        var option = $(elm).parent().children('select').children(`option:eq(${i})`);
+        var ov = option.val();
+        var vals = $(elm).parent().children('select').val();
+        if (vals.includes(ov)) {
+          option.removeAttr('selected');
         } else {
-          $(target).addClass("d-none");
+          option.attr('selected', 'selected');
         }
       }
-    });
-  }
+
+      // console.log(op);
+      var v = $(elm).parent().children('select').val();
+      $(elm).parent().children('select').trigger('change');
+      check_custom();
+    }
+
+    function check_custom() {
+      $('.option-container').each(function(i, elm) {
+        var target = $(elm).data('target') || "";
+        var is_active = $(elm).hasClass('active');
+        if (target != "") {
+          if (is_active) {
+            $(target).removeClass("d-none");
+          } else {
+            $(target).addClass("d-none");
+          }
+        }
+      });
+    }
 </script>
 <script>
+  var property_type = null;
   $(function() {
     StepWizard.init();
   });
@@ -851,7 +852,7 @@
   var StepWizard = {
     init: function() {
       StepWizard.total_steps = $('.wizard-step').length;
-      var property_type;
+      
       var v = $(".mainform").validate({
         errorClass: "text-error text-danger w-100",
         onkeyup: false,
@@ -859,13 +860,8 @@
       });
 
       StepWizard.setStep();
-      property_type;
-      $('#property_type').on('change', function() {
+      $(document).on('change', '#property_type', function() {
         property_type = $(this).val();
-        // Count the remaining steps without removing them
-
-
-
       });
 
 
@@ -882,10 +878,6 @@
               StepWizard.nextStep = 78;
               StepWizard.backStep = 7;
             } 
-            // else if (StepWizard.currentStep == 34 && property_type ==
-            //   'Residential Property') {
-            //   StepWizard.nextStep = 36;
-            // } 
             else if (StepWizard.currentStep == 7 && (property_type == 'Residential Property' ||
                 property_type ==
                 'Income Property')) {
@@ -935,43 +927,7 @@
             ) {
               StepWizard.nextStep = 70;
               StepWizard.backStep = 68;
-            }
-            // else if (StepWizard.currentStep == 14 && (property_type ==
-            //     'Commercial Property' || property_type == 'Business Opportunity')
-
-            // ) {
-            //   StepWizard.nextStep = 47;
-            //   StepWizard.backStep = 14;
-            // } 
-            // else if (StepWizard.currentStep == 47 && (property_type ==
-            //     'Commercial Property' || property_type == 'Business Opportunity')
-
-            // ) {
-            //   StepWizard.nextStep = 17;
-            //   StepWizard.backStep = 47;
-            // } 
-            
-            // else if (StepWizard.currentStep == 21 && (property_type ==
-            //     'Commercial Property' || property_type == 'Business Opportunity')
-
-            // ) {
-            //   StepWizard.nextStep = 52;
-            //   StepWizard.backStep = 21;
-            // }  else if (StepWizard.currentStep == 10 && (property_type ==
-            //     'Commercial Property' || property_type == 'Business Opportunity')
-
-            // ) {
-            //   StepWizard.nextStep = 12;
-            //   StepWizard.backStep = 10;
-            // } else if (StepWizard.currentStep == 20 && (property_type ==
-            //     'Commercial Property' || property_type == 'Business Opportunity')
-
-            // ) {
-            //   StepWizard.nextStep = 21;
-            //   StepWizard.backStep = 20;
-            // } 
-            
-            else {
+            }else {
               StepWizard.backStep = StepWizard.currentStep;
             }
             $('[ data-step="' + StepWizard.nextStep + '"]').addClass("active");
@@ -1002,10 +958,6 @@
           $('[ data-step="' + StepWizard.backStep + '"]').addClass("active");
           StepWizard.setStep();
           console.log(StepWizard.currentStep)
-          // if (StepWizard.currentStep == 48 && property_type ==
-          //   'Commercial Property') {
-          //   StepWizard.backStep = 46;
-          // }
           
           if (StepWizard.currentStep == 11 && property_type == 'Income Property') {
               StepWizard.backStep = 8
@@ -1034,79 +986,19 @@
             }else if (StepWizard.currentStep == 70 && (property_type == 'Business Opportunity' || property_type == 'Commercial Property')){
               StepWizard.backStep = 68;
               StepWizard.nextStep = 70;
-            } 
-            
-          //   else if (StepWizard.currentStep == 13 && (property_type == 'Commercial Property' || property_type == 'Business Opportunity')) {
-          //   StepWizard.backStep = 11;
-          //   StepWizard.nextStep = 13;
-          // } else if (StepWizard.currentStep == 47 && (property_type == 'Commercial Property' ||
-          //     property_type ==
-          //     'Business Opportunity')) {
-          //   StepWizard.backStep = 14;
-          //   StepWizard.nextStep = 47;
-          // } else if (StepWizard.currentStep == 17 && (property_type == 'Commercial Property' ||
-          //     property_type ==
-          //     'Business Opportunity')) {
-          //   StepWizard.backStep = 47;
-          //   StepWizard.nextStep = 17;
-          // } else if (StepWizard.currentStep == 10 && (property_type ==
-          //     'Commercial Property' || property_type == 'Business Opportunity')
-
-          // ) {
-          //   StepWizard.backStep = 8;
-          //   StepWizard.nextStep = 10;
-          // } else if (StepWizard.currentStep == 21 && (property_type ==
-          //     'Commercial Property' || property_type == 'Business Opportunity')
-
-          // ) {
-          //   StepWizard.nextStep = 21;
-          //   StepWizard.backStep = 20;
-          // } 
-          // else if (StepWizard.currentStep == 36 && property_type ==
-          //   'Residential Property') {
-          //   StepWizard.backStep = 34;
-          // } 
-          else if (StepWizard.currentStep == 8 && (property_type == 'Residential Property' || property_type == 'Income Property')) {
-            StepWizard.backStep = 7;
-          } else if (StepWizard.currentStep == 78 && property_type == 'Vacant Land') {
-            StepWizard.backStep = 7;
-          } else {
-            StepWizard.backStep = StepWizard.currentStep - 1;
-          }
+            } else if (StepWizard.currentStep == 8 && (property_type == 'Residential Property' || property_type == 'Income Property')) {
+              StepWizard.backStep = 7;
+            } else if (StepWizard.currentStep == 78 && property_type == 'Vacant Land') {
+              StepWizard.backStep = 7;
+            } else {
+              StepWizard.backStep = StepWizard.currentStep - 1;
+            }
         }
       });
 
       // Assuming the code provided is within a function or a document.ready block
 
       $('.wizard-step-finish').click(function(e) {
-
-        //Remove All the SLides Except THe Vacant Land
-        //   if (property_type === 'Vacant Land') {
-        //     var $stepsToRemove = $('.wizard-step[data-step]').filter(function() {
-        //       return parseInt($(this).attr('data-step')) >= 8 && parseInt($(this)
-        //         .attr('data-step')) <= 76;
-        //     });
-        //     $stepsToRemove.each(function() {
-        //       $(this).closest('div[data-step]').remove();
-        //     });
-        //   }
-        //Remove All the SLides Except THe Residential and Commercial Property
-      
-        //Remove All the SLides Except THe Commercial and Business Opportunity
-        // if (property_type === 'Commercial Property' || property_type ===
-        //   'Business Opportunity') {
-        //   var $stepsToRemove = $('.wizard-step[data-step]').filter(function() {
-        //     var stepValue = parseInt($(this).attr('data-step'));
-        //     return (stepValue >= 8 && stepValue <= 41) || (stepValue >= 77 &&
-        //       stepValue <= 91);
-        //   });
-
-        //   $stepsToRemove.each(function() {
-        //     $(this).closest('div[data-step]').remove();
-        //   });
-        // }
-        //Remove All the SLides Except THe Commercial and Business Opportunity
-        // Submitting The Form After Removing the Extra slide to get rid of null Data
         $('.mainform').submit();
       });
 
@@ -1154,19 +1046,6 @@
           comp = 20 + (((StepWizard.currentStep - 21) / (55 - 21)) * 80);
         }
       }
-      // else if (property_type === 'Commercial Property' || property_type === 'Business Opportunity') {
-      //   //   console.log(StepWizard.currentStep)
-      //   if (StepWizard.currentStep >= 7 && StepWizard.currentStep <= 20) {
-      //     comp = 20 + (((StepWizard.currentStep - 7) / (75 - 7)) * 80);
-      //   }
-      //   if (StepWizard.currentStep >= 20 && StepWizard.currentStep <= 23) {
-      //     comp = 20 + (((StepWizard.currentStep - 7) / (75 - 7)) * 80);
-
-      //   }
-      //   if (StepWizard.currentStep >= 44 && StepWizard.currentStep <= 75) {
-      //     comp = 20 + (((StepWizard.currentStep - 44) / (75 - 44)) * 80);
-      //   }
-      // }
       else if (property_type === 'Commercial Property' || property_type === 'Business Opportunity') {
         if (StepWizard.currentStep >= 1 && StepWizard.currentStep <= 8) {
             // Steps 1 to 8
@@ -1225,541 +1104,543 @@
   })
 </script>
 <script>
-  function initializeMap() {
-    var inputField = document.getElementsByClassName('search_places');
+    function initializeMap() {
+      var inputField = document.getElementsByClassName('search_places');
 
-    for (var i = 0; i < inputField.length; i++) {
-      var t = inputField[i].dataset.type;
-      if (t === "cities") {
-        var options = {
-          types: ['(cities)'],
-          componentRestrictions: {
-            country: "us"
-          },
-        };
-      } else if (t === "states") {
-        var options = {
-          types: ['administrative_area_level_1'],
-          componentRestrictions: {
-            country: "us"
-          },
-        };
-      } else if (t === "address") {
-        var options = {
-          types: [],
-          componentRestrictions: {
-            country: "us"
-          },
-        };
+      for (var i = 0; i < inputField.length; i++) {
+        var t = inputField[i].dataset.type;
+        if (t === "cities") {
+          var options = {
+            types: ['(cities)'],
+            componentRestrictions: {
+              country: "us"
+            },
+          };
+        } else if (t === "states") {
+          var options = {
+            types: ['administrative_area_level_1'],
+            componentRestrictions: {
+              country: "us"
+            },
+          };
+        } else if (t === "address") {
+          var options = {
+            types: [],
+            componentRestrictions: {
+              country: "us"
+            },
+          };
+        } else {
+          var options = {
+            types: ['administrative_area_level_2'],
+            componentRestrictions: {
+              country: "us"
+            },
+          };
+        }
+
+        google.maps.event.addDomListener(inputField[i], 'keydown', function(e) {
+          if (e.keyCode == 13) {
+            if (e.preventDefault) {
+              e.preventDefault();
+            } else {
+              // Since the google event handler framework does not handle early IE versions, we have to do it by our self.: -(
+              e.cancelBubble = true;
+              e.returnValue = false;
+            }
+          }
+        });
+
+
+
+        var autocomplete = new google.maps.places.Autocomplete(inputField[i], options);
+
+        autocomplete.addListener('place_changed', function(e) {
+          var place = autocomplete.getPlace();
+          if (place) {
+            // place variable will have all the information you are looking for.
+            var lat = place.geometry['location'].lat();
+            var lng = place.geometry['location'].lng();
+            if (t == "counties") {
+              $('#lat').val(lat);
+              $('#long').val(lng);
+            }
+          }
+        });
+      }
+    }
+
+    $(document).on('change', '#has_furnishing', function(){
+      let w=$(this).val();
+      if (w == "Yes" || w == "Optional") {
+        $('#has_furnishing_residential_and_income').show();
       } else {
-        var options = {
-          types: ['administrative_area_level_2'],
-          componentRestrictions: {
-            country: "us"
-          },
-        };
+        $('#has_furnishing_residential_and_income').hide();
       }
-
-      google.maps.event.addDomListener(inputField[i], 'keydown', function(e) {
-        if (e.keyCode == 13) {
-          if (e.preventDefault) {
-            e.preventDefault();
-          } else {
-            // Since the google event handler framework does not handle early IE versions, we have to do it by our self.: -(
-            e.cancelBubble = true;
-            e.returnValue = false;
-          }
-        }
-      });
-
-
-
-      var autocomplete = new google.maps.places.Autocomplete(inputField[i], options);
-
-      autocomplete.addListener('place_changed', function(e) {
-        var place = autocomplete.getPlace();
-        if (place) {
-          // place variable will have all the information you are looking for.
-          var lat = place.geometry['location'].lat();
-          var lng = place.geometry['location'].lng();
-          if (t == "counties") {
-            $('#lat').val(lat);
-            $('#long').val(lng);
-          }
-        }
-      });
-    }
-  }
-
-  $(document).on('change', '#has_furnishing', function(){
-    let w=$(this).val();
-    if (w == "Yes" || w == "Optional") {
-      $('#has_furnishing_residential_and_income').show();
-    } else {
-      $('#has_furnishing_residential_and_income').hide();
-    }
-  })
-  $(document).on('change', '#otherStucture', function(){
-    let w=$(this).val();
-    if (w == "Additional Single Family Home" || w == "In-Law- Suite") {
-      $('#otherSturctureUnit').show();
-    } else {
-      $('#otherSturctureUnit').hide();
-    }
-  })
+    })
+    $(document).on('change', '#otherStucture', function(){
+      let w=$(this).val();
+      if (w == "Additional Single Family Home" || w == "In-Law- Suite") {
+        $('#otherSturctureUnit').show();
+      } else {
+        $('#otherSturctureUnit').hide();
+      }
+    })
 </script>
 <script>
-  function initializeUnitTypeDetailsFields(){
-      const unitTypeSelect = $('#unit_type_1');
-      const fieldsContainer = $('#dynamicFieldsContainer');
-      const unitTypeData = $('#unit_type_input');
-      const unitData = @json($unitDataBackend);
-      const unitDetailsData = JSON.parse(unitData);
+    function initializeUnitTypeDetailsFields(){
+        const unitTypeSelect = $('#unit_type_1');
+        const fieldsContainer = $('#dynamicFieldsContainer');
+        const unitTypeData = $('#unit_type_input');
+        const unitDetails = @json($unitDataBackend);
+        const unitDetailsData = JSON.parse(unitDetails);
+        console.log('unitDetailsData',unitDetailsData);
 
-      const fieldData = {}; // object to store field data
+        const fieldData = {}; // object to store field data
 
-      function sanitizeId(optionName) {
-          return optionName
-              .toLowerCase() // Optional: make it lowercase for consistency
-              .replace(/[^a-z0-9]/g, '-'); // Replace invalid characters with underscores
-      }
+        function sanitizeId(optionName) {
+            return optionName
+                .toLowerCase() // Optional: make it lowercase for consistency
+                .replace(/[^a-z0-9]/g, '-'); // Replace invalid characters with underscores
+        }
 
-      // Handle changes in the select element
-      $(unitTypeSelect).change(function () {
-          const selectedOptions = $(this).val(); // Get selected options
+        // Handle changes in the select element
+        $(unitTypeSelect).change(function () {
+            const selectedOptions = $(this).val(); // Get selected options
 
-          // Add fields for new options
-          selectedOptions.forEach(option => { 
-            const unitTypeBackendData = unitDetailsData[option];
-            let sanitizedOpt = sanitizeId(option);
-            if (!fieldData[option]) {
-                createFields(sanitizedOpt, option, unitTypeBackendData);
-            }
-          });
-
-          // Remove fields for unselected options
-          Object.keys(fieldData).forEach(option => {
-              const sanitizedIds = selectedOptions.map((option) => {
-                  const sanitizedOption = sanitizeId(option);
-                  return `${sanitizedOption}`; // Create unique ID for each
-              });
-              if (!selectedOptions.includes(option)) {
-                  let sanitizedOpt = sanitizeId(option);
-                  removeFields(sanitizedOpt, option);
+            // Add fields for new options
+            selectedOptions.forEach(option => { 
+              const unitTypeBackendData = unitDetailsData[option];
+              let sanitizedOpt = sanitizeId(option);
+              if (!fieldData[option]) {
+                  createFields(sanitizedOpt, option, unitTypeBackendData);
               }
-          });
+            });
 
-          updateHiddenField(); // Update the hidden field after changes
-      });
+            // Remove fields for unselected options
+            Object.keys(fieldData).forEach(option => {
+                const sanitizedIds = selectedOptions.map((option) => {
+                    const sanitizedOption = sanitizeId(option);
+                    return `${sanitizedOption}`; // Create unique ID for each
+                });
+                if (!selectedOptions.includes(option)) {
+                    let sanitizedOpt = sanitizeId(option);
+                    removeFields(sanitizedOpt, option);
+                }
+            });
+
+            updateHiddenField(); // Update the hidden field after changes
+        });
 
 
-      // Create fields for a selected option
-      function createFields(option, optionName, unitTypeBackendData) {
+        // Create fields for a selected option
+        function createFields(option, optionName, unitTypeBackendData) {
 
-              $(fieldsContainer).append(`<div id="${option}-fields-container"></div`)
+                $(fieldsContainer).append(`<div id="${option}-fields-container"></div`)
 
-              const unitDimensionHtml = `
-                  <hr data-room-type="${option}">
-                  <h5 data-room-type="${option}">Unit Type: ${optionName}</h5>
+                const unitDimensionHtml = `
+                    <hr data-room-type="${option}">
+                    <h5 data-room-type="${option}">Unit Type: ${optionName}</h5>
 
-                  <div class="form-group" data-option="${optionName}>
-                    <label class="fw-bold">Beds/Unit:</label>
-                    <input type="number" name="beds_unit" value="${unitTypeBackendData[beds_unit]}" data-option="${optionName}" id="dynamic-room-input-beds_unit-${option}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
-                  </div>
+                    <div class="form-group" data-option="${optionName}>
+                      <label class="fw-bold">Beds/Unit:</label>
+                      <input type="number" name="beds_unit" value="${unitTypeBackendData[beds_unit]}" data-option="${optionName}" id="dynamic-room-input-beds_unit-${option}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
+                    </div>
 
-                  <div class="form-group" data-option="${optionName}>
-                    <label class="fw-bold">Baths/Unit:</label>
-                    <input type="number" name="baths_unit" value="${unitTypeBackendData[baths_unit]}" id="dynamic-room-input-baths_unit-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
-                  </div>
+                    <div class="form-group" data-option="${optionName}>
+                      <label class="fw-bold">Baths/Unit:</label>
+                      <input type="number" name="baths_unit" value="${unitTypeBackendData[baths_unit]}" id="dynamic-room-input-baths_unit-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
+                    </div>
 
-                  <div class="form-group" data-option="${optionName}>
-                    <label class="fw-bold">Sqft Heated:</label>
-                    <input type="number" name="sqt_ft_heated" value="${unitTypeBackendData[sqt_ft_heated]}" id="dynamic-room-input-sqt_ft_heated-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-ruler-combined">
-                  </div>
+                    <div class="form-group" data-option="${optionName}>
+                      <label class="fw-bold">Sqft Heated:</label>
+                      <input type="number" name="sqt_ft_heated" value="${unitTypeBackendData[sqt_ft_heated]}" id="dynamic-room-input-sqt_ft_heated-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-ruler-combined">
+                    </div>
 
-                  <div class="form-group" data-option="${optionName}>
-                    <label class="fw-bold">Number of Units:</label>
-                    <input type="number" name="number_of_units" value="${unitTypeBackendData[number_of_units]}" id="dynamic-room-input-number_of_units-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
-                  </div>
-              `;
+                    <div class="form-group" data-option="${optionName}>
+                      <label class="fw-bold">Number of Units:</label>
+                      <input type="number" name="number_of_units" value="${unitTypeBackendData[number_of_units]}" id="dynamic-room-input-number_of_units-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
+                    </div>
+                `;
 
-              $(`#${option}-fields-container`).append(unitDimensionHtml);
-              const inputSelectors = [
-                `#dynamic-room-input-beds_unit-${option}`,
-                `#dynamic-room-input-baths_unit-${option}`,
-                `#dynamic-room-input-sqt_ft_heated-${option}`,
-                `#dynamic-room-input-number_of_units-${option}`
-              ];
+                $(`#${option}-fields-container`).append(unitDimensionHtml);
+                const inputSelectors = [
+                  `#dynamic-room-input-beds_unit-${option}`,
+                  `#dynamic-room-input-baths_unit-${option}`,
+                  `#dynamic-room-input-sqt_ft_heated-${option}`,
+                  `#dynamic-room-input-number_of_units-${option}`
+                ];
 
-              inputSelectors.forEach(selector => {
-                $(selector).trigger('input');
-              });
+                inputSelectors.forEach(selector => {
+                  $(selector).trigger('input');
+                });
 
-              // Add Room Levels dropdown
-              const unitsOccupied = [
-                  { name: "Yes", target: `.custom_occupied-${option}`, icon: 'fa-regular fa-circle-check' },
-                  { name: "No", target: `.custom_occupied_rent-${option}`, icon: 'fa-regular fa-circle-xmark' },
-              ];
-              appendDropdown("Are any units occupied?", "occupied", unitsOccupied, 1, false, false);
+                // Add Room Levels dropdown
+                const unitsOccupied = [
+                    { name: "Yes", target: `.custom_occupied-${option}`, icon: 'fa-regular fa-circle-check' },
+                    { name: "No", target: `.custom_occupied_rent-${option}`, icon: 'fa-regular fa-circle-xmark' },
+                ];
+                appendDropdown("Are any units occupied?", "occupied", unitsOccupied, 1, false, false);
 
-              // Function to append dropdowns dynamically
-              function appendDropdown(labelText, name, options, index, multiple = false, otherFields = false) {
-                  let optionsHtml = options
-                      .map(
-                          (opt) =>
-                              `<option value="${opt.name}" data-target="${opt.target}" data-icon="<i class='${opt.icon}'></i>" 
-                                  style="width:calc(33.3% - 10px);" class="card flex-row" 
-                                  ${Array.isArray(unitTypeBackendData[name]) 
-                                    ? (unitTypeBackendData[name].includes(opt.name) ? 'selected' : '') 
-                                    : (unitTypeBackendData[name] === opt.name ? 'selected' : '')}>
-                                  ${opt.name}
-                              </option>`
-                      )
-                      .join("");
+                // Function to append dropdowns dynamically
+                function appendDropdown(labelText, name, options, index, multiple = false, otherFields = false) {
+                    let optionsHtml = options
+                        .map(
+                            (opt) =>
+                                `<option value="${opt.name}" data-target="${opt.target}" data-icon="<i class='${opt.icon}'></i>" 
+                                    style="width:calc(33.3% - 10px);" class="card flex-row" 
+                                    ${Array.isArray(unitTypeBackendData[name]) 
+                                      ? (unitTypeBackendData[name].includes(opt.name) ? 'selected' : '') 
+                                      : (unitTypeBackendData[name] === opt.name ? 'selected' : '')}>
+                                    ${opt.name}
+                                </option>`
+                        )
+                        .join("");
 
-                  const dropdownHtml = `
-                      <div class="form-group data-option="${optionName}" data-index="${index}">
-                          <label class="fw-bold">${labelText}</label>
-                          <select class="grid-picker dynamic-room-select" id="dynamic-select-${name}-${optionName}" name="${name}" data-option="${optionName}" style="justify-content: flex-start;" ${multiple ? 'multiple': ''}>
-                              <option value="">Select</option>
-                              ${optionsHtml}
-                          </select>
+                    const dropdownHtml = `
+                        <div class="form-group data-option="${optionName}" data-index="${index}">
+                            <label class="fw-bold">${labelText}</label>
+                            <select class="grid-picker dynamic-room-select" id="dynamic-select-${name}-${optionName}" name="${name}" data-option="${optionName}" style="justify-content: flex-start;" ${multiple ? 'multiple': ''}>
+                                <option value="">Select</option>
+                                ${optionsHtml}
+                            </select>
 
-                          <div class="form-group d-none custom_occupied-${option} data-option="${optionName}"">
-                            <label class="fw-bold">Number of Occupied Units:  </label>
-                            <input type="number" name="custom_occupied" value="${unitTypeBackendData[custom_occupied]}" id="dynamic-room-input-custom_occupied-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
-                          </div>
-                          <div class="form-group d-none custom_occupied-${option}" data-option="${optionName}">
-                            <label class="fw-bold">Current Rent</label>
-                            <input type="number" name="current_rent" value="${unitTypeBackendData[current_rent]}" id="dynamic-room-input-current_rent-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-dollar-sign">
-                          </div>
-                          <div class="form-group custom_occupied_rent-${option} d-none" data-option="${optionName}">
-                            <label class="fw-bold">Expected Rent</label>
-                            <input type="number" name="expected_rent" value="${unitTypeBackendData[expected_rent]}" id="dynamic-room-input-expected_rent-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-dollar-sign">
-                          </div>
-                      </div>
+                            <div class="form-group d-none custom_occupied-${option} data-option="${optionName}"">
+                              <label class="fw-bold">Number of Occupied Units:  </label>
+                              <input type="number" name="custom_occupied" value="${unitTypeBackendData[custom_occupied]}" id="dynamic-room-input-custom_occupied-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-hotel">
+                            </div>
+                            <div class="form-group d-none custom_occupied-${option}" data-option="${optionName}">
+                              <label class="fw-bold">Current Rent</label>
+                              <input type="number" name="current_rent" value="${unitTypeBackendData[current_rent]}" id="dynamic-room-input-current_rent-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-dollar-sign">
+                            </div>
+                            <div class="form-group custom_occupied_rent-${option} d-none" data-option="${optionName}">
+                              <label class="fw-bold">Expected Rent</label>
+                              <input type="number" name="expected_rent" value="${unitTypeBackendData[expected_rent]}" id="dynamic-room-input-expected_rent-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-dollar-sign">
+                            </div>
+                        </div>
 
-                      <div class="form-group" data-option="${optionName}">
-                        <label class="fw-bold">Garage Spaces:</label>
-                        <input type="number" name="garage_spaces_unit" value="${unitTypeBackendData[garage_spaces_unit]}" id="dynamic-room-input-garage_spaces_unit-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-warehouse">
-                      </div>
+                        <div class="form-group" data-option="${optionName}">
+                          <label class="fw-bold">Garage Spaces:</label>
+                          <input type="number" name="garage_spaces_unit" value="${unitTypeBackendData[garage_spaces_unit]}" id="dynamic-room-input-garage_spaces_unit-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-warehouse">
+                        </div>
 
-                      <div class="form-group" data-option="${optionName}">
-                        <label class="fw-bold">Carport Spaces:</label>
-                        <input type="number" name="carport_spaces_unit" value="${unitTypeBackendData[carport_spaces_unit]}" id="dynamic-room-input-carport_spaces_unit-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-warehouse">
-                      </div>
+                        <div class="form-group" data-option="${optionName}">
+                          <label class="fw-bold">Carport Spaces:</label>
+                          <input type="number" name="carport_spaces_unit" value="${unitTypeBackendData[carport_spaces_unit]}" id="dynamic-room-input-carport_spaces_unit-${option}" data-option="${optionName}" class="form-control has-icon dynamic-room-input" data-icon="fa-solid fa-warehouse">
+                        </div>
 
-                      <div class="form-group col-md-12" data-option="${optionName}">
-                        <label class="fw-bold">Unit Type Description:</label>
-                        <textarea name="unit_type_of_description" value="${unitTypeBackendData[unit_type_of_description]}" id="dynamic-room-input-unit_type_of_description-${option}" data-option="${optionName}" class="form-control dynamic-room-input" cols="30" rows="10"></textarea>
-                      </div>
-                  `;
+                        <div class="form-group col-md-12" data-option="${optionName}">
+                          <label class="fw-bold">Unit Type Description:</label>
+                          <textarea name="unit_type_of_description" value="${unitTypeBackendData[unit_type_of_description]}" id="dynamic-room-input-unit_type_of_description-${option}" data-option="${optionName}" class="form-control dynamic-room-input" cols="30" rows="10"></textarea>
+                        </div>
+                    `;
 
-                  $(`#${option}-fields-container`).append(dropdownHtml);
-                  const inputSelectorsTwo = [
-                    `#dynamic-room-input-custom_occupied-${option}`,
-                    `#dynamic-room-input-current_rent-${option}`,
-                    `#dynamic-room-input-expected_rent-${option}`,
-                    `#dynamic-room-input-garage_spaces_unit-${option}`,
-                    `#dynamic-room-input-carport_spaces_unit-${option}`,
-                    `#dynamic-room-input-unit_type_of_description-${option}`
-                  ]
-                  inputSelectorsTwo.forEach(selector => {
-                    $(selector).trigger('input');
-                  })
+                    $(`#${option}-fields-container`).append(dropdownHtml);
+                    const inputSelectorsTwo = [
+                      `#dynamic-room-input-custom_occupied-${option}`,
+                      `#dynamic-room-input-current_rent-${option}`,
+                      `#dynamic-room-input-expected_rent-${option}`,
+                      `#dynamic-room-input-garage_spaces_unit-${option}`,
+                      `#dynamic-room-input-carport_spaces_unit-${option}`,
+                      `#dynamic-room-input-unit_type_of_description-${option}`
+                    ]
+                    inputSelectorsTwo.forEach(selector => {
+                      $(selector).trigger('input');
+                    })
 
-                  $(`#dynamic-select-${name}-${optionName}`).trigger('change');
-              }
+                    $(`#dynamic-select-${name}-${optionName}`).trigger('change');
+                }
 
-          initializeNewIcons(option); //Initialize icons for the option
-          initializeNewSelectFields(option); // Initialize select fields for the option
-          fieldData[`${optionName}`] = {}; // Initialize data for the option
-      }
+            initializeNewIcons(option); //Initialize icons for the option
+            initializeNewSelectFields(option); // Initialize select fields for the option
+            fieldData[`${optionName}`] = {}; // Initialize data for the option
+        }
 
-      // Remove fields for an unselected option
-      function removeFields(option, optionName) {
-          $(`[data-option="${option}"]`).remove(); // Remove field group
-          $(`[data-room-type="${option}"]`).remove(); // Remove field group
-          $(`#${option}-fields-container`).remove(); // Remove field container
-          delete fieldData[`${optionName}`]; // Remove data for the option
-      }
+        // Remove fields for an unselected option
+        function removeFields(option, optionName) {
+            $(`[data-option="${option}"]`).remove(); // Remove field group
+            $(`[data-room-type="${option}"]`).remove(); // Remove field group
+            $(`#${option}-fields-container`).remove(); // Remove field container
+            delete fieldData[`${optionName}`]; // Remove data for the option
+        }
 
-      // Update the hidden field whenever inputs change
-      $(document).on('input', '.dynamic-room-input', function () {
-          const option = $(this).data('option');
-          const name = $(this).attr('name');
-          const value = $(this).val();
+        // Update the hidden field whenever inputs change
+        $(document).on('input', '.dynamic-room-input', function () {
+            const option = $(this).data('option');
+            const name = $(this).attr('name');
+            const value = $(this).val();
 
-          if (!fieldData[option]) fieldData[option] = {}; // Initialize key
-          fieldData[option][name] = value; // Update value
+            if (!fieldData[option]) fieldData[option] = {}; // Initialize key
+            fieldData[option][name] = value; // Update value
 
-          updateHiddenField(); // Update hidden field
-      });
+            updateHiddenField(); // Update hidden field
+        });
 
-      $(document).on('change', '.dynamic-room-select', function () {
-          const option = $(this).data('option');
-          const name = $(this).attr('name');
-          const value = $(this).val();
+        $(document).on('change', '.dynamic-room-select', function () {
+            const option = $(this).data('option');
+            const name = $(this).attr('name');
+            const value = $(this).val();
 
-          if (!fieldData[option]) fieldData[option] = {}; // Initialize key
-          fieldData[option][name] = value; // Update value
+            if (!fieldData[option]) fieldData[option] = {}; // Initialize key
+            fieldData[option][name] = value; // Update value
 
-          updateHiddenField(); // Update hidden field
-      });
+            updateHiddenField(); // Update hidden field
+        });
 
-      // Update the hidden field with the current data
-      function updateHiddenField() {
-          unitTypeData.val(JSON.stringify(fieldData)); // Update hidden field
-          console.log('unitTypeDataVal', unitTypeData.val());
-      }
+        // Update the hidden field with the current data
+        function updateHiddenField() {
+            unitTypeData.val(JSON.stringify(fieldData)); // Update hidden field
+            console.log('unitTypeDataVal', unitTypeData.val());
+        }
 
-  };
+    };
 </script>
 <script>
-  function initializeRoomDetailsFields(){
-      const roomTypeSelect = $('#room_type');
-      const fieldsContainer = $('#dynamicFieldsContainerRoomType');
-      const roomTypeData = $('#room_type_input');
-      const roomData = @json($roomDataBackend);
-      const roomDetailsData = JSON.parse(roomData);
+    function initializeRoomDetailsFields(){
+        const roomTypeSelect = $('#room_type');
+        const fieldsContainer = $('#dynamicFieldsContainerRoomType');
+        const roomTypeData = $('#room_type_input');
+        const roomDetails = @json($roomDataBackend);
+        const roomDetailsData = JSON.parse(roomDetails);
+        console.log('roomData', roomDetailsData);
 
-      const fieldData = {}; // object to store field data
+        const fieldData = {}; // object to store field data
 
-      function sanitizeId(optionName) {
-          return optionName
-              .toLowerCase() // Optional: make it lowercase for consistency
-              .replace(/[^a-z0-9]/g, '-'); // Replace invalid characters with underscores
-      }
+        function sanitizeId(optionName) {
+            return optionName
+                .toLowerCase() // Optional: make it lowercase for consistency
+                .replace(/[^a-z0-9]/g, '-'); // Replace invalid characters with underscores
+        }
 
-      // Handle changes in the select element
-      $(roomTypeSelect).change(function () {
-          const selectedOptions = $(this).val(); // Get selected options
-          if(!selectedOptions) return;
-          // Add fields for new options
-          selectedOptions.forEach(option => { 
-            const roomTypeBackendData = roomDetailsData[option];
-            let sanitizedOpt = sanitizeId(option);
-            if (!fieldData[option]) {
-                createFields(sanitizedOpt, option, roomTypeBackendData);
-            }
-          });
-
-          // Remove fields for unselected options
-          Object.keys(fieldData).forEach(option => {
-              const sanitizedIds = selectedOptions.map((option) => {
-                  const sanitizedOption = sanitizeId(option);
-                  return `${sanitizedOption}`; // Create unique ID for each
-              });
-              if (!selectedOptions.includes(option)) {
-                  let sanitizedOpt = sanitizeId(option);
-                  removeFields(sanitizedOpt, option);
+        // Handle changes in the select element
+        $(roomTypeSelect).change(function () {
+            const selectedOptions = $(this).val(); // Get selected options
+            if(!selectedOptions) return;
+            // Add fields for new options
+            selectedOptions.forEach(option => { 
+              const roomTypeBackendData = roomDetailsData[option];
+              let sanitizedOpt = sanitizeId(option);
+              if (!fieldData[option]) {
+                  createFields(sanitizedOpt, option, roomTypeBackendData);
               }
-          });
+            });
 
-          updateHiddenField(); // Update the hidden field after changes
-      });
+            // Remove fields for unselected options
+            Object.keys(fieldData).forEach(option => {
+                const sanitizedIds = selectedOptions.map((option) => {
+                    const sanitizedOption = sanitizeId(option);
+                    return `${sanitizedOption}`; // Create unique ID for each
+                });
+                if (!selectedOptions.includes(option)) {
+                    let sanitizedOpt = sanitizeId(option);
+                    removeFields(sanitizedOpt, option);
+                }
+            });
+
+            updateHiddenField(); // Update the hidden field after changes
+        });
 
 
-      // Create fields for a selected option
-      function createFields(option, optionName, roomTypeBackendData) {
+        // Create fields for a selected option
+        function createFields(option, optionName, roomTypeBackendData) {
 
-              $(fieldsContainer).append(`<div id="${option}-fields-container"></div`)
+                $(fieldsContainer).append(`<div id="${option}-fields-container"></div`)
 
-              const roomDimensionHtml = `
-                  <hr data-room-type="${option}">
-                  <h5 data-room-type="${option}">Room Type: ${optionName}</h5>
-                  <div class="form-group roomDet" data-option="${optionName}">
-                      <label class="fw-bold">Approximate Room Dimensions:</label>
-                      <input type="text" name="approximate_room_dimensions" id="dynamic-input-roomDimensions-${optionName}" data-option="${optionName}" value="${roomTypeBackendData['approximate_room_dimensions']}" data-icon="fa-solid fa-ruler-combined"  class="form-control dynamic-room-input form-control has-icon" required>
-                  </div>
-              `;
+                const roomDimensionHtml = `
+                    <hr data-room-type="${option}">
+                    <h5 data-room-type="${option}">Room Type: ${optionName}</h5>
+                    <div class="form-group roomDet" data-option="${optionName}">
+                        <label class="fw-bold">Approximate Room Dimensions:</label>
+                        <input type="text" name="approximate_room_dimensions" id="dynamic-input-roomDimensions-${optionName}" data-option="${optionName}" value="${roomTypeBackendData['approximate_room_dimensions']}" data-icon="fa-solid fa-ruler-combined"  class="form-control dynamic-room-input form-control has-icon" required>
+                    </div>
+                `;
 
-              $(`#${option}-fields-container`).append(roomDimensionHtml);
-              $(`#dynamic-input-roomDimensions-${optionName}`).trigger('input');
+                $(`#${option}-fields-container`).append(roomDimensionHtml);
+                $(`#dynamic-input-roomDimensions-${optionName}`).trigger('input');
 
-              // Add Room Levels dropdown
-              const roomLevels = [
-                  { name: "Basement", target: "" },
-                  { name: "First", target: "" },
-                  { name: "Second", target: "" },
-                  { name: "Third", target: "" },
-                  { name: "Upper", target: "" },
-              ];
-              appendDropdown("Room Level:", "room_level[]", roomLevels, 1, 'fa-regular fa-circle-check', true);
+                // Add Room Levels dropdown
+                const roomLevels = [
+                    { name: "Basement", target: "" },
+                    { name: "First", target: "" },
+                    { name: "Second", target: "" },
+                    { name: "Third", target: "" },
+                    { name: "Upper", target: "" },
+                ];
+                appendDropdown("Room Level:", "room_level", roomLevels, 1, 'fa-regular fa-circle-check', true);
 
-              // Add Bedroom Closets dropdown
-              const bedroomClosets = [
-                  { name: "Built-in Closet", target: "" },
-                  { name: "Coat Closet", target: "" },
-                  { name: "Dual Closets", target: "" },
-                  { name: "Linen Closet", target: "" },
-                  { name: "No Closet", target: "" },
-                  { name: "Storage Closet", target: "" },
-                  { name: 'Walk-in Closet', target: ""},
-              ];
-              appendDropdown("Closet Type:", "bedroomCloset", bedroomClosets, 2, 'fa-regular fa-circle-check');
+                // Add Bedroom Closets dropdown
+                const bedroomClosets = [
+                    { name: "Built-in Closet", target: "" },
+                    { name: "Coat Closet", target: "" },
+                    { name: "Dual Closets", target: "" },
+                    { name: "Linen Closet", target: "" },
+                    { name: "No Closet", target: "" },
+                    { name: "Storage Closet", target: "" },
+                    { name: 'Walk-in Closet', target: ""},
+                ];
+                appendDropdown("Closet Type:", "bedroomCloset", bedroomClosets, 2, 'fa-regular fa-circle-check');
 
-              // Add Room Primary Floor Covering dropdown
-              const roomPrimary = [
-                  { name: "Bamboo", target: "" },
-                  { name: "Brick/Stone", target: "" },
-                  { name: "Carpet", target: "" },
-                  { name: "Ceramic Tile", target: "" },
-                  { name: "Concrete", target: "" },
-                  { name: "Cork", target: "" },
-                  { name: "Engineered Hardwood", target: "" },
-                  { name: "Epoxy", target: "" },
-                  { name: "Forestry Stewardship Certified", target: "" },
-                  { name: "Granite", target: "" },
-                  { name: "Laminate", target: "" },
-                  { name: "Linoleum", target: "" },
-                  { name: "Marble", target: "" },
-                  { name: "Parquet", target: "" },
-                  { name: "Porcelain Tile", target: "" },
-                  { name: "Quarry Tile", target: "" },
-                  { name: "Reclaimed Wood", target: "" },
-                  { name: "Recycled/Composite Flooring", target: "" },
-                  { name: "Slate", target: "" },
-                  { name: "Terrazzo", target: "" },
-                  { name: "Tile", target: "" },
-                  { name: "Travertine", target: "" },
-                  { name: "Vinyl", target: "" },
-                  { name: "Wood", target: "" },
-                  { name: "Other", target: `.floor_covering_other-${option}` },
-              ];
-              appendDropdown("Room Primary Floor Covering:", "roomPrimary", roomPrimary, 3, 'fa-regular fa-circle-check', false, true);
+                // Add Room Primary Floor Covering dropdown
+                const roomPrimary = [
+                    { name: "Bamboo", target: "" },
+                    { name: "Brick/Stone", target: "" },
+                    { name: "Carpet", target: "" },
+                    { name: "Ceramic Tile", target: "" },
+                    { name: "Concrete", target: "" },
+                    { name: "Cork", target: "" },
+                    { name: "Engineered Hardwood", target: "" },
+                    { name: "Epoxy", target: "" },
+                    { name: "Forestry Stewardship Certified", target: "" },
+                    { name: "Granite", target: "" },
+                    { name: "Laminate", target: "" },
+                    { name: "Linoleum", target: "" },
+                    { name: "Marble", target: "" },
+                    { name: "Parquet", target: "" },
+                    { name: "Porcelain Tile", target: "" },
+                    { name: "Quarry Tile", target: "" },
+                    { name: "Reclaimed Wood", target: "" },
+                    { name: "Recycled/Composite Flooring", target: "" },
+                    { name: "Slate", target: "" },
+                    { name: "Terrazzo", target: "" },
+                    { name: "Tile", target: "" },
+                    { name: "Travertine", target: "" },
+                    { name: "Vinyl", target: "" },
+                    { name: "Wood", target: "" },
+                    { name: "Other", target: `.floor_covering_other-${option}` },
+                ];
+                appendDropdown("Room Primary Floor Covering:", "roomPrimary", roomPrimary, 3, 'fa-regular fa-circle-check', false, true);
 
-              // Add Room Features dropdown
-              const roomFeatures = [
-                  { name: "Bar", target: "" },
-                  { name: "Bath with Spa/Hydro Massage Tub", target: "" },
-                  { name: "Bath With Whirlpool", target: "" },
-                  { name: "Bidet", target: "" },
-                  { name: "Breakfast Bar", target: "" },
-                  { name: "Built-In Shelving", target: "" },
-                  { name: "Built-In Shower Bench", target: "" },
-                  { name: "Ceiling Fan(s)", target: "" },
-                  { name: "Claw Foot Tub", target: "" },
-                  { name: "Closet Pantry", target: "" },
-                  { name: "Cooking Island", target: "" },
-                  { name: "Desk Built-In", target: "" },
-                  { name: "Dual Sinks", target: "" },
-                  { name: "En Suite Bathroom", target: "" },
-                  { name: "Exhaust Fan", target: "" },
-                  { name: "Garden Bath", target: "" },
-                  { name: "Granite Counters", target: "" },
-                  { name: "Handicap Accessible", target: "" },
-                  { name: "Heated Floors", target: "" },
-                  { name: "Island", target: "" },
-                  { name: "Jack and Jill Bathroom", target: "" },
-                  { name: "Makeup/Vanity Space", target: "" },
-                  { name: "Multiple Shower Heads", target: "" },
-                  { name: "Pantry", target: "" },
-                  { name: "Rain Shower Head", target: "" },
-                  { name: "Sauna", target: "" },
-                  { name: "Shower- No Tub", target: "" },
-                  { name: "Single Vanity", target: "" },
-                  { name: "Sink-Pedestal", target: "" },
-                  { name: "Split Vanities", target: "" },
-                  { name: "Steam Shower", target: "" },
-                  { name: "Stone Counters", target: "" },
-                  { name: "Sunken Shower", target: "" },
-                  { name: "Tall Countertops", target: "" },
-                  { name: "Tile Counters", target: "" },
-                  { name: "Tub with Separate Shower Stall", target: "" },
-                  { name: "Tub with Shower", target: "" },
-                  { name: "Urinal", target: "" },
-                  { name: "Walk-In Pantry", target: "" },
-                  { name: "Walk-In Tub", target: "" },
-                  { name: "Water Closet/Priv Toliet", target: "" },
-                  { name: "Wet Bar", target: "" },
-                  { name: "Window/Skylight in Bath", target: "" },
-                  { name: "Other", target: `.roomFeatureOther-${option}` },
-              ];
-              appendDropdown("Room Features:", "room_feature", roomFeatures, 4, 'fa-regular fa-circle-check', false, tru);
+                // Add Room Features dropdown
+                const roomFeatures = [
+                    { name: "Bar", target: "" },
+                    { name: "Bath with Spa/Hydro Massage Tub", target: "" },
+                    { name: "Bath With Whirlpool", target: "" },
+                    { name: "Bidet", target: "" },
+                    { name: "Breakfast Bar", target: "" },
+                    { name: "Built-In Shelving", target: "" },
+                    { name: "Built-In Shower Bench", target: "" },
+                    { name: "Ceiling Fan(s)", target: "" },
+                    { name: "Claw Foot Tub", target: "" },
+                    { name: "Closet Pantry", target: "" },
+                    { name: "Cooking Island", target: "" },
+                    { name: "Desk Built-In", target: "" },
+                    { name: "Dual Sinks", target: "" },
+                    { name: "En Suite Bathroom", target: "" },
+                    { name: "Exhaust Fan", target: "" },
+                    { name: "Garden Bath", target: "" },
+                    { name: "Granite Counters", target: "" },
+                    { name: "Handicap Accessible", target: "" },
+                    { name: "Heated Floors", target: "" },
+                    { name: "Island", target: "" },
+                    { name: "Jack and Jill Bathroom", target: "" },
+                    { name: "Makeup/Vanity Space", target: "" },
+                    { name: "Multiple Shower Heads", target: "" },
+                    { name: "Pantry", target: "" },
+                    { name: "Rain Shower Head", target: "" },
+                    { name: "Sauna", target: "" },
+                    { name: "Shower- No Tub", target: "" },
+                    { name: "Single Vanity", target: "" },
+                    { name: "Sink-Pedestal", target: "" },
+                    { name: "Split Vanities", target: "" },
+                    { name: "Steam Shower", target: "" },
+                    { name: "Stone Counters", target: "" },
+                    { name: "Sunken Shower", target: "" },
+                    { name: "Tall Countertops", target: "" },
+                    { name: "Tile Counters", target: "" },
+                    { name: "Tub with Separate Shower Stall", target: "" },
+                    { name: "Tub with Shower", target: "" },
+                    { name: "Urinal", target: "" },
+                    { name: "Walk-In Pantry", target: "" },
+                    { name: "Walk-In Tub", target: "" },
+                    { name: "Water Closet/Priv Toliet", target: "" },
+                    { name: "Wet Bar", target: "" },
+                    { name: "Window/Skylight in Bath", target: "" },
+                    { name: "Other", target: `.roomFeatureOther-${option}` },
+                ];
+                appendDropdown("Room Features:", "room_feature", roomFeatures, 4, 'fa-regular fa-circle-check', false, true);
 
-              // Function to append dropdowns dynamically
-              function appendDropdown(labelText, name, options, index, icon, multiple = false, otherFields = false) {
-                  let optionsHtml = options
-                      .map(
-                          (opt) =>
-                              `<option value="${opt.name}" data-target="${opt.target}" data-icon="<i class='${icon}'></i>" 
-                                  style="width:calc(33.3% - 10px);" class="card flex-row" style="width:calc(33.3% - 10px);"
-                                  ${Array.isArray(roomTypeBackendData[name]) 
-                                    ? (roomTypeBackendData[name].includes(opt.name) ? 'selected' : '') 
-                                    : (roomTypeBackendData[name] === opt.name ? 'selected' : '')}>
-                                  ${opt.name}
-                              </option>`
-                      )
-                      .join("");
+                // Function to append dropdowns dynamically
+                function appendDropdown(labelText, name, options, index, icon, multiple = false, otherFields = false) {
+                    let optionsHtml = options
+                        .map(
+                            (opt) =>
+                                `<option value="${opt.name}" data-target="${opt.target}" data-icon="<i class='${icon}'></i>" 
+                                    style="width:calc(33.3% - 10px);" class="card flex-row" style="width:calc(33.3% - 10px);"
+                                    ${Array.isArray(roomTypeBackendData[name]) 
+                                      ? (roomTypeBackendData[name].includes(opt.name) ? 'selected' : '') 
+                                      : (roomTypeBackendData[name] === opt.name ? 'selected' : '')}>
+                                    ${opt.name}
+                                </option>`
+                        )
+                        .join("");
 
-                  const targetName = options.find(item => item.name === 'Other' ? item : null);
+                    const targetName = options.find(item => item.name === 'Other' ? item : null);
 
-                  const dropdownHtml = `
-                      <div class="form-group roomDet" data-option="${optionName}" data-index="${index}">
-                          <label class="fw-bold">${labelText}</label>
-                          <select class="grid-picker dynamic-room-select" id="dynamic-select-${name}-${optionName}" name="${name}" data-option="${optionName}" style="justify-content: flex-start;" ${multiple ? 'multiple': ''} required>
-                              <option value="">Select</option>
-                              ${optionsHtml}
-                          </select>
-                          ${otherFields ? 
-                          `<div class="form-group ${targetName?.target?.slice(1)}-${option} ${roomTypeBackendData[name] === 'Other' ? '' : 'd-none'}">
-                              <label class="fw-bold">${labelText}</label>
-                              <input type="text" name="${name}Other" data-option="${optionName}" value="${roomTypeBackendData[name + 'Other']}" class="form-control has-icon dynamic-room-input" id="dynamic-input-${name}-${optionName}"
-                                  data-icon="fa-regular fa-check-circle" required>
-                          </div>` : ''
-                          }
-                      </div>
-                  `;
+                    const dropdownHtml = `
+                        <div class="form-group roomDet" data-option="${optionName}" data-index="${index}">
+                            <label class="fw-bold">${labelText}</label>
+                            <select class="grid-picker dynamic-room-select" id="dynamic-select-${name}-${optionName}" name="${name}" data-option="${optionName}" style="justify-content: flex-start;" ${multiple ? 'multiple': ''} required>
+                                <option value="">Select</option>
+                                ${optionsHtml}
+                            </select>
+                            ${otherFields ? 
+                            `<div class="form-group ${targetName?.target?.slice(1)}-${option} ${roomTypeBackendData[name] === 'Other' ? '' : 'd-none'}">
+                                <label class="fw-bold">${labelText}</label>
+                                <input type="text" name="${name}Other" data-option="${optionName}" value="${roomTypeBackendData[name + 'Other']}" class="form-control has-icon dynamic-room-input" id="dynamic-input-${name}-${optionName}"
+                                    data-icon="fa-regular fa-check-circle" required>
+                            </div>` : ''
+                            }
+                        </div>
+                    `;
 
-                  $(`#${option}-fields-container`).append(dropdownHtml);
-                  $(`#dynamic-select-${name}-${optionName}`).trigger('change');
-                  $(`#dynamic-input-${name}-${optionName}`).trigger('input');
-              }
+                    $(`#${option}-fields-container`).append(dropdownHtml);
+                    $(`#dynamic-select-${name}-${optionName}`).trigger('change');
+                    $(`#dynamic-input-${name}-${optionName}`).trigger('input');
+                }
 
-          initializeNewIcons(option); //Initialize icons for the option
-          initializeNewSelectFields(option); // Initialize select fields for the option
-          fieldData[`${optionName}`] = {}; // Initialize data for the option
-      }
+            initializeNewIcons(option); //Initialize icons for the option
+            initializeNewSelectFields(option); // Initialize select fields for the option
+            fieldData[`${optionName}`] = {}; // Initialize data for the option
+        }
 
-      // Remove fields for an unselected option
-      function removeFields(option, optionName) {
-          $(`[data-option="${option}"]`).remove(); // Remove field group
-          $(`[data-room-type="${option}"]`).remove(); // Remove field group
-          $(`#${option}-fields-container`).remove(); // Remove field container
-          delete fieldData[`${optionName}`]; // Remove data for the option
-      }
+        // Remove fields for an unselected option
+        function removeFields(option, optionName) {
+            $(`[data-option="${option}"]`).remove(); // Remove field group
+            $(`[data-room-type="${option}"]`).remove(); // Remove field group
+            $(`#${option}-fields-container`).remove(); // Remove field container
+            delete fieldData[`${optionName}`]; // Remove data for the option
+        }
 
-      // Update the hidden field whenever inputs change
-      $(document).on('input', '.dynamic-room-input', function () {
-          const option = $(this).data('option');
-          const name = $(this).attr('name');
-          const value = $(this).val();
+        // Update the hidden field whenever inputs change
+        $(document).on('input', '.dynamic-room-input', function () {
+            const option = $(this).data('option');
+            const name = $(this).attr('name');
+            const value = $(this).val();
 
-          if (!fieldData[option]) fieldData[option] = {}; // Initialize key
-          fieldData[option][name] = value; // Update value
+            if (!fieldData[option]) fieldData[option] = {}; // Initialize key
+            fieldData[option][name] = value; // Update value
 
-          updateHiddenField(); // Update hidden field
-      });
+            updateHiddenField(); // Update hidden field
+        });
 
-      $(document).on('change', '.dynamic-room-select', function () {
-          const option = $(this).data('option');
-          const name = $(this).attr('name');
-          const value = $(this).val();
+        $(document).on('change', '.dynamic-room-select', function () {
+            const option = $(this).data('option');
+            const name = $(this).attr('name');
+            const value = $(this).val();
 
-          if (!fieldData[option]) fieldData[option] = {}; // Initialize key
-          fieldData[option][name] = value; // Update value
+            if (!fieldData[option]) fieldData[option] = {}; // Initialize key
+            fieldData[option][name] = value; // Update value
 
-          updateHiddenField(); // Update hidden field
-      });
+            updateHiddenField(); // Update hidden field
+        });
 
-      // Update the hidden field with the current data
-      function updateHiddenField() {
-          roomTypeData.val(JSON.stringify(fieldData)); // Update hidden field
-          console.log('roomTypeDataVal', roomTypeData.val());
-      }
+        // Update the hidden field with the current data
+        function updateHiddenField() {
+            roomTypeData.val(JSON.stringify(fieldData)); // Update hidden field
+            console.log('roomTypeDataVal', roomTypeData.val());
+        }
 
-  }
+    }
 </script>
 <script>
     function initializeNewIcons(option){
@@ -1803,7 +1684,7 @@
       })
     }
 
-    $('select').trigger('change');
+    // $('select').trigger('change');
 </script>
 <script>
   function loadGoogleMapsScript() {

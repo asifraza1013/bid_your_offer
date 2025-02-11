@@ -109,17 +109,16 @@
           ['name' => 'Garage Apartment', 'target' => ''],
           ['name' => 'Double Primary Bedroom', 'target' => ''],
       ];
-
-      $roomType = isset($auction->get->room_details_data) ? json_decode($auction->get->room_details_data) : null;
-      $roomTypeData = isset($roomType) ? json_decode($roomType, true): null;
-      $roomTypes = [];
-      if(isset($roomTypeData) && is_array($roomTypeData)){
-        foreach ($roomTypeData as $roomName => $values) {
-          $roomTypes[] = $roomName;
-        }
-      }
     @endphp
     <div class="form-group ">
+      @php
+        $roomData = json_decode($auction->get->room_details_data, true);
+        $roomDetailsData = json_decode($roomData, true);
+        $roomTypes = [];
+        foreach ($roomDetailsData as $roomName => $values) {
+            $roomTypes[] = $roomName;
+        }
+      @endphp
       <label class="fw-bold">Room Type:</label>
       <select class="grid-picker" name="room_type[]" id="room_type" style="justify-content: flex-start;"
         multiple>
@@ -127,7 +126,7 @@
         @foreach ($room_types as $room_type)
           <option value="{{ $room_type['name'] }}" data-target="{{ $room_type['target'] }}"
             class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-            style="width:calc(33.3% - 10px);"  {{isset($roomTypes) && in_array($room_type['name'], json_decode($roomTypes) ?? []) ? 'selected' : ''}}>
+            style="width:calc(33.3% - 10px);"  {{isset($roomTypes) && in_array($room_type['name'], $roomTypes) ? 'selected' : ''}}>
             {{ $room_type['name'] }}
           </option>
         @endforeach
@@ -228,7 +227,7 @@
         @foreach ($water_extras as $water_extra)
           <option value="{{ $water_extra['name'] }}" data-target="{{ $water_extra['target'] }}"
             class="card flex-row" data-icon="<i class='fa-regular fa-circle-check'></i>"
-            style="width:calc(33.3% - 10px);" {{isset($auction->get->water_extras) && in_array($water_extras['name'], json_decode($auction->get->water_extras) ?? []) ? 'selected' : ''}}>
+            style="width:calc(33.3% - 10px);" {{isset($auction->get->water_extras) && in_array($water_extra['name'], json_decode($auction->get->water_extras) ?? []) ? 'selected' : ''}}>
             {{ $water_extra['name'] }}
           </option>
         @endforeach

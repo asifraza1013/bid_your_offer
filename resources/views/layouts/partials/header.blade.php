@@ -374,79 +374,79 @@
         }
       });
 
-      $.ajax({
-        url: '/notification',
-        method: 'POST',
-        data: {
-          id: 1,
-          type: 'seller-property'
-        },
-        success: function(res) {
-          // Handle the successful response
-          console.log(res.message);
+      // $.ajax({
+      //   url: '/notification',
+      //   method: 'POST',
+      //   data: {
+      //     id: 1,
+      //     type: 'seller-property'
+      //   },
+      //   success: function(res) {
+      //     // Handle the successful response
+      //     console.log(res.message);
 
-          // Check if count is greater than 0
-          if (res.count > 0) {
-            // Update the CSS properties for the notification container
-            $notificationContent.css({
-              height: '200px',
-              width: '250px',
-              textAlign: 'center',
-              position: 'absolute',
-              transform: 'translate3d(0px, 40px, 0px)',
-              top: '0px',
-              left: '0px',
-              willChange: 'transform',
-              overflow: 'scroll',
-              overflowX: 'hidden'
-            });
+      //     // Check if count is greater than 0
+      //     if (res.count > 0) {
+      //       // Update the CSS properties for the notification container
+      //       $notificationContent.css({
+      //         height: '200px',
+      //         width: '250px',
+      //         textAlign: 'center',
+      //         position: 'absolute',
+      //         transform: 'translate3d(0px, 40px, 0px)',
+      //         top: '0px',
+      //         left: '0px',
+      //         willChange: 'transform',
+      //         overflow: 'scroll',
+      //         overflowX: 'hidden'
+      //       });
 
-            // Set notification content without <p> tag
-            $notificationContent.html(res.html);
+      //       // Set notification content without <p> tag
+      //       $notificationContent.html(res.html);
 
-            // Add animation class to the bell icon
-            $('.bell-icon').addClass('bell-animation');
-            setTimeout(function() {
-              // Remove animation class after 0.5 seconds
-              $('.bell-icon').removeClass('bell-animation');
-            }, 500);
-            var countExpiredProperties = $('#count_data').val();
+      //       // Add animation class to the bell icon
+      //       $('.bell-icon').addClass('bell-animation');
+      //       setTimeout(function() {
+      //         // Remove animation class after 0.5 seconds
+      //         $('.bell-icon').removeClass('bell-animation');
+      //       }, 500);
+      //       var countExpiredProperties = $('#count_data').val();
 
-            // Update the badge count
-            $badge.text(countExpiredProperties);
-            $('.bell-icon .badge12').on('click', function() {
-              $(this).hide();
-            });
+      //       // Update the badge count
+      //       $badge.text(countExpiredProperties);
+      //       $('.bell-icon .badge12').on('click', function() {
+      //         $(this).hide();
+      //       });
 
-            // Show or hide the badge based on count
-            if (res.count > 0) {
-              $badge.show();
-            } else {
-              $badge.hide();
-            }
-          } else {
-            // Count is not greater than 0, reset the notification container CSS
-            $notificationContent.css({
-              height: '139px',
-              width: '187px',
-              textAlign: 'center',
-              position: 'absolute',
-              transform: 'translate3d(0px, 40px, 0px)',
-              top: '-3px',
-              left: '0px',
-              willChange: 'transform',
-              overflow: 'hidden scroll'
-            });
+      //       // Show or hide the badge based on count
+      //       if (res.count > 0) {
+      //         $badge.show();
+      //       } else {
+      //         $badge.hide();
+      //       }
+      //     } else {
+      //       // Count is not greater than 0, reset the notification container CSS
+      //       $notificationContent.css({
+      //         height: '139px',
+      //         width: '187px',
+      //         textAlign: 'center',
+      //         position: 'absolute',
+      //         transform: 'translate3d(0px, 40px, 0px)',
+      //         top: '-3px',
+      //         left: '0px',
+      //         willChange: 'transform',
+      //         overflow: 'hidden scroll'
+      //       });
 
-            // Update the badge count
-            $badge.text(countExpiredProperties);
-          }
-        },
-        error: function(xhr, status, error) {
-          // Handle the error
-          console.log(error);
-        }
-      });
+      //       // Update the badge count
+      //       $badge.text(countExpiredProperties);
+      //     }
+      //   },
+      //   error: function(xhr, status, error) {
+      //     // Handle the error
+      //     console.log(error);
+      //   }
+      // });
 
     }, 10000); // 10000 milliseconds = 10 seconds
 

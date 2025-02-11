@@ -1,5 +1,8 @@
 {{-- commercial/business Start --}}
 <div class="wizard-step" data-step="44">
+  @php
+    $bathrooms = [['target' => '', 'name' => '1'], ['target' => '', 'name' => '1.5'], ['target' => '', 'name' => '2'], ['target' => '', 'name' => '2.5'], ['target' => '', 'name' => '3'], ['target' => '', 'name' => '3.5'], ['target' => '', 'name' => '4'], ['target' => '', 'name' => '4.5'], ['target' => '', 'name' => '5'], ['target' => '', 'name' => '5.5'], ['target' => '', 'name' => '6'], ['target' => '', 'name' => '6.5'], ['target' => '', 'name' => '7'], ['target' => '', 'name' => '7.5'], ['target' => '', 'name' => '8'], ['target' => '', 'name' => '8.5'], ['target' => '', 'name' => '9'], ['target' => '', 'name' => '9.5'], ['target' => '', 'name' => '10'], ['target' => '.custom_bathrooms', 'name' => 'Other']];
+  @endphp
     <div class="form-group">
       <label class="fw-bold">Bathrooms:</label>
       <select class="grid-picker" name="bathroomsCom" id="bathrooms" style="">
@@ -52,7 +55,7 @@
           style="justify-content: flex-start;">
           <option value="">Select</option>
           @foreach ($yes_or_nos as $item)
-            <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
+            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
               style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->garage_attribute) && $auction->get->garage_attribute == $item['name'] ? 'selected' : ''}}>
               {{ $item['name'] }}
             </option>
@@ -166,7 +169,7 @@
         <select class="grid-picker" name="occupied" id="occupied" style="justify-content: flex-start;">
           <option value="">Select</option>
           @foreach ($yes_or_nos as $item)
-            <option value="{{ $item['name'] }}" data-target="{{ $target }}" class="card flex-row"
+            <option value="{{ $item['name'] }}" data-target="{{ $item['target'] }}" class="card flex-row"
               style="width:calc(33.3% - 10px);" data-icon='<i class="{{ $item['icon'] }}"></i>' {{isset($auction->get->occupied) && $auction->get->occupied == $item['name'] ? 'selected' : ''}}>
               {{ $item['name'] }}
             </option>
